@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>শপ | VISION Academics</title>
+    <meta name="description" content="VISION Academics-এর অফিসিয়াল শপ — টি-শার্ট, বই ও অন্যান্য প্রোডাক্ট অর্ডার করুন।">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&family=Baloo+Da+2:wght@500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Anek+Bangla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* ===== গ্লোবাল স্টাইল (index.html / course-details.html এর সাথে মিলিয়ে) ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --ink: #1E2A47;
+            --ink-soft: #4A5772;
+            --paper: #FAF7F0;
+            --paper-line: #E7DFCB;
+            --card: #FFFFFF;
+            --accent: #E8A33D;
+            --accent-dark: #C97F1F;
+            --sky: #5B8FBF;
+            --green: #4C8C6B;
+            --margin: #C84B4B;
+            --shadow: 0 10px 30px rgba(30,42,71,0.08);
+            --radius: 14px;
+        }
+
+        body {
+            font-family: 'Anek Bangla', sans-serif;
+            background: var(--paper);
+            color: var(--ink);
+            line-height: 1.7;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+        /* ===== নেভবার ===== */
+        header.nav {
+            position: sticky; top: 0; z-index: 50;
+            background: rgba(250,247,240,0.92);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--paper-line);
+        }
+        .nav-inner {
+            max-width: 1200px; margin: 0 auto; height: 64px; padding: 0 20px;
+            display: flex; align-items: center; justify-content: space-between; gap: 20px;
+        }
+        .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+        .brand .brand-logo { height: 64px; max-height: 100%; width: auto; aspect-ratio: 3.84/1; object-fit: contain; }
+        .nav-links { display: flex; gap: 30px; font-weight: 600; font-size: 15.5px; }
+        .nav-links a { text-decoration: none; color: var(--ink-soft); padding: 4px 0; position: relative; }
+        .nav-links a:hover { color: var(--ink); }
+        .nav-links a.active { color: var(--ink); }
+        .nav-links a::after {
+            content: ""; position: absolute; left: 0; right: 0; bottom: -3px; height: 2px;
+            background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .25s ease;
+        }
+        .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
+        .nav-cta {
+            display: inline-flex; align-items: center; gap: 7px;
+            background: linear-gradient(135deg, #263a63, var(--ink) 60%); color: #fff !important; padding: 10px 20px; border-radius: 999px;
+            font-weight: 700; font-size: 14.5px; white-space: nowrap; text-decoration: none;
+            box-shadow: 0 3px 10px rgba(30,42,71,.25), inset 0 1px 1px rgba(255,255,255,.12);
+        }
+        .nav-cta svg{ flex:none; width:16px; height:16px; }
+        .burger { display: none; background: none; border: none; font-size: 26px; color: var(--ink); cursor: pointer; }
+        @media(max-width: 860px) {
+            .nav-links {
+                position: absolute; top: 100%; left: 0; right: 0; background: var(--paper);
+                flex-direction: column; padding: 18px 28px 26px; gap: 16px;
+                border-bottom: 1px solid var(--paper-line); display: none;
+            }
+            .nav-links.open { display: flex; }
+            .burger { display: block; }
+        }
+
+        /* ===== পেজ হেড ===== */
+        .page-head {
+            padding: 48px 0 8px;
+            text-align: center;
+        }
+        .page-head .eyebrow {
+            display: inline-block; font-weight: 700; font-size: 13.5px; letter-spacing: .04em;
+            color: var(--accent-dark); background: #FBEFDA; padding: 6px 16px; border-radius: 999px; margin-bottom: 14px;
+        }
+        .page-head h1 { font-family: 'Baloo Da 2', sans-serif; font-weight: 800; font-size: clamp(28px, 4vw, 40px); margin-bottom: 10px; }
+        .page-head p { color: var(--ink-soft); max-width: 560px; margin: 0 auto; }
+
+        /* ===== শপ গ্রিড ===== */
+        .shop-section { padding: 32px 0 70px; }
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px,1fr));
+            gap: 24px;
+            margin-top: 34px;
+        }
+        .product-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            border: 1px solid var(--paper-line);
+            display: flex;
+            flex-direction: column;
+            transition: transform .2s ease, box-shadow .2s ease;
+        }
+        .product-card:hover { transform: translateY(-4px); box-shadow: 0 16px 34px rgba(30,42,71,.14); }
+
+        /*
+         * প্রোডাক্টের ছবি: এখন placeholder (গ্রেডিয়েন্ট ব্যাকগ্রাউন্ড + নাম) হিসেবে দেখানো হচ্ছে।
+         * আসল ছবি বসাতে .product-image এর ভেতরের <div> টুকু বাদ দিয়ে
+         * <img class="product-image" src="আপনার-ছবির-লিংক" alt="প্রোডাক্টের নাম"> দিয়ে বদলে দিন
+         * (কোর্স কার্ডের মতোই Google Drive শেয়ার লিংক ব্যবহার করতে পারেন)।
+         */
+        .product-image {
+            width: 100%;
+            aspect-ratio: 4/3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 16px;
+            font-family: 'Baloo Da 2', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            color: #fff;
+            object-fit: cover;
+            background: linear-gradient(135deg,#1E2A47,#2F3F66);
+        }
+        .shop-status-msg {
+            grid-column: 1 / -1;
+            text-align: center;
+            color: var(--ink-soft);
+            padding: 40px 0;
+            font-size: 15.5px;
+        }
+        .stock-badge {
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--margin);
+        }
+        .product-body { padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+        .product-body h3 { font-size: 17.5px; font-weight: 700; }
+        .product-price { display: flex; align-items: baseline; gap: 8px; margin-top: auto; }
+        .price-old { color: var(--ink-soft); text-decoration: line-through; font-size: 14px; }
+        .price-new { color: var(--margin); font-weight: 800; font-size: 19px; }
+        .order-btn {
+            margin-top: 4px;
+            width: 100%;
+            background: var(--accent);
+            color: var(--ink);
+            border: none;
+            padding: 11px 16px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 14.5px;
+            cursor: pointer;
+            transition: transform .18s ease, box-shadow .18s ease;
+        }
+        .order-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(232,163,61,.4); }
+
+        /* ===== অর্ডার মডাল ===== */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(20,26,42,.55);
+            display: none; align-items: center; justify-content: center;
+            padding: 20px; z-index: 200;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal-box {
+            background: var(--card);
+            border-radius: var(--radius);
+            width: 100%; max-width: 440px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 28px 26px 26px;
+            position: relative;
+            box-shadow: 0 30px 60px rgba(20,26,42,.3);
+        }
+        .modal-close {
+            position: absolute; top: 14px; right: 16px;
+            background: none; border: none; font-size: 22px; color: var(--ink-soft); cursor: pointer; line-height: 1;
+        }
+        .modal-close:hover { color: var(--ink); }
+        .modal-product-name { font-family: 'Baloo Da 2', sans-serif; font-weight: 800; font-size: 19px; margin-bottom: 2px; }
+        .modal-product-price { color: var(--margin); font-weight: 700; font-size: 15px; margin-bottom: 18px; }
+
+        .form-row { margin-bottom: 14px; display: flex; flex-direction: column; gap: 6px; }
+        .form-row label { font-weight: 600; font-size: 14px; color: var(--ink-soft); }
+        .form-row input, .form-row select, .form-row textarea {
+            padding: 11px 14px; border-radius: 10px; border: 1.5px solid var(--paper-line);
+            font-family: inherit; font-size: 15px; background: var(--paper); color: var(--ink);
+        }
+        .form-row input:focus, .form-row select:focus, .form-row textarea:focus {
+            outline: none; border-color: var(--accent);
+        }
+        .form-row textarea { resize: vertical; min-height: 64px; }
+        .form-row-split { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+        .modal-submit-btn {
+            width: 100%; margin-top: 6px;
+            background: var(--accent); color: var(--ink); border: none;
+            padding: 13px 16px; border-radius: 999px; font-weight: 700; font-size: 15.5px;
+            cursor: pointer; transition: transform .18s ease, box-shadow .18s ease;
+        }
+        .modal-submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(232,163,61,.4); }
+        .modal-submit-btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+
+        .form-status { margin-top: 12px; font-size: 14px; font-weight: 600; display: none; }
+        .form-status.show { display: block; }
+        .form-status.ok { color: var(--green); }
+        .form-status.err { color: var(--margin); }
+
+        /* ===== ফুটার ===== */
+        footer { padding: 40px 0 30px; color: var(--ink-soft); font-size: 14.5px; border-top: 1px solid var(--paper-line); margin-top: 20px; }
+        .copyright { text-align: center; margin-top: 10px; font-size: 13px; }
+    </style>
+</head>
+<body>
+
+    <!-- ===== নেভবার ===== -->
+    <header class="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="brand">
+                <img src="https://drive.google.com/thumbnail?id=1qdX7gUF-pWOJNXO7HAEMrfwDWqDAqpsl&sz=w1000" alt="VISION Academics" class="brand-logo">
+            </a>
+            <nav class="nav-links" id="navLinks">
+                <a href="index.html#courses">কোর্সসমূহ</a>
+                <a href="index.html#why">কেন আমরা</a>
+                <a href="index.html#teachers">শিক্ষকবৃন্দ</a>
+                <a href="index.html#videos">ফ্রি ক্লাস</a>
+                <a href="shop.html" class="active">শপ</a>
+            </nav>
+            <a href="student-login.html" class="nav-cta" id="navLoginBtn">লগইন</a>
+            <button class="burger" id="burgerBtn">☰</button>
+        </div>
+    </header>
+
+    <main>
+        <!-- ===== পেজ হেড ===== -->
+        <section class="page-head">
+            <div class="container">
+                <span class="eyebrow">VISION শপ</span>
+                <h1>টি-শার্ট, বই ও আরও অনেক কিছু</h1>
+                <p>যেকোনো প্রোডাক্টের কার্ডে ক্লিক করে সরাসরি অর্ডার করুন।</p>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             প্রোডাক্ট গ্রিড — এখন Google Sheet ("shop item list" ট্যাব) থেকে
+             Apps Script দিয়ে dynamically লোড হয়। নতুন প্রোডাক্ট যোগ/বন্ধ করতে
+             চাইলে HTML-এ কিছু বদলাতে হবে না — শুধু Sheet-এ row যোগ করুন বা
+             Status কলাম "Active"/"Inactive" করে দিন।
+             ============================================================ -->
+        <section class="shop-section">
+            <div class="container">
+                <div class="shop-grid" id="shopGrid">
+                    <p class="shop-status-msg" id="shopLoadingMsg">প্রোডাক্ট লোড হচ্ছে...</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ===== ফুটার ===== -->
+    <footer>
+        <div class="container">
+            <p class="copyright">© ২০২৬ VISION Academics — সর্বস্বত্ব সংরক্ষিত।</p>
+        </div>
+    </footer>
+
+    <!-- ============================================================
+         অর্ডার মডাল — কোনো প্রোডাক্ট কার্ডে "অর্ডার করুন" ক্লিক করলে এটা খুলবে।
+         ============================================================ -->
+    <div class="modal-overlay" id="orderModal">
+        <div class="modal-box">
+            <button class="modal-close" id="modalCloseBtn" aria-label="বন্ধ করুন">✕</button>
+            <p class="modal-product-name" id="modalProductName">প্রোডাক্টের নাম</p>
+            <p class="modal-product-price" id="modalProductPrice">৳০</p>
+
+            <form id="orderForm">
+                <div class="form-row">
+                    <label for="orderName">আপনার নাম <span style="color:var(--margin)">*</span></label>
+                    <input type="text" id="orderName" name="name" required placeholder="পুরো নাম লিখুন">
+                </div>
+                <div class="form-row">
+                    <label for="orderPhone">মোবাইল নম্বর <span style="color:var(--margin)">*</span></label>
+                    <input type="tel" id="orderPhone" name="phone" required placeholder="01XXXXXXXXX">
+                </div>
+                <div class="form-row">
+                    <label for="orderAddress">ডেলিভারি ঠিকানা <span style="color:var(--margin)">*</span></label>
+                    <textarea id="orderAddress" name="address" required placeholder="সম্পূর্ণ ঠিকানা লিখুন (গ্রাম/এলাকা, থানা, জেলা)"></textarea>
+                </div>
+                <div class="form-row-split">
+                    <div class="form-row" id="sizeRow">
+                        <label for="orderSize">সাইজ <span style="color:var(--margin)">*</span></label>
+                        <select id="orderSize" name="size">
+                            <option value="S">S</option>
+                            <option value="M" selected>M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <label for="orderQty">পরিমাণ <span style="color:var(--margin)">*</span></label>
+                        <input type="number" id="orderQty" name="quantity" min="1" value="1" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="modal-submit-btn" id="orderSubmitBtn">অর্ডার কনফার্ম করুন</button>
+                <p class="form-status" id="orderStatus"></p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // মোবাইল নেভবার মেনু খোলা/বন্ধ করা
+        const burger = document.getElementById('burgerBtn');
+        const navLinks = document.getElementById('navLinks');
+        if (burger && navLinks) {
+            burger.addEventListener('click', () => navLinks.classList.toggle('open'));
+            navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+        }
+
+        // index.html-এর মতোই — লগইন করা থাকলে (localStorage-এ va_user থাকলে)
+        // নেভবারের "লগইন" বাটনটা "প্রোফাইল" দেখাবে
+        (function(){
+            const loginBtn = document.getElementById('navLoginBtn');
+            if (!loginBtn) return;
+            try {
+                const loggedIn = !!localStorage.getItem('va_user');
+                const icon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>';
+                loginBtn.innerHTML = icon + '<span>' + (loggedIn ? 'প্রোফাইল' : 'লগইন') + '</span>';
+            } catch(e) {}
+        })();
+
+        // ============================================================
+        // একটাই "VISION DATA" consolidated Apps Script — Student, Shop,
+        // Teachers/Course Name/Course Data/Free Class সবকিছুর জন্য একই
+        // endpoint (index.html/course-details.html/student-login.html-এও
+        // এই একই URL বসানো)। আগে শপের জন্য আলাদা script/deployment ছিল,
+        // এখন আর দরকার নেই।
+        // ============================================================
+        const SHOP_FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycbzX0y0FDBcFVxkUoIY2VqFG4XZ3BcoYJfoVvMNYKF28UQLqWPKeMax30MYqDXlM_t3cXQ/exec";
+
+        function callShopApi(payload){
+            const controller = new AbortController();
+            const timeout = setTimeout(()=>controller.abort(), 20000);
+            return fetch(SHOP_FORM_ENDPOINT, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(payload),
+                signal: controller.signal
+            })
+                .then(res=>{
+                    if(!res.ok) throw new Error('সার্ভার থেকে তথ্য পাওয়া যায়নি।');
+                    return res.json();
+                })
+                .catch(err=>{
+                    if(err.name === 'AbortError') throw new Error('সার্ভারে সাড়া পেতে বেশি সময় লাগছে। আবার চেষ্টা করুন।');
+                    throw err;
+                })
+                .finally(()=>clearTimeout(timeout));
+        }
+
+        // ============================================================
+        // প্রোডাক্ট লোড + রেন্ডার
+        // (Google Sheet "shop item list" ট্যাব থেকে — শুধু Status = Active)
+        // ============================================================
+        let SHOP_PRODUCTS = [];
+
+        function escapeHtml(str){
+            const div = document.createElement('div');
+            div.textContent = String(str == null ? '' : str);
+            return div.innerHTML;
+        }
+
+        function renderProducts(products){
+            const grid = document.getElementById('shopGrid');
+
+            if(!products.length){
+                grid.innerHTML = '<p class="shop-status-msg">এই মুহূর্তে কোনো প্রোডাক্ট পাওয়া যায়নি।</p>';
+                return;
+            }
+
+            grid.innerHTML = products.map(function(p, idx){
+                const outOfStock = Number(p.stock) <= 0;
+                const imageHtml = p.imageUrl
+                    ? '<img class="product-image" src="' + escapeHtml(p.imageUrl) + '" alt="' + escapeHtml(p.name) + '" loading="lazy">'
+                    : '<div class="product-image">' + escapeHtml(p.name) + '</div>';
+
+                return '' +
+                    '<article class="product-card">' +
+                        imageHtml +
+                        '<div class="product-body">' +
+                            '<h3>' + escapeHtml(p.name) + '</h3>' +
+                            '<div class="product-price">' +
+                                (p.oldPrice ? '<span class="price-old">৳' + escapeHtml(p.oldPrice) + '</span>' : '') +
+                                '<span class="price-new">৳' + escapeHtml(p.newPrice) + '</span>' +
+                            '</div>' +
+                            (outOfStock
+                                ? '<span class="stock-badge">স্টক শেষ</span><button class="order-btn" disabled style="opacity:.55;cursor:not-allowed;">স্টক নেই</button>'
+                                : '<button class="order-btn" data-index="' + idx + '">অর্ডার করুন</button>'
+                            ) +
+                        '</div>' +
+                    '</article>';
+            }).join('');
+        }
+
+        function loadProducts(){
+            callShopApi({ action: 'get_products' })
+                .then(function(result){
+                    if(result.status === 'ok' && Array.isArray(result.data)){
+                        SHOP_PRODUCTS = result.data;
+                        renderProducts(SHOP_PRODUCTS);
+                    } else {
+                        document.getElementById('shopGrid').innerHTML =
+                            '<p class="shop-status-msg">❌ প্রোডাক্ট লোড করা যায়নি। পরে আবার চেষ্টা করুন।</p>';
+                    }
+                })
+                .catch(function(){
+                    document.getElementById('shopGrid').innerHTML =
+                        '<p class="shop-status-msg">❌ সার্ভারে সমস্যা হয়েছে। পরে আবার চেষ্টা করুন।</p>';
+                });
+        }
+
+        loadProducts();
+
+        // ============================================================
+        // অর্ডার মডাল — খোলা/বন্ধ + ফর্ম হ্যান্ডলিং
+        // ============================================================
+        (function(){
+            const modal = document.getElementById('orderModal');
+            const closeBtn = document.getElementById('modalCloseBtn');
+            const nameEl = document.getElementById('modalProductName');
+            const priceEl = document.getElementById('modalProductPrice');
+            const sizeRow = document.getElementById('sizeRow');
+            const form = document.getElementById('orderForm');
+            const submitBtn = document.getElementById('orderSubmitBtn');
+            const status = document.getElementById('orderStatus');
+
+            function openModal(product){
+                nameEl.textContent = product.name;
+                priceEl.textContent = '৳' + product.newPrice;
+                sizeRow.style.display = product.hasSize ? '' : 'none';
+                document.getElementById('orderSize').required = !!product.hasSize;
+                form.dataset.productId = product.productId;
+                form.dataset.productName = product.name;
+                form.dataset.productPrice = product.newPrice;
+                status.className = 'form-status';
+                status.textContent = '';
+                modal.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeModal(){
+                modal.classList.remove('open');
+                document.body.style.overflow = '';
+                form.reset();
+            }
+
+            document.getElementById('shopGrid').addEventListener('click', function(e){
+                const btn = e.target.closest('.order-btn');
+                if(!btn || btn.disabled) return;
+                const idx = Number(btn.dataset.index);
+                const product = SHOP_PRODUCTS[idx];
+                if(!product) return;
+                openModal(product);
+            });
+
+            closeBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', function(e){ if(e.target === modal) closeModal(); });
+            document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && modal.classList.contains('open')) closeModal(); });
+
+            // ============================================================
+            // ফর্ম সাবমিট — শপ Apps Script এ order পাঠায়
+            // (Products শীটের Stock-ও সেখানেই স্বয়ংক্রিয়ভাবে কমে যায়)
+            // ============================================================
+            form.addEventListener('submit', function(e){
+                e.preventDefault();
+
+                const phone = document.getElementById('orderPhone').value.trim();
+                if(!/^01[0-9]{9}$/.test(phone)){
+                    status.textContent = '❌ সঠিক মোবাইল নম্বর দিন (যেমন: 01XXXXXXXXX)।';
+                    status.className = 'form-status show err';
+                    return;
+                }
+
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'প্রসেস হচ্ছে...';
+                status.className = 'form-status';
+
+                const orderData = {
+                    action: 'place_order',
+                    productId: form.dataset.productId,
+                    productName: form.dataset.productName,
+                    price: form.dataset.productPrice,
+                    customerName: document.getElementById('orderName').value.trim(),
+                    mobile: phone,
+                    address: document.getElementById('orderAddress').value.trim(),
+                    size: sizeRow.style.display !== 'none' ? document.getElementById('orderSize').value : '',
+                    quantity: document.getElementById('orderQty').value
+                };
+
+                callShopApi(orderData)
+                    .then(function(result){
+                        if(result.status === 'ok'){
+                            status.textContent = '✅ ' + (result.message || 'অর্ডার সফলভাবে গ্রহণ করা হয়েছে। শীঘ্রই আপনার নম্বরে যোগাযোগ করা হবে।');
+                            status.className = 'form-status show ok';
+                            form.reset();
+                            loadProducts(); // স্টক আপডেট রিফ্লেক্ট করতে প্রোডাক্ট তালিকা রিফ্রেশ
+                        } else {
+                            throw new Error(result.message || 'অর্ডার ব্যর্থ হয়েছে।');
+                        }
+                    })
+                    .catch(function(err){
+                        status.textContent = '❌ ' + (err.message || 'একটি সমস্যা হয়েছে, আবার চেষ্টা করুন।');
+                        status.className = 'form-status show err';
+                    })
+                    .finally(function(){
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = 'অর্ডার কনফার্ম করুন';
+                    });
+            });
+        })();
+    </script>
+
+</body>
+</html>

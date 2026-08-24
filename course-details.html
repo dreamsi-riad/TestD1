@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Details | VISION Academics</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&family=Baloo+Da+2:wght@500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Anek+Bangla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ===== গ্লোবাল স্টাইল ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --ink: #1E2A47;
+            --ink-soft: #4A5772;
+            --paper: #FAF7F0;
+            --paper-line: #E7DFCB;
+            --card: #FFFFFF;
+            --accent: #E8A33D;
+            --accent-dark: #C97F1F;
+            --sky: #5B8FBF;
+            --green: #4C8C6B;
+            --shadow: 0 10px 30px rgba(30,42,71,0.08);
+            --radius: 14px;
+        }
+        
+        body {
+            font-family: 'Anek Bangla', sans-serif;
+            background: var(--paper);
+            color: var(--ink);
+            line-height: 1.7;
+            margin: 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* ===== নেভবার ===== */
+        header.nav {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: rgba(250,247,240,0.92);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--paper-line);
+        }
+        
+        .nav-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            height: 64px;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Baloo Da 2', sans-serif;
+            font-weight: 800;
+            font-size: 22px;
+            color: var(--ink);
+            text-decoration: none;
+        }
+        
+        .brand .brand-logo {
+            height: 64px;
+            max-height: 100%;
+            width: auto;
+            aspect-ratio: 3.84/1;
+            object-fit: contain;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            font-weight: 600;
+            font-size: 15.5px;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--ink-soft);
+            padding: 4px 0;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--ink);
+        }
+        
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -3px;
+            height: 2px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .25s ease;
+        }
+        
+        .nav-links a:hover::after {
+            transform: scaleX(1);
+        }
+        
+        .nav-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: linear-gradient(135deg, #263a63, var(--ink) 60%);
+            color: #fff !important;
+            padding: 10px 20px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 14.5px;
+            white-space: nowrap;
+            text-decoration: none;
+            box-shadow: 0 3px 10px rgba(30,42,71,.25), inset 0 1px 1px rgba(255,255,255,.12);
+        }
+        .nav-cta svg{ flex:none; width:16px; height:16px; }
+        
+        .burger {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 26px;
+            color: var(--ink);
+            cursor: pointer;
+        }
+        
+        @media(max-width: 860px) {
+            .nav-links {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--paper);
+                flex-direction: column;
+                padding: 18px 28px 26px;
+                gap: 16px;
+                border-bottom: 1px solid var(--paper-line);
+                display: none;
+            }
+            .nav-links.open {
+                display: flex;
+            }
+            .burger {
+                display: block;
+            }
+        }
+        
+        /* ===== কোর্স ডিটেইলস সেকশন ===== */
+        .course-detail-section {
+            padding: 60px 0;
+            min-height: 70vh;
+        }
+        
+        .course-detail-grid {
+            display: grid;
+            /* বাম পাশের image card-এর ratio/index.html-এর course-image-এর ratio-এর সাথে একই থাকবে */
+            grid-template-columns: 1.18fr .82fr;
+            gap: 50px;
+            align-items: start;
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 40px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--paper-line);
+        }
+        
+        @media(max-width: 768px) {
+            .course-detail-section {
+                padding: 28px 0;
+            }
+
+            .course-detail-section > .container {
+                padding-left: 12px;
+                padding-right: 12px;
+            }
+
+            .course-detail-grid {
+                grid-template-columns: 1fr;
+                padding: 16px;
+                gap: 24px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .detail-content {
+                min-width: 0;
+            }
+
+            .detail-title {
+                font-size: clamp(26px, 7vw, 34px);
+            }
+
+            .detail-description {
+                font-size: 16px;
+            }
+
+            .detail-actions {
+                gap: 10px;
+            }
+
+            .detail-actions .btn {
+                flex: 1 1 150px;
+                justify-content: center;
+                padding: 13px 18px;
+                white-space: nowrap;
+            }
+        }
+
+        @media(max-width: 480px) {
+            .course-detail-section {
+                padding: 20px 0;
+            }
+
+            .course-detail-section > .container {
+                padding-left: 8px;
+                padding-right: 8px;
+            }
+
+            .course-detail-grid {
+                padding: 12px;
+                gap: 20px;
+                border-radius: 14px;
+            }
+
+            .detail-actions .btn {
+                flex-basis: 100%;
+                width: 100%;
+            }
+        }
+        
+        /* ===== বাম পাশ: ছবি ===== */
+        .detail-image {
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            height: auto;
+            align-self: start;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(30,42,71,0.12);
+            background: #eee;
+        }
+
+        /*
+         * IMPORTANT:
+         * Details page-এর লেখা যত বড়/লম্বা হোক, image কখনো vertically stretch হবে না।
+         * Index page-এর .course-image-এর 16:10 ratio-ই এখানে exact রাখা হয়েছে।
+         */
+        .detail-image img {
+            width: 100%;
+            height: 100%;
+            aspect-ratio: 16 / 10;
+            object-fit: cover;
+            display: block;
+        }
+        
+        /* ===== ডান পাশ: তথ্য ===== */
+        .detail-content {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        
+        .detail-category {
+            font-family: 'Baloo Da 2', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            font-size: 13px;
+            color: var(--accent-dark);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .detail-category::before {
+            content: "";
+            width: 18px;
+            height: 2px;
+            background: var(--accent-dark);
+            display: inline-block;
+        }
+        
+        .detail-title {
+            font-size: clamp(28px, 3vw, 38px);
+            font-weight: 700;
+            color: var(--ink);
+            line-height: 1.2;
+            margin: 0;
+        }
+        
+        .detail-tag {
+            display: inline-block;
+            font-family: 'Baloo Da 2', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--green);
+            background: rgba(76,140,107,0.12);
+            padding: 4px 14px;
+            border-radius: 999px;
+            width: fit-content;
+        }
+        
+        .detail-price {
+            display: flex;
+            align-items: baseline;
+            gap: 15px;
+            flex-wrap: wrap;
+            padding: 15px 0;
+            border-top: 1.5px dashed var(--paper-line);
+            border-bottom: 1.5px dashed var(--paper-line);
+        }
+        
+        .price-now {
+            font-family: 'Baloo Da 2', sans-serif;
+            font-weight: 800;
+            font-size: 32px;
+            color: #5B4FE9;
+        }
+        
+        .price-old {
+            font-family: 'Anek Bangla', sans-serif;
+            font-weight: 400;
+            font-size: 18px;
+            color: #9AA1B5;
+            text-decoration: line-through;
+            text-decoration-thickness: 1.5px;
+        }
+        .price-note {
+            width: 100%;
+            font-size: 14px;
+            color: var(--green);
+            font-weight: 600;
+            margin-top: -4px;
+        }
+        .sheet-error {
+            text-align:center;
+            padding:70px 24px;
+            background:var(--card);
+            border-radius:var(--radius);
+            border:1px solid #F0C7C7;
+        }
+        .sheet-error h2 { margin-bottom:8px; }
+        .sheet-error p { color:var(--ink-soft); margin-bottom:20px; }
+
+        
+        .detail-description {
+            font-size: 17px;
+            color: var(--ink-soft);
+            line-height: 1.8;
+        }
+        
+        .detail-description p {
+            margin-bottom: 12px;
+        }
+        
+        .detail-features {
+            list-style: none;
+            padding: 0;
+            margin: 8px 0 0 0;
+        }
+        
+        .detail-features li {
+            padding: 6px 0;
+            padding-left: 28px;
+            position: relative;
+            color: var(--ink-soft);
+            font-size: 16px;
+        }
+        
+        .detail-features li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--green);
+            font-weight: 700;
+            font-size: 18px;
+        }
+        
+        .detail-actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 30px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 16px;
+            border: none;
+            text-decoration: none;
+            transition: transform .18s ease, box-shadow .18s ease;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background: var(--accent);
+            color: var(--ink);
+            box-shadow: 0 8px 20px rgba(232,163,61,0.4);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 26px rgba(232,163,61,0.5);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--ink);
+            border: 1.5px solid var(--ink);
+        }
+        
+        .btn-outline:hover {
+            background: var(--ink);
+            color: #fff;
+        }
+        
+        /* ===== লোডিং স্টেট ===== */
+        .loading-state {
+            text-align: center;
+            padding: 80px 20px;
+            font-size: 18px;
+            color: var(--ink-soft);
+        }
+        
+        .loading-state .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--paper-line);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-bottom: 16px;
+        }
+        
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        /* ===== নট ফাউন্ড ===== */
+        .not-found {
+            text-align: center;
+            padding: 80px 20px;
+            background: var(--card);
+            border-radius: var(--radius);
+            border: 1px solid var(--paper-line);
+        }
+        
+        .not-found h2 {
+            font-size: 32px;
+            color: var(--ink);
+            margin-bottom: 10px;
+        }
+        
+        .not-found p {
+            color: var(--ink-soft);
+            margin-bottom: 20px;
+        }
+        
+        /* ===== ফুটার ===== */
+        footer {
+            padding: 40px 0 30px;
+            color: var(--ink-soft);
+            font-size: 14.5px;
+            border-top: 1px solid var(--paper-line);
+            margin-top: 40px;
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 13px;
+        }
+        
+        /* ===== ব্যাক বাটন ===== */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--ink-soft);
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 24px;
+            transition: color .2s ease;
+        }
+        
+        .back-link:hover {
+            color: var(--ink);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== নেভবার ===== -->
+    <header class="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="brand">
+                <img src="https://drive.google.com/thumbnail?id=1qdX7gUF-pWOJNXO7HAEMrfwDWqDAqpsl&sz=w1000" alt="VISION Academics" class="brand-logo">
+            </a>
+            <nav class="nav-links" id="navLinks">
+                <a href="index.html#courses">কোর্সসমূহ</a>
+                <a href="index.html#why">কেন আমরা</a>
+                <a href="index.html#teachers">শিক্ষকবৃন্দ</a>
+                <a href="index.html#videos">ফ্রি ক্লাস</a>
+                <a href="shop.html">শপ</a>
+            </nav>
+            <a href="student-login.html" class="nav-cta" id="navLoginBtn">লগইন</a>
+            <button class="burger" id="burgerBtn">☰</button>
+        </div>
+    </header>
+
+    <!-- ===== কোর্স ডিটেইলস ===== -->
+    <section class="course-detail-section">
+        <div class="container">
+            <!-- ব্যাক বাটন -->
+            <a href="index.html#courses" class="back-link">← সব কোর্স দেখুন</a>
+            
+            <div id="courseDetailContainer">
+                <!-- লোডিং স্টেট -->
+                <div class="loading-state" id="loadingState">
+                    <div class="spinner"></div>
+                    <p>কোর্সের তথ্য লোড হচ্ছে...</p>
+                </div>
+                
+                <!-- কন্টেন্ট এখানে JS দিয়ে বসানো হবে -->
+                <div id="courseContent" style="display: none;"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== ফুটার ===== -->
+    <footer>
+        <div class="container">
+            <p class="copyright">© ২০২৬ VISION Academics — সর্বস্বত্ব সংরক্ষিত।</p>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================================
+        // Google Sheet course details loader
+        // ============================================================
+        const SHEET_ID = '1wKIU5O8l0fg4LXjDtz92HtheUIXXZEfhR-u_zeOyVf8';
+        const COURSE_NAME_TAB = 'Course Name';
+        const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&headers=1&sheet=${encodeURIComponent(COURSE_NAME_TAB)}`;
+        const bnDigits='০১২৩৪৫৬৭৮৯', enDigits='0123456789';
+        const clean=v=>String(v??'').trim();
+        const escapeHtml=v=>clean(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        const toBn=v=>String(v??'').replace(/[0-9]/g,d=>bnDigits[enDigits.indexOf(d)]);
+        const normalizeImageUrl=v=>{const x=clean(v),f=x.match(/drive\.google\.com\/file\/d\/([^/]+)/i),i=x.match(/[?&]id=([^&]+)/i);if(f)return `https://drive.google.com/thumbnail?id=${f[1]}&sz=w1000`;if(x.includes('drive.google.com')&&i)return `https://drive.google.com/thumbnail?id=${i[1]}&sz=w1000`;return x};
+        const slugify=v=>clean(v).toLowerCase().replace(/&/g,' and ').replace(/[^a-z0-9\u0980-\u09ff]+/g,'-').replace(/^-+|-+$/g,'')||'course';
+        function uniqueSlug(name,cat,used){const base=slugify(name),cp=slugify(cat);let slug=base;if(used.has(slug))slug=`${cp}-${base}`;let n=2;while(used.has(slug))slug=`${cp}-${base}-${n++}`;used.add(slug);return slug}
+        const parseFeatures=v=>clean(v).split(/[,،]/).map(clean).filter(Boolean);
+        const formatPrice=v=>{const x=clean(v);if(!x)return '';return /[৳$€£]/.test(x)?toBn(x):`৳${toBn(x)}`};
+        function parseGviz(text){const a=text.indexOf('{'),b=text.lastIndexOf('}');if(a<0||b<0)throw Error('Invalid Google Sheets response');return JSON.parse(text.slice(a,b+1));}
+        function getCourseSlug(){return new URLSearchParams(window.location.search).get('course');}
+        async function getAllCourses(){
+            const response=await fetch(SHEET_URL,{cache:'no-store'});
+            if(!response.ok)throw Error(`${COURSE_NAME_TAB}: HTTP ${response.status}`);
+            const json=parseGviz(await response.text());
+            const used=new Set();
+            return (json.table?.rows||[]).map(row=>{
+                const c=row.c||[];
+                const v=Array.from({length:10},(_,i)=>clean(c[i]?.v??c[i]?.f??''));
+                const [level,name,tag,image,shortDescription,longDescription,price,oldPrice,priceNote,featureText]=v;
+                if(!level||!name||name==='কোর্সের নাম')return null;
+                return {name,tag,image:normalizeImageUrl(image),shortDescription,longDescription,price:formatPrice(price),oldPrice:formatPrice(oldPrice),priceNote,features:parseFeatures(featureText),category:level,slug:''};
+            }).filter(Boolean).map(c=>({...c,slug:uniqueSlug(c.name,c.category,used)}));
+        }
+
+        function renderCourse(course){
+            const loadingState=document.getElementById('loadingState');
+            const content=document.getElementById('courseContent');
+            loadingState.style.display='none';
+            if(!course){
+                content.innerHTML=`<div class="not-found"><h2>😕 কোর্সটি খুঁজে পাওয়া যায়নি</h2><p>আপনি যে কোর্সটি খুঁজছেন, সেটি খুঁজে পাওয়া যায়নি।</p><a href="index.html#courses" class="btn btn-primary">সব কোর্স দেখুন</a></div>`;
+                content.style.display='block';
+                return;
+            }
+            document.title=`${course.name} | VISION Academics`;
+            const description=course.longDescription || course.shortDescription || 'এই কোর্সের বিস্তারিত তথ্য শীঘ্রই আপডেট করা হবে।';
+            const featuresHtml=course.features.length?`<ul class="detail-features">${course.features.map(f=>`<li>${escapeHtml(f)}</li>`).join('')}</ul>`:'';
+            const image=course.image||'';
+            content.innerHTML=`
+                <div class="course-detail-grid">
+                    <div class="detail-image">${image?`<img src="${escapeHtml(image)}" alt="${escapeHtml(course.name)}">`:'<div style="aspect-ratio:16/10;background:#eee;display:flex;align-items:center;justify-content:center;color:#777">Course Image</div>'}</div>
+                    <div class="detail-content">
+                        <span class="detail-category">${escapeHtml(course.category)}</span>
+                        <h1 class="detail-title">${escapeHtml(course.name)}</h1>
+                        ${course.tag?`<span class="detail-tag">${escapeHtml(course.tag)}</span>`:''}
+                        <div class="detail-price">
+                            ${course.price?`<span class="price-now">${escapeHtml(course.price)}</span>`:''}
+                            ${course.oldPrice?`<span class="price-old">${escapeHtml(course.oldPrice)}</span>`:''}
+                            ${course.priceNote?`<span class="price-note">${escapeHtml(course.priceNote)}</span>`:''}
+                        </div>
+                        <div class="detail-description">${escapeHtml(description).replace(/\n/g,'<br>')}</div>
+                        ${featuresHtml}
+                        <div class="detail-actions">
+                            <a href="student-login.html?enroll=${encodeURIComponent(course.name)}" class="btn btn-primary enroll-btn">Enroll Now</a>
+                            <a href="index.html#courses" class="btn btn-outline">সব কোর্স দেখুন</a>
+                        </div>
+                    </div>
+                </div>`;
+            content.style.display='block';
+        }
+
+        async function loadCourseDetails(){
+            const content=document.getElementById('courseContent');
+            const slug=getCourseSlug();
+            try{
+                const courses=await getAllCourses();
+                const course=courses.find(c=>c.slug===slug);
+                renderCourse(course);
+            }catch(error){
+                console.error('Course details loading failed:',error);
+                document.getElementById('loadingState').style.display='none';
+                content.innerHTML=`<div class="sheet-error"><h2>কোর্সের তথ্য লোড করা যায়নি</h2><p>ইন্টারনেট কানেকশন চেক করে আবার চেষ্টা করুন।</p><button class="btn btn-primary" onclick="location.reload()">আবার চেষ্টা করুন</button></div>`;
+                content.style.display='block';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded',()=>{
+            const burger=document.getElementById('burgerBtn');
+            const nav=document.getElementById('navLinks');
+            if(burger&&nav) burger.addEventListener('click',()=>nav.classList.toggle('open'));
+            if(nav) nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>nav.classList.remove('open')));
+            loadCourseDetails();
+
+            // ইনডেক্স পেজের মতোই — লগইন করা থাকলে (localStorage-এ va_user থাকলে)
+            // নেভবারের "লগইন" বাটনটা "প্রোফাইল" দেখাবে
+            const loginBtn = document.getElementById('navLoginBtn');
+            if(loginBtn){
+                try{
+                    const loggedIn = !!localStorage.getItem('va_user');
+                    const icon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>';
+                    loginBtn.innerHTML = icon + '<span>' + (loggedIn ? 'প্রোফাইল' : 'লগইন') + '</span>';
+                }catch(e){}
+            }
+        });
+    </script>
+</body>
+</html>
