@@ -364,6 +364,72 @@
         .sheet-error p { color:var(--ink-soft); margin-bottom:20px; }
 
         
+        /* ===== কোর্স ইন্সট্রাক্টর (teachers) ===== */
+        .course-teachers-label {
+            font-family: 'Baloo Da 2', sans-serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--ink-soft);
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            margin-bottom: 10px;
+        }
+
+        .course-teachers {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding-bottom: 6px;
+        }
+
+        .course-teacher-chip {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--paper);
+            border: 1px solid var(--paper-line);
+            border-radius: 999px;
+            padding: 6px 16px 6px 6px;
+        }
+
+        .course-teacher-chip img,
+        .course-teacher-chip .cte-avatar-fallback {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex: none;
+            background: var(--card);
+        }
+
+        .cte-avatar-fallback {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Baloo Da 2', sans-serif;
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--ink);
+            background: linear-gradient(135deg, #ffe6b8, var(--accent) 85%);
+        }
+
+        .cte-info {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.25;
+        }
+
+        .cte-name {
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--ink);
+        }
+
+        .cte-subject {
+            font-size: 11.5px;
+            color: var(--ink-soft);
+        }
+
         .detail-description {
             font-size: 17px;
             color: var(--ink-soft);
@@ -572,6 +638,7 @@
         const bnDigits='০১২৩৪৫৬৭৮৯', enDigits='0123456789';
         const clean=v=>String(v??'').trim();
         const escapeHtml=v=>clean(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        const normalizeTextForMatch=v=>clean(v).replace(/\s+/g,' ').toLowerCase();
         const toBn=v=>String(v??'').replace(/[0-9]/g,d=>bnDigits[enDigits.indexOf(d)]);
         const normalizeImageUrl=v=>{const x=clean(v),f=x.match(/drive\.google\.com\/file\/d\/([^/]+)/i),i=x.match(/[?&]id=([^&]+)/i);if(f)return `https://drive.google.com/thumbnail?id=${f[1]}&sz=w1000`;if(x.includes('drive.google.com')&&i)return `https://drive.google.com/thumbnail?id=${i[1]}&sz=w1000`;return x};
         const slugify=v=>clean(v).toLowerCase().replace(/&/g,' and ').replace(/[^a-z0-9\u0980-\u09ff]+/g,'-').replace(/^-+|-+$/g,'')||'course';
@@ -579,6 +646,22 @@
         const parseFeatures=v=>clean(v).split(/[,،]/).map(clean).filter(Boolean);
         const formatPrice=v=>{const x=clean(v);if(!x)return '';return /[৳$€£]/.test(x)?toBn(x):`৳${toBn(x)}`};
         function getCourseSlug(){return new URLSearchParams(window.location.search).get('course');}
+        async function getAllTeachers(){
+            const response=await fetch(VISION_API,{
+                method:'POST',
+                headers:{'Content-Type':'text/plain;charset=utf-8'},
+                body:JSON.stringify({action:'get_teachers'}),
+                cache:'no-store'
+            });
+            if(!response.ok)throw Error(`Teachers: HTTP ${response.status}`);
+            const json=await response.json();
+            if(json.status==='error') throw Error(json.message||'Teachers API error');
+            return (json.data||[]).map(row=>{
+                const name=clean(row.name);
+                if(!name) return null;
+                return {name, photo:normalizeImageUrl(row.photo), subject:clean(row.subject), designation:clean(row.designation)};
+            }).filter(Boolean);
+        }
         async function getAllCourses(){
             const response=await fetch(VISION_API,{
                 method:'POST',
@@ -603,13 +686,14 @@
                     oldPrice:formatPrice(row.oldPrice),
                     priceNote:clean(row.priceNote),
                     features:parseFeatures(row.featureText),
+                    teacherNames:parseFeatures(row.teachers),
                     category:level,
                     slug:''
                 };
             }).filter(Boolean).map(c=>({...c,slug:uniqueSlug(c.name,c.category,used)}));
         }
 
-        function renderCourse(course){
+        function renderCourse(course, teachers){
             const loadingState=document.getElementById('loadingState');
             const content=document.getElementById('courseContent');
             loadingState.style.display='none';
@@ -622,6 +706,25 @@
             const description=course.longDescription || course.shortDescription || 'এই কোর্সের বিস্তারিত তথ্য শীঘ্রই আপডেট করা হবে।';
             const featuresHtml=course.features.length?`<ul class="detail-features">${course.features.map(f=>`<li>${escapeHtml(f)}</li>`).join('')}</ul>`:'';
             const image=course.image||'';
+
+            // "teachers" কলামে কমা দিয়ে দেওয়া নামগুলোর সাথে teachers টেবিলের নাম
+            // মিলিয়ে (normalize করে) সেই শিক্ষকের ছবি/সাবজেক্ট বের করা হচ্ছে।
+            const matchedTeachers=(course.teacherNames||[]).map(n=>{
+                const key=normalizeTextForMatch(n);
+                return teachers.find(t=>normalizeTextForMatch(t.name)===key) || {name:n, photo:'', subject:''};
+            });
+            const initials=name=>escapeHtml(clean(name).slice(0,1).toUpperCase()||'?');
+            const teachersHtml=matchedTeachers.length?`
+                <div class="course-teachers-label">কোর্স ইন্সট্রাক্টর</div>
+                <div class="course-teachers">${matchedTeachers.map(t=>`
+                    <div class="course-teacher-chip">
+                        ${t.photo?`<img src="${escapeHtml(t.photo)}" alt="${escapeHtml(t.name)}" loading="lazy">`:`<span class="cte-avatar-fallback">${initials(t.name)}</span>`}
+                        <span class="cte-info">
+                            <span class="cte-name">${escapeHtml(t.name)}</span>
+                            ${t.subject?`<span class="cte-subject">${escapeHtml(t.subject)}</span>`:''}
+                        </span>
+                    </div>`).join('')}</div>`:'';
+
             content.innerHTML=`
                 <div class="course-detail-grid">
                     <div class="detail-image">${image?`<img src="${escapeHtml(image)}" alt="${escapeHtml(course.name)}">`:'<div style="aspect-ratio:16/10;background:#eee;display:flex;align-items:center;justify-content:center;color:#777">Course Image</div>'}</div>
@@ -634,6 +737,7 @@
                             ${course.oldPrice?`<span class="price-old">${escapeHtml(course.oldPrice)}</span>`:''}
                             ${course.priceNote?`<span class="price-note">${escapeHtml(course.priceNote)}</span>`:''}
                         </div>
+                        ${teachersHtml}
                         <div class="detail-description">${escapeHtml(description).replace(/\n/g,'<br>')}</div>
                         ${featuresHtml}
                         <div class="detail-actions">
@@ -649,9 +753,9 @@
             const content=document.getElementById('courseContent');
             const slug=getCourseSlug();
             try{
-                const courses=await getAllCourses();
+                const [courses, teachers]=await Promise.all([getAllCourses(), getAllTeachers().catch(()=>[])]);
                 const course=courses.find(c=>c.slug===slug);
-                renderCourse(course);
+                renderCourse(course, teachers);
             }catch(error){
                 console.error('Course details loading failed:',error);
                 document.getElementById('loadingState').style.display='none';
