@@ -1076,9 +1076,8 @@ footer a:hover{ color:#fff; }
 
 <script>
 (function(){
-  // ⚠️ নতুন consolidated Apps Script ("Student Login" + "Student Enrolled" tab নিয়ে
-  // কাজ করে) Web App হিসেবে deploy করার পর এখানে সেই নতুন /exec URL বসাতে হবে।
-  const FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycbzX0y0FDBcFVxkUoIY2VqFG4XZ3BcoYJfoVvMNYKF28UQLqWPKeMax30MYqDXlM_t3cXQ/exec";
+  // আগে Google Apps Script endpoint ছিল, এখন Cloudflare Worker + D1
+  const FORM_ENDPOINT = "https://late-forest-4748.dreamsicreation.workers.dev";
   const LS_USER_KEY = "va_user";
   const LS_REGISTERED_KEY = "va_registered";
   // একের অধিক ডিভাইসে একই account ব্যবহার হচ্ছে কিনা ধরার জন্য প্রতিটা
@@ -1096,15 +1095,10 @@ footer a:hover{ color:#fff; }
     }
     return token;
   }
-  // ক্লাস ডেটা এখন সরাসরি নতুন consolidated "VISION DATA" Google Sheet-এর
-  // একটাই "Course Data" Tab থেকে gviz/tq পাবলিক API দিয়ে লোড হয় (কোনো
-  // Apps Script/সার্ভার লাগে না)। আগে প্রতিটা কোর্সের জন্য আলাদা Tab ছিল আর
-  // Tab-এর নাম কোর্সের নামের সাথে মিলাতে হতো — এখন সব কোর্সের class data একই
-  // Tab-এ থাকে, "Course Name" কলাম দিয়ে ফিল্টার করে বের করা হয়, তাই ভুল/fallback
-  // Tab-এর ঝুঁকি বা marker কলামের দরকার আর নেই।
-  const CLASS_SHEET_ID = "1wKIU5O8l0fg4LXjDtz92HtheUIXXZEfhR-u_zeOyVf8";
-  const COURSE_DATA_TAB = "Course Data";
-  const CLASS_SHEET_URL = `https://docs.google.com/spreadsheets/d/${CLASS_SHEET_ID}/gviz/tq?tqx=out:json&headers=1&sheet=${encodeURIComponent(COURSE_DATA_TAB)}`;
+  // ক্লাস ডেটা এখন Cloudflare Worker-এর action=get_course_data দিয়ে
+  // (D1-এর "course_data" টেবিল থেকে) লোড হয় — আগে সরাসরি gviz দিয়ে
+  // "Course Data" Tab থেকে পড়া হতো, এখন সেই একই ডেটা একটাই API-এর
+  // মধ্য দিয়ে আসে (নিচের FORM_ENDPOINT-ই ব্যবহার হয়)।
   const classDataCache = new Map();
   let courseDataRowsPromise = null;
   let activeSubjectRows = [];
@@ -1115,11 +1109,6 @@ footer a:hover{ color:#fff; }
   const normalizeForMatch = v => String(v ?? '').trim().replace(/\s+/g, ' ').toLowerCase();
   const clean = value => String(value ?? '').trim();
   const escapeHtml = value => clean(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  function parseGvizClass(text){
-    const a = text.indexOf('{'), b = text.lastIndexOf('}');
-    if(a < 0 || b < 0) throw Error('Invalid Google Sheets response');
-    return JSON.parse(text.slice(a, b + 1));
-  }
 
   const authPageHead = document.getElementById('authPageHead');
   const tabRegisterBtn = document.getElementById('tabRegisterBtn');
@@ -1565,21 +1554,24 @@ footer a:hover{ color:#fff; }
         const controller = new AbortController();
         const timeout = setTimeout(()=>controller.abort(), 20000);
         try{
-          const response = await fetch(CLASS_SHEET_URL, {cache:'no-store', signal:controller.signal});
-          if(!response.ok) throw new Error(`${COURSE_DATA_TAB}: HTTP ${response.status}`);
-          const json = parseGvizClass(await response.text());
-          if(json.status === 'error') throw new Error('Course Data sheet returned an error.');
-          return (json.table?.rows || []).map(row=>{
-            const c = row.c || [];
-            return {
-              courseName: clean(c[1]?.v ?? c[1]?.f ?? ''),
-              subject: clean(c[2]?.v ?? c[2]?.f ?? ''),
-              chapter: clean(c[3]?.v ?? c[3]?.f ?? ''),
-              className: clean(c[4]?.v ?? c[4]?.f ?? ''),
-              url: clean(c[5]?.v ?? c[5]?.f ?? ''),
-              pdfUrl: clean(c[6]?.v ?? c[6]?.f ?? '')
-            };
+          const response = await fetch(FORM_ENDPOINT, {
+            method: 'POST',
+            headers: {'Content-Type':'text/plain;charset=utf-8'},
+            body: JSON.stringify({ action: 'get_course_data' }),
+            cache: 'no-store',
+            signal: controller.signal
           });
+          if(!response.ok) throw new Error(`Course Data: HTTP ${response.status}`);
+          const json = await response.json();
+          if(json.status === 'error') throw new Error(json.message || 'Course Data API returned an error.');
+          return (json.data || []).map(row=>({
+            courseName: clean(row.courseName),
+            subject: clean(row.subject),
+            chapter: clean(row.chapter),
+            className: clean(row.className),
+            url: clean(row.url),
+            pdfUrl: clean(row.pdfUrl)
+          }));
         } finally {
           clearTimeout(timeout);
         }
