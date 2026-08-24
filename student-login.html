@@ -1889,8 +1889,7 @@ footer a:hover{ color:#fff; }
   }
 
   function normalizeMobileForMatch(mobile){
-    const value = String(mobile || '').trim();
-    return value.startsWith('0') ? value.slice(1) : value;
+    return String(mobile || '').trim().replace(/[\s-]/g, '');
   }
 
   // পেজ লোডে সাথে সাথে cached ডেটা দিয়ে dashboard দেখানো হয় (দ্রুত UI-এর জন্য),
