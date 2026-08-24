@@ -500,6 +500,19 @@
             transform: translateY(-2px);
             box-shadow: 0 12px 26px rgba(232,163,61,0.5);
         }
+
+        /* Enroll Now — একই height রেখে শুধু width একটু বাড়ানো (horizontal padding বেশি)
+           আর সবুজ রঙ (var(--green)) */
+        .btn-primary.enroll-btn {
+            background: var(--green);
+            color: #fff;
+            padding: 14px 46px;
+            box-shadow: 0 8px 20px rgba(76,140,107,0.35);
+        }
+
+        .btn-primary.enroll-btn:hover {
+            box-shadow: 0 12px 26px rgba(76,140,107,0.45);
+        }
         
         .btn-outline {
             background: transparent;
@@ -510,6 +523,13 @@
         .btn-outline:hover {
             background: var(--ink);
             color: #fff;
+        }
+
+        /* "কোর্সটি যেভাবে কিনবেন" — একই height রেখে শুধু horizontal padding চেপে
+           ছোট করা হয়েছে, আর টেক্সট যাতে ২ লাইনে না যায় তাই nowrap */
+        #howToBuyBtn {
+            padding: 14px 20px;
+            white-space: nowrap;
         }
 
         /* ===== "কোর্সটি যেভাবে কিনবেন" ভিডিও মোডাল ===== */
