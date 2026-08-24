@@ -278,7 +278,7 @@
         .detail-content {
             display: flex;
             flex-direction: column;
-            gap: 18px;
+            gap: 12px;
         }
         
         .detail-category {
@@ -326,7 +326,7 @@
             align-items: baseline;
             gap: 15px;
             flex-wrap: wrap;
-            padding: 15px 0;
+            padding: 10px 0;
             border-top: 1.5px dashed var(--paper-line);
             border-bottom: 1.5px dashed var(--paper-line);
         }
@@ -365,6 +365,12 @@
 
         
         /* ===== কোর্স ইন্সট্রাক্টর (teachers) ===== */
+        .course-teachers-block {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
         .course-teachers-label {
             font-family: 'Baloo Da 2', sans-serif;
             font-size: 13px;
@@ -372,14 +378,12 @@
             color: var(--ink-soft);
             text-transform: uppercase;
             letter-spacing: .04em;
-            margin-bottom: 10px;
         }
 
         .course-teachers {
             display: flex;
             flex-wrap: wrap;
             gap: 12px;
-            padding-bottom: 6px;
         }
 
         .course-teacher-chip {
@@ -715,15 +719,17 @@
             });
             const initials=name=>escapeHtml(clean(name).slice(0,1).toUpperCase()||'?');
             const teachersHtml=matchedTeachers.length?`
-                <div class="course-teachers-label">কোর্স ইন্সট্রাক্টর</div>
-                <div class="course-teachers">${matchedTeachers.map(t=>`
-                    <div class="course-teacher-chip">
-                        ${t.photo?`<img src="${escapeHtml(t.photo)}" alt="${escapeHtml(t.name)}" loading="lazy">`:`<span class="cte-avatar-fallback">${initials(t.name)}</span>`}
-                        <span class="cte-info">
-                            <span class="cte-name">${escapeHtml(t.name)}</span>
-                            ${t.subject?`<span class="cte-subject">${escapeHtml(t.subject)}</span>`:''}
-                        </span>
-                    </div>`).join('')}</div>`:'';
+                <div class="course-teachers-block">
+                    <div class="course-teachers-label">কোর্স ইন্সট্রাক্টর</div>
+                    <div class="course-teachers">${matchedTeachers.map(t=>`
+                        <div class="course-teacher-chip">
+                            ${t.photo?`<img src="${escapeHtml(t.photo)}" alt="${escapeHtml(t.name)}" loading="lazy">`:`<span class="cte-avatar-fallback">${initials(t.name)}</span>`}
+                            <span class="cte-info">
+                                <span class="cte-name">${escapeHtml(t.name)}</span>
+                                ${t.subject?`<span class="cte-subject">${escapeHtml(t.subject)}</span>`:''}
+                            </span>
+                        </div>`).join('')}</div>
+                </div>`:'';
 
             content.innerHTML=`
                 <div class="course-detail-grid">
