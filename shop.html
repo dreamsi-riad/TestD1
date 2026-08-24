@@ -344,7 +344,8 @@
         // এই একই URL বসানো)। আগে শপের জন্য আলাদা script/deployment ছিল,
         // এখন আর দরকার নেই।
         // ============================================================
-        const SHOP_FORM_ENDPOINT = "https://script.google.com/macros/s/AKfycbzX0y0FDBcFVxkUoIY2VqFG4XZ3BcoYJfoVvMNYKF28UQLqWPKeMax30MYqDXlM_t3cXQ/exec";
+        // আগে Google Apps Script endpoint ছিল, এখন Cloudflare Worker + D1
+        const SHOP_FORM_ENDPOINT = "https://late-forest-4748.dreamsicreation.workers.dev";
 
         function callShopApi(payload){
             const controller = new AbortController();
