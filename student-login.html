@@ -500,6 +500,54 @@ header.nav{
   font-size:17px;
   line-height:1;
 }
+/* ---------- Subject / Chapter ফিল্টার ড্রপডাউন (একই লাইনে, ৫০/৫০) ---------- */
+.filter-row{
+  display:flex;
+  gap:10px;
+  margin:3px 0 12px;
+}
+.filter-select-wrap{
+  position:relative;
+  flex:1 1 0;
+  min-width:0;
+}
+.filter-select-wrap::after{
+  content:"";
+  position:absolute;
+  right:14px;
+  top:50%;
+  width:9px;
+  height:9px;
+  border-right:2.2px solid rgba(255,255,255,.9);
+  border-bottom:2.2px solid rgba(255,255,255,.9);
+  transform:translateY(-70%) rotate(45deg);
+  pointer-events:none;
+}
+.filter-select{
+  width:100%;
+  appearance:none;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+  font:700 14px/1.2 'Anek Bangla',sans-serif;
+  color:#fff;
+  background:linear-gradient(135deg, #263a63, var(--ink) 60%);
+  border:1px solid var(--ink);
+  border-radius:10px;
+  padding:11px 32px 11px 14px;
+  cursor:pointer;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  box-shadow:0 3px 10px rgba(30,42,71,.2), inset 0 1px 1px rgba(255,255,255,.12);
+  transition:.15s ease;
+}
+.filter-select:hover{ box-shadow:0 5px 14px rgba(30,42,71,.28), inset 0 1px 1px rgba(255,255,255,.12); }
+.filter-select:focus{ outline:none; box-shadow:0 0 0 3px rgba(232,163,61,.35); }
+.filter-select:disabled{ opacity:.55; cursor:not-allowed; box-shadow:none; }
+.filter-select option{ color:var(--ink); background:#fff; }
+@media(max-width:420px){
+  .filter-select{ font-size:13px; padding:10px 28px 10px 12px; }
+}
 .class-search-wrap{ margin:2px 0 12px; }
 .class-search-input{
   width:100%;
@@ -1004,9 +1052,16 @@ footer a:hover{ color:#fff; }
           </div>
           <div class="enrolled-course-list" id="enrolledCourseList"></div>
           <div id="courseLearningPanel" style="display:none;">
-            <div class="subject-row" id="subjectRow"></div>
+            <div class="filter-row" id="filterRow" style="display:none;">
+              <div class="filter-select-wrap">
+                <select id="subjectSelect" class="filter-select" aria-label="Subject"></select>
+              </div>
+              <div class="filter-select-wrap">
+                <select id="chapterSelect" class="filter-select" aria-label="Chapter"></select>
+              </div>
+            </div>
             <div class="class-search-wrap" id="classSearchWrap" style="display:none;">
-              <input type="text" id="classSearchInput" class="class-search-input" placeholder="🔍 ক্লাস/চ্যাপ্টার খুঁজুন...">
+              <input type="text" id="classSearchInput" class="class-search-input" placeholder="🔍 টপিক খুঁজুন...">
             </div>
             <div class="class-player-wrap" id="classPlayer" style="display:none;">
               <div class="yt-mount" id="ytMount"></div>
@@ -1132,7 +1187,9 @@ footer a:hover{ color:#fff; }
   const enrolledCourseList = document.getElementById('enrolledCourseList');
   const courseLearningPanel = document.getElementById('courseLearningPanel');
   const learningEmpty = document.getElementById('learningEmpty');
-  const subjectRow = document.getElementById('subjectRow');
+  const filterRow = document.getElementById('filterRow');
+  const subjectSelect = document.getElementById('subjectSelect');
+  const chapterSelect = document.getElementById('chapterSelect');
   const classSearchWrap = document.getElementById('classSearchWrap');
   const classSearchInput = document.getElementById('classSearchInput');
   const classPlayer = document.getElementById('classPlayer');
@@ -1613,38 +1670,59 @@ footer a:hover{ color:#fff; }
     }));
   }
 
-  // Subject-এর ভিতরে class/chapter নাম দিয়ে সার্চ করার জন্য — space/case নিয়ে সমস্যা
-  // যেন না হয় তাই normalizeForMatch দিয়ে দুইপাশই normalize করে substring মিলানো হয়।
+  // টপিক (class title) দিয়ে সার্চ করার জন্য — chapter নয়, শুধু className/topic
+  // ম্যাচ হবে। space/case নিয়ে সমস্যা না হয় তাই normalizeForMatch দিয়ে দুইপাশই
+  // normalize করে substring মিলানো হয়।
   if(classSearchInput){
     classSearchInput.addEventListener('input', ()=>{
       const q = normalizeForMatch(classSearchInput.value);
       if(!q){ renderClassItems(activeSubjectRows); return; }
       const filtered = activeSubjectRows.filter(item=>{
-        const haystack = normalizeForMatch(`${item.className || ''} ${item.chapter || ''}`);
+        const haystack = normalizeForMatch(`${item.className || ''}`);
         return haystack.includes(q);
       });
       renderClassItems(filtered);
     });
   }
 
+  // Subject dropdown-এ যা সিলেক্ট করা আছে তার ভিতরের unique chapter গুলো
+  // দিয়ে Chapter dropdown সাজানো হয় ("সব চ্যাপ্টার" ডিফল্ট অপশন হিসেবে থাকে)।
+  function populateChapterSelect(rows, subject){
+    const subjectRows = rows.filter(x=>normalizeForMatch(x.subject)===normalizeForMatch(subject));
+    const seenChapters = new Map();
+    subjectRows.forEach(x=>{
+      const key = normalizeForMatch(x.chapter);
+      if(key && !seenChapters.has(key)) seenChapters.set(key, x.chapter);
+    });
+    const chapters = [...seenChapters.values()];
+    chapterSelect.innerHTML = `<option value="">সব চ্যাপ্টার</option>` +
+      chapters.map(c=>`<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
+    chapterSelect.disabled = chapters.length === 0;
+    return subjectRows;
+  }
+
   async function loadCourseClasses(courseName){
     classLearningReset();
     if(!courseName) return;
     courseLearningPanel.style.display='block';
-    subjectRow.innerHTML='<div class="subject-row-loading"><span class="skel-pill"></span><span class="skel-pill"></span><span class="skel-pill"></span></div>';
+    filterRow.style.display='flex';
+    subjectSelect.disabled = true;
+    chapterSelect.disabled = true;
+    subjectSelect.innerHTML = '<option>লোড হচ্ছে...</option>';
+    chapterSelect.innerHTML = '<option>—</option>';
     classList.innerHTML='<div class="class-loading"><span class="spinner"></span>ক্লাস লোড হচ্ছে...</div>';
     const result = await fetchClassData(courseName);
     const rows = (result.status === 'ok' && Array.isArray(result.data)) ? result.data : [];
     if(!rows.length){
       courseLearningPanel.style.display='block';
-      subjectRow.innerHTML='';
+      filterRow.style.display='none';
       classList.innerHTML=`<div class="learning-empty">${escapeHtml(result.message || 'এই course-এর কোনো class এখনো পাওয়া যায়নি।')}</div>`;
       return;
     }
     // এই course-টার ক্লাস সফলভাবে লোড হলো — এখন থেকে এই course-এর নামেই
     // watch time জমা/পাঠানো হবে (Mobile + Course মিলিয়ে)।
     currentWatchCourse = courseName;
-    // একই subject sheet-এ ভিন্ন space/case দিয়ে একাধিকবার থাকলেও যেন duplicate ট্যাব না হয়,
+    // একই subject sheet-এ ভিন্ন space/case দিয়ে একাধিকবার থাকলেও যেন duplicate অপশন না হয়,
     // তাই normalize করে unique subject বের করা হয় (প্রথমবার যেভাবে পাওয়া গেছে সেই বানানটাই দেখানো হয়)।
     const seenSubjects = new Map();
     rows.forEach(x => {
@@ -1653,23 +1731,37 @@ footer a:hover{ color:#fff; }
     });
     const subjects = [...seenSubjects.values()];
     courseLearningPanel.style.display='block';
-    subjectRow.innerHTML=subjects.map((subject,i)=>`<button type="button" class="subject-btn${i===0?' active':''}" data-subject="${escapeHtml(subject)}"><span class="subject-icon">${getSubjectIcon(subject)}</span>${escapeHtml(subject)}</button>`).join('');
-    const showSubject=(subject)=>{
-      subjectRow.querySelectorAll('.subject-btn').forEach(btn=>btn.classList.toggle('active',normalizeForMatch(btn.dataset.subject)===normalizeForMatch(subject)));
+    filterRow.style.display='flex';
+    subjectSelect.disabled = false;
+    subjectSelect.innerHTML = subjects.map(s=>`<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join('');
+
+    const applyFilters=()=>{
+      const subject = subjectSelect.value;
+      const chapter = chapterSelect.value;
       stopClassPlayer();
-      const filtered=rows.filter(x=>normalizeForMatch(x.subject)===normalizeForMatch(subject));
+      let filtered = rows.filter(x=>normalizeForMatch(x.subject)===normalizeForMatch(subject));
+      if(chapter) filtered = filtered.filter(x=>normalizeForMatch(x.chapter)===normalizeForMatch(chapter));
       activeSubjectRows = filtered;
       if(classSearchInput) classSearchInput.value='';
       if(classSearchWrap) classSearchWrap.style.display = filtered.length ? 'block' : 'none';
       renderClassItems(filtered);
     };
-    subjectRow.querySelectorAll('.subject-btn').forEach(btn=>btn.addEventListener('click',()=>showSubject(btn.dataset.subject)));
-    showSubject(subjects[0]);
+
+    // onchange ব্যবহার করা হচ্ছে (addEventListener নয়) যাতে course বদলালে
+    // পুরনো handler জমে না থাকে — select element প্রতিবার নতুন করে তৈরি হয় না।
+    subjectSelect.onchange = ()=>{ populateChapterSelect(rows, subjectSelect.value); applyFilters(); };
+    chapterSelect.onchange = applyFilters;
+
+    populateChapterSelect(rows, subjects[0]);
+    applyFilters();
   }
 
   function classLearningReset(){
     if(!courseLearningPanel) return;
-    courseLearningPanel.style.display='none'; subjectRow.innerHTML=''; stopClassPlayer(); classList.innerHTML='';
+    courseLearningPanel.style.display='none';
+    filterRow.style.display='none';
+    subjectSelect.innerHTML=''; chapterSelect.innerHTML='';
+    stopClassPlayer(); classList.innerHTML='';
     activeSubjectRows = [];
     currentWatchCourse = '';
     if(classSearchInput) classSearchInput.value='';
@@ -1679,7 +1771,7 @@ footer a:hover{ color:#fff; }
   function showExpiredNotice(course){
     classLearningReset();
     courseLearningPanel.style.display='block';
-    subjectRow.innerHTML='';
+    filterRow.style.display='none';
     stopClassPlayer();
     const expiresText = course.expiresAt ? escapeHtml(formatDate(course.expiresAt)) : '';
     classList.innerHTML=`<div class="renew-notice">
@@ -1691,7 +1783,7 @@ footer a:hover{ color:#fff; }
   function showDeviceBlockedNotice(){
     classLearningReset();
     courseLearningPanel.style.display='block';
-    subjectRow.innerHTML='';
+    filterRow.style.display='none';
     stopClassPlayer();
     classList.innerHTML=`<div class="renew-notice">
       <strong>🔒 একাধিক ডিভাইসে লগইন সনাক্ত হয়েছে</strong>
