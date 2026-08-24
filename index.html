@@ -1597,9 +1597,11 @@ footer{
 
 <script>
 /* =========================================================================================
-   এখানে UI interaction + Google Sheet course-data loader রাখা হয়েছে।
-   Course data সরাসরি Google Sheet-এর ৬টি Tab থেকে আসে।
+   এখানে UI interaction + course-data loader রাখা হয়েছে।
+   আগে Course data সরাসরি Google Sheet থেকে (gviz) আসত, এখন Cloudflare
+   Worker + D1 (VISION_API) থেকে JSON action কল দিয়ে আসে।
    ========================================================================================= */
+const VISION_API = "https://late-forest-4748.dreamsicreation.workers.dev";
 
 // Sheet থেকে আসা টেক্সট তুলনা/মিলানোর (matching) জন্য normalize করার হেল্পার।
 // শিটে ভুলবশত extra space বা capital/small letter ভিন্ন হলেও যেন মিল খুঁজে পায়,
@@ -1693,9 +1695,8 @@ document.querySelectorAll('#navLinks a').forEach(link => {
 // Teachers tab columns: A Name, B Photo URL, C Subject, D Designation
 // ============================================================
 (function(){
-  const SHEET_ID = '1wKIU5O8l0fg4LXjDtz92HtheUIXXZEfhR-u_zeOyVf8';
-  const TEACHERS_TAB = 'Teachers';
-  const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&headers=1&sheet=${encodeURIComponent(TEACHERS_TAB)}`;
+  // আগে সরাসরি gviz দিয়ে "Teachers" Tab পড়া হতো, এখন Cloudflare Worker
+  // (D1-এর "teachers" টেবিল) থেকে action=get_teachers দিয়ে আসে।
   const teacherGrid = document.getElementById('teacherGrid');
   if(!teacherGrid) return;
 
@@ -1709,23 +1710,17 @@ document.querySelectorAll('#navLinks a').forEach(link => {
     if(x.includes('drive.google.com')&&i) return `https://drive.google.com/thumbnail?id=${i[1]}&sz=w1000`;
     return x;
   }
-  function parseGviz(t){
-    const a=t.indexOf('{'),b=t.lastIndexOf('}');
-    if(a<0||b<0) throw Error('Invalid Google Sheets response');
-    return JSON.parse(t.slice(a,b+1));
-  }
   async function loadTeachers(){
     teacherGrid.innerHTML='<div class="teacher-data-state">শিক্ষকবৃন্দের তথ্য লোড হচ্ছে...</div>';
     try{
-      const r=await fetch(SHEET_URL,{cache:'no-store'});
+      const r=await fetch(VISION_API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'get_teachers'}),cache:'no-store'});
       if(!r.ok) throw Error(`Teachers: HTTP ${r.status}`);
-      const j=parseGviz(await r.text());
-      const teachers=(j.table?.rows||[]).map(row=>{
-        const c=row.c||[];
-        const v=Array.from({length:4},(_,i)=>clean(c[i]?.v??c[i]?.f??''));
-        const [name,photo,subject,designation]=v;
-        if(!name || ['name','teacher name'].includes(name.toLowerCase())) return null;
-        return {name,photo:imageUrl(photo),subject,designation};
+      const j=await r.json();
+      if(j.status==='error') throw Error(j.message||'Teachers API error');
+      const teachers=(j.data||[]).map(row=>{
+        const name=clean(row.name);
+        if(!name) return null;
+        return {name, photo:imageUrl(row.photo), subject:clean(row.subject), designation:clean(row.designation)};
       }).filter(Boolean);
 
       if(!teachers.length){
@@ -1773,13 +1768,10 @@ function vaShowToast(message){
 // Google Sheet → Dynamic Courses
 // ============================================================
 (function(){
-  const SHEET_ID = '1wKIU5O8l0fg4LXjDtz92HtheUIXXZEfhR-u_zeOyVf8';
-  const COURSE_NAME_TAB = 'Course Name';
   // আগে প্রতিটা লেভেলের (SSC/HSC/BBA...) জন্য আলাদা Tab ছিল। এখন সব লেভেলের কোর্স
-  // একটাই "Course Name" Tab-এ থাকে, প্রথম কলাম (Level) দিয়ে আলাদা করা হয়। SHEET_TABS
+  // একটাই "course_name" টেবিলে থাকে, প্রথম কলাম (Level) দিয়ে আলাদা করা হয়। SHEET_TABS
   // তালিকাটা শুধু category card-এর ধারাবাহিক ক্রম আর "কোনো কোর্স নেই" চেকের জন্য রাখা হলো।
   const SHEET_TABS = ['SSC','HSC','BBA','MBA','BBS','BBA Professional'];
-  const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&headers=1&sheet=${encodeURIComponent(COURSE_NAME_TAB)}`;
   const catGrid=document.getElementById('catGrid'), courseGrid=document.getElementById('courseGrid'), toolbar=document.getElementById('courseDataToolbar'), resultCount=document.getElementById('courseResultCount'), resetBtn=document.getElementById('courseResetBtn'), errorBox=document.getElementById('courseDataError'), retryBtn=document.getElementById('courseRetryBtn');
   const CATEGORY_META={
     'SSC':{color:'#2F6FE4',bg:'#EAF1FE',icon:'<path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12.5V17c0 1.5 2.5 3 6 3s6-1.5 6-3v-4.5"/><path d="M22 10v6"/>'},
@@ -1799,7 +1791,6 @@ function vaShowToast(message){
   function uniqueSlug(name,cat,used){const base=slugify(name),cp=slugify(cat);let slug=base;if(used.has(slug))slug=`${cp}-${base}`;let n=2;while(used.has(slug))slug=`${cp}-${base}-${n++}`;used.add(slug);return slug}
   function features(v){return clean(v).split(/[,،]/).map(clean).filter(Boolean)}
   function price(v){const x=clean(v);if(!x)return '';return /[৳$€£]/.test(x)?toBn(x):`৳${toBn(x)}`}
-  function parseGviz(t){const a=t.indexOf('{'),b=t.lastIndexOf('}');if(a<0||b<0)throw Error('Invalid Google Sheets response');return JSON.parse(t.slice(a,b+1))}
   // localStorage-এ ক্যাশ করা student data (student-login.html থেকে লগইন করলে সেট হয়) থেকে
   // enrolled কোর্সের নামগুলো বের করা হয় — কেউ লগইন না করে থাকলে খালি Set রিটার্ন হবে,
   // তখন কোর্স কার্ড আগের মতোই স্বাভাবিক দেখাবে।
@@ -1813,7 +1804,29 @@ function vaShowToast(message){
     }catch(e){ return new Set(); }
   }
   const enrolledCourseNames = getEnrolledCourseNames();
-  async function fetchAllCourseRows(){const r=await fetch(SHEET_URL,{cache:'no-store'});if(!r.ok)throw Error(`${COURSE_NAME_TAB}: HTTP ${r.status}`);const j=parseGviz(await r.text());return (j.table?.rows||[]).map(row=>{const c=row.c||[],v=Array.from({length:10},(_,i)=>clean(c[i]?.v??c[i]?.f??''));const [level,name,tag,image,shortDescription,longDescription,p,oldPrice,priceNote,featureText]=v;if(!level||!name||name==='কোর্সের নাম')return null;return{name,tag,image:imageUrl(image),shortDescription,longDescription,price:price(p),oldPrice:price(oldPrice),priceNote,features:features(featureText),category:level,slug:''}}).filter(Boolean)}
+  async function fetchAllCourseRows(){
+    const r=await fetch(VISION_API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'get_courses'}),cache:'no-store'});
+    if(!r.ok)throw Error(`Course Name: HTTP ${r.status}`);
+    const j=await r.json();
+    if(j.status==='error') throw Error(j.message||'Course Name API error');
+    return (j.data||[]).map(row=>{
+      const level=clean(row.level), name=clean(row.name);
+      if(!level||!name) return null;
+      return {
+        name,
+        tag:clean(row.tag),
+        image:imageUrl(row.image),
+        shortDescription:clean(row.shortDescription),
+        longDescription:clean(row.longDescription),
+        price:price(row.price),
+        oldPrice:price(row.oldPrice),
+        priceNote:clean(row.priceNote),
+        features:features(row.featureText),
+        category:level,
+        slug:''
+      };
+    }).filter(Boolean);
+  }
   function categoryHtml(cat,count){const m=CATEGORY_META[cat]||{color:'#5B8FBF',bg:'#EEF4F8',icon:'<circle cx="12" cy="12" r="8"/>'};return `<a href="#courses" class="cat-card" data-cat="${esc(cat)}" style="--cat-color:${m.color}"><span class="cat-icon" style="background:${m.bg}"><svg viewBox="0 0 24 24" fill="none" stroke="${m.color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${m.icon}</svg></span><span class="cat-text"><b>${esc(cat)}</b><span>${toBn(count)}টি কোর্স</span></span></a>`}
   function cardHtml(c){const m=CATEGORY_META[c.category]||{color:'#5B8FBF'};const isEnrolled=enrolledCourseNames.has(normalizeForMatch(c.name));const actionHtml=isEnrolled?`<a href="student-login.html" class="btn btn-primary course-enrolled-trigger">ভর্তি হয়েছেন ✓</a>`:`<a href="course-details.html?course=${encodeURIComponent(c.slug)}" data-course-name="${esc(c.name)}" class="btn btn-primary course-details-trigger">বিস্তারিত</a>`;return `<article class="course-card" data-category="${esc(c.category)}" data-course-slug="${esc(c.slug)}"><img class="course-image" src="${esc(c.image)}" alt="${esc(c.name)}" loading="lazy"><div class="course-top"><span class="eyebrow" style="color:${m.color}">${esc(c.category)}</span>${c.tag?`<span class="course-tag">${esc(c.tag)}</span>`:''}</div><div class="course-body"><h3>${esc(c.name)}</h3><p>${esc(c.shortDescription)}</p><div class="course-foot"><div class="price"><div class="price-row">${c.price?`<span class="price-now">${esc(c.price)}</span>`:''}${c.oldPrice?`<span class="price-old">${esc(c.oldPrice)}</span>`:''}</div>${c.priceNote?`<small>${esc(c.priceNote)}</small>`:''}</div>${actionHtml}</div></div></article>`}
   // ক্যাটাগরি অনুযায়ী কোর্স গোনার সময় sheet-এর "level" কলামে extra space/capital-small
@@ -1835,35 +1848,29 @@ function vaShowToast(message){
 // না গিয়ে সাথে সাথে একটা toast মেসেজ দেখায় যে কোর্সটি এখনো available না।
 // ============================================================
 (function(){
-  const CLASS_SHEET_ID = '1wKIU5O8l0fg4LXjDtz92HtheUIXXZEfhR-u_zeOyVf8';
-  const COURSE_DATA_TAB = 'Course Data';
-  const CLASS_SHEET_URL = `https://docs.google.com/spreadsheets/d/${CLASS_SHEET_ID}/gviz/tq?tqx=out:json&headers=1&sheet=${encodeURIComponent(COURSE_DATA_TAB)}`;
   const clean = v => String(v ?? '').trim();
   const availabilityCache = new Map();
   let courseDataRowsPromise = null;
 
-  function parseGvizClass(text){
-    const a = text.indexOf('{'), b = text.lastIndexOf('}');
-    if(a < 0 || b < 0) throw Error('Invalid Google Sheets response');
-    return JSON.parse(text.slice(a, b + 1));
-  }
-
-  // পুরো "Course Data" Tab একবারই fetch করে cache রাখা হয় (প্রতিটা কোর্সের জন্য
-  // আলাদা করে fetch করার দরকার নেই, কারণ এখন সব কোর্সের class data একই Tab-এ)।
+  // পুরো "course_data" টেবিল একবারই fetch করে cache রাখা হয় (প্রতিটা কোর্সের জন্য
+  // আলাদা করে fetch করার দরকার নেই, কারণ এখন সব কোর্সের class data একই টেবিলে)।
   function loadCourseDataRows(){
     if(!courseDataRowsPromise){
       courseDataRowsPromise = (async ()=>{
         const controller = new AbortController();
         const timeout = setTimeout(()=>controller.abort(), 15000);
         try{
-          const r = await fetch(CLASS_SHEET_URL, {cache:'no-store', signal:controller.signal});
-          if(!r.ok) throw Error(`${COURSE_DATA_TAB}: HTTP ${r.status}`);
-          const json = parseGvizClass(await r.text());
-          if(json.status === 'error') throw Error('Course Data sheet returned an error.');
-          return (json.table?.rows || []).map(row=>{
-            const c = row.c || [];
-            return { courseName: clean(c[1]?.v ?? c[1]?.f ?? '') };
+          const r = await fetch(VISION_API, {
+            method:'POST',
+            headers:{'Content-Type':'text/plain;charset=utf-8'},
+            body: JSON.stringify({ action:'get_course_data' }),
+            cache:'no-store',
+            signal:controller.signal
           });
+          if(!r.ok) throw Error(`Course Data: HTTP ${r.status}`);
+          const json = await r.json();
+          if(json.status === 'error') throw Error(json.message || 'Course Data API returned an error.');
+          return (json.data || []).map(row => ({ courseName: clean(row.courseName) }));
         } finally {
           clearTimeout(timeout);
         }
@@ -1937,9 +1944,8 @@ function vaShowToast(message){
 // যত data row → তত video card
 // ============================================================
 (function(){
-  const SHEET_ID = '1wKIU5O8l0fg4LXjDtz92HtheUIXXZEfhR-u_zeOyVf8';
-  const VIDEO_TAB = 'Free Class';
-  const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&headers=1&sheet=${encodeURIComponent(VIDEO_TAB)}`;
+  // আগে সরাসরি gviz দিয়ে "Free Class" Tab পড়া হতো, এখন Cloudflare Worker
+  // (D1-এর "free_class" টেবিল) থেকে action=get_free_classes দিয়ে আসে।
   const pillRow = document.getElementById('videoPillRow');
   const videoGrid = document.getElementById('videoGrid');
   let videos = [];
@@ -1947,12 +1953,6 @@ function vaShowToast(message){
 
   const clean = v => String(v ?? '').trim();
   const esc = v => clean(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-
-  function parseGviz(text){
-    const a = text.indexOf('{'), b = text.lastIndexOf('}');
-    if(a < 0 || b < 0) throw Error('Invalid Google Sheets response');
-    return JSON.parse(text.slice(a, b + 1));
-  }
 
   function youtubeId(url){
     const x = clean(url);
@@ -1973,14 +1973,19 @@ function vaShowToast(message){
   }
 
   async function fetchVideos(){
-    const r = await fetch(SHEET_URL, {cache:'no-store'});
+    const r = await fetch(VISION_API, {
+      method:'POST',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify({ action:'get_free_classes' }),
+      cache:'no-store'
+    });
     if(!r.ok) throw Error(`Free Class: HTTP ${r.status}`);
-    const j = parseGviz(await r.text());
-    return (j.table?.rows || []).map(row => {
-      const c = row.c || [];
-      const category = clean(c[0]?.v ?? c[0]?.f ?? '');
-      const title = clean(c[1]?.v ?? c[1]?.f ?? '');
-      const url = clean(c[2]?.v ?? c[2]?.f ?? '');
+    const j = await r.json();
+    if(j.status === 'error') throw Error(j.message || 'Free Class API error');
+    return (j.data || []).map(row => {
+      const category = clean(row.category);
+      const title = clean(row.title);
+      const url = clean(row.url);
       const id = youtubeId(url);
       if(!category || !title || !id) return null;
       return {category, title, url, id};
