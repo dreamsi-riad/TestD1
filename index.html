@@ -1900,7 +1900,9 @@ function vaShowToast(message){
 
     const courseName = link.dataset.courseName || '';
     const href = link.getAttribute('href');
-    const originalText = link.textContent;
+    // আসল টেক্সট data attribute-এ সেভ রাখা হচ্ছে, যাতে bfcache
+    // থেকে restore হলেও (pageshow handler-এ) সেটা পড়ে রিসেট করা যায়।
+    if(!link.dataset.originalText) link.dataset.originalText = link.textContent;
     link.dataset.checking = '1';
     link.style.opacity = '.6';
     link.textContent = 'যাচাই হচ্ছে...';
@@ -1911,9 +1913,24 @@ function vaShowToast(message){
         return;
       }
       vaShowToast('😕 এই কোর্সটি এখনো available না — ক্লাস উপাদান শীঘ্রই যোগ করা হবে।');
-      link.textContent = originalText;
+      link.textContent = link.dataset.originalText || link.textContent;
       link.style.opacity = '';
       delete link.dataset.checking;
+    });
+  });
+
+  // মোবাইল ব্রাউজারে course-details পেজ থেকে "Back" চাপলে অনেক সময়
+  // bfcache (back-forward cache) থেকে এই পেজটা ঠিক আগের DOM state সহ
+  // ফিরে আসে — অর্থাৎ বাটন তখনও "যাচাই হচ্ছে..." অবস্থায় "আটকে" থাকে
+  // এবং dataset.checking='1' থাকার কারণে আর ক্লিক কাজ করে না।
+  // pageshow ইভেন্টে event.persisted true হলে বুঝি bfcache থেকে
+  // ফিরেছে — তখন সব ট্রিগার বাটনের state জোর করে রিসেট করে দিচ্ছি।
+  window.addEventListener('pageshow', function(e){
+    if(!e.persisted) return;
+    document.querySelectorAll('.course-details-trigger[data-checking="1"]').forEach(function(link){
+      delete link.dataset.checking;
+      link.style.opacity = '';
+      if(link.dataset.originalText) link.textContent = link.dataset.originalText;
     });
   });
 })();
