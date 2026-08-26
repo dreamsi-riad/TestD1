@@ -1352,6 +1352,7 @@ footer a:hover{ color:#fff; }
   let ytSeeking = false;
 
   let currentWatchCourse = '';
+  let currentWatchSector = '';
   let watchPendingSeconds = 0;
   let watchTrackTimer = null;
   const WATCH_FLUSH_THRESHOLD_SEC = 20;
@@ -1385,7 +1386,7 @@ footer a:hover{ color:#fff; }
       action: 'track_watch',
       mobile: normalizeMobileForMatch(mobile),
       course: currentWatchCourse,
-      nuDcu: getCourseSector(currentWatchCourse),
+      nuDcu: currentWatchSector,
       seconds: seconds
     });
     if(useBeacon && navigator.sendBeacon){
@@ -1642,15 +1643,18 @@ footer a:hover{ color:#fff; }
     return clean(enrollSectorParam);
   }
 
-  async function fetchClassData(courseName){
-    const cacheKey = `${courseName}::${getCourseSector(courseName)}`;
+  async function fetchClassData(courseName, explicitSector){
+    const sector = (explicitSector !== undefined && explicitSector !== null && explicitSector !== '')
+      ? clean(explicitSector)
+      : getCourseSector(courseName);
+    const cacheKey = `${courseName}::${sector}`;
     if(classDataCache.has(cacheKey)) return classDataCache.get(cacheKey);
     const notFound = {status:'error', message:'এই course-এর জন্য এখনো কোনো class/course materials পাওয়া যায়নি।'};
     let result;
     try{
       const response = await fetch(FORM_ENDPOINT, {
         method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'},
-        body:JSON.stringify({action:'get_course_data', courseName, nuDcu:getCourseSector(courseName)}),
+        body:JSON.stringify({action:'get_course_data', courseName, nuDcu:sector}),
         cache:'no-store'
       });
       if(!response.ok) throw new Error(`Course Data: HTTP ${response.status}`);
@@ -1658,7 +1662,6 @@ footer a:hover{ color:#fff; }
       if(json.status === 'error') throw new Error(json.message || 'Course Data API error.');
       const allRows = Array.isArray(json.data) ? json.data : [];
       const swParsed = parseSubjectWiseCourseId(courseName);
-      const sector = getCourseSector(courseName);
       const sectorNorm = normalizeLoose(sector);
       const matchedRows = swParsed ? findSubjectWiseClassRows(allRows, swParsed) : allRows.filter(r => {
         if(normalizeForMatch(r.courseName) !== normalizeForMatch(courseName) || !r.subject || !r.url) return false;
@@ -1718,7 +1721,7 @@ footer a:hover{ color:#fff; }
     return subjectRows;
   }
 
-  async function loadCourseClasses(courseName){
+  async function loadCourseClasses(courseName, sector){
     classLearningReset();
     if(!courseName) return;
     courseLearningPanel.style.display='block';
@@ -1728,7 +1731,7 @@ footer a:hover{ color:#fff; }
     subjectSelect.innerHTML = '<option>লোড হচ্ছে...</option>';
     chapterSelect.innerHTML = '<option>—</option>';
     classList.innerHTML='<div class="class-loading"><span class="spinner"></span>ক্লাস লোড হচ্ছে...</div>';
-    const result = await fetchClassData(courseName);
+    const result = await fetchClassData(courseName, sector);
     const rows = (result.status === 'ok' && Array.isArray(result.data)) ? result.data : [];
     if(!rows.length){
       courseLearningPanel.style.display='block';
@@ -1737,6 +1740,7 @@ footer a:hover{ color:#fff; }
       return;
     }
     currentWatchCourse = courseName;
+    currentWatchSector = clean(sector);
 
     const subjectSelectWrap = subjectSelect.closest('.filter-select-wrap');
     const swParsed = parseSubjectWiseCourseId(courseName);
@@ -1808,6 +1812,7 @@ footer a:hover{ color:#fff; }
     stopClassPlayer(); classList.innerHTML='';
     activeSubjectRows = [];
     currentWatchCourse = '';
+    currentWatchSector = '';
     if(classSearchInput) classSearchInput.value='';
     if(classSearchWrap) classSearchWrap.style.display='none';
   }
@@ -1875,7 +1880,7 @@ footer a:hover{ color:#fff; }
       const displayName = getSubjectWiseDisplayName(course.name);
       const cornerLabel = isSubjectWise ? 'Subject' : 'Course';
       const iconEmoji = isSubjectWise ? getSubjectIcon(displayName) : '🎓';
-      return `<button type="button" class="enrolled-course-btn${i===0?' active':''}${lockedClass}" data-course="${escapeHtml(course.name)}">
+      return `<button type="button" class="enrolled-course-btn${i===0?' active':''}${lockedClass}" data-course="${escapeHtml(course.name)}" data-sector="${escapeHtml(course.nuDcu||'')}" data-idx="${i}">
         <span class="ecb-corner-badge">${cornerLabel}</span>
         ${course.nuDcu ? `<span class="ecb-sector-badge">${escapeHtml(course.nuDcu)}</span>` : ''}
         <span class="ecb-icon">${iconEmoji}</span>
@@ -1886,11 +1891,12 @@ footer a:hover{ color:#fff; }
         </span>
       </button>`;
     }).join('');
-    const selectCourse=name=>{
-      enrolledCourseList.querySelectorAll('.enrolled-course-btn').forEach(btn=>btn.classList.toggle('active',normalizeForMatch(btn.dataset.course)===normalizeForMatch(name)));
-      const course = courses.find(c=>normalizeForMatch(c.name)===normalizeForMatch(name));
+    const selectCourse=idx=>{
+      enrolledCourseList.querySelectorAll('.enrolled-course-btn').forEach(btn=>btn.classList.toggle('active', Number(btn.dataset.idx)===idx));
+      const course = courses[idx];
+      if(!course) return;
       const status = String(course.status || '').trim().toLowerCase();
-      
+
       if(isDeviceBlocked){
         showDeviceBlockedNotice();
       } else if(status === 'expired'){
@@ -1898,11 +1904,11 @@ footer a:hover{ color:#fff; }
       } else if(status === 'pending'){
         showPendingNotice(course);
       } else {
-        loadCourseClasses(name);
+        loadCourseClasses(course.name, course.nuDcu);
       }
     };
-    enrolledCourseList.querySelectorAll('.enrolled-course-btn').forEach(btn=>btn.addEventListener('click',()=>selectCourse(btn.dataset.course)));
-    selectCourse(courses[0].name);
+    enrolledCourseList.querySelectorAll('.enrolled-course-btn').forEach(btn=>btn.addEventListener('click',()=>selectCourse(Number(btn.dataset.idx))));
+    selectCourse(0);
   }
 
   function renderProfileInfo(data){
