@@ -869,7 +869,7 @@
                         <div class="detail-description">${escapeHtml(description).replace(/\n/g,'<br>')}</div>
                         ${featuresHtml}
                         <div class="detail-actions">
-                            <a href="student-login.html?enroll=${encodeURIComponent(course.name)}" class="btn btn-primary enroll-btn">Enroll Now</a>
+                            <a href="student-login.html?enroll=${encodeURIComponent(course.name)}${course.tag && /^(nu|dcu)$/i.test(course.tag.trim()) ? `&sector=${encodeURIComponent(course.tag.trim().toUpperCase())}` : ''}" class="btn btn-primary enroll-btn">Enroll Now</a>
                             <button type="button" class="btn btn-outline" id="howToBuyBtn">কোর্সটি যেভাবে কিনবেন</button>
                         </div>
                     </div>
