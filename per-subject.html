@@ -33,7 +33,7 @@ body{
   margin:0;
   background:var(--paper);
   color:var(--ink);
-  font-family:'Hind Siliguri','Anek Bangla',sans-serif;
+  font-family:'Anek Bangla', sans-serif;
 }
 .container{ max-width:1180px; margin:0 auto; padding:0 clamp(14px, 3vw, 40px); }
 
@@ -88,7 +88,7 @@ header.nav{
 }
 .back-link:hover{ color:var(--ink); }
 .ps-hero h1{
-  font-family:'Baloo Da 2', sans-serif;
+  font-family:'Anek Bangla', sans-serif;
   font-size:clamp(24px, 4vw, 32px);
   margin:0 0 6px;
 }
@@ -106,7 +106,7 @@ header.nav{
 .ps-row{ display:flex; flex-wrap:wrap; gap:14px; }
 .ps-field{ flex:1 1 220px; display:flex; flex-direction:column; gap:6px; }
 .ps-field label{
-  font-family:'Baloo Da 2', sans-serif;
+  font-family:'Anek Bangla', sans-serif;
   font-weight:700; font-size:13.5px; color:var(--ink-soft);
 }
 .ps-field select, .ps-field input[type="text"]{
@@ -115,7 +115,7 @@ header.nav{
   border-radius:10px;
   border:1.5px solid var(--paper-line);
   background:#fff;
-  font-family:'Hind Siliguri', sans-serif;
+  font-family:'Anek Bangla', sans-serif;
   font-size:15px;
   color:var(--ink);
   outline:none;
@@ -134,7 +134,7 @@ header.nav{
   color:var(--ink-soft);
   font-size:16px;
 }
-.ps-status strong{ display:block; color:var(--ink); margin-bottom:6px; font-size:18px; font-family:'Baloo Da 2', sans-serif; }
+.ps-status strong{ display:block; color:var(--ink); margin-bottom:6px; font-size:18px; font-family:'Anek Bangla', sans-serif; }
 
 /* ===== কার্ড গ্রিড ===== */
 .ps-count{ color:var(--ink-soft); font-size:14.5px; margin:0 0 14px; }
@@ -164,7 +164,7 @@ header.nav{
 .ps-card-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:8px; }
 .ps-desc{ margin:2px 0 0; color:var(--ink-soft); font-size:12px; line-height:1.4; }
 .ps-level-pill{
-  font-family:'Baloo Da 2', sans-serif;
+  font-family:'Anek Bangla', sans-serif;
   font-size:10.5px; font-weight:700;
   color:var(--sky);
   background:rgba(91,143,191,.12);
@@ -175,7 +175,7 @@ header.nav{
   margin:0;
   font-size:14.5px;
   line-height:1.3;
-  font-family:'Baloo Da 2', sans-serif;
+  font-family:'Anek Bangla', sans-serif;
 }
 .ps-meta{ display:flex; flex-wrap:wrap; gap:5px; }
 .ps-meta span{
@@ -193,7 +193,7 @@ header.nav{
   gap:8px;
 }
 .ps-price{
-  font-family:'Baloo Da 2', sans-serif;
+  font-family:'Anek Bangla', sans-serif;
   font-weight:800;
   font-size:15.5px;
   color:var(--accent-dark);
@@ -203,6 +203,28 @@ header.nav{
   color:var(--ink-soft);
   text-decoration:line-through;
 }
+
+/* ===== এনরোল বাটন ===== */
+.ps-enroll-btn{
+  margin-top:8px;
+  width:100%;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  padding:9px 12px;
+  border:none;
+  border-radius:8px;
+  background:linear-gradient(135deg, var(--accent), var(--accent-dark));
+  color:#fff;
+  font-family:'Anek Bangla', sans-serif;
+  font-weight:700;
+  font-size:13.5px;
+  cursor:pointer;
+  transition:filter .15s ease, transform .1s ease;
+}
+.ps-enroll-btn:hover{ filter:brightness(1.05); }
+.ps-enroll-btn:active{ transform:scale(0.98); }
 
 /* ===== ফুটার ===== */
 footer{ border-top:1px solid var(--paper-line); padding:22px 0; margin-top:20px; }
@@ -367,10 +389,11 @@ function cardHtml(row){
       </div>
       ${metaBits.length ? `<div class="ps-meta">${metaBits.join('')}</div>` : ''}
       <div class="ps-price-row">
-        ${row.oldPrice ? `<span class="ps-price-old">${priceDisplay(row.oldPrice)}</span>` : ''}
         ${row.newPrice ? `<span class="ps-price">${priceDisplay(row.newPrice)}</span>` : ''}
+        ${row.oldPrice ? `<span class="ps-price-old">${priceDisplay(row.oldPrice)}</span>` : ''}
       </div>
       ${row.description ? `<p class="ps-desc">${esc(row.description)}</p>` : ''}
+      <button type="button" class="ps-enroll-btn">এনরোল করুন</button>
     </div>
   </article>`;
 }
