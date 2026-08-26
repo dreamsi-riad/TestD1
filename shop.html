@@ -13,6 +13,7 @@
     <style>
         /* ===== গ্লোবাল স্টাইল (index.html / course-details.html এর সাথে মিলিয়ে) ===== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { overflow-x: hidden; }
 
         :root {
             --ink: #1E2A47;
@@ -76,6 +77,17 @@
             }
             .nav-links.open { display: flex; }
             .burger { display: block; }
+        }
+
+        /* ছোট মোবাইল স্ক্রিনে logo + লগইন বাটন + বার্গার মিলে viewport-এর চেয়ে
+           বেশি জায়গা নিয়ে ফেলছিল (logo height:64px ফিক্সড রেখে shrink হচ্ছিল না),
+           ফলে পুরো পেজ horizontally overflow করে "zoom করা"-র মতো দেখাচ্ছিল। */
+        @media(max-width: 480px) {
+            .nav-inner{ gap: 8px; padding: 0 12px; }
+            .brand .brand-logo{ height: 42px; }
+            .nav-cta{ padding: 8px 12px; font-size: 12.5px; gap: 5px; }
+            .nav-cta svg{ width: 14px; height: 14px; }
+            .burger{ font-size: 22px; }
         }
 
         /* ===== পেজ হেড ===== */
