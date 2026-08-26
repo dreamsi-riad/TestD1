@@ -1295,8 +1295,13 @@ footer a:hover{ color:#fff; }
     return new Intl.DateTimeFormat('en-GB',{day:'2-digit',month:'short',year:'numeric'}).format(d);
   }
 
+  const enrolledCourseSectorMap = new Map();
   function getEnrolledCourses(data){
-    return Array.isArray(data?.courses) ? data.courses : [];
+    const list = Array.isArray(data?.courses) ? data.courses : [];
+    list.forEach(c=>{
+      if(c && c.name) enrolledCourseSectorMap.set(normalizeForMatch(c.name), clean(c.nuDcu || ''));
+    });
+    return list;
   }
 
   function formatWatchTimeValue(minutes){
@@ -1624,7 +1629,10 @@ footer a:hover{ color:#fff; }
 
   function getCourseSector(courseName){
     const sw = parseSubjectWiseCourseId(courseName);
-    return sw ? clean(sw.nuDcu) : clean(enrollSectorParam);
+    if(sw) return clean(sw.nuDcu);
+    const stored = enrolledCourseSectorMap.get(normalizeForMatch(courseName));
+    if(stored) return clean(stored);
+    return clean(enrollSectorParam);
   }
 
   async function fetchClassData(courseName){
@@ -1643,9 +1651,17 @@ footer a:hover{ color:#fff; }
       if(json.status === 'error') throw new Error(json.message || 'Course Data API error.');
       const allRows = Array.isArray(json.data) ? json.data : [];
       const swParsed = parseSubjectWiseCourseId(courseName);
-      const matchedRows = swParsed ? findSubjectWiseClassRows(allRows, swParsed) : allRows.filter(r =>
-        normalizeForMatch(r.courseName) === normalizeForMatch(courseName) && r.subject && r.url
-      );
+      const sector = getCourseSector(courseName);
+      const sectorNorm = normalizeForMatch(sector);
+      const matchedRows = swParsed ? findSubjectWiseClassRows(allRows, swParsed) : allRows.filter(r => {
+        if(normalizeForMatch(r.courseName) !== normalizeForMatch(courseName) || !r.subject || !r.url) return false;
+        if(sectorNorm){
+          const rowLevelWords = normalizeForMatch(r.level).split(' ');
+          const rowSector = rowLevelWords[rowLevelWords.length - 1];
+          if(rowSector !== sectorNorm) return false;
+        }
+        return true;
+      });
       const rows = matchedRows.map(r=>({subject:r.subject,chapter:r.chapter,className:r.className,url:r.url,pdfUrl:r.pdfUrl}));
       result = rows.length ? {status:'ok',data:rows} : notFound;
     }catch(error){
