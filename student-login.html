@@ -1165,6 +1165,72 @@ footer a:hover{ color:#fff; }
   const clean = value => String(value ?? '').trim();
   const escapeHtml = value => clean(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
+  // ============================================================
+  // সাবজেক্ট-ভিত্তিক (per-subject.html থেকে enroll করা) কোর্স হ্যান্ডলিং
+  // per-subject.html-এ এনরোল করলে student_enrolled.course কলামে একটা
+  // এনকোডেড আইডেন্টিফায়ার সেভ হয়: "SW::{level}::{department}::{year}::{subject}"
+  // — এই একই কনভেনশন per-subject.html-এও থাকতে হবে (দুই ফাইলেই সিঙ্কে রাখা)।
+  // এই আইডেন্টিফায়ার থেকে dashboard-এ subject-এর নামটাই দেখানো হয়, কিন্তু
+  // ক্লাস ম্যাচ করার জন্য পুরো আইডেন্টিফায়ারটাই (level/department/year/subject)
+  // ব্যবহার হয়।
+  // ============================================================
+  const SW_COURSE_PREFIX = 'SW::';
+  const SW_DEPARTMENTS = ['Accounting','Management','Marketing','Finance'];
+  const SW_YEAR_ORDINALS = ['1st','2nd','3rd','4th'];
+
+  function parseSubjectWiseCourseId(courseId){
+    const s = String(courseId || '');
+    if(!s.startsWith(SW_COURSE_PREFIX)) return null;
+    const parts = s.slice(SW_COURSE_PREFIX.length).split('::');
+    if(parts.length < 4) return null;
+    const [level, department, year, ...rest] = parts;
+    const subject = rest.join('::');
+    if(!level || !subject) return null;
+    return { level: clean(level), department: clean(department), year: clean(year), subject: clean(subject) };
+  }
+
+  function getSubjectWiseDisplayName(courseId){
+    const parsed = parseSubjectWiseCourseId(courseId);
+    return parsed ? parsed.subject : courseId;
+  }
+
+  // course_data টেবিলের course_name কলামে ("BBA 1st Year Accounting" /
+  // "BBA 1st Accounting" ইত্যাদি ধরনের টেক্সটে) department/year embedded
+  // থাকে — এখান থেকে সেগুলো বের করার হেল্পার।
+  function extractYearFromCourseName(courseName){
+    const norm = normalizeForMatch(courseName);
+    for(const ord of SW_YEAR_ORDINALS){
+      if(norm.includes(ord)) return `${ord} Year`;
+    }
+    return '';
+  }
+  function extractDepartmentFromCourseName(courseName){
+    const norm = normalizeForMatch(courseName);
+    for(const dept of SW_DEPARTMENTS){
+      if(norm.includes(normalizeForMatch(dept))) return dept;
+    }
+    return '';
+  }
+
+  // subject-wise enrolled কোর্সের জন্য course_data (সব লেভেল, level field সহ)
+  // থেকে ম্যাচিং class rows বের করে — level + subject মিলবে, আর department/year
+  // দেওয়া থাকলে (BBA/MBA/BBS/BBA Professional-এর মতো) সেগুলোও course_name
+  // থেকে বের করে মিলিয়ে দেখা হয়।
+  function findSubjectWiseClassRows(allRows, parsed){
+    return allRows.filter(r=>{
+      if(!r.subject || !r.url) return false;
+      if(normalizeForMatch(r.level) !== normalizeForMatch(parsed.level)) return false;
+      if(normalizeForMatch(r.subject) !== normalizeForMatch(parsed.subject)) return false;
+      if(parsed.department && parsed.year){
+        const rowDept = extractDepartmentFromCourseName(r.courseName);
+        const rowYear = extractYearFromCourseName(r.courseName);
+        if(normalizeForMatch(rowDept) !== normalizeForMatch(parsed.department)) return false;
+        if(normalizeForMatch(rowYear) !== normalizeForMatch(parsed.year)) return false;
+      }
+      return true;
+    });
+  }
+
   const authPageHead = document.getElementById('authPageHead');
   const tabRegisterBtn = document.getElementById('tabRegisterBtn');
   const tabLoginBtn = document.getElementById('tabLoginBtn');
@@ -1622,6 +1688,7 @@ footer a:hover{ color:#fff; }
           const json = await response.json();
           if(json.status === 'error') throw new Error(json.message || 'Course Data API returned an error.');
           return (json.data || []).map(row=>({
+            level: clean(row.level),
             courseName: clean(row.courseName),
             subject: clean(row.subject),
             chapter: clean(row.chapter),
@@ -1643,9 +1710,11 @@ footer a:hover{ color:#fff; }
     let result;
     try{
       const allRows = await loadCourseDataRows();
-      const rows = allRows
-        .filter(r => normalizeForMatch(r.courseName) === normalizeForMatch(courseName) && r.subject && r.url)
-        .map(r => ({subject:r.subject, chapter:r.chapter, className:r.className, url:r.url, pdfUrl:r.pdfUrl}));
+      const swParsed = parseSubjectWiseCourseId(courseName);
+      const matchedRows = swParsed
+        ? findSubjectWiseClassRows(allRows, swParsed)
+        : allRows.filter(r => normalizeForMatch(r.courseName) === normalizeForMatch(courseName) && r.subject && r.url);
+      const rows = matchedRows.map(r => ({subject:r.subject, chapter:r.chapter, className:r.className, url:r.url, pdfUrl:r.pdfUrl}));
       result = rows.length ? {status:'ok', data:rows} : notFound;
     }catch(error){
       console.error('Class data fetch failed:', error);
@@ -1722,6 +1791,41 @@ footer a:hover{ color:#fff; }
     // এই course-টার ক্লাস সফলভাবে লোড হলো — এখন থেকে এই course-এর নামেই
     // watch time জমা/পাঠানো হবে (Mobile + Course মিলিয়ে)।
     currentWatchCourse = courseName;
+
+    const subjectSelectWrap = subjectSelect.closest('.filter-select-wrap');
+    const swParsed = parseSubjectWiseCourseId(courseName);
+
+    if(swParsed){
+      // ============================================================
+      // সাবজেক্ট-ভিত্তিক (per-subject.html) এনরোলমেন্ট: এখানে একটাই
+      // সাবজেক্ট প্রযোজ্য, তাই Subject dropdown দেখানোর দরকার নেই —
+      // শুধু Chapter dropdown আর তার নিচে সার্চ বক্স থাকবে।
+      // ============================================================
+      courseLearningPanel.style.display='block';
+      filterRow.style.display='flex';
+      if(subjectSelectWrap) subjectSelectWrap.style.display='none';
+      subjectSelect.disabled = true;
+      subjectSelect.innerHTML = `<option value="${escapeHtml(swParsed.subject)}">${escapeHtml(swParsed.subject)}</option>`;
+
+      const applyFilters=()=>{
+        const chapter = chapterSelect.value;
+        stopClassPlayer();
+        let filtered = rows;
+        if(chapter) filtered = filtered.filter(x=>normalizeForMatch(x.chapter)===normalizeForMatch(chapter));
+        activeSubjectRows = filtered;
+        if(classSearchInput) classSearchInput.value='';
+        if(classSearchWrap) classSearchWrap.style.display = filtered.length ? 'block' : 'none';
+        renderClassItems(filtered);
+      };
+
+      chapterSelect.onchange = applyFilters;
+      populateChapterSelect(rows, swParsed.subject);
+      applyFilters();
+      return;
+    }
+
+    if(subjectSelectWrap) subjectSelectWrap.style.display='';
+
     // একই subject sheet-এ ভিন্ন space/case দিয়ে একাধিকবার থাকলেও যেন duplicate অপশন না হয়,
     // তাই normalize করে unique subject বের করা হয় (প্রথমবার যেভাবে পাওয়া গেছে সেই বানানটাই দেখানো হয়)।
     const seenSubjects = new Map();
@@ -1761,6 +1865,9 @@ footer a:hover{ color:#fff; }
     courseLearningPanel.style.display='none';
     filterRow.style.display='none';
     subjectSelect.innerHTML=''; chapterSelect.innerHTML='';
+    subjectSelect.disabled = false;
+    const subjectSelectWrap = subjectSelect.closest('.filter-select-wrap');
+    if(subjectSelectWrap) subjectSelectWrap.style.display='';
     stopClassPlayer(); classList.innerHTML='';
     activeSubjectRows = [];
     currentWatchCourse = '';
@@ -1803,11 +1910,15 @@ footer a:hover{ color:#fff; }
       const isExpired = String(course.status||'').trim().toLowerCase()==='expired';
       const badge = isDeviceBlocked ? '<span class="locked-badge">🔒 লকড</span>' : (isExpired ? '<span class="expired-badge">মেয়াদ শেষ</span>' : '<span class="active-badge">✓ সক্রিয়</span>');
       const lockedClass = isDeviceBlocked ? ' is-locked' : (isExpired ? ' is-expired' : '');
+      const isSubjectWise = !!parseSubjectWiseCourseId(course.name);
+      const displayName = getSubjectWiseDisplayName(course.name);
+      const cornerLabel = isSubjectWise ? 'Subject' : 'Course';
+      const iconEmoji = isSubjectWise ? getSubjectIcon(displayName) : '🎓';
       return `<button type="button" class="enrolled-course-btn${i===0?' active':''}${lockedClass}" data-course="${escapeHtml(course.name)}">
-        <span class="ecb-corner-badge">Course</span>
-        <span class="ecb-icon">🎓</span>
+        <span class="ecb-corner-badge">${cornerLabel}</span>
+        <span class="ecb-icon">${iconEmoji}</span>
         <span class="ecb-body">
-          <span class="ecb-name">${escapeHtml(course.name)}</span>
+          <span class="ecb-name">${escapeHtml(displayName)}</span>
           <span class="ecb-meta"><span class="ecb-date"><span class="ecb-icon-emoji">📅</span> Enrolled: ${escapeHtml(formatDate(course.enrolledAt))}</span>${badge}</span>
           <span class="ecb-watchtime"><span class="ecb-icon-emoji">⏱️</span> <span class="ecb-wt-label">Watch Time:</span> <span class="ecb-wt-value">${escapeHtml(formatWatchTimeValue(course.watchTime))}</span></span>
         </span>
