@@ -30,7 +30,7 @@
 }
 
 *{box-sizing:border-box;}
-html{scroll-behavior:smooth;}
+html{scroll-behavior:smooth; overflow-x:hidden;}
 body{
   margin:0;
   color:var(--ink);
@@ -98,6 +98,15 @@ header.nav{
   gap:6px;
 }
 .back-link:hover{ color:var(--ink); }
+
+/* ছোট মোবাইল স্ক্রিনে logo + back-link মিলে viewport-এর চেয়ে বেশি জায়গা
+   নিয়ে ফেলছিল (logo height:64px ফিক্সড রেখে shrink হচ্ছিল না), ফলে পুরো
+   পেজ horizontally overflow করে "zoom করা"-র মতো দেখাচ্ছিল। */
+@media(max-width:480px){
+  .nav-inner{ gap:8px; }
+  .brand .brand-logo{ height:42px; }
+  .back-link{ font-size:12.5px; gap:4px; }
+}
 
 .page-head{
   padding:44px 0 10px;
