@@ -238,6 +238,11 @@ header.nav{
 }
 .ps-enroll-btn:hover{ filter:brightness(1.05); }
 .ps-enroll-btn:active{ transform:scale(0.98); }
+.ps-enroll-btn.ps-enrolled{
+  background:#e9f8ef;
+  color:#1f8a4c;
+}
+.ps-enroll-btn.ps-enrolled:hover{ filter:none; background:#dcf3e5; }
 
 /* ===== ফুটার ===== */
 footer{ border-top:1px solid var(--paper-line); padding:22px 0; margin-top:20px; }
@@ -350,6 +355,23 @@ function buildSubjectWiseCourseId(row){
 
 let allSubjectRows = []; // { level, year, department, subject, description, newPrice, oldPrice, image }
 
+// index.html-এ যেভাবে localStorage-এ ক্যাশ করা student data (student-login.html থেকে
+// লগইন করলে সেট হয়) থেকে enrolled কোর্সের নাম বের করে "ভর্তি হয়েছেন ✓" দেখানো হয়,
+// এখানে subject-wise কোর্সের জন্য একই প্যাটার্ন — কোর্সের নাম এখানে
+// buildSubjectWiseCourseId() দিয়ে বানানো "SW::{level}::{department}::{year}::{subject}"
+// আইডেন্টিফায়ার (student_enrolled.course কলামে এভাবেই সেভ থাকে)। কেউ লগইন না করে
+// থাকলে খালি Set রিটার্ন হবে, তখন কার্ড আগের মতোই স্বাভাবিক "এনরোল করুন" দেখাবে।
+function getEnrolledSubjectWiseIds(){
+  try{
+    const raw = localStorage.getItem('va_user');
+    if(!raw) return new Set();
+    const user = JSON.parse(raw);
+    const courses = Array.isArray(user?.courses) ? user.courses : [];
+    return new Set(courses.map(c => normalizeForMatch(c?.name)).filter(Boolean));
+  }catch(e){ return new Set(); }
+}
+const enrolledSubjectWiseIds = getEnrolledSubjectWiseIds();
+
 // ডেটা এখন সরাসরি subjectwise_course_name টেবিল (action=get_subjectwise_courses)
 // থেকে আসে — level/department/year/price সব আলাদা কলামে স্পষ্টভাবে দেওয়া থাকে,
 // তাই আর কোনো text-parsing লাগে না। camelCase (worker.js এর response shape) এবং
@@ -402,6 +424,11 @@ function cardHtml(row){
   const metaBits = [];
   if(row.department) metaBits.push(`<span>${esc(row.department)}</span>`);
   if(row.year) metaBits.push(`<span>${esc(row.year)}</span>`);
+  const courseId = buildSubjectWiseCourseId(row);
+  const isEnrolled = enrolledSubjectWiseIds.has(normalizeForMatch(courseId));
+  const actionHtml = isEnrolled
+    ? `<a href="student-login.html" class="ps-enroll-btn ps-enrolled">ভর্তি হয়েছেন ✓</a>`
+    : `<button type="button" class="ps-enroll-btn" data-course-id="${esc(courseId)}">এনরোল করুন</button>`;
   return `<article class="ps-card">
     ${row.image ? `<img class="ps-card-img" src="${esc(row.image)}" alt="${esc(row.subject)}" loading="lazy">` : ''}
     <div class="ps-card-body">
@@ -415,7 +442,7 @@ function cardHtml(row){
         ${row.oldPrice ? `<span class="ps-price-old">${priceDisplay(row.oldPrice)}</span>` : ''}
       </div>
       ${row.description ? `<p class="ps-desc">${esc(row.description)}</p>` : ''}
-      <button type="button" class="ps-enroll-btn" data-course-id="${esc(buildSubjectWiseCourseId(row))}">এনরোল করুন</button>
+      ${actionHtml}
     </div>
   </article>`;
 }
