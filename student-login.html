@@ -1198,9 +1198,13 @@ footer a:hover{ color:#fff; }
   }
 
   function findSubjectWiseClassRows(allRows, parsed){
+    // subjectwise_course_name-এ level থাকে শুধু "BBA" (plain), sector আলাদা কলামে (nu_dcu)।
+    // কিন্তু course_data_bba_nu/course_data_bba_dcu টেবিলের row-এর level আসে "BBA NU"/"BBA DCU" হিসেবে।
+    // তাই মেলানোর আগে level + sector জোড়া লাগিয়ে সঠিক টেবিলের row বেছে নেওয়া হচ্ছে।
+    const effectiveLevel = parsed.nuDcu ? `${parsed.level} ${parsed.nuDcu}` : parsed.level;
     return allRows.filter(r=>{
       if(!r.subject || !r.url) return false;
-      if(normalizeForMatch(r.level) !== normalizeForMatch(parsed.level)) return false;
+      if(normalizeForMatch(r.level) !== normalizeForMatch(effectiveLevel)) return false;
       if(normalizeForMatch(r.subject) !== normalizeForMatch(parsed.subject)) return false;
       if(parsed.department && parsed.year){
         const rowDept = extractDepartmentFromCourseName(r.courseName);
