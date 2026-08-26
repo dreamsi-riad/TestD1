@@ -1617,7 +1617,9 @@ const VISION_API = "https://late-forest-4748.dreamsicreation.workers.dev";
 // Sheet থেকে আসা টেক্সট তুলনা/মিলানোর (matching) জন্য normalize করার হেল্পার।
 // শিটে ভুলবশত extra space বা capital/small letter ভিন্ন হলেও যেন মিল খুঁজে পায়,
 // সেজন্য শুধু তুলনার সময় এটা ব্যবহার হয় — আসল টেক্সট/casing যেমন শিটে আছে তেমনই display হয়, বদলায় না।
-const normalizeForMatch = v => String(v ?? '').trim().replace(/\s+/g, ' ').toLowerCase();
+// সব matching-এই এখন loose normalize ব্যবহার হয় — case, extra space, এবং যেকোনো
+// punctuation (dot, comma, hyphen ইত্যাদি) বাদ দিয়ে শুধু মূল শব্দ দিয়ে তুলনা করে।
+const normalizeForMatch = v => String(v ?? '').trim().toLowerCase().replace(/[^a-z0-9\u0980-\u09ff]+/g, ' ').replace(/\s+/g, ' ').trim();
 
 // মোবাইল নেভবার মেনু খোলা/বন্ধ করা
 document.getElementById('burgerBtn').addEventListener('click', () => {
