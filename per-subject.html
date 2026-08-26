@@ -140,69 +140,66 @@ header.nav{
 .ps-count{ color:var(--ink-soft); font-size:14.5px; margin:0 0 14px; }
 .ps-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
-  gap:20px;
+  grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
+  gap:14px;
   padding-bottom:60px;
 }
 .ps-card{
   background:var(--card);
   border:1px solid var(--paper-line);
-  border-radius:var(--radius);
+  border-radius:10px;
   box-shadow:var(--shadow);
-  padding:18px 20px;
+  overflow:hidden;
   display:flex;
   flex-direction:column;
-  gap:10px;
 }
 .ps-card-img{
-  width:calc(100% + 40px);
-  margin:-18px -20px 0;
-  aspect-ratio:16/10;
+  width:100%;
+  aspect-ratio:3000/500;
   object-fit:cover;
   background:#eee;
   display:block;
-  border-radius:var(--radius) var(--radius) 0 0;
 }
-.ps-card-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
-.ps-desc{ margin:0; color:var(--ink-soft); font-size:14px; line-height:1.5; }
+.ps-card-body{ padding:8px 10px; display:flex; flex-direction:column; gap:3px; }
+.ps-card-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:8px; }
+.ps-desc{ margin:2px 0 0; color:var(--ink-soft); font-size:12px; line-height:1.4; }
 .ps-level-pill{
   font-family:'Baloo Da 2', sans-serif;
-  font-size:12px; font-weight:700;
+  font-size:10.5px; font-weight:700;
   color:var(--sky);
   background:rgba(91,143,191,.12);
-  padding:4px 10px; border-radius:999px;
+  padding:2px 8px; border-radius:999px;
   white-space:nowrap;
 }
 .ps-card h3{
   margin:0;
-  font-size:18.5px;
-  line-height:1.35;
+  font-size:14.5px;
+  line-height:1.3;
   font-family:'Baloo Da 2', sans-serif;
 }
-.ps-meta{ display:flex; flex-wrap:wrap; gap:8px; }
+.ps-meta{ display:flex; flex-wrap:wrap; gap:5px; }
 .ps-meta span{
-  font-size:13px;
+  font-size:11px;
   color:var(--ink-soft);
   background:var(--paper);
   border:1px solid var(--paper-line);
-  padding:4px 10px;
+  padding:2px 7px;
   border-radius:999px;
 }
 .ps-price-row{
-  margin-top:auto;
-  padding-top:8px;
+  margin-top:2px;
   display:flex;
   align-items:baseline;
-  gap:10px;
+  gap:8px;
 }
 .ps-price{
   font-family:'Baloo Da 2', sans-serif;
   font-weight:800;
-  font-size:19px;
+  font-size:15.5px;
   color:var(--accent-dark);
 }
 .ps-price-old{
-  font-size:14px;
+  font-size:12px;
   color:var(--ink-soft);
   text-decoration:line-through;
 }
@@ -311,7 +308,8 @@ let allSubjectRows = []; // { level, year, department, subject, description, new
 
 // ডেটা এখন সরাসরি subjectwise_course_name টেবিল (action=get_subjectwise_courses)
 // থেকে আসে — level/department/year/price সব আলাদা কলামে স্পষ্টভাবে দেওয়া থাকে,
-// তাই আর কোনো text-parsing লাগে না।
+// তাই আর কোনো text-parsing লাগে না। camelCase (worker.js এর response shape) এবং
+// snake_case দুটোই সাপোর্ট করা হচ্ছে, যাতে backend version mismatch এ ডেটা মিস না হয়।
 async function fetchSubjectWiseRows(){
   const r = await fetch(VISION_API, {
     method:'POST',
@@ -322,18 +320,21 @@ async function fetchSubjectWiseRows(){
   if(!r.ok) throw new Error(`Subjectwise Course Name: HTTP ${r.status}`);
   const j = await r.json();
   if(j.status === 'error') throw new Error(j.message || 'Subjectwise Course Name API error');
-  return (j.data || [])
+  console.log('[per-subject] raw API response:', j);
+  const rows = (j.data || [])
     .map(row => ({
       level: clean(row.level),
       year: clean(row.year),
       department: clean(row.department),
-      subject: clean(row.subjectName),
+      subject: clean(row.subjectName ?? row.subject_name),
       description: clean(row.description),
-      newPrice: clean(row.newPrice),
-      oldPrice: clean(row.oldPrice),
-      image: clean(row.imageUrl)
+      newPrice: clean(row.newPrice ?? row.new_price),
+      oldPrice: clean(row.oldPrice ?? row.old_price),
+      image: clean(row.imageUrl ?? row.image_url)
     }))
     .filter(row => row.level && row.subject);
+  console.log('[per-subject] parsed rows:', rows);
+  return rows;
 }
 
 function populateLevelSelect(){
@@ -359,15 +360,17 @@ function cardHtml(row){
   if(row.year) metaBits.push(`<span>${esc(row.year)}</span>`);
   return `<article class="ps-card">
     ${row.image ? `<img class="ps-card-img" src="${esc(row.image)}" alt="${esc(row.subject)}" loading="lazy">` : ''}
-    <div class="ps-card-top">
-      <span class="ps-level-pill">${esc(row.level)}</span>
-    </div>
-    <h3>${esc(row.subject)}</h3>
-    ${metaBits.length ? `<div class="ps-meta">${metaBits.join('')}</div>` : ''}
-    ${row.description ? `<p class="ps-desc">${esc(row.description)}</p>` : ''}
-    <div class="ps-price-row">
-      ${row.newPrice ? `<span class="ps-price">${priceDisplay(row.newPrice)}</span>` : ''}
-      ${row.oldPrice ? `<span class="ps-price-old">${priceDisplay(row.oldPrice)}</span>` : ''}
+    <div class="ps-card-body">
+      <div class="ps-card-top">
+        <h3>${esc(row.subject)}</h3>
+        <span class="ps-level-pill">${esc(row.level)}</span>
+      </div>
+      ${metaBits.length ? `<div class="ps-meta">${metaBits.join('')}</div>` : ''}
+      <div class="ps-price-row">
+        ${row.oldPrice ? `<span class="ps-price-old">${priceDisplay(row.oldPrice)}</span>` : ''}
+        ${row.newPrice ? `<span class="ps-price">${priceDisplay(row.newPrice)}</span>` : ''}
+      </div>
+      ${row.description ? `<p class="ps-desc">${esc(row.description)}</p>` : ''}
     </div>
   </article>`;
 }
@@ -449,10 +452,14 @@ async function init(){
   populateFixedSelect('yearSelect', YEARS, 'ইয়ার নির্বাচন করুন');
   try{
     allSubjectRows = await fetchSubjectWiseRows();
+    if(!allSubjectRows.length){
+      document.getElementById('resultsArea').innerHTML = `<div class="ps-status"><strong>এখনো কোনো সাবজেক্ট যোগ করা হয়নি</strong>subjectwise_course_name টেবিলে ডেটা যোগ করুন, তাহলে এখানে দেখাবে।</div>`;
+      return;
+    }
     populateLevelSelect();
   }catch(e){
     console.error('Subject wise data load failed:', e);
-    document.getElementById('resultsArea').innerHTML = `<div class="ps-status"><strong>ডেটা লোড করা যায়নি</strong>ইন্টারনেট কানেকশন চেক করে আবার চেষ্টা করুন।</div>`;
+    document.getElementById('resultsArea').innerHTML = `<div class="ps-status"><strong>ডেটা লোড করা যায়নি</strong>ইন্টারনেট কানেকশন চেক করে আবার চেষ্টা করুন। (${esc(e.message||'')})</div>`;
   }
 }
 
