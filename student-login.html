@@ -1154,10 +1154,10 @@ footer a:hover{ color:#fff; }
   let courseDataRowsPromise = null;
   let activeSubjectRows = [];
   const enrollQuery = new URLSearchParams(window.location.search);
-  const normalizeForMatch = v => String(v ?? '').trim().replace(/\s+/g, ' ').toLowerCase();
-  // level/sector টেক্সটের জন্য আরও শিথিল normalize — স্পেস, হাইফেন, আন্ডারস্কোর, বন্ধনী
-  // ইত্যাদি সব বাদ দিয়ে শুধু মূল শব্দগুলো দিয়ে তুলনা করে (case, extra space, punctuation যাই থাকুক না কেন মিলে যাবে)
+  // সব matching-এই এখন loose normalize ব্যবহার হয় — case, extra space, এবং যেকোনো
+  // punctuation (dot, comma, hyphen ইত্যাদি) বাদ দিয়ে শুধু মূল শব্দ দিয়ে তুলনা করে।
   const normalizeLoose = v => String(v ?? '').trim().toLowerCase().replace(/[^a-z0-9\u0980-\u09ff]+/g, ' ').replace(/\s+/g, ' ').trim();
+  const normalizeForMatch = normalizeLoose;
   const clean = value => String(value ?? '').trim();
   const enrollParam = enrollQuery.get('enroll');
   const enrollSectorParam = clean(enrollQuery.get('sector')).toUpperCase();
