@@ -154,7 +154,17 @@ header.nav{
   flex-direction:column;
   gap:10px;
 }
+.ps-card-img{
+  width:calc(100% + 40px);
+  margin:-18px -20px 0;
+  aspect-ratio:16/10;
+  object-fit:cover;
+  background:#eee;
+  display:block;
+  border-radius:var(--radius) var(--radius) 0 0;
+}
 .ps-card-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:10px; }
+.ps-desc{ margin:0; color:var(--ink-soft); font-size:14px; line-height:1.5; }
 .ps-level-pill{
   font-family:'Baloo Da 2', sans-serif;
   font-size:12px; font-weight:700;
@@ -178,13 +188,23 @@ header.nav{
   padding:4px 10px;
   border-radius:999px;
 }
-.ps-price{
+.ps-price-row{
   margin-top:auto;
   padding-top:8px;
+  display:flex;
+  align-items:baseline;
+  gap:10px;
+}
+.ps-price{
   font-family:'Baloo Da 2', sans-serif;
   font-weight:800;
   font-size:19px;
   color:var(--accent-dark);
+}
+.ps-price-old{
+  font-size:14px;
+  color:var(--ink-soft);
+  text-decoration:line-through;
 }
 
 /* ===== ফুটার ===== */
@@ -287,58 +307,32 @@ const DEPT_YEAR_LEVELS = ['BBA','MBA','BBS','BBA Professional'];
 const DEPARTMENTS = ['Accounting','Management','Marketing','Finance'];
 const YEARS = ['1st Year','2nd Year','3rd Year','4th Year'];
 
-// name টেক্সট থেকে আসল লেভেল বের করার জন্য দৈর্ঘ্য অনুযায়ী সাজানো (লম্বাগুলো আগে চেক করা হয়,
-// যাতে "BBA Professional" কে ভুল করে শুধু "BBA" হিসেবে ধরে না ফেলে)।
-const LEVEL_MATCHERS = [...ALL_LEVELS].sort((a,b)=>b.length-a.length);
+let allSubjectRows = []; // { level, year, department, subject, description, newPrice, oldPrice, image }
 
-function parseLevelFromName(name){
-  const n = normalizeForMatch(name);
-  for(const lvl of LEVEL_MATCHERS){
-    if(n.includes(normalizeForMatch(lvl))) return lvl;
-  }
-  return '';
-}
-function parseYearFromName(name){
-  const n = normalizeForMatch(name);
-  if(/\b1st\b/.test(n)) return '1st Year';
-  if(/\b2nd\b/.test(n)) return '2nd Year';
-  if(/\b3rd\b/.test(n)) return '3rd Year';
-  if(/\b4th\b/.test(n)) return '4th Year';
-  return '';
-}
-function parseDeptFromName(name){
-  const n = normalizeForMatch(name);
-  for(const d of DEPARTMENTS){
-    if(n.includes(normalizeForMatch(d))) return d;
-  }
-  return '';
-}
-
-let allSubjectRows = []; // { level, year, department, subject, price, rawName }
-
+// ডেটা এখন সরাসরি subjectwise_course_name টেবিল (action=get_subjectwise_courses)
+// থেকে আসে — level/department/year/price সব আলাদা কলামে স্পষ্টভাবে দেওয়া থাকে,
+// তাই আর কোনো text-parsing লাগে না।
 async function fetchSubjectWiseRows(){
   const r = await fetch(VISION_API, {
     method:'POST',
     headers:{'Content-Type':'text/plain;charset=utf-8'},
-    body: JSON.stringify({ action:'get_courses' }),
+    body: JSON.stringify({ action:'get_subjectwise_courses' }),
     cache:'no-store'
   });
-  if(!r.ok) throw new Error(`Course Name: HTTP ${r.status}`);
+  if(!r.ok) throw new Error(`Subjectwise Course Name: HTTP ${r.status}`);
   const j = await r.json();
-  if(j.status === 'error') throw new Error(j.message || 'Course Name API error');
+  if(j.status === 'error') throw new Error(j.message || 'Subjectwise Course Name API error');
   return (j.data || [])
-    .filter(row => normalizeForMatch(row.level) === 'subject wise')
-    .map(row => {
-      const rawName = clean(row.name);
-      return {
-        rawName,
-        level: parseLevelFromName(rawName),
-        year: parseYearFromName(rawName),
-        department: parseDeptFromName(rawName),
-        subject: clean(row.tag),
-        price: clean(row.image) // image কলামে price রাখা হয়েছে
-      };
-    })
+    .map(row => ({
+      level: clean(row.level),
+      year: clean(row.year),
+      department: clean(row.department),
+      subject: clean(row.subjectName),
+      description: clean(row.description),
+      newPrice: clean(row.newPrice),
+      oldPrice: clean(row.oldPrice),
+      image: clean(row.imageUrl)
+    }))
     .filter(row => row.level && row.subject);
 }
 
@@ -364,12 +358,17 @@ function cardHtml(row){
   if(row.department) metaBits.push(`<span>${esc(row.department)}</span>`);
   if(row.year) metaBits.push(`<span>${esc(row.year)}</span>`);
   return `<article class="ps-card">
+    ${row.image ? `<img class="ps-card-img" src="${esc(row.image)}" alt="${esc(row.subject)}" loading="lazy">` : ''}
     <div class="ps-card-top">
       <span class="ps-level-pill">${esc(row.level)}</span>
     </div>
     <h3>${esc(row.subject)}</h3>
     ${metaBits.length ? `<div class="ps-meta">${metaBits.join('')}</div>` : ''}
-    <div class="ps-price">${row.price ? priceDisplay(row.price) : ''}</div>
+    ${row.description ? `<p class="ps-desc">${esc(row.description)}</p>` : ''}
+    <div class="ps-price-row">
+      ${row.newPrice ? `<span class="ps-price">${priceDisplay(row.newPrice)}</span>` : ''}
+      ${row.oldPrice ? `<span class="ps-price-old">${priceDisplay(row.oldPrice)}</span>` : ''}
+    </div>
   </article>`;
 }
 
@@ -383,7 +382,7 @@ function currentFilteredRows(){
     const dept = document.getElementById('deptSelect').value;
     const year = document.getElementById('yearSelect').value;
     if(!dept || !year) return []; // দুটোই সিলেক্ট না হওয়া পর্যন্ত কিছু দেখাবে না
-    rows = rows.filter(r => r.department === dept && r.year === year);
+    rows = rows.filter(r => normalizeForMatch(r.department) === normalizeForMatch(dept) && normalizeForMatch(r.year) === normalizeForMatch(year));
   }
 
   const q = normalizeForMatch(document.getElementById('subjectSearch').value);
