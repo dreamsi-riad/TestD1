@@ -327,6 +327,15 @@ const DEPT_YEAR_LEVELS = ['BBA','MBA','BBS','BBA Professional'];
 const DEPARTMENTS = ['Accounting','Management','Marketing','Finance'];
 const YEARS = ['1st Year','2nd Year','3rd Year','4th Year'];
 
+// student-login.html-এর dashboard-এ subject-wise enrolled কোর্স চেনার জন্য একই
+// এনকোডিং কনভেনশন এখানেও ব্যবহার হচ্ছে — "SW::{level}::{department}::{year}::{subject}"
+// (student-login.html এই আইডেন্টিফায়ার parse করে dashboard-এ শুধু subject-এর নাম
+// দেখায় এবং course_data টেবিল থেকে সঠিক ক্লাসগুলো খুঁজে বের করে)।
+const SW_COURSE_PREFIX = 'SW::';
+function buildSubjectWiseCourseId(row){
+  return `${SW_COURSE_PREFIX}${row.level}::${row.department || ''}::${row.year || ''}::${row.subject}`;
+}
+
 let allSubjectRows = []; // { level, year, department, subject, description, newPrice, oldPrice, image }
 
 // ডেটা এখন সরাসরি subjectwise_course_name টেবিল (action=get_subjectwise_courses)
@@ -394,7 +403,7 @@ function cardHtml(row){
         ${row.oldPrice ? `<span class="ps-price-old">${priceDisplay(row.oldPrice)}</span>` : ''}
       </div>
       ${row.description ? `<p class="ps-desc">${esc(row.description)}</p>` : ''}
-      <button type="button" class="ps-enroll-btn">এনরোল করুন</button>
+      <button type="button" class="ps-enroll-btn" data-course-id="${esc(buildSubjectWiseCourseId(row))}">এনরোল করুন</button>
     </div>
   </article>`;
 }
@@ -460,6 +469,17 @@ function render(){
 
   resultsArea.innerHTML = `<p class="ps-count">মোট ${toBn(rows.length)}টি কোর্স</p><div class="ps-grid">${rows.map(cardHtml).join('')}</div>`;
 }
+
+document.getElementById('resultsArea').addEventListener('click', (e) => {
+  const btn = e.target.closest('.ps-enroll-btn');
+  if(!btn) return;
+  const courseId = btn.dataset.courseId;
+  if(!courseId) return;
+  // student-login.html?enroll=... — এই একই প্যাটার্ন course-details.html-ও ব্যবহার করে।
+  // লগইন করা না থাকলে আগে লগইন/রেজিস্ট্রেশন করাবে, তারপর অটোমেটিক এনরোল হয়ে যাবে;
+  // আগে থেকে লগইন করা থাকলে সরাসরি এনরোল হয়ে ড্যাশবোর্ডে চলে যাবে।
+  window.location.href = `student-login.html?enroll=${encodeURIComponent(courseId)}`;
+});
 
 document.getElementById('levelSelect').addEventListener('change', () => {
   document.getElementById('deptSelect').value = '';
