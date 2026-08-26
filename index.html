@@ -574,6 +574,41 @@ header.nav{
   .pin-card .name{ font-size:13px; padding:12px 14px; }
 }
 
+/* ---------- গ্যালারি: অটো-স্ক্রলিং ইমেজ মার্কি ---------- */
+.gallery-marquee-wrap{
+  overflow:hidden;
+  position:relative;
+  width:100%;
+  -webkit-mask-image:linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+  mask-image:linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+}
+.gallery-track{
+  display:flex;
+  align-items:center;
+  gap:18px;
+  width:max-content;
+  animation:galleryScroll 40s linear infinite;
+}
+.gallery-track:hover{ animation-play-state:paused; }
+.gallery-track img{
+  height:220px;
+  width:auto;
+  max-width:340px;
+  object-fit:cover;
+  border-radius:14px;
+  box-shadow:0 12px 26px rgba(30,42,71,.16);
+  background:#eee;
+  flex:0 0 auto;
+}
+@keyframes galleryScroll{
+  from{ transform:translateX(0); }
+  to{ transform:translateX(-50%); }
+}
+@media(max-width:640px){
+  .gallery-track{ gap:12px; }
+  .gallery-track img{ height:130px; max-width:200px; border-radius:10px; }
+}
+
 /* ---------- Section shell ---------- */
 section{ padding:52px 0; }
 .section-head{
@@ -1539,6 +1574,23 @@ footer{
     </div>
   </section>
 
+  <!-- ============================================================
+       গ্যালারি সেকশন — অটো-স্ক্রলিং ইমেজ মার্কি (Drive link → auto image)
+       ============================================================ -->
+  <section id="gallery">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">গ্যালারি</span>
+        <h2>আমাদের কার্যক্রমের কিছু মুহূর্ত</h2>
+      </div>
+    </div>
+    <div class="gallery-marquee-wrap" id="galleryWrap">
+      <div class="gallery-track" id="galleryTrack">
+        <div class="teacher-data-state">গ্যালারি লোড হচ্ছে...</div>
+      </div>
+    </div>
+  </section>
+
   <!-- "আমাদের মেসেজ পাঠান" ফর্ম সেকশন সম্পূর্ণ সরিয়ে দেওয়া হয়েছে -->
 
   <!-- ============================================================
@@ -1757,6 +1809,44 @@ document.querySelectorAll('#navLinks a').forEach(link => {
     }
   }
   loadTeachers();
+})();
+
+// ============================================================
+// গ্যালারি — D1 "gallery" টেবিল থেকে ছবি এনে অটো-স্ক্রলিং মার্কি বানানো
+// ============================================================
+(function(){
+  const galleryWrap = document.getElementById('galleryWrap');
+  const galleryTrack = document.getElementById('galleryTrack');
+  if(!galleryTrack || !galleryWrap) return;
+
+  const esc = v => String(v ?? '').trim().replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  async function loadGallery(){
+    try{
+      const r = await fetch(VISION_API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'get_gallery'}),cache:'no-store'});
+      if(!r.ok) throw Error(`Gallery: HTTP ${r.status}`);
+      const j = await r.json();
+      if(j.status === 'error') throw Error(j.message || 'Gallery API error');
+
+      const images = (Array.isArray(j.data) ? j.data : []).filter(Boolean);
+      if(!images.length){
+        galleryWrap.style.display = 'none';
+        return;
+      }
+
+      // seamless loop: ছবির লিস্টটা ২ বার বসিয়ে ৫০% পর্যন্ত scroll করে আবার শুরুতে ফিরে যায়
+      const imagesHtml = images.map(url => `<img src="${esc(url)}" alt="Gallery" loading="lazy">`).join('');
+      galleryTrack.innerHTML = imagesHtml + imagesHtml;
+
+      // যত বেশি ছবি, তত বেশি সময় লাগবে এক চক্র শেষ করতে — যাতে স্পিড সবসময় একরকম আস্তে থাকে
+      const duration = Math.max(24, images.length * 5);
+      galleryTrack.style.animationDuration = duration + 's';
+    }catch(e){
+      console.error('Gallery load failed:', e);
+      galleryWrap.style.display = 'none';
+    }
+  }
+  loadGallery();
 })();
 
 // ============================================================
