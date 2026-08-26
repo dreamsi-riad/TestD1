@@ -99,9 +99,6 @@ header.nav{
 }
 .back-link:hover{ color:var(--ink); }
 
-/* ছোট মোবাইল স্ক্রিনে logo + back-link মিলে viewport-এর চেয়ে বেশি জায়গা
-   নিয়ে ফেলছিল (logo height:64px ফিক্সড রেখে shrink হচ্ছিল না), ফলে পুরো
-   পেজ horizontally overflow করে "zoom করা"-র মতো দেখাচ্ছিল। */
 @media(max-width:480px){
   .nav-inner{ gap:8px; }
   .brand .brand-logo{ height:42px; }
@@ -346,7 +343,6 @@ header.nav{
 .dash-item .k{ font-size:11.5px; color:var(--ink-soft); font-weight:600; margin-bottom:0; line-height:1.3; }
 .dash-item .v{ font-size:14.5px; font-weight:700; color:var(--ink); line-height:1.3; }
 
-/* ---------- Enrolled course / class dashboard ---------- */
 .learning-area{
   margin-top:5px;
   padding-top:5px;
@@ -454,6 +450,17 @@ header.nav{
   font-weight:700;
   vertical-align:middle;
 }
+/* ===== PENDING BADGE (নতুন যোগ করা) ===== */
+.pending-badge{
+  display:inline-block;
+  padding:2px 8px;
+  border-radius:999px;
+  background:#fef3c7;
+  color:#b45309;
+  font-size:11.5px;
+  font-weight:700;
+  vertical-align:middle;
+}
 .renew-notice{
   text-align:center;
   padding:24px 16px;
@@ -509,7 +516,6 @@ header.nav{
   font-size:17px;
   line-height:1;
 }
-/* ---------- Subject / Chapter ফিল্টার ড্রপডাউন (একই লাইনে, ৫০/৫০) ---------- */
 .filter-row{
   display:flex;
   gap:10px;
@@ -754,9 +760,6 @@ header.nav{
   100%{ left:120%; }
 }
 
-/* কোর্স রিফ্রেশ ব্যর্থ হলে (নেট সমস্যা/সার্ভার সাড়া না দিলে) দেখানো toast —
-   index.html-এর va-toast-এর সাথেই মিল রেখে (নিচে মাঝখানে ভেসে ওঠে, কয়েক
-   সেকেন্ড পর মিলিয়ে যায়) */
 .va-toast{
   position:fixed;
   left:50%;
@@ -791,8 +794,6 @@ header.nav{
   .class-item{ padding:7px 11px; }
   .class-play{ width:34px; height:34px; }
 }
-/* ফোন/ট্যাবে প্রোফাইল কার্ড যতটা সম্ভব চওড়া দেখানোর জন্য পাশের padding কমানো —
-   শুধু dashboard কার্ডে scope করা, লগইন/রেজিস্ট্রেশন ফর্মে প্রভাব পড়বে না। */
 @media(max-width:900px){
   #dashboardSection .container{ padding-left:8px; padding-right:8px; }
   #dashboardSection .auth-box{ padding-left:10px; padding-right:10px; max-width:100%; }
@@ -825,7 +826,6 @@ footer a:hover{ color:#fff; }
   text-align:center;
 }
 
-/* ---------- Loading progress ---------- */
 .loading-overlay{
   position:fixed;
   inset:0;
@@ -909,9 +909,6 @@ footer a:hover{ color:#fff; }
           <button type="button" class="tab-btn" id="tabLoginBtn">লগইন</button>
         </div>
 
-        <!-- ============================================================
-             রেজিস্ট্রেশন ফর্ম
-             ============================================================ -->
         <div class="panel" id="registerPanel">
           <form id="regForm">
             <div class="form-grid">
@@ -993,9 +990,6 @@ footer a:hover{ color:#fff; }
           <p class="switch-hint">আগে থেকে অ্যাকাউন্ট আছে? <button type="button" id="goLoginLink">লগইন করুন</button></p>
         </div>
 
-        <!-- ============================================================
-             লগইন ফর্ম
-             ============================================================ -->
         <div class="panel" id="loginPanel">
           <form id="loginForm">
             <div class="form-row full">
@@ -1016,9 +1010,6 @@ footer a:hover{ color:#fff; }
     </div>
   </section>
 
-  <!-- ============================================================
-       ড্যাশবোর্ড (লগইন করার পর দেখাবে)
-       ============================================================ -->
   <section class="auth-wrap" id="dashboardSection" style="display:none;">
     <div class="container">
       <div class="auth-box">
@@ -1140,14 +1131,9 @@ footer a:hover{ color:#fff; }
 
 <script>
 (function(){
-  // আগে Google Apps Script endpoint ছিল, এখন Cloudflare Worker + D1
   const FORM_ENDPOINT = "https://late-forest-4748.dreamsicreation.workers.dev";
   const LS_USER_KEY = "va_user";
   const LS_REGISTERED_KEY = "va_registered";
-  // একের অধিক ডিভাইসে একই account ব্যবহার হচ্ছে কিনা ধরার জন্য প্রতিটা
-  // ব্রাউজারের জন্য একটা fixed random token বানিয়ে localStorage-এ রাখা হয়।
-  // এই token সার্ভারে পাঠানো হয় প্রতিটা login/get_student/enroll call-এ,
-  // সার্ভার সেটা "Device Sessions" ট্যাবের সাথে মিলিয়ে multi-device detect করে।
   const LS_DEVICE_TOKEN_KEY = "va_device_token";
   function getDeviceToken(){
     let token = localStorage.getItem(LS_DEVICE_TOKEN_KEY);
@@ -1159,30 +1145,14 @@ footer a:hover{ color:#fff; }
     }
     return token;
   }
-  // ক্লাস ডেটা এখন Cloudflare Worker-এর action=get_course_data দিয়ে
-  // (D1-এর "course_data" টেবিল থেকে) লোড হয় — আগে সরাসরি gviz দিয়ে
-  // "Course Data" Tab থেকে পড়া হতো, এখন সেই একই ডেটা একটাই API-এর
-  // মধ্য দিয়ে আসে (নিচের FORM_ENDPOINT-ই ব্যবহার হয়)।
   const classDataCache = new Map();
   let courseDataRowsPromise = null;
   let activeSubjectRows = [];
   const enrollParam = new URLSearchParams(window.location.search).get('enroll');
-  // Sheet থেকে আসা টেক্সট তুলনা/মিলানোর (matching) জন্য normalize করার হেল্পার।
-  // শিটে ভুলবশত extra space বা capital/small letter ভিন্ন হলেও যেন মিল খুঁজে পায়,
-  // সেজন্য শুধু তুলনার সময় এটা ব্যবহার হয় — আসল টেক্সট/casing যেমন শিটে আছে তেমনই display হয়, বদলায় না।
   const normalizeForMatch = v => String(v ?? '').trim().replace(/\s+/g, ' ').toLowerCase();
   const clean = value => String(value ?? '').trim();
   const escapeHtml = value => clean(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-  // ============================================================
-  // সাবজেক্ট-ভিত্তিক (per-subject.html থেকে enroll করা) কোর্স হ্যান্ডলিং
-  // per-subject.html-এ এনরোল করলে student_enrolled.course কলামে একটা
-  // এনকোডেড আইডেন্টিফায়ার সেভ হয়: "SW::{level}::{department}::{year}::{subject}"
-  // — এই একই কনভেনশন per-subject.html-এও থাকতে হবে (দুই ফাইলেই সিঙ্কে রাখা)।
-  // এই আইডেন্টিফায়ার থেকে dashboard-এ subject-এর নামটাই দেখানো হয়, কিন্তু
-  // ক্লাস ম্যাচ করার জন্য পুরো আইডেন্টিফায়ারটাই (level/department/year/subject)
-  // ব্যবহার হয়।
-  // ============================================================
   const SW_COURSE_PREFIX = 'SW::';
   const SW_DEPARTMENTS = ['Accounting','Management','Marketing','Finance'];
   const SW_YEAR_ORDINALS = ['1st','2nd','3rd','4th'];
@@ -1203,9 +1173,6 @@ footer a:hover{ color:#fff; }
     return parsed ? parsed.subject : courseId;
   }
 
-  // course_data টেবিলের course_name কলামে ("BBA 1st Year Accounting" /
-  // "BBA 1st Accounting" ইত্যাদি ধরনের টেক্সটে) department/year embedded
-  // থাকে — এখান থেকে সেগুলো বের করার হেল্পার।
   function extractYearFromCourseName(courseName){
     const norm = normalizeForMatch(courseName);
     for(const ord of SW_YEAR_ORDINALS){
@@ -1221,10 +1188,6 @@ footer a:hover{ color:#fff; }
     return '';
   }
 
-  // subject-wise enrolled কোর্সের জন্য course_data (সব লেভেল, level field সহ)
-  // থেকে ম্যাচিং class rows বের করে — level + subject মিলবে, আর department/year
-  // দেওয়া থাকলে (BBA/MBA/BBS/BBA Professional-এর মতো) সেগুলোও course_name
-  // থেকে বের করে মিলিয়ে দেখা হয়।
   function findSubjectWiseClassRows(allRows, parsed){
     return allRows.filter(r=>{
       if(!r.subject || !r.url) return false;
@@ -1327,8 +1290,6 @@ footer a:hover{ color:#fff; }
     return Array.isArray(data?.courses) ? data.courses : [];
   }
 
-  // Sheet থেকে আসা watchTime (মিনিটে, decimal) কে "X ঘণ্টা Y মিনিট" বা
-  // "Y মিনিট" আকারে দেখানোর জন্য — ড্যাশবোর্ডে কোর্স কার্ডে দেখানো হয়।
   function formatWatchTimeValue(minutes){
     const total = Math.round(Number(minutes) || 0);
     if(total <= 0) return '0 Minutes';
@@ -1363,24 +1324,16 @@ footer a:hover{ color:#fff; }
     return m ? m[1] : '';
   }
 
-  // ---------- Custom (branding-free) class video player ----------
-  // ছাত্র যেন YouTube-এর নিজস্ব লোগো/টাইটেল/"Watch on YouTube" লিংকে ক্লিক করে
-  // সাইট থেকে বের হয়ে যেতে না পারে, তাই controls=0 দিয়ে YouTube-এর native UI
-  // পুরোপুরি বন্ধ রেখে, নিজস্ব play/pause/seek/mute/fullscreen বাটন বসানো হলো।
   let ytPlayer = null;
   let ytApiReady = false;
   let pendingVideoId = null;
   let ytProgressTimer = null;
   let ytSeeking = false;
 
-  // ---------- Watch-time tracking (নতুন) ----------
-  // ছাত্র যে কোর্সের ক্লাস লিস্ট এখন খোলা আছে, শুধু সেটাই এখানে বসে —
-  // এক্সপায়ার্ড/লকড অবস্থায় বা কোনো কোর্স select করা না থাকলে খালি থাকে,
-  // তখন কোনো watch time ট্র্যাক/পাঠানো হয় না।
   let currentWatchCourse = '';
   let watchPendingSeconds = 0;
   let watchTrackTimer = null;
-  const WATCH_FLUSH_THRESHOLD_SEC = 20; // এতো সেকেন্ড জমলেই সার্ভারে পাঠানো হয়
+  const WATCH_FLUSH_THRESHOLD_SEC = 20;
 
   function getCurrentUserMobile(){
     try{
@@ -1389,9 +1342,6 @@ footer a:hover{ color:#fff; }
     }catch(e){ return ''; }
   }
 
-  // প্রতি সেকেন্ডে ১ সেকেন্ড করে জমা হয় — শুধু startWatchTracking() চলা অবস্থায়
-  // (মানে ভিডিও আসলেই PLAYING থাকা অবস্থায়) এই টাইমার চলে, তাই pause/seek/tab-hidden
-  // অবস্থায় এমনিতেই কিছু জমে না।
   function startWatchTracking(){
     stopWatchTracking();
     watchTrackTimer = setInterval(()=>{
@@ -1404,10 +1354,6 @@ footer a:hover{ color:#fff; }
     if(watchTrackTimer){ clearInterval(watchTrackTimer); watchTrackTimer = null; }
   }
 
-  // জমে থাকা সেকেন্ড ব্যাকগ্রাউন্ডে সার্ভারে পাঠিয়ে দেয় (Mobile + Course মিলিয়ে
-  // "Student Enrolled" ট্যাবের WatchTime কলামে যোগ হয়)। ট্যাব বন্ধ/hidden হওয়ার
-  // মুহূর্তে sendBeacon ব্যবহার করা হয়, যেটা পেজ বন্ধ হয়ে গেলেও রিলায়েবলি ডেটা
-  // পাঠায় — সাধারণ fetch তখন মাঝপথে বাতিল হয়ে যেতে পারে।
   function flushWatchTime(useBeacon){
     if(watchPendingSeconds <= 0 || !currentWatchCourse) return;
     const mobile = getCurrentUserMobile();
@@ -1429,9 +1375,6 @@ footer a:hover{ color:#fff; }
     fetch(FORM_ENDPOINT, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: payload, keepalive:true}).catch(()=>{});
   }
 
-  // ট্যাব minimize/অন্য ট্যাবে গেলে ট্র্যাকিং থামিয়ে যা জমেছে পাঠিয়ে দেওয়া হয়,
-  // ফিরে এলে ভিডিও এখনো PLAYING থাকলে আবার শুরু হয় — background-এ চালিয়ে
-  // রেখে ভুয়া সময় জমার সুযোগ থাকে না।
   document.addEventListener('visibilitychange', ()=>{
     if(document.visibilityState === 'hidden'){
       stopWatchTracking();
@@ -1457,8 +1400,6 @@ footer a:hover{ color:#fff; }
     if(pendingVideoId){ const id = pendingVideoId; pendingVideoId = null; playClassVideo(id); }
   };
 
-  // ▶/⏸ ও 🔊/🔇 আইকনগুলো SVG দিয়ে দেখানো হয় (ডিভাইস/ফন্ট নির্বিশেষে সবসময় ঠিকভাবে
-  // দেখা যাওয়ার জন্য) — state পাল্টালে innerHTML সোয়াপ হয়।
   const CC_ICONS = {
     play: '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>',
     pause: '<svg viewBox="0 0 24 24"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>'
@@ -1576,15 +1517,12 @@ footer a:hover{ color:#fff; }
       else if(classPlayer.webkitRequestFullscreen) classPlayer.webkitRequestFullscreen();
     });
   }
-  // ছাত্র যেন right-click করে "Copy video URL" বের করতে না পারে, সেই deterrent
   classPlayer.addEventListener('contextmenu', (e)=> e.preventDefault());
 
-  // ---------- Quality ও Speed সেটিংস মেনু ----------
   const QUALITY_LABELS = {
     highres:'অতি উচ্চমান', hd2160:'2160p', hd1440:'1440p', hd1080:'1080p',
     hd720:'720p', large:'480p', medium:'360p', small:'240p', tiny:'144p', auto:'অটো'
   };
-  // শুধু 1x (Normal), 1.5x আর 2x — এই তিনটা স্পিড অপশনই দেখানো হবে
   const ALLOWED_SPEEDS = [1, 1.5, 2];
   const SPEED_OPTION_LABELS = { 1:'1x (Normal)', 1.5:'1.5x', 2:'2x' };
   const SPEED_VALUE_LABELS = { 1:'1x', 1.5:'1.5x', 2:'2x' };
@@ -1621,11 +1559,10 @@ footer a:hover{ color:#fff; }
   function populateSpeedOptions(){
     if(!ytPlayer || typeof ytPlayer.getAvailablePlaybackRates !== 'function') return;
     const available = ytPlayer.getAvailablePlaybackRates() || [1];
-    // ভিডিওতে যেসব রেট আসলেই সাপোর্ট করে তার মধ্য থেকে শুধু 1x/1.5x/2x রাখা হয়
     let rates = ALLOWED_SPEEDS.filter(r=>available.includes(r));
     if(!rates.length) rates = [1];
     let current = (typeof ytPlayer.getPlaybackRate === 'function' && ytPlayer.getPlaybackRate()) || 1;
-    if(!rates.includes(current)) current = 1; // পুরনো/বাইরের কোনো রেট সেট থাকলে Normal-এ ফিরিয়ে আনা হয়
+    if(!rates.includes(current)) current = 1;
     ccSpeedOptions.innerHTML = rates.map(r=>{
       const label = SPEED_OPTION_LABELS[r] || `${r}x`;
       const active = r === current ? ' active' : '';
@@ -1675,11 +1612,6 @@ footer a:hover{ color:#fff; }
     }
   });
 
-  // নতুন consolidated Sheet-এর একটাই "Course Data" Tab পুরোটা একবার fetch করে
-  // cache রাখা হয় (Level, Course Name, Subject, Chapter, Topic, Link কলাম নিয়ে),
-  // তারপর প্রতিটা কোর্সের জন্য "Course Name" কলাম মিলিয়ে সেই কোর্সের rows বের
-  // করা হয়। একই কোর্সের জন্য বারবার fetch এড়াতে classDataCache-এ রেজাল্ট cache
-  // থাকে (enroll-time চেক আর dashboard-এ class load — দুই জায়গাতেই ব্যবহার হয়)।
   function loadCourseDataRows(){
     if(!courseDataRowsPromise){
       courseDataRowsPromise = (async ()=>{
@@ -1736,8 +1668,6 @@ footer a:hover{ color:#fff; }
   }
 
 
-  // একটা rows array থেকে class list render করে (subject select করলে বা search করলে —
-  // দুই জায়গাতেই এই একই ফাংশন ব্যবহার হয়, যাতে কোড ডুপ্লিকেট না হয়)।
   function renderClassItems(rows){
     classList.innerHTML = rows.length
       ? rows.map((item,index)=>`<div class="class-item-row"><button type="button" class="class-item" data-video="${escapeHtml(item.url)}"><span class="class-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span><span class="class-meta"><span class="class-title">${escapeHtml(item.className || `Class ${index+1}`)}</span><span class="class-chapter">${escapeHtml(item.chapter || '')}</span></span></button>${item.pdfUrl ? `<a class="class-pdf-btn" href="${escapeHtml(driveDirectLink(item.pdfUrl))}" target="_blank" rel="noopener" title="Download PDF" onclick="event.stopPropagation()"><svg viewBox="0 0 40 50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><rect x="0" y="0" width="40" height="16" fill="#e21c1c"/><text x="20" y="12" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="9.5" font-weight="800" fill="#ffffff" letter-spacing="0.3">PDF</text><path d="M20 22v14" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/><path d="M14 30l6 6 6-6" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M12 42h16" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/></svg></a>` : ''}</div>`).join('')
@@ -1748,9 +1678,6 @@ footer a:hover{ color:#fff; }
     }));
   }
 
-  // টপিক (class title) দিয়ে সার্চ করার জন্য — chapter নয়, শুধু className/topic
-  // ম্যাচ হবে। space/case নিয়ে সমস্যা না হয় তাই normalizeForMatch দিয়ে দুইপাশই
-  // normalize করে substring মিলানো হয়।
   if(classSearchInput){
     classSearchInput.addEventListener('input', ()=>{
       const q = normalizeForMatch(classSearchInput.value);
@@ -1763,8 +1690,6 @@ footer a:hover{ color:#fff; }
     });
   }
 
-  // Subject dropdown-এ যা সিলেক্ট করা আছে তার ভিতরের unique chapter গুলো
-  // দিয়ে Chapter dropdown সাজানো হয় ("সব চ্যাপ্টার" ডিফল্ট অপশন হিসেবে থাকে)।
   function populateChapterSelect(rows, subject){
     const subjectRows = rows.filter(x=>normalizeForMatch(x.subject)===normalizeForMatch(subject));
     const seenChapters = new Map();
@@ -1797,19 +1722,12 @@ footer a:hover{ color:#fff; }
       classList.innerHTML=`<div class="learning-empty">${escapeHtml(result.message || 'এই course-এর কোনো class এখনো পাওয়া যায়নি।')}</div>`;
       return;
     }
-    // এই course-টার ক্লাস সফলভাবে লোড হলো — এখন থেকে এই course-এর নামেই
-    // watch time জমা/পাঠানো হবে (Mobile + Course মিলিয়ে)।
     currentWatchCourse = courseName;
 
     const subjectSelectWrap = subjectSelect.closest('.filter-select-wrap');
     const swParsed = parseSubjectWiseCourseId(courseName);
 
     if(swParsed){
-      // ============================================================
-      // সাবজেক্ট-ভিত্তিক (per-subject.html) এনরোলমেন্ট: এখানে একটাই
-      // সাবজেক্ট প্রযোজ্য, তাই Subject dropdown দেখানোর দরকার নেই —
-      // শুধু Chapter dropdown আর তার নিচে সার্চ বক্স থাকবে।
-      // ============================================================
       courseLearningPanel.style.display='block';
       filterRow.style.display='flex';
       if(subjectSelectWrap) subjectSelectWrap.style.display='none';
@@ -1835,8 +1753,6 @@ footer a:hover{ color:#fff; }
 
     if(subjectSelectWrap) subjectSelectWrap.style.display='';
 
-    // একই subject sheet-এ ভিন্ন space/case দিয়ে একাধিকবার থাকলেও যেন duplicate অপশন না হয়,
-    // তাই normalize করে unique subject বের করা হয় (প্রথমবার যেভাবে পাওয়া গেছে সেই বানানটাই দেখানো হয়)।
     const seenSubjects = new Map();
     rows.forEach(x => {
       const key = normalizeForMatch(x.subject);
@@ -1860,8 +1776,6 @@ footer a:hover{ color:#fff; }
       renderClassItems(filtered);
     };
 
-    // onchange ব্যবহার করা হচ্ছে (addEventListener নয়) যাতে course বদলালে
-    // পুরনো handler জমে না থাকে — select element প্রতিবার নতুন করে তৈরি হয় না।
     subjectSelect.onchange = ()=>{ populateChapterSelect(rows, subjectSelect.value); applyFilters(); };
     chapterSelect.onchange = applyFilters;
 
@@ -1896,6 +1810,18 @@ footer a:hover{ color:#fff; }
     </div>`;
   }
 
+  // ===== PENDING NOTICE (নতুন যোগ করা) =====
+  function showPendingNotice(course){
+    classLearningReset();
+    courseLearningPanel.style.display='block';
+    filterRow.style.display='none';
+    stopClassPlayer();
+    classList.innerHTML=`<div class="renew-notice">
+      <strong>⏳ কোর্সটি এখনো সক্রিয় করা হয়নি</strong>
+      <p>আপনার এনরোলমেন্টটি প্রশাসকের অনুমোদনের অপেক্ষায় রয়েছে।<br>সক্রিয় করা হলে ক্লাস মেটেরিয়াল দেখতে পাবেন।</p>
+    </div>`;
+  }
+
   function showDeviceBlockedNotice(){
     classLearningReset();
     courseLearningPanel.style.display='block';
@@ -1917,7 +1843,19 @@ footer a:hover{ color:#fff; }
     learningEmpty.style.display='none';
     enrolledCourseList.innerHTML=courses.map((course,i)=>{
       const isExpired = String(course.status||'').trim().toLowerCase()==='expired';
-      const badge = isDeviceBlocked ? '<span class="locked-badge">🔒 লকড</span>' : (isExpired ? '<span class="expired-badge">মেয়াদ শেষ</span>' : '<span class="active-badge">✓ সক্রিয়</span>');
+      const isPending = String(course.status||'').trim().toLowerCase()==='pending';
+      
+      let badge = '';
+      if (isDeviceBlocked) {
+        badge = '<span class="locked-badge">🔒 লকড</span>';
+      } else if (isExpired) {
+        badge = '<span class="expired-badge">মেয়াদ শেষ</span>';
+      } else if (isPending) {
+        badge = '<span class="pending-badge">⏳ অপেক্ষমাণ</span>';
+      } else {
+        badge = '<span class="active-badge">✓ সক্রিয়</span>';
+      }
+
       const lockedClass = isDeviceBlocked ? ' is-locked' : (isExpired ? ' is-expired' : '');
       const isSubjectWise = !!parseSubjectWiseCourseId(course.name);
       const displayName = getSubjectWiseDisplayName(course.name);
@@ -1936,10 +1874,14 @@ footer a:hover{ color:#fff; }
     const selectCourse=name=>{
       enrolledCourseList.querySelectorAll('.enrolled-course-btn').forEach(btn=>btn.classList.toggle('active',normalizeForMatch(btn.dataset.course)===normalizeForMatch(name)));
       const course = courses.find(c=>normalizeForMatch(c.name)===normalizeForMatch(name));
+      const status = String(course.status || '').trim().toLowerCase();
+      
       if(isDeviceBlocked){
         showDeviceBlockedNotice();
-      } else if(course && String(course.status||'').trim().toLowerCase()==='expired'){
+      } else if(status === 'expired'){
         showExpiredNotice(course);
+      } else if(status === 'pending'){
+        showPendingNotice(course);
       } else {
         loadCourseClasses(name);
       }
@@ -1948,11 +1890,6 @@ footer a:hover{ color:#fff; }
     selectCourse(courses[0].name);
   }
 
-  // প্রোফাইল অংশ (নাম, লেভেল, ইনস্টিটিউট ইত্যাদি) কম ঝুঁকিপূর্ণ আর কালেভদ্রে বদলায়,
-  // তাই এটা cache থেকে সাথে সাথেই (instant) দেখানো নিরাপদ। কোর্স/সাবজেক্টের status
-  // (active/expired/device-blocked) আলাদাভাবে renderEnrolledCourses() দিয়ে বসানো হয় —
-  // যাতে "আগে stale কোর্স দেখানো, তারপর কয়েক সেকেন্ড পর ঠিকটা দেখানো" এই flash/jump
-  // কখনো না হয়।
   function renderProfileInfo(data){
     hideLoading();
     document.getElementById('dashName').textContent = data.name || '—';
@@ -1966,10 +1903,6 @@ footer a:hover{ color:#fff; }
     dashboardSection.style.display = 'block';
   }
 
-  // কোর্স লিস্ট অংশে সার্ভার থেকে confirmed data না আসা পর্যন্ত একটা shimmer
-  // placeholder দেখায় (পুরনো cached কোর্স/status দেখানো হয় না), যাতে fresh data
-  // এসে সাথে সাথেই সঠিক অবস্থা (active/expired/locked/নতুন subject) একবারেই বসে —
-  // মাঝখানে "পুরনোটা দেখানোর পর নতুনটায় জাম্প" করার মতো কিছু চোখে না পড়ে।
   function showCourseListSkeleton(){
     const deviceBlockedBanner = document.getElementById('deviceBlockedBanner');
     if(deviceBlockedBanner) deviceBlockedBanner.style.display = 'none';
@@ -1981,9 +1914,6 @@ footer a:hover{ color:#fff; }
     </div>`;
   }
 
-  // সার্ভার থেকে কোর্সের fresh status আনতে ব্যর্থ হলে (নেট সমস্যা/timeout) —
-  // পুরনো cached কোর্স দেখানো হয় না, বরং একটা toast দিয়ে জানানো হয় আর কোর্স
-  // অংশে একটা retry অপশন দেখানো হয়।
   let vaToastTimer = null;
   function vaShowToast(message){
     let toast = document.getElementById('vaToast');
@@ -2017,7 +1947,6 @@ footer a:hover{ color:#fff; }
   }
 
   function renderDashboard(data){
-    // Dashboard is ready: close the loading overlay before showing it.
     renderProfileInfo(data);
     renderEnrolledCourses(data);
     const enrollmentDates=document.getElementById('enrollmentDates');
@@ -2052,11 +1981,6 @@ footer a:hover{ color:#fff; }
             alert('❌ ' + (err.message || 'Course enrollment failed.'));
           });
       } else {
-        // প্রোফাইল ইনফো (নাম, লেভেল ইত্যাদি) instant দেখানো হয় cache থেকে — এটা
-        // কম ঝুঁকিপূর্ণ। কিন্তু কোর্স/সাবজেক্ট অংশ পুরনো cache থেকে সাথে সাথে না
-        // দেখিয়ে একটা skeleton দেখানো হয়, আর সার্ভার থেকে fresh/confirmed
-        // status (active/expired/device-blocked/নতুন subject) আসার পরই একবারে
-        // বসানো হয় — তাই "আগে পুরনোটা, কয়েক সেকেন্ড পর নতুনটা" এই flash হয় না।
         renderProfileInfo(cachedData);
         showCourseListSkeleton();
         refreshStudentData(cachedData.mobile);
@@ -2071,8 +1995,6 @@ footer a:hover{ color:#fff; }
     localStorage.getItem(LS_REGISTERED_KEY) ? showLogin() : showRegister();
   }
 
-  // সাবজেক্টের নাম দেখে একটা relevant ইমোজি আইকন বেছে দেয় (নতুন সাবজেক্ট যোগ হলেও
-  // কোনো কোড না বদলে, keyword মিলে গেলে আইকন বসে যায়; না মিললে ডিফল্ট 📘)।
   function getSubjectIcon(subject){
     const s = String(subject || '').toLowerCase();
     const rules = [
@@ -2104,25 +2026,11 @@ footer a:hover{ color:#fff; }
     return String(mobile || '').trim().replace(/[\s-]/g, '');
   }
 
-  // পেজ লোডে সাথে সাথে cached ডেটা দিয়ে dashboard দেখানো হয় (দ্রুত UI-এর জন্য),
-  // কিন্তু কোর্সের Active/Expired status যেন সবসময় Sheet-এর আসল অবস্থার সাথে মিলে
-  // থাকে (login না করেই), তাই এই ফাংশন ব্যাকগ্রাউন্ডে চুপচাপ সার্ভার থেকে ফ্রেশ
-  // ডেটা এনে dashboard + localStorage cache আপডেট করে দেয়। ব্যর্থ হলে (নেট না
-  // থাকলে) cached ডেটা-ই দেখতে থাকবে, কোনো error দেখানো হয় না।
-  //
-  // ⚠️ বাগ ফিক্স: এই কল সার্ভারে শেষ হতে ১-২ সেকেন্ড লাগতে পারে। এর মধ্যেই কেউ
-  // Logout চাপলে, আগে থেকে চলতে থাকা এই request পরে শেষ হয়ে আবার localStorage-এ
-  // user বসিয়ে দিত আর dashboard দেখিয়ে দিত — মানে logout করার কয়েক সেকেন্ড পর
-  // "ভুতুড়েভাবে" আবার login হয়ে যেত। তাই result প্রয়োগ করার আগে চেক করা হয় যে
-  // ইউজার এখনো আসলেই logged-in আছে কিনা (আর একই account কিনা — মাঝে অন্য
-  // account দিয়ে login করলে সেটাও যেন overwrite না হয়)।
   async function refreshStudentData(mobile){
     if(!mobile) return;
-    // এখনো logged-in আছে কি না, আর একই account কি না — সেটা result আসার পরে আর
-    // error state দেখানোর আগে, দুই জায়গাতেই চেক করার জন্য একটা helper।
     const isStillCurrentUser = ()=>{
       const stillLoggedInRaw = localStorage.getItem(LS_USER_KEY);
-      if(!stillLoggedInRaw) return false; // ইতিমধ্যে logout হয়ে গেছে
+      if(!stillLoggedInRaw) return false;
       let stillLoggedInMobile = '';
       try{ stillLoggedInMobile = JSON.parse(stillLoggedInRaw)?.mobile || ''; }catch(e){}
       return normalizeMobileForMatch(stillLoggedInMobile) === normalizeMobileForMatch(mobile);
@@ -2133,14 +2041,12 @@ footer a:hover{ color:#fff; }
         mobile: normalizeMobileForMatch(mobile),
         deviceToken: getDeviceToken()
       });
-      if(!isStillCurrentUser()) return; // মাঝে logout করেছে বা অন্য account-এ ঢুকেছে
+      if(!isStillCurrentUser()) return;
       if(result.status === 'ok' && result.data){
         result.data.mobile = String(mobile).trim();
         localStorage.setItem(LS_USER_KEY, JSON.stringify(result.data));
         renderDashboard(result.data);
       } else {
-        // সার্ভার fresh data দিতে পারেনি — পুরনো cached কোর্স দেখানো হয় না়,
-        // বরং toast + retry option দেখানো হয়।
         vaShowToast('📶 নেটওয়ার্ক সমস্যা হচ্ছে, একটু পর আবার চেষ্টা করুন।');
         showCourseListError(mobile);
       }
@@ -2172,9 +2078,6 @@ footer a:hover{ color:#fff; }
     const user=JSON.parse(localStorage.getItem(LS_USER_KEY) || 'null');
     if(!user || !user.mobile) return false;
 
-    // Enroll করার আগেই Course Link Sheet-এ (gviz + marker check দিয়ে reliably)
-    // কোর্সের নামে Tab আছে কিনা এবং তাতে অন্তত একটা class row আছে কিনা চেক করা হয়।
-    // না থাকলে enroll-ই হতে দেওয়া হয় না।
     showLoading('কোর্সের class materials যাচাই করা হচ্ছে...');
     const classCheck = await fetchClassData(courseName);
     const hasMaterials = classCheck.status === 'ok' && Array.isArray(classCheck.data) && classCheck.data.length > 0;
