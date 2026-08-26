@@ -1812,10 +1812,6 @@ function vaShowToast(message){
     return (j.data||[]).map(row=>{
       const level=clean(row.level), name=clean(row.name);
       if(!level||!name) return null;
-      // "Subject Wise" লেভেলের row গুলো মূল কোর্স গ্রিডে (SSC/HSC/BBA/MBA/BBS/BBA Professional
-      // ট্যাব) কার্ড হিসেবে দেখানো হবে না — এগুলো শুধু per-subject.html পেজের raw ডেটা
-      // হিসেবে ব্যবহৃত হয় (name/tag/image কলাম আলাদাভাবে পার্স করে level/department/year/price বের করা হয়)।
-      if(normalizeForMatch(level)==='subject wise') return null;
       return {
         name,
         tag:clean(row.tag),
