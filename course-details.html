@@ -31,6 +31,10 @@
             --radius: 14px;
         }
         
+        html {
+            overflow-x: hidden;
+        }
+
         body {
             font-family: 'Anek Bangla', sans-serif;
             background: var(--paper);
@@ -164,6 +168,19 @@
             .burger {
                 display: block;
             }
+        }
+
+        /* ছোট মোবাইল স্ক্রিনে logo + লগইন বাটন + বার্গার মিলে viewport-এর চেয়ে
+           বেশি জায়গা নিয়ে ফেলছিল (logo height:64px ফিক্সড রেখে shrink হচ্ছিল না),
+           ফলে পুরো পেজ horizontally overflow করে "zoom করা"-র মতো দেখাচ্ছিল আর
+           element গুলো একপাশে চাপা পড়ে যাচ্ছিল। ছোট স্ক্রিনে এগুলো ছোট করে
+           viewport-এর ভেতরেই ফিট করানো হলো। */
+        @media(max-width: 480px) {
+            .nav-inner{ gap: 8px; padding: 0 12px; }
+            .brand .brand-logo{ height: 42px; }
+            .nav-cta{ padding: 8px 12px; font-size: 12.5px; gap: 5px; }
+            .nav-cta svg{ width: 14px; height: 14px; }
+            .burger{ font-size: 22px; }
         }
         
         /* ===== কোর্স ডিটেইলস সেকশন ===== */
