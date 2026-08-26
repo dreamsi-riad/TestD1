@@ -350,7 +350,10 @@ const YEARS = ['1st Year','2nd Year','3rd Year','4th Year'];
 // দেখায় এবং course_data টেবিল থেকে সঠিক ক্লাসগুলো খুঁজে বের করে)।
 const SW_COURSE_PREFIX = 'SW::';
 function buildSubjectWiseCourseId(row){
-  return `${SW_COURSE_PREFIX}${row.level}::${row.department || ''}::${row.year || ''}::${row.subject}`;
+  const sector = String(row.nuDcu || '').trim().toUpperCase();
+  return sector
+    ? `${SW_COURSE_PREFIX}${row.level}::${row.department || ''}::${row.year || ''}::${sector}::${row.subject}`
+    : `${SW_COURSE_PREFIX}${row.level}::${row.department || ''}::${row.year || ''}::${row.subject}`;
 }
 
 let allSubjectRows = []; // { level, year, department, subject, description, newPrice, oldPrice, image }
@@ -396,7 +399,8 @@ async function fetchSubjectWiseRows(){
       description: clean(row.description),
       newPrice: clean(row.newPrice ?? row.new_price),
       oldPrice: clean(row.oldPrice ?? row.old_price),
-      image: clean(row.imageUrl ?? row.image_url)
+      image: clean(row.imageUrl ?? row.image_url),
+      nuDcu: clean(row.nuDcu ?? row.nu_dcu).toUpperCase()
     }))
     .filter(row => row.level && row.subject);
   console.log('[per-subject] parsed rows:', rows);
