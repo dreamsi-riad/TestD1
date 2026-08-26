@@ -342,7 +342,7 @@ footer{ border-top:1px solid var(--paper-line); padding:22px 0; margin-top:20px;
 const VISION_API = "https://late-forest-4748.dreamsicreation.workers.dev";
 const clean = v => String(v ?? '').trim();
 const esc = v => clean(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const normalizeForMatch = v => String(v ?? '').trim().replace(/\s+/g, ' ').toLowerCase();
+const normalizeForMatch = v => String(v ?? '').trim().toLowerCase().replace(/[^a-z0-9\u0980-\u09ff]+/g, ' ').replace(/\s+/g, ' ').trim();
 const bnDigits = '০১২৩৪৫৬৭৮৯', enDigits = '0123456789';
 const toBn = v => String(v ?? '').replace(/[0-9]/g, d => bnDigits[enDigits.indexOf(d)]);
 const priceDisplay = v => { const x = clean(v); if(!x) return ''; return /[৳$€£]/.test(x) ? toBn(x) : `৳${toBn(x)}`; };
