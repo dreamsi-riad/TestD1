@@ -1812,6 +1812,10 @@ function vaShowToast(message){
     return (j.data||[]).map(row=>{
       const level=clean(row.level), name=clean(row.name);
       if(!level||!name) return null;
+      // "Subject Wise" লেভেলের row গুলো মূল কোর্স গ্রিডে (SSC/HSC/BBA/MBA/BBS/BBA Professional
+      // ট্যাব) কার্ড হিসেবে দেখানো হবে না — এগুলো শুধু per-subject.html পেজের raw ডেটা
+      // হিসেবে ব্যবহৃত হয় (name/tag/image কলাম আলাদাভাবে পার্স করে level/department/year/price বের করা হয়)।
+      if(normalizeForMatch(level)==='subject wise') return null;
       return {
         name,
         tag:clean(row.tag),
@@ -1828,7 +1832,11 @@ function vaShowToast(message){
     }).filter(Boolean);
   }
   function categoryHtml(cat,count){const m=CATEGORY_META[cat]||{color:'#5B8FBF',bg:'#EEF4F8',icon:'<circle cx="12" cy="12" r="8"/>'};return `<a href="#courses" class="cat-card" data-cat="${esc(cat)}" style="--cat-color:${m.color}"><span class="cat-icon" style="background:${m.bg}"><svg viewBox="0 0 24 24" fill="none" stroke="${m.color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${m.icon}</svg></span><span class="cat-text"><b>${esc(cat)}</b><span>${toBn(count)}টি কোর্স</span></span></a>`}
-  function cardHtml(c){const m=CATEGORY_META[c.category]||{color:'#5B8FBF'};const isEnrolled=enrolledCourseNames.has(normalizeForMatch(c.name));const actionHtml=isEnrolled?`<a href="student-login.html" class="btn btn-primary course-enrolled-trigger">ভর্তি হয়েছেন ✓</a>`:`<a href="course-details.html?course=${encodeURIComponent(c.slug)}" data-course-name="${esc(c.name)}" class="btn btn-primary course-details-trigger">বিস্তারিত</a>`;return `<article class="course-card" data-category="${esc(c.category)}" data-course-slug="${esc(c.slug)}"><img class="course-image" src="${esc(c.image)}" alt="${esc(c.name)}" loading="lazy"><div class="course-top"><span class="eyebrow" style="color:${m.color}">${esc(c.category)}</span>${c.tag?`<span class="course-tag">${esc(c.tag)}</span>`:''}</div><div class="course-body"><h3>${esc(c.name)}</h3><p>${esc(c.shortDescription)}</p><div class="course-foot"><div class="price"><div class="price-row">${c.price?`<span class="price-now">${esc(c.price)}</span>`:''}${c.oldPrice?`<span class="price-old">${esc(c.oldPrice)}</span>`:''}</div>${c.priceNote?`<small>${esc(c.priceNote)}</small>`:''}</div>${actionHtml}</div></div></article>`}
+  // tag ঘরে "Subject Wise" বা "Improvement" লেখা থাকলে এই কার্ড normal course-details.html
+  // এ না গিয়ে per-subject.html এ যাবে (সেখানে single-subject কোর্সগুলো লেভেল/ডিপার্টমেন্ট/ইয়ার
+  // অনুযায়ী ফিল্টার করে দেখানো হয়), এবং course_data availability-check এড়িয়ে সরাসরি লিংক হবে।
+  function isSubjectWiseTag(tag){const t=normalizeForMatch(tag);return t.includes('subject wise')||t.includes('improvement')}
+  function cardHtml(c){const m=CATEGORY_META[c.category]||{color:'#5B8FBF'};const isEnrolled=enrolledCourseNames.has(normalizeForMatch(c.name));let actionHtml;if(isEnrolled){actionHtml=`<a href="student-login.html" class="btn btn-primary course-enrolled-trigger">ভর্তি হয়েছেন ✓</a>`}else if(isSubjectWiseTag(c.tag)){actionHtml=`<a href="per-subject.html" class="btn btn-primary">বিস্তারিত</a>`}else{actionHtml=`<a href="course-details.html?course=${encodeURIComponent(c.slug)}" data-course-name="${esc(c.name)}" class="btn btn-primary course-details-trigger">বিস্তারিত</a>`}return `<article class="course-card" data-category="${esc(c.category)}" data-course-slug="${esc(c.slug)}"><img class="course-image" src="${esc(c.image)}" alt="${esc(c.name)}" loading="lazy"><div class="course-top"><span class="eyebrow" style="color:${m.color}">${esc(c.category)}</span>${c.tag?`<span class="course-tag">${esc(c.tag)}</span>`:''}</div><div class="course-body"><h3>${esc(c.name)}</h3><p>${esc(c.shortDescription)}</p><div class="course-foot"><div class="price"><div class="price-row">${c.price?`<span class="price-now">${esc(c.price)}</span>`:''}${c.oldPrice?`<span class="price-old">${esc(c.oldPrice)}</span>`:''}</div>${c.priceNote?`<small>${esc(c.priceNote)}</small>`:''}</div>${actionHtml}</div></div></article>`}
   // ক্যাটাগরি অনুযায়ী কোর্স গোনার সময় sheet-এর "level" কলামে extra space/capital-small
   // ভিন্ন হলেও যেন SHEET_TABS-এর সঠিক ক্যাটাগরির সাথে মিলে যায় (canonical নামেই count জমা হয়,
   // display-এ SHEET_TABS-এর আসল বানানই দেখানো হয়, sheet-এর raw ভ্যালু বদলায় না)।
