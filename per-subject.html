@@ -183,6 +183,15 @@ header.nav{
   padding:2px 8px; border-radius:999px;
   white-space:nowrap;
 }
+.ps-pill-group{ display:flex; flex-direction:column; align-items:flex-end; gap:4px; flex-shrink:0; }
+.ps-sector-pill{
+  font-family:'Anek Bangla', sans-serif;
+  font-size:10px; font-weight:700;
+  color:#C9337A;
+  background:rgba(201,51,122,.12);
+  padding:2px 8px; border-radius:999px;
+  white-space:nowrap;
+}
 .ps-card h3{
   margin:0;
   font-size:14.5px;
@@ -438,7 +447,10 @@ function cardHtml(row){
     <div class="ps-card-body">
       <div class="ps-card-top">
         <h3>${esc(row.subject)}</h3>
-        <span class="ps-level-pill">${esc(row.level)}</span>
+        <span class="ps-pill-group">
+          <span class="ps-level-pill">${esc(row.level)}</span>
+          ${row.nuDcu ? `<span class="ps-sector-pill">${esc(row.nuDcu)}</span>` : ''}
+        </span>
       </div>
       ${metaBits.length ? `<div class="ps-meta">${metaBits.join('')}</div>` : ''}
       <div class="ps-price-row">
