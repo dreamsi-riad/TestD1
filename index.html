@@ -609,6 +609,86 @@ header.nav{
   .gallery-track img{ height:130px; max-width:200px; border-radius:10px; }
 }
 
+/* ---------- শিক্ষার্থীদের মন্তব্য: ম্যানুয়াল হরাইজন্টাল স্ক্রল কার্ড ---------- */
+/* অটো-স্ক্রল করে না — কমেন্ট বেশি হলে ইউজার নিজে পাশে স্ক্রল করে দেখবে */
+.comment-scroll-wrap{
+  overflow-x:auto;
+  overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;
+  scroll-snap-type:x proximity;
+  padding-bottom:10px;
+  margin-top:8px;
+}
+.comment-track{
+  display:flex;
+  gap:18px;
+  width:max-content;
+}
+.comment-card{
+  flex:0 0 auto;
+  width:270px;
+  background:#fff;
+  border:1px solid var(--paper-line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:22px 20px 18px;
+  scroll-snap-align:start;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  transition:transform .3s cubic-bezier(.22,1,.36,1), box-shadow .3s cubic-bezier(.22,1,.36,1);
+}
+.comment-card:hover{ transform:translateY(-6px); box-shadow:0 22px 40px rgba(30,42,71,.16); }
+.comment-card .comment-icon{
+  width:52px;
+  height:52px;
+  border-radius:50%;
+  background:#EEF2FA;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--ink);
+  flex:0 0 auto;
+}
+.comment-card .comment-icon svg{ width:26px; height:26px; }
+.comment-card .comment-name{
+  font-family:'Baloo Da 2', sans-serif;
+  font-weight:700;
+  font-size:16px;
+  color:var(--ink);
+  margin-top:12px;
+}
+.comment-card .comment-short{
+  color:var(--accent-dark);
+  font-size:12.5px;
+  font-weight:600;
+  margin-top:3px;
+}
+.comment-card .comment-text{
+  color:var(--ink-soft);
+  font-size:13.5px;
+  line-height:1.55;
+  margin-top:12px;
+  display:-webkit-box;
+  -webkit-line-clamp:4;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+.comment-data-state{
+  width:100%;
+  text-align:center;
+  padding:28px 20px;
+  color:var(--ink-soft);
+  background:#fff;
+  border:1px solid var(--paper-line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
+@media(max-width:640px){
+  .comment-card{ width:230px; padding:18px 16px 14px; }
+}
+
 /* ---------- Section shell ---------- */
 section{ padding:52px 0; }
 .section-head{
@@ -1591,6 +1671,24 @@ footer{
     </div>
   </section>
 
+  <!-- ============================================================
+       শিক্ষার্থীদের মন্তব্য — একই "gallery" টেবিল থেকে লোড হয় (student_name,
+       short_text, long_text কলাম থেকে)। ম্যানুয়াল হরাইজন্টাল স্ক্রল — অটো-স্ক্রল নেই।
+       ============================================================ -->
+  <section id="student-comments">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">শিক্ষার্থীদের মতামত</span>
+        <h2>আমাদের শিক্ষার্থীরা যা বলে</h2>
+      </div>
+      <div class="comment-scroll-wrap" id="commentScrollWrap">
+        <div class="comment-track" id="commentTrack">
+          <div class="comment-data-state">মন্তব্য লোড হচ্ছে...</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- "আমাদের মেসেজ পাঠান" ফর্ম সেকশন সম্পূর্ণ সরিয়ে দেওয়া হয়েছে -->
 
   <!-- ============================================================
@@ -1812,14 +1910,49 @@ document.querySelectorAll('#navLinks a').forEach(link => {
 })();
 
 // ============================================================
-// গ্যালারি — D1 "gallery" টেবিল থেকে ছবি এনে অটো-স্ক্রলিং মার্কি বানানো
+// গ্যালারি + শিক্ষার্থীদের মন্তব্য — দুটোই D1 "gallery" টেবিল থেকে আসে (একই action:
+// get_gallery), শুধু ছবি অটো-স্ক্রলিং মার্কিতে যায় আর কমেন্টগুলো ম্যানুয়াল স্ক্রল কার্ডে যায়।
 // ============================================================
 (function(){
   const galleryWrap = document.getElementById('galleryWrap');
   const galleryTrack = document.getElementById('galleryTrack');
-  if(!galleryTrack || !galleryWrap) return;
+  const commentTrack = document.getElementById('commentTrack');
+  const commentSection = document.getElementById('student-comments');
+  if(!galleryTrack && !commentTrack) return;
 
   const esc = v => String(v ?? '').trim().replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const userIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>';
+
+  function renderGalleryImages(images){
+    if(!galleryTrack || !galleryWrap) return;
+    if(!images.length){
+      galleryWrap.style.display = 'none';
+      return;
+    }
+    // seamless loop: ছবির লিস্টটা ২ বার বসিয়ে ৫০% পর্যন্ত scroll করে আবার শুরুতে ফিরে যায়
+    const imagesHtml = images.map(url => `<img src="${esc(url)}" alt="Gallery" loading="lazy">`).join('');
+    galleryTrack.innerHTML = imagesHtml + imagesHtml;
+
+    // যত বেশি ছবি, তত বেশি সময় লাগবে এক চক্র শেষ করতে — যাতে স্পিড সবসময় একরকম আস্তে থাকে
+    const duration = Math.max(24, images.length * 5);
+    galleryTrack.style.animationDuration = duration + 's';
+  }
+
+  function renderComments(comments){
+    if(!commentTrack || !commentSection) return;
+    if(!comments.length){
+      commentSection.style.display = 'none';
+      return;
+    }
+    commentTrack.innerHTML = comments.map(c => `
+      <div class="comment-card">
+        <span class="comment-icon">${userIcon}</span>
+        <div class="comment-name">${esc(c.name)}</div>
+        ${c.shortText ? `<div class="comment-short">${esc(c.shortText)}</div>` : ''}
+        ${c.longText ? `<div class="comment-text">${esc(c.longText)}</div>` : ''}
+      </div>
+    `).join('');
+  }
 
   async function loadGallery(){
     try{
@@ -1828,22 +1961,18 @@ document.querySelectorAll('#navLinks a').forEach(link => {
       const j = await r.json();
       if(j.status === 'error') throw Error(j.message || 'Gallery API error');
 
-      const images = (Array.isArray(j.data) ? j.data : []).filter(Boolean);
-      if(!images.length){
-        galleryWrap.style.display = 'none';
-        return;
-      }
+      // ব্যাকওয়ার্ড-কম্প্যাটিবিলিটি: পুরনো response শুধু array of urls হতে পারে,
+      // নতুন response { images: [...], comments: [...] } — দুটোই সামলানো হয়েছে
+      const data = j.data;
+      const images = Array.isArray(data) ? data.filter(Boolean) : (Array.isArray(data?.images) ? data.images.filter(Boolean) : []);
+      const comments = Array.isArray(data?.comments) ? data.comments.filter(c => c && c.name) : [];
 
-      // seamless loop: ছবির লিস্টটা ২ বার বসিয়ে ৫০% পর্যন্ত scroll করে আবার শুরুতে ফিরে যায়
-      const imagesHtml = images.map(url => `<img src="${esc(url)}" alt="Gallery" loading="lazy">`).join('');
-      galleryTrack.innerHTML = imagesHtml + imagesHtml;
-
-      // যত বেশি ছবি, তত বেশি সময় লাগবে এক চক্র শেষ করতে — যাতে স্পিড সবসময় একরকম আস্তে থাকে
-      const duration = Math.max(24, images.length * 5);
-      galleryTrack.style.animationDuration = duration + 's';
+      renderGalleryImages(images);
+      renderComments(comments);
     }catch(e){
       console.error('Gallery load failed:', e);
-      galleryWrap.style.display = 'none';
+      if(galleryWrap) galleryWrap.style.display = 'none';
+      if(commentSection) commentSection.style.display = 'none';
     }
   }
   loadGallery();
