@@ -772,6 +772,39 @@
         const parseFeatures=v=>clean(v).split(/[,،]/).map(clean).filter(Boolean);
         const formatPrice=v=>{const x=clean(v);if(!x)return '';return /[৳$€£]/.test(x)?toBn(x):`৳${toBn(x)}`};
         function getCourseSlug(){return new URLSearchParams(window.location.search).get('course');}
+        function getSwId(){return new URLSearchParams(window.location.search).get('sw');}
+        // per-subject.html-এর subject-wise কোর্ডের জন্য একই আইডি এনকোডিং —
+        // "SW::{level}::{department}::{year}::{sector}::{subject}" — এখানে হুবহু কপি রাখা হয়েছে
+        // যাতে per-subject.html থেকে পাঠানো ?sw=... আইডির সাথে ঠিকমতো ম্যাচ হয়।
+        const SW_COURSE_PREFIX='SW::';
+        function buildSubjectWiseCourseId(row){
+            const sector=String(row.nuDcu||'').trim().toUpperCase();
+            return sector
+                ? `${SW_COURSE_PREFIX}${row.level}::${row.department||''}::${row.year||''}::${sector}::${row.subject}`
+                : `${SW_COURSE_PREFIX}${row.level}::${row.department||''}::${row.year||''}::${row.subject}`;
+        }
+        async function getAllSubjectWiseRows(){
+            const response=await fetch(VISION_API,{
+                method:'POST',
+                headers:{'Content-Type':'text/plain;charset=utf-8'},
+                body:JSON.stringify({action:'get_subjectwise_courses'}),
+                cache:'no-store'
+            });
+            if(!response.ok)throw Error(`Subjectwise Course Name: HTTP ${response.status}`);
+            const json=await response.json();
+            if(json.status==='error') throw Error(json.message||'Subjectwise Course Name API error');
+            return (json.data||[]).map(row=>({
+                level:clean(row.level),
+                year:clean(row.year),
+                department:clean(row.department),
+                subject:clean(row.subjectName ?? row.subject_name),
+                description:clean(row.description),
+                newPrice:clean(row.newPrice ?? row.new_price),
+                oldPrice:clean(row.oldPrice ?? row.old_price),
+                image:normalizeImageUrl(row.imageUrl ?? row.image_url),
+                nuDcu:clean(row.nuDcu ?? row.nu_dcu).toUpperCase()
+            })).filter(row=>row.level && row.subject);
+        }
         async function getAllTeachers(){
             const response=await fetch(VISION_API,{
                 method:'POST',
@@ -877,10 +910,56 @@
             content.style.display='block';
         }
 
+        // subject-wise (per-subject.html) কোর্সের জন্য আলাদা রেন্ডার ফাংশন —
+        // এখানে শিক্ষক/ফিচার তালিকা নেই, তার বদলে level/department/year মেটা
+        // হিসেবে দেখানো হয় এবং nuDcu থাকলে সেটা tag হিসেবে দেখায়।
+        function renderSubjectWiseCourse(row){
+            const loadingState=document.getElementById('loadingState');
+            const content=document.getElementById('courseContent');
+            loadingState.style.display='none';
+            if(!row){
+                content.innerHTML=`<div class="not-found"><h2>😕 সাবজেক্টটি খুঁজে পাওয়া যায়নি</h2><p>আপনি যেটি খুঁজছেন, সেটি খুঁজে পাওয়া যায়নি।</p><a href="per-subject.html" class="btn btn-primary">সব সাবজেক্ট দেখুন</a></div>`;
+                content.style.display='block';
+                return;
+            }
+            document.title=`${row.subject} | VISION Academics`;
+            const description=row.description || 'এই সাবজেক্টের বিস্তারিত তথ্য শীঘ্রই আপডেট করা হবে।';
+            const image=row.image||'';
+            const courseId=buildSubjectWiseCourseId(row);
+            const metaBits=[row.department,row.year].filter(Boolean).map(escapeHtml).join(' • ');
+
+            content.innerHTML=`
+                <div class="course-detail-grid">
+                    <div class="detail-image">${image?`<img src="${escapeHtml(image)}" alt="${escapeHtml(row.subject)}">`:'<div style="aspect-ratio:16/10;background:#eee;display:flex;align-items:center;justify-content:center;color:#777">Course Image</div>'}</div>
+                    <div class="detail-content">
+                        <span class="detail-category">${escapeHtml(row.level)}${metaBits?` • ${metaBits}`:''}</span>
+                        <h1 class="detail-title">${escapeHtml(row.subject)}</h1>
+                        ${row.nuDcu?`<span class="detail-tag">${escapeHtml(row.nuDcu)}</span>`:''}
+                        <div class="detail-price">
+                            ${row.newPrice?`<span class="price-now">${escapeHtml(formatPrice(row.newPrice))}</span>`:''}
+                            ${row.oldPrice?`<span class="price-old">${escapeHtml(formatPrice(row.oldPrice))}</span>`:''}
+                        </div>
+                        <div class="detail-description">${escapeHtml(description).replace(/\n/g,'<br>')}</div>
+                        <div class="detail-actions">
+                            <a href="student-login.html?enroll=${encodeURIComponent(courseId)}" class="btn btn-primary enroll-btn">Enroll Now</a>
+                            <button type="button" class="btn btn-outline" id="howToBuyBtn">কোর্সটি যেভাবে কিনবেন</button>
+                        </div>
+                    </div>
+                </div>`;
+            content.style.display='block';
+        }
+
         async function loadCourseDetails(){
             const content=document.getElementById('courseContent');
             const slug=getCourseSlug();
+            const swId=getSwId();
             try{
+                if(swId){
+                    const rows=await getAllSubjectWiseRows();
+                    const row=rows.find(r=>buildSubjectWiseCourseId(r)===swId);
+                    renderSubjectWiseCourse(row);
+                    return;
+                }
                 const [courses, teachers]=await Promise.all([getAllCourses(), getAllTeachers().catch(()=>[])]);
                 const course=courses.find(c=>c.slug===slug);
                 renderCourse(course, teachers);
