@@ -530,10 +530,10 @@ document.getElementById('resultsArea').addEventListener('click', (e) => {
   if(!btn) return;
   const courseId = btn.dataset.courseId;
   if(!courseId) return;
-  // student-login.html?enroll=... — এই একই প্যাটার্ন course-details.html-ও ব্যবহার করে।
-  // লগইন করা না থাকলে আগে লগইন/রেজিস্ট্রেশন করাবে, তারপর অটোমেটিক এনরোল হয়ে যাবে;
-  // আগে থেকে লগইন করা থাকলে সরাসরি এনরোল হয়ে ড্যাশবোর্ডে চলে যাবে।
-  window.location.href = `student-login.html?enroll=${encodeURIComponent(courseId)}`;
+  // index.html-এর course card-এর মতোই — সরাসরি এনরোল না করিয়ে আগে
+  // course-details.html-এ (sw=... প্যারামিটার দিয়ে) বিস্তারিত পেজে নিয়ে যাওয়া হয়,
+  // সেখান থেকে "Enroll Now" চাপলে তবেই student-login.html?enroll=... এ যাবে।
+  window.location.href = `course-details.html?sw=${encodeURIComponent(courseId)}`;
 });
 
 document.getElementById('levelSelect').addEventListener('change', () => {
