@@ -210,7 +210,21 @@ header.nav{
   transition:transform .18s ease, box-shadow .18s ease;
   width:100%;
 }
-#logoutBtn{ margin-top:18px; padding:11px 26px; font-size:14px; }
+.logout-link-btn{
+  margin-top:10px;
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  background:transparent;
+  border:1.5px solid var(--paper-line);
+  color:var(--ink-soft);
+  font-weight:600;
+  font-size:13px;
+  padding:7px 16px;
+  border-radius:999px;
+  transition:border-color .15s ease, color .15s ease, background .15s ease;
+}
+.logout-link-btn:hover{ border-color:var(--margin); color:var(--margin); background:rgba(200,75,75,.06); }
 .btn-primary{
   background:var(--accent);
   color:var(--ink);
@@ -1123,6 +1137,7 @@ footer a:hover{ color:#fff; }
           <div class="dash-head-right">
             <p class="role-tag">🎓 স্টুডেন্ট প্রোফাইল</p>
             <div class="enrollment-dates" id="enrollmentDates">—</div>
+            <button type="button" class="logout-link-btn" id="logoutBtn">লগআউট করুন</button>
           </div>
         </div>
 
@@ -1188,7 +1203,6 @@ footer a:hover{ color:#fff; }
           <div class="learning-empty" id="learningEmpty">এখনো কোনো course enrolled নেই।</div>
         </div>
 
-        <button type="button" class="btn btn-outline" id="logoutBtn">লগআউট করুন</button>
       </div>
     </div>
   </section>
@@ -2377,6 +2391,7 @@ footer a:hover{ color:#fff; }
   }
 
   logoutBtn.addEventListener('click', function(){
+    if(!confirm('আপনি কি সত্যিই লগআউট করতে চান?')) return;
     localStorage.removeItem(LS_USER_KEY);
     classLearningReset();
     enrolledCourseList.innerHTML='';
