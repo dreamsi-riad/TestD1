@@ -1417,6 +1417,60 @@ footer a:hover{ color:#fff; }
     return `${m} Minutes`;
   }
 
+  function getDashboardWatchTimeMinutes(course, mobile){
+    if(!course) return 0;
+
+    // When admin has enabled get_wt=Yes, D1 watch_time is authoritative.
+    if(String(course.getWt || '').trim().toLowerCase() === 'yes'){
+      return Number(course.watchTime) || 0;
+    }
+
+    // Until get_wt=Yes, show the accumulated browser-local watch time.
+    const pendingSeconds = getWatchPendingSeconds(
+      String(course.name || '').trim(),
+      String(course.nuDcu || '').trim(),
+      mobile
+    );
+
+    let liveSeconds = 0;
+    if(
+      normalizeWatchCourse(course.name) === normalizeWatchCourse(currentWatchCourse) &&
+      normalizeForMatch(course.nuDcu || '') === normalizeForMatch(currentWatchSector || '')
+    ){
+      liveSeconds = Number(watchPendingSeconds) || 0;
+    }
+
+    return (pendingSeconds + liveSeconds) / 60;
+  }
+
+  function refreshDashboardWatchTimeDisplay(){
+    if(!dashboardData) return;
+
+    const courses = Array.isArray(dashboardData.courses) ? dashboardData.courses : [];
+    const mobile = String(dashboardData.mobile || getCurrentUserMobile() || '').trim();
+    if(!mobile) return;
+
+    enrolledCourseList.querySelectorAll('.enrolled-course-btn').forEach(btn=>{
+      const idx = Number(btn.dataset.idx);
+      const course = courses[idx];
+      const value = btn.querySelector('.ecb-wt-value');
+      if(!course || !value) return;
+      value.textContent = formatWatchTimeValue(getDashboardWatchTimeMinutes(course, mobile));
+    });
+  }
+
+  function startDashboardWatchTimeDisplay(){
+    if(dashboardWatchDisplayTimer) return;
+    dashboardWatchDisplayTimer = setInterval(refreshDashboardWatchTimeDisplay, 1000);
+  }
+
+  function stopDashboardWatchTimeDisplay(){
+    if(dashboardWatchDisplayTimer){
+      clearInterval(dashboardWatchDisplayTimer);
+      dashboardWatchDisplayTimer = null;
+    }
+  }
+
   function driveDirectLink(url){
     const value = String(url || '').trim();
     if(!value) return '';
@@ -1456,6 +1510,8 @@ footer a:hover{ color:#fff; }
   let watchTrackTimer = null;
   let watchPersistTimer = null;
   let watchSyncInProgress = false;
+  let dashboardWatchDisplayTimer = null;
+  let dashboardData = null;
 
   const WATCH_FLUSH_THRESHOLD_SEC = 20;
   const LS_WATCH_PENDING_KEY = 'va_watch_pending_v1';
@@ -1605,6 +1661,7 @@ footer a:hover{ color:#fff; }
             if(typeof result.watchTimeMinutes === 'number'){
               course.watchTime = result.watchTimeMinutes;
             }
+            refreshDashboardWatchTimeDisplay();
             syncedAny = true;
           }
         }catch(err){
@@ -1681,6 +1738,14 @@ footer a:hover{ color:#fff; }
 
       if(result.status === 'ok'){
         subtractWatchPendingSeconds(currentWatchCourse, currentWatchSector, mobile, pending);
+        if(typeof result.watchTimeMinutes === 'number' && dashboardData){
+          const course = (Array.isArray(dashboardData.courses) ? dashboardData.courses : []).find(c =>
+            normalizeWatchCourse(c?.name) === normalizeWatchCourse(currentWatchCourse) &&
+            normalizeForMatch(c?.nuDcu || '') === normalizeForMatch(currentWatchSector || '')
+          );
+          if(course) course.watchTime = result.watchTimeMinutes;
+        }
+        refreshDashboardWatchTimeDisplay();
       }
     }catch(err){
       console.error('Current watch-time sync failed:', err);
@@ -2154,6 +2219,8 @@ footer a:hover{ color:#fff; }
   }
 
   function renderEnrolledCourses(data){
+    dashboardData = data || null;
+    startDashboardWatchTimeDisplay();
     const courses=getEnrolledCourses(data);
     const isDeviceBlocked = !!data.deviceBlocked;
     const deviceBlockedBanner = document.getElementById('deviceBlockedBanner');
@@ -2188,7 +2255,7 @@ footer a:hover{ color:#fff; }
         <span class="ecb-body">
           <span class="ecb-name">${escapeHtml(displayName)}</span>
           <span class="ecb-meta"><span class="ecb-date"><span class="ecb-icon-emoji">📅</span> Enrolled: ${escapeHtml(formatDate(course.enrolledAt))}</span>${badge}</span>
-          <span class="ecb-watchtime"><span class="ecb-icon-emoji">⏱️</span> <span class="ecb-wt-label">Watch Time:</span> <span class="ecb-wt-value">${escapeHtml(formatWatchTimeValue(course.watchTime))}</span></span>
+          <span class="ecb-watchtime"><span class="ecb-icon-emoji">⏱️</span> <span class="ecb-wt-label">Watch Time:</span> <span class="ecb-wt-value">${escapeHtml(formatWatchTimeValue(getDashboardWatchTimeMinutes(course, String(data?.mobile || getCurrentUserMobile() || '').trim())))}</span></span>
         </span>
       </button>`;
     }).join('');
@@ -2269,17 +2336,23 @@ footer a:hover{ color:#fff; }
   }
 
   async function syncAndRenderDashboard(data){
+    dashboardData = data || null;
     renderProfileInfo(data);
     renderEnrolledCourses(data);
+    refreshDashboardWatchTimeDisplay();
 
     const synced = await syncPendingWatchTime(data);
     if(synced){
       localStorage.setItem(LS_USER_KEY, JSON.stringify(data));
+      dashboardData = data || null;
       renderEnrolledCourses(data);
+      refreshDashboardWatchTimeDisplay();
     }
   }
 
   function renderDashboard(data){
+    dashboardData = data || null;
+    startDashboardWatchTimeDisplay();
     renderProfileInfo(data);
     renderEnrolledCourses(data);
     const enrollmentDates=document.getElementById('enrollmentDates');
