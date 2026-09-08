@@ -2067,7 +2067,24 @@ function vaShowToast(message){
   // এই কার্ডটি কোনো ডেটা থেকে আসে না — সবসময় প্রথম কার্ড হিসেবে দেখানো হয় এবং
   // "বিস্তারিত" বাটনে ক্লিক করলে সরাসরি per-subject.html-এ নিয়ে যায়।
   function staticSubjectWiseCardHtml(){
+    // ============================================================
+    // ⭐ "বিষয়ভিত্তিক কোর্স (Subject Wise)" কার্ডের ছবি এখানে বদলাতে হবে ⭐
+    // ------------------------------------------------------------
+    // এই ছবিটা এখন কোনো আলাদা ফাইল না — একটা কোড দিয়ে বানানো (SVG) বেগুনি-নীল
+    // গ্রেডিয়েন্ট ছবি (দুইটা বই আইকনসহ), সরাসরি নিচের লাইনেই বসানো আছে।
+    //
+    // ➤ নিজের একটা ছবি (jpg/png/Google Drive লিংক ইত্যাদি) দিতে চাইলে, নিচের
+    //   পুরো লাইনটা (const img = ...;) মুছে ফেলে এর বদলে এভাবে লিখুন:
+    //
+    //   const img = 'https://your-image-link-here.jpg';
+    //
+    //   (Google Drive-এর ছবি হলে driveImageUrl() ফাংশনের মতো
+    //    https://drive.google.com/thumbnail?id=FILE_ID&sz=w1000 ফরম্যাটে দিন)
+    // ============================================================
     const img='data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="400" height="250" viewBox="0 0 400 250"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7B4FE0"/><stop offset="1" stop-color="#2F6FE4"/></linearGradient></defs><rect width="400" height="250" fill="url(#g)"/><g fill="#ffffff" opacity="0.95"><path d="M118 78h58a10 10 0 0 1 10 10v92a8 8 0 0 0-8-8h-60a8 8 0 0 0-8 8V88a10 10 0 0 1 8-10z"/><path d="M282 78h-58a10 10 0 0 0-10 10v92a8 8 0 0 1 8-8h60a8 8 0 0 1 8 8V88a10 10 0 0 0-8-10z"/></g></svg>');
+    // ============================================================
+    // ⬆️ ছবি বদলানোর কোড এখানেই শেষ — নিচের অংশে হাত দেওয়ার দরকার নেই ⬆️
+    // ============================================================
     return `<article class="course-card" data-category="Subject Wise" data-course-slug="subject-wise-static">
       <img class="course-image" src="${img}" alt="বিষয়ভিত্তিক কোর্স" loading="lazy">
       <div class="course-top"><span class="eyebrow" style="color:#7B4FE0">বিষয়ভিত্তিক</span><span class="course-tag">Subject Wise</span></div>
