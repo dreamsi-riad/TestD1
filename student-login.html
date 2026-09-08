@@ -1417,30 +1417,77 @@ footer a:hover{ color:#fff; }
     return `${m} Minutes`;
   }
 
+  // Stores the last known D1 total for each course. This is critical when
+  // admin changes get_wt from Yes back to No: the old D1 time must remain the
+  // starting point, and new watch time must be added locally on top of it.
+  const LS_WATCH_BASE_KEY = 'va_watch_base_v1';
+
+  function readWatchBaseStore(){
+    try{
+      const raw = localStorage.getItem(LS_WATCH_BASE_KEY);
+      const parsed = raw ? JSON.parse(raw) : {};
+      return parsed && typeof parsed === 'object' ? parsed : {};
+    }catch(e){ return {}; }
+  }
+
+  function writeWatchBaseStore(store){
+    try{
+      localStorage.setItem(LS_WATCH_BASE_KEY, JSON.stringify(store));
+    }catch(e){ console.error('Watch-time base localStorage write failed:', e); }
+  }
+
+  function getWatchBaseMinutes(course, sector, mobile, fallbackMinutes){
+    if(!course || !mobile) return Math.max(0, Number(fallbackMinutes) || 0);
+    const store = readWatchBaseStore();
+    const key = getWatchStorageKey(mobile, course, sector);
+
+    if(Object.prototype.hasOwnProperty.call(store, key)){
+      return Math.max(0, Number(store[key]) || 0);
+    }
+
+    // First time this browser sees the course, initialize the baseline from D1.
+    const fallback = Math.max(0, Number(fallbackMinutes) || 0);
+    store[key] = fallback;
+    writeWatchBaseStore(store);
+    return fallback;
+  }
+
+  function setWatchBaseMinutes(course, sector, mobile, minutes){
+    if(!course || !mobile) return;
+    const store = readWatchBaseStore();
+    store[getWatchStorageKey(mobile, course, sector)] = Math.max(0, Number(minutes) || 0);
+    writeWatchBaseStore(store);
+  }
+
   function getDashboardWatchTimeMinutes(course, mobile){
     if(!course) return 0;
 
-    // When admin has enabled get_wt=Yes, D1 watch_time is authoritative.
-    if(String(course.getWt || '').trim().toLowerCase() === 'yes'){
-      return Number(course.watchTime) || 0;
+    const courseName = String(course.name || '').trim();
+    const sector = String(course.nuDcu || '').trim();
+    if(!courseName || !mobile) return Number(course.watchTime) || 0;
+
+    const isEnabled = String(course.getWt || '').trim().toLowerCase() === 'yes';
+
+    if(isEnabled){
+      // Yes = D1 is authoritative. Save it as the new local baseline.
+      const d1Minutes = Math.max(0, Number(course.watchTime) || 0);
+      setWatchBaseMinutes(courseName, sector, mobile, d1Minutes);
+      return d1Minutes;
     }
 
-    // Until get_wt=Yes, show the accumulated browser-local watch time.
-    const pendingSeconds = getWatchPendingSeconds(
-      String(course.name || '').trim(),
-      String(course.nuDcu || '').trim(),
-      mobile
-    );
+    // No/NULL = keep the previous accumulated total and add new local time.
+    const baseMinutes = getWatchBaseMinutes(courseName, sector, mobile, course.watchTime);
+    const pendingSeconds = getWatchPendingSeconds(courseName, sector, mobile);
 
     let liveSeconds = 0;
     if(
-      normalizeWatchCourse(course.name) === normalizeWatchCourse(currentWatchCourse) &&
-      normalizeForMatch(course.nuDcu || '') === normalizeForMatch(currentWatchSector || '')
+      normalizeWatchCourse(courseName) === normalizeWatchCourse(currentWatchCourse) &&
+      normalizeForMatch(sector) === normalizeForMatch(currentWatchSector || '')
     ){
       liveSeconds = Number(watchPendingSeconds) || 0;
     }
 
-    return (pendingSeconds + liveSeconds) / 60;
+    return Math.max(0, baseMinutes + ((pendingSeconds + liveSeconds) / 60));
   }
 
   function refreshDashboardWatchTimeDisplay(){
@@ -1660,6 +1707,7 @@ footer a:hover{ color:#fff; }
             subtractWatchPendingSeconds(courseName, sector, mobile, snapshotSeconds);
             if(typeof result.watchTimeMinutes === 'number'){
               course.watchTime = result.watchTimeMinutes;
+              setWatchBaseMinutes(courseName, sector, mobile, result.watchTimeMinutes);
             }
             refreshDashboardWatchTimeDisplay();
             syncedAny = true;
@@ -1738,12 +1786,15 @@ footer a:hover{ color:#fff; }
 
       if(result.status === 'ok'){
         subtractWatchPendingSeconds(currentWatchCourse, currentWatchSector, mobile, pending);
-        if(typeof result.watchTimeMinutes === 'number' && dashboardData){
-          const course = (Array.isArray(dashboardData.courses) ? dashboardData.courses : []).find(c =>
-            normalizeWatchCourse(c?.name) === normalizeWatchCourse(currentWatchCourse) &&
-            normalizeForMatch(c?.nuDcu || '') === normalizeForMatch(currentWatchSector || '')
-          );
-          if(course) course.watchTime = result.watchTimeMinutes;
+        if(typeof result.watchTimeMinutes === 'number'){
+          setWatchBaseMinutes(currentWatchCourse, currentWatchSector, mobile, result.watchTimeMinutes);
+          if(dashboardData){
+            const course = (Array.isArray(dashboardData.courses) ? dashboardData.courses : []).find(c =>
+              normalizeWatchCourse(c?.name) === normalizeWatchCourse(currentWatchCourse) &&
+              normalizeForMatch(c?.nuDcu || '') === normalizeForMatch(currentWatchSector || '')
+            );
+            if(course) course.watchTime = result.watchTimeMinutes;
+          }
         }
         refreshDashboardWatchTimeDisplay();
       }
