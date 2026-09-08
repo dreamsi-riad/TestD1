@@ -1451,9 +1451,93 @@ footer a:hover{ color:#fff; }
 
   let currentWatchCourse = '';
   let currentWatchSector = '';
+  let currentWatchGetWt = false;
   let watchPendingSeconds = 0;
   let watchTrackTimer = null;
+  let watchPersistTimer = null;
+  let watchSyncInProgress = false;
+
   const WATCH_FLUSH_THRESHOLD_SEC = 20;
+  const LS_WATCH_PENDING_KEY = 'va_watch_pending_v1';
+
+  function normalizeWatchCourse(value){
+    return normalizeForMatch(value);
+  }
+
+  function getWatchStorageKey(mobile, course, sector){
+    return [
+      normalizeMobileForMatch(mobile),
+      normalizeWatchCourse(course),
+      normalizeForMatch(sector || '')
+    ].join('::');
+  }
+
+  function readWatchPendingStore(){
+    try{
+      const raw = localStorage.getItem(LS_WATCH_PENDING_KEY);
+      const parsed = raw ? JSON.parse(raw) : {};
+      return parsed && typeof parsed === 'object' ? parsed : {};
+    }catch(e){
+      return {};
+    }
+  }
+
+  function writeWatchPendingStore(store){
+    try{
+      localStorage.setItem(LS_WATCH_PENDING_KEY, JSON.stringify(store));
+    }catch(e){
+      console.error('Watch-time localStorage write failed:', e);
+    }
+  }
+
+  function addWatchPendingSeconds(seconds, course, sector, mobile){
+    const sec = Math.max(0, Math.floor(Number(seconds) || 0));
+    if(sec <= 0 || !course || !mobile) return;
+
+    const store = readWatchPendingStore();
+    const key = getWatchStorageKey(mobile, course, sector);
+    store[key] = Math.max(0, Math.floor(Number(store[key]) || 0)) + sec;
+    writeWatchPendingStore(store);
+  }
+
+  function getWatchPendingSeconds(course, sector, mobile){
+    if(!course || !mobile) return 0;
+    const store = readWatchPendingStore();
+    const key = getWatchStorageKey(mobile, course, sector);
+    return Math.max(0, Math.floor(Number(store[key]) || 0));
+  }
+
+  function subtractWatchPendingSeconds(course, sector, mobile, seconds){
+    const sec = Math.max(0, Math.floor(Number(seconds) || 0));
+    if(sec <= 0 || !course || !mobile) return;
+
+    const store = readWatchPendingStore();
+    const key = getWatchStorageKey(mobile, course, sector);
+    const remaining = Math.max(0, Math.floor(Number(store[key]) || 0) - sec);
+
+    if(remaining > 0) store[key] = remaining;
+    else delete store[key];
+
+    writeWatchPendingStore(store);
+  }
+
+  function persistCurrentWatchPending(){
+    if(watchPendingSeconds <= 0 || !currentWatchCourse) return;
+
+    const mobile = getCurrentUserMobile();
+    if(!mobile){
+      watchPendingSeconds = 0;
+      return;
+    }
+
+    addWatchPendingSeconds(
+      watchPendingSeconds,
+      currentWatchCourse,
+      currentWatchSector,
+      mobile
+    );
+    watchPendingSeconds = 0;
+  }
 
   function getCurrentUserMobile(){
     try{
@@ -1462,50 +1546,161 @@ footer a:hover{ color:#fff; }
     }catch(e){ return ''; }
   }
 
+  function getCourseByWatchKey(course, sector){
+    try{
+      const user = JSON.parse(localStorage.getItem(LS_USER_KEY) || 'null');
+      const courses = Array.isArray(user?.courses) ? user.courses : [];
+      const targetCourse = normalizeWatchCourse(course);
+      const targetSector = normalizeForMatch(sector || '');
+
+      return courses.find(c =>
+        normalizeWatchCourse(c?.name) === targetCourse &&
+        normalizeForMatch(c?.nuDcu || '') === targetSector
+      ) || null;
+    }catch(e){
+      return null;
+    }
+  }
+
+  function isWatchSyncEnabled(course, sector){
+    const row = getCourseByWatchKey(course, sector);
+    return String(row?.getWt || '').trim().toLowerCase() === 'yes';
+  }
+
+  async function syncPendingWatchTime(data){
+    if(watchSyncInProgress) return false;
+
+    const mobile = String(data?.mobile || getCurrentUserMobile() || '').trim();
+    const courses = Array.isArray(data?.courses) ? data.courses : [];
+    if(!mobile || !courses.length) return false;
+
+    watchSyncInProgress = true;
+    let syncedAny = false;
+
+    try{
+      for(const course of courses){
+        if(String(course?.getWt || '').trim().toLowerCase() !== 'yes') continue;
+
+        const courseName = String(course?.name || '').trim();
+        const sector = String(course?.nuDcu || '').trim();
+        if(!courseName) continue;
+
+        const pending = getWatchPendingSeconds(courseName, sector, mobile);
+        if(pending <= 0) continue;
+
+        // Snapshot only this amount. New seconds added while syncing remain local.
+        const snapshotSeconds = pending;
+
+        try{
+          const result = await callApi({
+            action:'track_watch',
+            mobile: normalizeMobileForMatch(mobile),
+            course: courseName,
+            nuDcu: sector,
+            seconds: snapshotSeconds
+          });
+
+          if(result.status === 'ok'){
+            subtractWatchPendingSeconds(courseName, sector, mobile, snapshotSeconds);
+            if(typeof result.watchTimeMinutes === 'number'){
+              course.watchTime = result.watchTimeMinutes;
+            }
+            syncedAny = true;
+          }
+        }catch(err){
+          console.error('Watch-time sync failed:', err);
+          // Keep the local value. It will retry on the next dashboard/login.
+        }
+      }
+    }finally{
+      watchSyncInProgress = false;
+    }
+
+    return syncedAny;
+  }
+
   function startWatchTracking(){
     stopWatchTracking();
+
     watchTrackTimer = setInterval(()=>{
       watchPendingSeconds += 1;
-      if(watchPendingSeconds >= WATCH_FLUSH_THRESHOLD_SEC) flushWatchTime();
+
+      // Keep localStorage updated while the video is playing.
+      if(watchPendingSeconds >= 5){
+        persistCurrentWatchPending();
+      }
+
+      // D1 is contacted only after admin has enabled get_wt = Yes.
+      if(currentWatchGetWt && watchPendingSeconds >= WATCH_FLUSH_THRESHOLD_SEC){
+        flushWatchTime();
+      }
     }, 1000);
+
+    if(!watchPersistTimer){
+      watchPersistTimer = setInterval(persistCurrentWatchPending, 5000);
+    }
   }
 
   function stopWatchTracking(){
-    if(watchTrackTimer){ clearInterval(watchTrackTimer); watchTrackTimer = null; }
+    if(watchTrackTimer){
+      clearInterval(watchTrackTimer);
+      watchTrackTimer = null;
+    }
+    if(watchPersistTimer){
+      clearInterval(watchPersistTimer);
+      watchPersistTimer = null;
+    }
   }
 
-  function flushWatchTime(useBeacon){
+  async function flushWatchTime(useBeacon){
     if(watchPendingSeconds <= 0 || !currentWatchCourse) return;
+
     const mobile = getCurrentUserMobile();
-    if(!mobile){ watchPendingSeconds = 0; return; }
-    const seconds = Math.round(watchPendingSeconds);
-    watchPendingSeconds = 0;
-    const payload = JSON.stringify({
-      action: 'track_watch',
-      mobile: normalizeMobileForMatch(mobile),
-      course: currentWatchCourse,
-      nuDcu: currentWatchSector,
-      seconds: seconds
-    });
-    if(useBeacon && navigator.sendBeacon){
-      try{
-        const sent = navigator.sendBeacon(FORM_ENDPOINT, new Blob([payload], {type:'text/plain;charset=UTF-8'}));
-        if(sent) return;
-      }catch(e){}
+    if(!mobile){
+      watchPendingSeconds = 0;
+      return;
     }
-    fetch(FORM_ENDPOINT, {method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: payload, keepalive:true}).catch(()=>{});
+
+    // Always save locally first. LocalStorage is the source of truth until
+    // the server gate is enabled and a successful sync is confirmed.
+    persistCurrentWatchPending();
+
+    if(!currentWatchGetWt) return;
+
+    const pending = getWatchPendingSeconds(currentWatchCourse, currentWatchSector, mobile);
+    if(pending <= 0) return;
+
+    try{
+      const result = await callApi({
+        action:'track_watch',
+        mobile: normalizeMobileForMatch(mobile),
+        course: currentWatchCourse,
+        nuDcu: currentWatchSector,
+        seconds: pending
+      });
+
+      if(result.status === 'ok'){
+        subtractWatchPendingSeconds(currentWatchCourse, currentWatchSector, mobile, pending);
+      }
+    }catch(err){
+      console.error('Current watch-time sync failed:', err);
+      // Never delete local pending time on failure.
+    }
   }
 
   document.addEventListener('visibilitychange', ()=>{
     if(document.visibilityState === 'hidden'){
       stopWatchTracking();
-      flushWatchTime(true);
+      persistCurrentWatchPending();
     } else if(ytPlayer && typeof ytPlayer.getPlayerState === 'function' && window.YT && ytPlayer.getPlayerState() === YT.PlayerState.PLAYING){
       startWatchTracking();
     }
   });
 
-  window.addEventListener('pagehide', ()=>flushWatchTime(true));
+  window.addEventListener('pagehide', ()=>{
+    stopWatchTracking();
+    persistCurrentWatchPending();
+  });
 
   function loadYouTubeApiOnce(){
     if(window.YT && window.YT.Player){ ytApiReady = true; return; }
@@ -1839,6 +2034,13 @@ footer a:hover{ color:#fff; }
     }
     currentWatchCourse = courseName;
     currentWatchSector = clean(sector);
+    currentWatchGetWt = isWatchSyncEnabled(courseName, sector);
+
+    const currentUserForSync = getCurrentUserMobile();
+    if(currentUserForSync && currentWatchGetWt){
+      const currentData = JSON.parse(localStorage.getItem(LS_USER_KEY) || 'null');
+      if(currentData) syncPendingWatchTime(currentData);
+    }
 
     const subjectSelectWrap = subjectSelect.closest('.filter-select-wrap');
     const swParsed = parseSubjectWiseCourseId(courseName);
@@ -1911,6 +2113,7 @@ footer a:hover{ color:#fff; }
     activeSubjectRows = [];
     currentWatchCourse = '';
     currentWatchSector = '';
+    currentWatchGetWt = false;
     if(classSearchInput) classSearchInput.value='';
     if(classSearchWrap) classSearchWrap.style.display='none';
   }
@@ -2065,6 +2268,17 @@ footer a:hover{ color:#fff; }
     });
   }
 
+  async function syncAndRenderDashboard(data){
+    renderProfileInfo(data);
+    renderEnrolledCourses(data);
+
+    const synced = await syncPendingWatchTime(data);
+    if(synced){
+      localStorage.setItem(LS_USER_KEY, JSON.stringify(data));
+      renderEnrolledCourses(data);
+    }
+  }
+
   function renderDashboard(data){
     renderProfileInfo(data);
     renderEnrolledCourses(data);
@@ -2164,7 +2378,7 @@ footer a:hover{ color:#fff; }
       if(result.status === 'ok' && result.data){
         result.data.mobile = String(mobile).trim();
         localStorage.setItem(LS_USER_KEY, JSON.stringify(result.data));
-        renderDashboard(result.data);
+        syncAndRenderDashboard(result.data);
       } else {
         vaShowToast('📶 নেটওয়ার্ক সমস্যা হচ্ছে, একটু পর আবার চেষ্টা করুন।');
         showCourseListError(mobile);
@@ -2218,7 +2432,7 @@ footer a:hover{ color:#fff; }
     if(result.data){
       result.data.mobile = fullMobile;
       localStorage.setItem(LS_USER_KEY,JSON.stringify(result.data));
-      renderDashboard(result.data);
+      await syncAndRenderDashboard(result.data);
     }
     return true;
   }
@@ -2371,7 +2585,7 @@ footer a:hover{ color:#fff; }
               alert('❌ ' + (err.message || 'Course enrollment failed.'));
             }
           } else {
-            renderDashboard(result.data);
+            await syncAndRenderDashboard(result.data);
           }
         } else {
           loginStatus.textContent = '❌ ' + (result.message || 'লগইন ব্যর্থ হয়েছে।');
