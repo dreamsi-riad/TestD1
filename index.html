@@ -1036,8 +1036,9 @@ section{ padding:52px 0; }
 /* ---------- Free YouTube videos ---------- */
 .video-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
-  gap:20px;
+  grid-template-columns:repeat(auto-fill,minmax(190px,210px));
+  justify-content:start;
+  gap:18px;
 }
 .video-card{
   background:#fff;
@@ -1120,12 +1121,19 @@ section{ padding:52px 0; }
 }
 
 /* ---------- Teachers ---------- */
+/* width-এ সব কার্ড না ধরলে পরের লাইনে যাবে না — horizontal scroll হবে (ডেস্কটপ/মোবাইল সব জায়গায়) */
 .teacher-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  display:flex;
+  flex-wrap:nowrap;
+  overflow-x:auto;
   gap:22px;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  padding-bottom:8px;
 }
 .teacher-card{
+  flex:0 0 230px;
+  scroll-snap-align:start;
   background:#fff;
   border-radius:var(--radius);
   border:1px solid var(--paper-line);
@@ -1158,7 +1166,7 @@ section{ padding:52px 0; }
   margin-top:8px;
 }
  .teacher-data-state{
-   grid-column:1 / -1;
+   flex:1 1 100%;
    text-align:center;
    padding:28px 20px;
    color:var(--ink-soft);
@@ -1168,20 +1176,11 @@ section{ padding:52px 0; }
    box-shadow:var(--shadow);
  }
 
-/* মোবাইলে শিক্ষক কার্ড গ্রিডের বদলে পাশাপাশি (horizontal) স্ক্রল হবে */
+/* ছোট width-এ কার্ড আরও ছোট শতাংশ-ভিত্তিক হবে যাতে touch-এ সহজে স্ক্রল করা যায় */
 @media(max-width:760px){
-  .teacher-grid{
-    display:flex;
-    flex-wrap:nowrap;
-    overflow-x:auto;
-    scroll-snap-type:x mandatory;
-    gap:16px;
-    padding-bottom:10px;
-    -webkit-overflow-scrolling:touch;
-  }
+  .teacher-grid{ gap:16px; }
   .teacher-card{
     flex:0 0 62%;
-    scroll-snap-align:start;
   }
 }
 @media(max-width:480px){
