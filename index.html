@@ -1692,13 +1692,13 @@ footer{
             </div>
           </div>
 
-          <!-- স্ট্যাটস কার্ড ৪ — ইউটিউব সাবস্ক্রাইবার (স্ট্যাটিক সংখ্যা) -->
+          <!-- স্ট্যাটস কার্ড ৪ — ইউটিউব সাবস্ক্রাইবার (এখন অন্য ৩টার মতোই কাউন্ট-আপ অ্যানিমেশন হয়, শুধু বড় সংখ্যা বলে একটু দ্রুত) -->
           <div class="stat-card">
             <div class="stat-icon-box" style="background:linear-gradient(145deg,#FF6B6B,#E1302E); --glow-color:rgba(225,48,46,.55)">
               <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.42a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.42 8.6.42 8.6.42s6.88 0 8.6-.42a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33Z" fill="#fff" stroke="none"/><path d="m9.75 15.02 5.75-3.27-5.75-3.27v6.54Z" fill="#E1302E" stroke="none"/></svg>
             </div>
             <div class="stat-text">
-              <b style="color:#E1302E">১০,০০,০০০+</b>
+              <b class="stat-number" style="color:#E1302E" data-final="১০০০০০০+">০</b>
               <span>ইউটিউব সাবস্ক্রাইবার</span>
             </div>
           </div>
@@ -1970,7 +1970,8 @@ document.querySelectorAll('#navLinks a').forEach(link => {
     const finalText = el.getAttribute('data-final');
     const suffix = finalText.replace(/[০-৯]/g, '');
     const target = parseInt(bn2en(finalText.replace(/[^০-৯]/g, '')), 10);
-    const duration = 2400;
+    // বড় সংখ্যা (যেমন ইউটিউব সাবস্ক্রাইবার) একটু দ্রুত গোনা হবে, নাহলে অনেকক্ষণ ধরে চলতে থাকে
+    const duration = target >= 100000 ? 1500 : 2400;
     const start = performance.now();
 
     function tick(now){
