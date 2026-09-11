@@ -1,545 +1,2800 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>শপ | VISION Academics</title>
-    <meta name="description" content="VISION Academics-এর অফিসিয়াল শপ — টি-শার্ট, বই ও অন্যান্য প্রোডাক্ট অর্ডার করুন।">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>স্টুডেন্ট রেজিস্ট্রেশন ও লগইন | VISION Academics</title>
+<meta name="description" content="VISION Academics-এ স্টুডেন্ট রেজিস্ট্রেশন করুন অথবা মোবাইল নম্বর ও পাসওয়ার্ড দিয়ে লগইন করে নিজের ড্যাশবোর্ড দেখুন।">
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://www.visionacademics.online/student-login.html">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&family=Baloo+Da+2:wght@500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Anek+Bangla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&family=Baloo+Da+2:wght@500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Anek+Bangla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+:root{
+  --ink:#1E2A47;
+  --ink-soft:#4A5772;
+  --paper:#FAF7F0;
+  --paper-line:#E7DFCB;
+  --card:#FFFFFF;
+  --accent:#E8A33D;
+  --accent-dark:#C97F1F;
+  --margin:#C84B4B;
+  --sky:#5B8FBF;
+  --green:#4C8C6B;
+  --shadow:0 10px 30px rgba(30,42,71,0.08);
+  --radius:14px;
+}
 
-    <style>
-        /* ===== গ্লোবাল স্টাইল (index.html / course-details.html এর সাথে মিলিয়ে) ===== */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { overflow-x: hidden; }
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth; overflow-x:hidden;}
+body{
+  margin:0;
+  color:var(--ink);
+  font-family:'Anek Bangla', sans-serif;
+  font-size:17px;
+  line-height:1.65;
+  background:var(--paper);
+}
+h1,h2,h3{
+  font-family:'Anek Bangla', sans-serif;
+  margin:0;
+  color:var(--ink);
+  font-weight:400;
+}
+a{ color:inherit; text-decoration:none; }
+img{ max-width:100%; display:block; }
+button{ font-family:inherit; cursor:pointer; }
 
-        :root {
-            --ink: #1E2A47;
-            --ink-soft: #4A5772;
-            --paper: #FAF7F0;
-            --paper-line: #E7DFCB;
-            --card: #FFFFFF;
-            --accent: #E8A33D;
-            --accent-dark: #C97F1F;
-            --sky: #5B8FBF;
-            --green: #4C8C6B;
-            --margin: #C84B4B;
-            --shadow: 0 10px 30px rgba(30,42,71,0.08);
-            --radius: 14px;
-        }
+.container{
+  max-width:min(1100px, 100%);
+  margin:0 auto;
+  padding:0 clamp(18px, 2.6vw, 64px);
+}
 
-        body {
-            font-family: 'Anek Bangla', sans-serif;
-            background: var(--paper);
-            color: var(--ink);
-            line-height: 1.7;
-        }
+header.nav{
+  position:sticky; top:0; z-index:50;
+  background:rgba(250,247,240,0.92);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--paper-line);
+}
+.nav-inner{
+  max-width:min(2300px, 100%);
+  margin:0 auto;
+  height:64px;
+  padding:0 clamp(18px, 2.6vw, 64px);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-family:'Baloo Da 2', sans-serif;
+  font-weight:800;
+  font-size:22px;
+  line-height:1.15;
+  color:var(--ink);
+}
+.brand .brand-logo{
+  height:64px;
+  max-height:100%;
+  width:auto;
+  aspect-ratio:3.84/1;
+  object-fit:contain;
+  flex:none;
+}
+.back-link{
+  font-weight:600;
+  font-size:15px;
+  color:var(--ink-soft);
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.back-link:hover{ color:var(--ink); }
 
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+@media(max-width:480px){
+  .nav-inner{ gap:8px; }
+  .brand .brand-logo{ height:42px; }
+  .back-link{ font-size:12.5px; gap:4px; }
+}
 
-        /* ===== নেভবার ===== */
-        header.nav {
-            position: sticky; top: 0; z-index: 50;
-            background: rgba(250,247,240,0.92);
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid var(--paper-line);
-        }
-        .nav-inner {
-            max-width: 1200px; margin: 0 auto; height: 64px; padding: 0 20px;
-            display: flex; align-items: center; justify-content: space-between; gap: 20px;
-        }
-        .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-        .brand .brand-logo { height: 64px; max-height: 100%; width: auto; aspect-ratio: 3.84/1; object-fit: contain; }
-        .nav-links { display: flex; gap: 30px; font-weight: 600; font-size: 15.5px; }
-        .nav-links a { text-decoration: none; color: var(--ink-soft); padding: 4px 0; position: relative; }
-        .nav-links a:hover { color: var(--ink); }
-        .nav-links a.active { color: var(--ink); }
-        .nav-links a::after {
-            content: ""; position: absolute; left: 0; right: 0; bottom: -3px; height: 2px;
-            background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform .25s ease;
-        }
-        .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
-        .nav-cta {
-            display: inline-flex; align-items: center; gap: 7px;
-            background: linear-gradient(135deg, #263a63, var(--ink) 60%); color: #fff !important; padding: 10px 20px; border-radius: 999px;
-            font-weight: 700; font-size: 14.5px; white-space: nowrap; text-decoration: none;
-            box-shadow: 0 3px 10px rgba(30,42,71,.25), inset 0 1px 1px rgba(255,255,255,.12);
-        }
-        .nav-cta svg{ flex:none; width:16px; height:16px; }
-        .burger { display: none; background: none; border: none; font-size: 26px; color: var(--ink); cursor: pointer; }
-        @media(max-width: 860px) {
-            .nav-links {
-                position: absolute; top: 100%; left: 0; right: 0; background: var(--paper);
-                flex-direction: column; padding: 18px 28px 26px; gap: 16px;
-                border-bottom: 1px solid var(--paper-line); display: none;
-            }
-            .nav-links.open { display: flex; }
-            .burger { display: block; }
-        }
+.page-head{
+  padding:44px 0 10px;
+  text-align:center;
+}
+.page-head h1{
+  font-size:clamp(26px, 4vw, 38px);
+  margin-top:10px;
+}
+.page-head p{
+  margin-top:10px;
+  color:var(--ink-soft);
+  max-width:60ch;
+  margin-left:auto;
+  margin-right:auto;
+}
 
-        /* ছোট মোবাইল স্ক্রিনে logo + লগইন বাটন + বার্গার মিলে viewport-এর চেয়ে
-           বেশি জায়গা নিয়ে ফেলছিল (logo height:64px ফিক্সড রেখে shrink হচ্ছিল না),
-           ফলে পুরো পেজ horizontally overflow করে "zoom করা"-র মতো দেখাচ্ছিল। */
-        @media(max-width: 480px) {
-            .nav-inner{ gap: 8px; padding: 0 12px; }
-            .brand .brand-logo{ height: 42px; }
-            .nav-cta{ padding: 8px 12px; font-size: 12.5px; gap: 5px; }
-            .nav-cta svg{ width: 14px; height: 14px; }
-            .burger{ font-size: 22px; }
-        }
+.auth-wrap{ padding:10px 0 24px; }
+.auth-box{
+  max-width:640px;
+  margin:0 auto;
+  background:#fff;
+  border:1px solid var(--paper-line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:12px 24px 16px;
+  position:relative;
+  overflow:hidden;
+}
+#dashboardSection .auth-box{ max-width:880px; }
+.auth-box::before{
+  content:"";
+  position:absolute;
+  top:0; left:0; right:0;
+  height:4px;
+  background:linear-gradient(90deg, var(--accent), var(--sky));
+}
+.tab-switch{
+  display:flex;
+  gap:8px;
+  background:var(--paper);
+  border:1px solid var(--paper-line);
+  border-radius:999px;
+  padding:5px;
+  margin-bottom:28px;
+}
+.tab-btn{
+  flex:1;
+  border:none;
+  background:transparent;
+  padding:11px 14px;
+  border-radius:999px;
+  font-weight:700;
+  font-size:15px;
+  color:var(--ink-soft);
+  transition:all .15s ease;
+}
+.tab-btn.active{
+  background:var(--accent);
+  color:var(--ink);
+  box-shadow:0 6px 16px rgba(232,163,61,.4);
+}
 
-        /* ===== পেজ হেড ===== */
-        .page-head {
-            padding: 48px 0 8px;
-            text-align: center;
-        }
-        .page-head .eyebrow {
-            display: inline-block; font-weight: 700; font-size: 13.5px; letter-spacing: .04em;
-            color: var(--accent-dark); background: #FBEFDA; padding: 6px 16px; border-radius: 999px; margin-bottom: 14px;
-        }
-        .page-head h1 { font-family: 'Baloo Da 2', sans-serif; font-weight: 800; font-size: clamp(28px, 4vw, 40px); margin-bottom: 10px; }
-        .page-head p { color: var(--ink-soft); max-width: 560px; margin: 0 auto; }
+.panel{ display:none; }
+.panel.active{ display:block; }
 
-        /* ===== শপ গ্রিড ===== */
-        .shop-section { padding: 32px 0 70px; }
-        .shop-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px,1fr));
-            gap: 24px;
-            margin-top: 34px;
-        }
-        .product-card {
-            background: var(--card);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            overflow: hidden;
-            border: 1px solid var(--paper-line);
-            display: flex;
-            flex-direction: column;
-            transition: transform .2s ease, box-shadow .2s ease;
-        }
-        .product-card:hover { transform: translateY(-4px); box-shadow: 0 16px 34px rgba(30,42,71,.14); }
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0 16px;
+}
+.form-grid .full{ grid-column:1 / -1; }
+@media(max-width:640px){
+  .form-grid{ grid-template-columns:1fr; }
+}
+.form-row{ margin-bottom:16px; display:flex; flex-direction:column; gap:6px; }
+.form-row label{ font-weight:600; font-size:14.5px; color:var(--ink); }
+.form-row label .req{ color:var(--margin); }
+.form-row input,
+.form-row select{
+  font-family:inherit;
+  font-size:15px;
+  padding:12px 14px;
+  border-radius:10px;
+  border:1.5px solid var(--paper-line);
+  background:var(--paper);
+  color:var(--ink);
+  outline:none;
+  transition:border-color .15s ease;
+  width:100%;
+}
+.form-row input:focus,
+.form-row select:focus{ border-color:var(--accent); }
 
-        /*
-         * প্রোডাক্টের ছবি: এখন placeholder (গ্রেডিয়েন্ট ব্যাকগ্রাউন্ড + নাম) হিসেবে দেখানো হচ্ছে।
-         * আসল ছবি বসাতে .product-image এর ভেতরের <div> টুকু বাদ দিয়ে
-         * <img class="product-image" src="আপনার-ছবির-লিংক" alt="প্রোডাক্টের নাম"> দিয়ে বদলে দিন
-         * (কোর্স কার্ডের মতোই Google Drive শেয়ার লিংক ব্যবহার করতে পারেন)।
-         */
-        .product-image {
-            width: 100%;
-            aspect-ratio: 4/3;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 16px;
-            font-family: 'Baloo Da 2', sans-serif;
-            font-weight: 700;
-            font-size: 16px;
-            color: #fff;
-            object-fit: cover;
-            background: linear-gradient(135deg,#1E2A47,#2F3F66);
-        }
-        .shop-status-msg {
-            grid-column: 1 / -1;
-            text-align: center;
-            color: var(--ink-soft);
-            padding: 40px 0;
-            font-size: 15.5px;
-        }
-        .stock-badge {
-            font-size: 12.5px;
-            font-weight: 700;
-            color: var(--margin);
-        }
-        .product-body { padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
-        .product-body h3 { font-size: 17.5px; font-weight: 700; }
-        .product-price { display: flex; align-items: baseline; gap: 8px; margin-top: auto; }
-        .price-old { color: var(--ink-soft); text-decoration: line-through; font-size: 14px; }
-        .price-new { color: var(--margin); font-weight: 800; font-size: 19px; }
-        .order-btn {
-            margin-top: 4px;
-            width: 100%;
-            background: var(--accent);
-            color: var(--ink);
-            border: none;
-            padding: 11px 16px;
-            border-radius: 999px;
-            font-weight: 700;
-            font-size: 14.5px;
-            cursor: pointer;
-            transition: transform .18s ease, box-shadow .18s ease;
-        }
-        .order-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(232,163,61,.4); }
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:14px 26px;
+  border-radius:999px;
+  font-weight:700;
+  font-size:15px;
+  border:none;
+  transition:transform .18s ease, box-shadow .18s ease;
+  width:100%;
+}
+.logout-link-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:clamp(2px, 0.8vw, 6px);
+  background:#fff;
+  border:1.5px solid #F2B6AE;
+  color:#DE5B4C;
+  font-weight:700;
+  font-size:clamp(8.5px, 1.7vw, 12.5px);
+  padding:clamp(3px, 1.1vw, 7px) clamp(7px, 2.1vw, 15px);
+  border-radius:999px;
+  transition:border-color .15s ease, color .15s ease, background .15s ease;
+  flex:none;
+  white-space:nowrap;
+}
+.logout-link-btn svg{ width:clamp(9px, 2vw, 14px); height:clamp(9px, 2vw, 14px); stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; flex:none; }
+.logout-link-btn:hover{ background:#FDEEEC; border-color:#DE5B4C; }
+.btn-primary{
+  background:var(--accent);
+  color:var(--ink);
+  box-shadow:0 8px 20px rgba(232,163,61,.4);
+}
+.btn-primary:hover{ transform:translateY(-2px); box-shadow:0 12px 26px rgba(232,163,61,.5); }
+.btn-primary:disabled{ opacity:.6; cursor:not-allowed; transform:none; }
 
-        /* ===== অর্ডার মডাল ===== */
-        .modal-overlay {
-            position: fixed; inset: 0; background: rgba(20,26,42,.55);
-            display: none; align-items: center; justify-content: center;
-            padding: 20px; z-index: 200;
-        }
-        .modal-overlay.open { display: flex; }
-        .modal-box {
-            background: var(--card);
-            border-radius: var(--radius);
-            width: 100%; max-width: 440px;
-            max-height: 90vh;
-            overflow-y: auto;
-            padding: 28px 26px 26px;
-            position: relative;
-            box-shadow: 0 30px 60px rgba(20,26,42,.3);
-        }
-        .modal-close {
-            position: absolute; top: 14px; right: 16px;
-            background: none; border: none; font-size: 22px; color: var(--ink-soft); cursor: pointer; line-height: 1;
-        }
-        .modal-close:hover { color: var(--ink); }
-        .modal-product-name { font-family: 'Baloo Da 2', sans-serif; font-weight: 800; font-size: 19px; margin-bottom: 2px; }
-        .modal-product-price { color: var(--margin); font-weight: 700; font-size: 15px; margin-bottom: 18px; }
+.btn-outline{
+  background:transparent;
+  color:var(--margin);
+  border:1.5px solid var(--paper-line);
+  box-shadow:none;
+}
+.btn-outline:hover{ border-color:var(--margin); }
 
-        .form-row { margin-bottom: 14px; display: flex; flex-direction: column; gap: 6px; }
-        .form-row label { font-weight: 600; font-size: 14px; color: var(--ink-soft); }
-        .form-row input, .form-row select, .form-row textarea {
-            padding: 11px 14px; border-radius: 10px; border: 1.5px solid var(--paper-line);
-            font-family: inherit; font-size: 15px; background: var(--paper); color: var(--ink);
-        }
-        .form-row input:focus, .form-row select:focus, .form-row textarea:focus {
-            outline: none; border-color: var(--accent);
-        }
-        .form-row textarea { resize: vertical; min-height: 64px; }
-        .form-row-split { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form-status{
+  margin-top:14px;
+  font-size:14.5px;
+  font-weight:600;
+  text-align:center;
+  display:none;
+}
+.form-status.show{ display:block; }
+.form-status.ok{ color:var(--green); }
+.form-status.err{ color:var(--margin); }
 
-        .modal-submit-btn {
-            width: 100%; margin-top: 6px;
-            background: var(--accent); color: var(--ink); border: none;
-            padding: 13px 16px; border-radius: 999px; font-weight: 700; font-size: 15.5px;
-            cursor: pointer; transition: transform .18s ease, box-shadow .18s ease;
-        }
-        .modal-submit-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(232,163,61,.4); }
-        .modal-submit-btn:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+.switch-hint{
+  margin-top:16px;
+  text-align:center;
+  font-size:14px;
+  color:var(--ink-soft);
+}
+.switch-hint button{
+  background:none; border:none; color:var(--accent-dark);
+  font-weight:700; text-decoration:underline; padding:0; font-size:14px;
+}
 
-        .form-status { margin-top: 12px; font-size: 14px; font-weight: 600; display: none; }
-        .form-status.show { display: block; }
-        .form-status.ok { color: var(--green); }
-        .form-status.err { color: var(--margin); }
+/* ===== Dashboard profile header (v2) — fluid, same formation on every screen ===== */
+.dash-head-v2{
+  display:flex;
+  align-items:stretch;
+  flex-wrap:nowrap;
+  gap:clamp(8px, 2.6vw, 18px);
+  margin-bottom:10px;
+  padding-bottom:8px;
+  border-bottom:1px solid var(--paper-line);
+}
+.profile-panel{
+  flex:none;
+  width:clamp(56px, 17vw, 140px);
+  border-radius:clamp(12px, 3vw, 20px);
+  background:linear-gradient(150deg, #16225c 0%, #2850c8 55%, #3f7ee8 100%);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:clamp(2px, 0.8vw, 6px);
+  padding:clamp(4px, 1.4vw, 8px) clamp(4px, 1.6vw, 10px);
+  box-shadow:0 14px 30px rgba(28,58,159,.28);
+}
+.profile-panel-avatar{
+  position:relative;
+  width:clamp(32px, 10vw, 88px); height:clamp(32px, 10vw, 88px);
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(255,255,255,.12);
+  border:2px solid rgba(255,255,255,.55);
+  box-shadow:0 0 0 6px rgba(255,255,255,.08);
+}
+.profile-panel-avatar svg{
+  width:clamp(16px, 5vw, 40px); height:clamp(16px, 5vw, 40px);
+  stroke:#fff;
+  fill:none;
+  stroke-width:1.6;
+  stroke-linecap:round;
+  stroke-linejoin:round;
+}
+.profile-panel-dot{
+  position:absolute; right:1px; bottom:1px;
+  width:clamp(8px, 2vw, 16px); height:clamp(8px, 2vw, 16px);
+  border-radius:50%;
+  background:#34C463;
+  border:clamp(1.5px, .4vw, 3px) solid #16225c;
+}
+.profile-panel-label{ color:#fff; font-weight:800; font-size:clamp(9px, 2.4vw, 19px); letter-spacing:.3px; white-space:nowrap; }
 
-        /* ===== ফুটার ===== */
-        footer { padding: 40px 0 30px; color: var(--ink-soft); font-size: 14.5px; border-top: 1px solid var(--paper-line); margin-top: 20px; }
-        .copyright { text-align: center; margin-top: 10px; font-size: 13px; }
-    </style>
+.profile-main{
+  flex:1;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:clamp(0px, 0.2vw, 1px);
+  justify-content:center;
+}
+.profile-main-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:clamp(6px, 1.6vw, 12px);
+  flex-wrap:nowrap;
+}
+.dash-welcome{ min-width:0; }
+.dash-welcome h2{ font-size:clamp(12.5px, 2.8vw, 22px); font-weight:800; letter-spacing:.2px; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.dash-welcome p{ color:var(--ink-soft); margin-top:2px; font-size:clamp(9.5px, 2vw, 14.5px); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+.info-pill-row{
+  display:flex;
+  align-items:stretch;
+  justify-content:space-between;
+  flex-wrap:nowrap;
+  gap:clamp(4px, 1.3vw, 10px);
+  background:var(--paper);
+  border:1px solid var(--paper-line);
+  border-radius:clamp(8px, 2vw, 14px);
+  padding:clamp(4px, 1vw, 7px) clamp(5px, 1.8vw, 16px);
+}
+.info-pill{ display:flex; align-items:center; gap:clamp(4px, 1.1vw, 11px); flex:0 1 auto; min-width:0; }
+.info-pill-icon{
+  flex:none;
+  width:clamp(20px, 5.5vw, 38px); height:clamp(20px, 5.5vw, 38px);
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+}
+.info-pill-icon svg{ width:clamp(10px, 2.9vw, 19px); height:clamp(10px, 2.9vw, 19px); stroke:currentColor; fill:none; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round; }
+.info-pill-icon.icon-purple svg{ fill:currentColor; }
+.info-pill-icon.icon-blue{ background:#DCE9FB; color:#1E4FA8; }
+.info-pill-icon.icon-green{ background:#DBF3E4; color:#1F7A4C; }
+.info-pill-icon.icon-purple{ background:#EDE0FB; color:#7C3AED; }
+.info-pill-text{ display:flex; flex-direction:column; line-height:1.25; min-width:0; }
+.info-pill-text strong{ font-size:clamp(8.5px, 2.1vw, 15.5px); font-weight:800; color:var(--ink); white-space:nowrap; }
+.info-pill-text small{ font-size:clamp(7.5px, 1.6vw, 13px); color:var(--ink-soft); font-weight:600; white-space:nowrap; }
+.info-pill-divider{ width:1px; align-self:stretch; background:var(--paper-line); flex:none; }
+
+.contact-row{ display:flex; align-items:center; gap:clamp(7px, 1.8vw, 15px); flex-wrap:nowrap; }
+.contact-item{ display:flex; align-items:center; gap:clamp(4px, 1.1vw, 9px); font-size:clamp(9.5px, 2.1vw, 15px); font-weight:700; color:var(--ink); white-space:nowrap; }
+.contact-item svg{ width:clamp(11px, 2.5vw, 18px); height:clamp(11px, 2.5vw, 18px); stroke:var(--ink); fill:none; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round; flex:none; }
+.contact-item #dashMobile{ color:#2850c8; font-weight:800; }
+.contact-item-joined{ font-weight:600; color:var(--ink-soft); }
+.contact-item-joined strong{ color:var(--ink); font-weight:700; }
+.contact-divider{ width:1px; height:clamp(11px, 2.5vw, 16px); background:var(--paper-line); flex:none; }
+
+.status-pill{
+  display:inline-flex; align-items:center; gap:6px;
+  padding:7px 18px; border-radius:999px; font-weight:700; font-size:13.5px;
+}
+.status-pill.pending{ background:#FBEBD3; color:var(--accent-dark); }
+.status-pill.approved{ background:#DCEEE3; color:var(--green); }
+.status-pill.other{ background:#F1E4E4; color:var(--margin); }
+
+
+.learning-area{
+  margin-top:5px;
+  padding-top:5px;
+  border-top:1px solid var(--paper-line);
+}
+.learning-head{ margin-bottom:8px; }
+.learning-head h3{ font-size:18px; font-weight:700; margin-bottom:1px; }
+.learning-head p{ margin-top:1px; color:var(--ink-soft); font-size:13px; }
+.enrolled-course-list{ display:grid; gap:10px; margin-bottom:14px; }
+.enrolled-course-btn{
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  width:100%;
+  text-align:left;
+  border:1.5px solid var(--paper-line);
+  background:#fff;
+  color:var(--ink);
+  border-radius:14px;
+  padding:8px 16px;
+  font:700 15.5px/1.4 'Anek Bangla',sans-serif;
+  cursor:pointer;
+  transition:.18s ease;
+  box-shadow:0 2px 8px rgba(30,42,71,0.05);
+  overflow:hidden;
+}
+.ecb-corner-badge{
+  position:absolute;
+  top:0;
+  right:0;
+  background:#8B2FC9;
+  color:#fff;
+  font-size:11.5px;
+  font-weight:800;
+  padding:3px 10px;
+  border-bottom-left-radius:10px;
+  letter-spacing:.2px;
+}
+.ecb-sector-badge{
+  position:absolute; top:0; left:0; background:var(--sky); color:#fff;
+  font-size:11.5px; font-weight:800; padding:3px 10px;
+  border-bottom-right-radius:10px; letter-spacing:.3px;
+}
+.ecb-icon{
+  flex:none;
+  width:40px; height:40px;
+  border-radius:11px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:19px;
+  background:linear-gradient(145deg, #fff2dc, #ffe1ab);
+  box-shadow:inset 0 1px 1px rgba(255,255,255,.6);
+  transition:.18s ease;
+}
+.ecb-body{ display:flex; flex-direction:column; gap:2px; min-width:0; }
+.ecb-watchtime{
+  font-size:12.5px;
+  font-weight:600;
+  color:var(--ink-soft);
+  display:flex;
+  align-items:center;
+  gap:5px;
+  order:3;
+}
+.ecb-wt-value{
+  font-weight:700;
+  color:var(--accent-dark, #b9791f);
+}
+.ecb-watchtime .ecb-icon-emoji{ font-size:13px; line-height:1; }
+.ecb-name{ color:var(--ink); order:1; }
+.ecb-meta{ display:flex; align-items:center; flex-wrap:wrap; gap:6px; order:2; }
+.ecb-date{
+  font-size:12.5px;
+  font-weight:600;
+  color:var(--ink-soft);
+}
+.ecb-date .ecb-icon-emoji{ font-size:13px; line-height:1; }
+.enrolled-course-btn small{
+  font-size:13px;
+  font-weight:600;
+  color:var(--ink-soft);
+  margin-left:4px;
+}
+
+.enrolled-course-btn:hover{ transform:translateY(-2px); border-color:var(--accent); box-shadow:0 10px 22px rgba(232,163,61,.18); }
+.enrolled-course-btn.active{
+  border-color:var(--accent);
+  background:linear-gradient(180deg, #fffaf0, #fff);
+  box-shadow:0 10px 24px rgba(232,163,61,.22), inset 0 0 0 1px rgba(232,163,61,.15);
+}
+.enrolled-course-btn.active .ecb-icon{ background:linear-gradient(145deg, var(--accent), var(--accent-dark)); box-shadow:0 4px 10px rgba(232,163,61,.4), inset 0 1px 1px rgba(255,255,255,.4); }
+.enrolled-course-btn.is-expired{ opacity:.75; }
+.expired-badge{
+  display:inline-block;
+  padding:2px 8px;
+  border-radius:999px;
+  background:#fdecea;
+  color:#c0392b;
+  font-size:11.5px;
+  font-weight:700;
+  vertical-align:middle;
+}
+.active-badge{
+  display:inline-block;
+  padding:2px 8px;
+  border-radius:999px;
+  background:#e9f5ef;
+  color:var(--green);
+  font-size:11.5px;
+  font-weight:700;
+  vertical-align:middle;
+}
+/* ===== PENDING BADGE (নতুন যোগ করা) ===== */
+.pending-badge{
+  display:inline-block;
+  padding:2px 8px;
+  border-radius:999px;
+  background:#fef3c7;
+  color:#b45309;
+  font-size:11.5px;
+  font-weight:700;
+  vertical-align:middle;
+}
+.renew-notice{
+  text-align:center;
+  padding:24px 16px;
+}
+.renew-notice p{ margin:8px 0 16px; color:var(--ink-soft); font-weight:600; }
+.device-blocked-banner{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  margin-bottom:12px;
+  padding:12px 14px;
+  border-radius:10px;
+  background:#fdecea;
+  border:1px solid #f3c6c1;
+  color:#c0392b;
+  font-size:13.5px;
+  line-height:1.5;
+}
+.enrolled-course-btn.is-locked{ opacity:.75; }
+.locked-badge{
+  display:inline-block;
+  padding:2px 8px;
+  border-radius:999px;
+  background:#fdecea;
+  color:#c0392b;
+  font-size:11.5px;
+  font-weight:700;
+  vertical-align:middle;
+}
+.subject-row{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  padding:3px 2px 10px;
+  scrollbar-width:thin;
+}
+.subject-btn{
+  flex:0 0 auto;
+  border:1px solid var(--paper-line);
+  background:#fff;
+  color:var(--ink-soft);
+  border-radius:999px;
+  padding:9px 15px;
+  font:700 14px/1.2 'Anek Bangla',sans-serif;
+  cursor:pointer;
+  white-space:nowrap;
+  transition:.15s ease;
+}
+.subject-btn:hover,.subject-btn.active{ background:radial-gradient(circle at 32% 28%, #ffd98a, var(--accent) 65%); color:var(--ink); border-color:var(--accent); box-shadow:0 6px 16px rgba(232,163,61,.25), inset 0 1px 1px rgba(255,255,255,.5); }
+.subject-btn{ display:inline-flex; align-items:center; gap:8px; }
+.subject-icon{
+  flex:none;
+  font-size:17px;
+  line-height:1;
+}
+.filter-row{
+  display:flex;
+  gap:10px;
+  margin:3px 0 12px;
+}
+.filter-select-wrap{
+  position:relative;
+  flex:1 1 0;
+  min-width:0;
+}
+.filter-select-wrap::after{
+  content:"";
+  position:absolute;
+  right:14px;
+  top:50%;
+  width:9px;
+  height:9px;
+  border-right:2.2px solid rgba(255,255,255,.9);
+  border-bottom:2.2px solid rgba(255,255,255,.9);
+  transform:translateY(-70%) rotate(45deg);
+  pointer-events:none;
+}
+.filter-select{
+  width:100%;
+  appearance:none;
+  -webkit-appearance:none;
+  -moz-appearance:none;
+  font:700 14px/1.2 'Anek Bangla',sans-serif;
+  color:#fff;
+  background:linear-gradient(135deg, #263a63, var(--ink) 60%);
+  border:1px solid var(--ink);
+  border-radius:10px;
+  padding:11px 32px 11px 14px;
+  cursor:pointer;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  box-shadow:0 3px 10px rgba(30,42,71,.2), inset 0 1px 1px rgba(255,255,255,.12);
+  transition:.15s ease;
+}
+.filter-select:hover{ box-shadow:0 5px 14px rgba(30,42,71,.28), inset 0 1px 1px rgba(255,255,255,.12); }
+.filter-select:focus{ outline:none; box-shadow:0 0 0 3px rgba(232,163,61,.35); }
+.filter-select:disabled{ opacity:.55; cursor:not-allowed; box-shadow:none; }
+.filter-select option{ color:var(--ink); background:#fff; }
+@media(max-width:420px){
+  .filter-select{ font-size:13px; padding:10px 28px 10px 12px; }
+}
+.class-search-wrap{ margin:2px 0 12px; }
+.class-search-input{
+  width:100%;
+  font-family:'Hind Siliguri',sans-serif;
+  font-size:14.5px;
+  padding:7px 14px;
+  border-radius:10px;
+  border:1px solid var(--paper-line);
+  background:var(--paper);
+  color:var(--ink);
+  outline:none;
+  transition:border-color .15s ease;
+}
+.class-search-input:focus{ border-color:var(--accent); }
+.class-search-input::placeholder{ color:var(--ink-soft); }
+.class-player-wrap{
+  position:relative;
+  margin:6px 0 18px;
+  background:#111827;
+  border-radius:12px;
+  overflow:hidden;
+  aspect-ratio:16/9;
+  box-shadow:var(--shadow);
+}
+.class-player-wrap iframe{ width:100%; height:100%; border:0; display:block; pointer-events:none; }
+.yt-mount{ position:absolute; inset:0; }
+.yt-click-catcher{
+  position:absolute; left:0; right:0; top:0; bottom:44px;
+  z-index:2; cursor:pointer; background:transparent;
+}
+.custom-controls{
+  position:absolute; left:0; right:0; bottom:0; z-index:3;
+  display:flex; align-items:center; gap:10px;
+  padding:8px 12px;
+  background:linear-gradient(transparent, rgba(0,0,0,.8));
+}
+.cc-btn{
+  background:none; border:none; color:#fff; font-size:17px;
+  cursor:pointer; padding:2px 6px; line-height:1;
+  display:inline-flex; align-items:center; justify-content:center;
+}
+.cc-btn:hover{ opacity:.8; }
+.cc-btn svg{ width:18px; height:18px; display:block; fill:currentColor; }
+.cc-time{ color:#fff; font-size:11px; min-width:80px; text-align:center; white-space:nowrap; }
+.cc-seek{ flex:1; accent-color:var(--accent, #ff5a1f); cursor:pointer; }
+.cc-settings-panel{
+  position:absolute; right:8px; bottom:48px; z-index:4;
+  min-width:190px; background:rgba(20,20,20,.96); color:#fff;
+  border-radius:10px; overflow:hidden; font-size:13px;
+  box-shadow:0 6px 20px rgba(0,0,0,.4);
+}
+.cc-settings-row, .cc-settings-back, .cc-settings-sub button.cc-option{
+  display:flex; align-items:center; justify-content:space-between;
+  width:100%; background:none; border:none; color:#fff;
+  padding:10px 14px; font-size:13px; cursor:pointer; text-align:left;
+}
+.cc-settings-row:hover, .cc-settings-back:hover, .cc-settings-sub button.cc-option:hover{
+  background:rgba(255,255,255,.1);
+}
+.cc-settings-right{ display:flex; align-items:center; gap:6px; color:#bbb; }
+.cc-settings-value{ color:#bbb; }
+.cc-settings-back{ font-weight:600; border-bottom:1px solid rgba(255,255,255,.12); }
+.cc-settings-sub button.cc-option.active{ color:var(--accent, #ff5a1f); font-weight:600; }
+.class-list{ display:grid; gap:6px; }
+.class-item-row{
+  display:flex;
+  align-items:stretch;
+  gap:6px;
+}
+.class-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex:1;
+  min-width:0;
+  border:1px solid var(--paper-line);
+  background:#fff;
+  border-radius:10px;
+  padding:7px 12px;
+  text-align:left;
+  color:var(--ink);
+  cursor:pointer;
+  transition:.15s ease;
+}
+.class-item:hover{ border-color:var(--accent); transform:translateY(-1px); box-shadow:0 6px 16px rgba(30,42,71,.08); }
+.class-pdf-btn{
+  flex:none;
+  width:40px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid var(--paper-line);
+  background:#fff;
+  border-radius:8px;
+  overflow:hidden;
+  transition:.15s ease;
+}
+.class-pdf-btn:hover{ border-color:var(--accent); transform:translateY(-1px); box-shadow:0 4px 10px rgba(30,42,71,.1); }
+.class-pdf-btn svg{ width:100%; height:100%; }
+.class-play{
+  flex:none;
+  width:36px; height:36px;
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  background:radial-gradient(circle at 32% 28%, #ffd98a, var(--accent) 65%);
+  color:var(--ink);
+  font-weight:800;
+  box-shadow:0 2px 6px rgba(232,163,61,.45), inset 0 1px 1px rgba(255,255,255,.5);
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.class-item:hover .class-play{ transform:scale(1.06); box-shadow:0 4px 10px rgba(232,163,61,.55), inset 0 1px 1px rgba(255,255,255,.5); }
+.class-play svg{ width:60%; height:60%; margin-left:2px; filter:drop-shadow(0 1px 1px rgba(0,0,0,.12)); }
+.class-meta{ min-width:0; }
+.class-title{ font-weight:700; font-size:14px; line-height:1.3; }
+.class-chapter{ display:block; margin-top:1px; color:var(--ink-soft); font-size:12px; line-height:1.3; }
+.learning-empty{
+  padding:16px;
+  border:1px dashed var(--paper-line);
+  border-radius:10px;
+  color:var(--ink-soft);
+  text-align:center;
+  background:var(--paper);
+}
+.class-loading{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding:34px 16px;
+  border:1px solid var(--paper-line);
+  border-radius:10px;
+  background:var(--paper);
+  color:var(--ink-soft);
+  font-family:'Hind Siliguri',sans-serif;
+  font-size:14px;
+}
+.class-loading .spinner{
+  width:28px; height:28px;
+  border:3px solid rgba(232,163,61,.25);
+  border-top-color:var(--accent);
+  border-radius:50%;
+  animation:class-spin .8s linear infinite;
+}
+@keyframes class-spin{ to{ transform:rotate(360deg); } }
+.subject-row-loading{
+  display:flex;
+  gap:8px;
+}
+.subject-row-loading .skel-pill{
+  width:88px; height:34px;
+  border-radius:999px;
+  background:linear-gradient(90deg, var(--paper) 25%, #eef1f7 37%, var(--paper) 63%);
+  background-size:400% 100%;
+  animation:skel-shimmer 1.4s ease infinite;
+}
+@keyframes skel-shimmer{
+  0%{ background-position:100% 50%; }
+  100%{ background-position:0 50%; }
+}
+.enrolled-course-skel{ display:grid; gap:10px; margin-bottom:14px; }
+.enrolled-course-skel .skel-card{
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px 14px;
+  min-height:46px;
+  border:1px solid var(--paper-line);
+  border-radius:10px;
+  background:var(--paper);
+  overflow:hidden;
+}
+.enrolled-course-skel .skel-icon{
+  width:32px; height:32px;
+  border-radius:50%;
+  background:#ece4cf;
+  flex-shrink:0;
+}
+.enrolled-course-skel .skel-lines{ flex:1; display:flex; flex-direction:column; gap:7px; }
+.enrolled-course-skel .skel-line{ height:11px; border-radius:6px; background:#ece4cf; }
+.enrolled-course-skel .skel-line-title{ width:62%; }
+.enrolled-course-skel .skel-line-sub{ width:36%; height:9px; }
+.enrolled-course-skel .skel-card::after{
+  content:'';
+  position:absolute;
+  top:0; left:-60%;
+  width:60%; height:100%;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.75), transparent);
+  animation:skel-sweep 1.6s ease-in-out infinite;
+}
+.enrolled-course-skel .skel-card:nth-child(2)::after{ animation-delay:.22s; }
+@keyframes skel-sweep{
+  0%{ left:-60%; }
+  100%{ left:120%; }
+}
+
+.va-toast{
+  position:fixed;
+  left:50%;
+  bottom:26px;
+  transform:translateX(-50%) translateY(16px);
+  background:var(--ink);
+  color:#fff;
+  padding:14px 24px;
+  border-radius:999px;
+  font-family:'Baloo Da 2', sans-serif;
+  font-weight:600;
+  font-size:14.5px;
+  box-shadow:0 14px 30px rgba(30,42,71,.3);
+  z-index:9998;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .3s ease, transform .3s ease;
+  max-width:min(90vw, 420px);
+  text-align:center;
+}
+.va-toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+  pointer-events:auto;
+}
+@media (max-width:600px){
+  .va-toast{ font-size:13px; padding:12px 18px; bottom:80px; }
+}
+@media(max-width:640px){
+  .learning-area{ margin-top:5px; padding-top:5px; }
+  .learning-head h3{ font-size:19px; }
+  .class-item{ padding:7px 11px; }
+  .class-play{ width:34px; height:34px; }
+}
+@media(max-width:900px){
+  #dashboardSection .container{ padding-left:8px; padding-right:8px; }
+  #dashboardSection .auth-box{ padding-left:10px; padding-right:10px; max-width:100%; }
+}
+
+footer{
+  background:var(--ink);
+  color:#EDEFF5;
+  padding:44px 0 22px;
+  margin-top:0;
+}
+footer .container{ max-width:min(2300px, 100%); }
+footer h4{ color:#fff; font-size:16px; margin-bottom:12px; }
+footer p, footer a{ color:#C9CFDE; font-size:14.5px; display:block; margin-bottom:6px; }
+footer a:hover{ color:#fff; }
+.footer-grid{
+  display:grid;
+  grid-template-columns:1.4fr 1fr 1fr;
+  gap:30px;
+  padding-bottom:26px;
+  border-bottom:1px solid rgba(255,255,255,.12);
+}
+@media(max-width:700px){
+  .footer-grid{ grid-template-columns:1fr; }
+}
+.copyright{
+  margin-top:18px;
+  font-size:13.5px;
+  color:#9AA3BB;
+  text-align:center;
+}
+
+.loading-overlay{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:rgba(250,247,240,.94);
+  backdrop-filter:blur(6px);
+}
+.loading-overlay.show{display:flex;}
+.loading-box{
+  width:min(360px, calc(100% - 40px));
+  padding:24px 22px;
+  background:#fff;
+  border:1px solid var(--paper-line);
+  border-radius:14px;
+  box-shadow:var(--shadow);
+  text-align:center;
+}
+.loading-text{
+  margin-bottom:14px;
+  color:var(--ink);
+  font-weight:700;
+  font-size:16px;
+}
+.loading-track{
+  width:100%;
+  height:8px;
+  overflow:hidden;
+  border-radius:999px;
+  background:var(--paper-line);
+}
+.loading-progress{
+  width:38%;
+  height:100%;
+  border-radius:999px;
+  background:var(--accent);
+  animation:loadingProgress 1.15s ease-in-out infinite;
+}
+@keyframes loadingProgress{
+  0%{transform:translateX(-120%);}
+  100%{transform:translateX(300%);}
+}
+
+.device-modal-overlay{
+  position:fixed;
+  inset:0;
+  z-index:10000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:rgba(30,42,71,.55);
+  backdrop-filter:blur(4px);
+  padding:20px;
+}
+.device-modal-overlay.show{display:flex;}
+.device-modal-box{
+  width:min(440px, calc(100% - 12px));
+  padding:26px 24px 22px;
+  background:#fff;
+  border:1px solid var(--paper-line);
+  border-radius:16px;
+  box-shadow:0 20px 50px rgba(30,42,71,.28);
+  text-align:center;
+}
+.device-modal-icon{
+  width:54px;
+  height:54px;
+  margin:0 auto 14px;
+  border-radius:50%;
+  background:rgba(232,163,61,.15);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:26px;
+}
+.device-modal-title{
+  font-weight:800;
+  font-size:18px;
+  color:var(--ink);
+  margin-bottom:10px;
+}
+.device-modal-text{
+  font-size:15px;
+  line-height:1.7;
+  color:var(--ink-soft);
+  margin-bottom:20px;
+}
+.device-modal-actions{
+  display:flex;
+  gap:10px;
+}
+.device-modal-actions button{
+  flex:1;
+  border:none;
+  border-radius:10px;
+  padding:12px 10px;
+  font-weight:700;
+  font-size:15px;
+  transition:transform .15s ease, box-shadow .15s ease, opacity .15s ease;
+}
+.device-modal-cancel{
+  background:var(--paper);
+  color:var(--ink);
+  border:1px solid var(--paper-line) !important;
+}
+.device-modal-cancel:hover{ background:#F1ECDD; }
+.device-modal-agree{
+  background:var(--accent);
+  color:#fff;
+}
+.device-modal-agree:not(:disabled):hover{ transform:translateY(-2px); box-shadow:0 10px 22px rgba(232,163,61,.45); }
+.device-modal-agree:disabled{ opacity:.55; cursor:not-allowed; }
+
+</style>
 </head>
 <body>
-
-    <!-- ===== নেভবার ===== -->
-    <header class="nav">
-        <div class="nav-inner">
-            <a href="index.html" class="brand">
-                <img src="https://drive.google.com/thumbnail?id=1qdX7gUF-pWOJNXO7HAEMrfwDWqDAqpsl&sz=w1000" alt="VISION Academics" class="brand-logo">
-            </a>
-            <nav class="nav-links" id="navLinks">
-                <a href="index.html#courses">কোর্সসমূহ</a>
-                <a href="index.html#why">কেন আমরা</a>
-                <a href="index.html#teachers">শিক্ষকবৃন্দ</a>
-                <a href="index.html#videos">ফ্রি ক্লাস</a>
-                <a href="shop.html" class="active">শপ</a>
-            </nav>
-            <a href="student-login.html" class="nav-cta" id="navLoginBtn">লগইন</a>
-            <button class="burger" id="burgerBtn">☰</button>
-        </div>
-    </header>
-
-    <main>
-        <!-- ===== পেজ হেড ===== -->
-        <section class="page-head">
-            <div class="container">
-                <span class="eyebrow">VISION শপ</span>
-                <h1>টি-শার্ট, বই ও আরও অনেক কিছু</h1>
-                <p>যেকোনো প্রোডাক্টের কার্ডে ক্লিক করে সরাসরি অর্ডার করুন।</p>
-            </div>
-        </section>
-
-        <!-- ============================================================
-             প্রোডাক্ট গ্রিড — এখন Google Sheet ("shop item list" ট্যাব) থেকে
-             Apps Script দিয়ে dynamically লোড হয়। নতুন প্রোডাক্ট যোগ/বন্ধ করতে
-             চাইলে HTML-এ কিছু বদলাতে হবে না — শুধু Sheet-এ row যোগ করুন বা
-             Status কলাম "Active"/"Inactive" করে দিন।
-             ============================================================ -->
-        <section class="shop-section">
-            <div class="container">
-                <div class="shop-grid" id="shopGrid">
-                    <p class="shop-status-msg" id="shopLoadingMsg">প্রোডাক্ট লোড হচ্ছে...</p>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- ===== ফুটার ===== -->
-    <footer>
-        <div class="container">
-            <p class="copyright">© ২০২৬ VISION Academics — সর্বস্বত্ব সংরক্ষিত।</p>
-        </div>
-    </footer>
-
-    <!-- ============================================================
-         অর্ডার মডাল — কোনো প্রোডাক্ট কার্ডে "অর্ডার করুন" ক্লিক করলে এটা খুলবে।
-         ============================================================ -->
-    <div class="modal-overlay" id="orderModal">
-        <div class="modal-box">
-            <button class="modal-close" id="modalCloseBtn" aria-label="বন্ধ করুন">✕</button>
-            <p class="modal-product-name" id="modalProductName">প্রোডাক্টের নাম</p>
-            <p class="modal-product-price" id="modalProductPrice">৳০</p>
-
-            <form id="orderForm">
-                <div class="form-row">
-                    <label for="orderName">আপনার নাম <span style="color:var(--margin)">*</span></label>
-                    <input type="text" id="orderName" name="name" required placeholder="পুরো নাম লিখুন">
-                </div>
-                <div class="form-row">
-                    <label for="orderPhone">মোবাইল নম্বর <span style="color:var(--margin)">*</span></label>
-                    <input type="tel" id="orderPhone" name="phone" required placeholder="01XXXXXXXXX">
-                </div>
-                <div class="form-row">
-                    <label for="orderAddress">ডেলিভারি ঠিকানা <span style="color:var(--margin)">*</span></label>
-                    <textarea id="orderAddress" name="address" required placeholder="সম্পূর্ণ ঠিকানা লিখুন (গ্রাম/এলাকা, থানা, জেলা)"></textarea>
-                </div>
-                <div class="form-row-split">
-                    <div class="form-row" id="sizeRow">
-                        <label for="orderSize">সাইজ <span style="color:var(--margin)">*</span></label>
-                        <select id="orderSize" name="size">
-                            <option value="S">S</option>
-                            <option value="M" selected>M</option>
-                            <option value="L">L</option>
-                            <option value="XL">XL</option>
-                            <option value="XXL">XXL</option>
-                        </select>
-                    </div>
-                    <div class="form-row">
-                        <label for="orderQty">পরিমাণ <span style="color:var(--margin)">*</span></label>
-                        <input type="number" id="orderQty" name="quantity" min="1" value="1" required>
-                    </div>
-                </div>
-
-                <button type="submit" class="modal-submit-btn" id="orderSubmitBtn">অর্ডার কনফার্ম করুন</button>
-                <p class="form-status" id="orderStatus"></p>
-            </form>
-        </div>
+<div class="loading-overlay" id="loadingOverlay" aria-live="polite" aria-busy="true">
+  <div class="loading-box">
+    <div class="loading-text" id="loadingText">তথ্য লোড হচ্ছে...</div>
+    <div class="loading-track">
+      <div class="loading-progress"></div>
     </div>
+  </div>
+</div>
 
-    <script>
-        // মোবাইল নেভবার মেনু খোলা/বন্ধ করা
-        const burger = document.getElementById('burgerBtn');
-        const navLinks = document.getElementById('navLinks');
-        if (burger && navLinks) {
-            burger.addEventListener('click', () => navLinks.classList.toggle('open'));
-            navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
-        }
+<div class="device-modal-overlay" id="deviceModalOverlay" role="dialog" aria-modal="true" aria-labelledby="deviceModalTitle">
+  <div class="device-modal-box">
+    <div class="device-modal-icon">⚠️</div>
+    <div class="device-modal-title" id="deviceModalTitle">গুরুত্বপূর্ণ সতর্কতা</div>
+    <div class="device-modal-text">
+      আপনি শুধুমাত্র ১টি ডিভাইসে লগইন করে ক্লাস করতে পারবেন। একাধিক ডিভাইসে লগইন করলে আপনার কোর্স লক (Locked) হয়ে যাবে। আপনি কি এই ডিভাইসের মাধ্যমে লগইন করতে ইচ্ছুক?
+    </div>
+    <div class="device-modal-actions">
+      <button type="button" class="device-modal-cancel" id="deviceModalCancelBtn">Cancel</button>
+      <button type="button" class="device-modal-agree" id="deviceModalAgreeBtn" disabled>Yes, I Agree (10)</button>
+    </div>
+  </div>
+</div>
 
-        // index.html-এর মতোই — লগইন করা থাকলে (localStorage-এ va_user থাকলে)
-        // নেভবারের "লগইন" বাটনটা "প্রোফাইল" দেখাবে
-        (function(){
-            const loginBtn = document.getElementById('navLoginBtn');
-            if (!loginBtn) return;
-            try {
-                const loggedIn = !!localStorage.getItem('va_user');
-                const icon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>';
-                loginBtn.innerHTML = icon + '<span>' + (loggedIn ? 'প্রোফাইল' : 'লগইন') + '</span>';
-            } catch(e) {}
-        })();
 
-        // ============================================================
-        // একটাই "VISION DATA" consolidated Apps Script — Student, Shop,
-        // Teachers/Course Name/Course Data/Free Class সবকিছুর জন্য একই
-        // endpoint (index.html/course-details.html/student-login.html-এও
-        // এই একই URL বসানো)। আগে শপের জন্য আলাদা script/deployment ছিল,
-        // এখন আর দরকার নেই।
-        // ============================================================
-        // আগে Google Apps Script endpoint ছিল, এখন Cloudflare Worker + D1
-        const SHOP_FORM_ENDPOINT = "https://late-forest-4748.dreamsicreation.workers.dev";
+<header class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand">
+      <img src="https://drive.google.com/thumbnail?id=1qdX7gUF-pWOJNXO7HAEMrfwDWqDAqpsl&sz=w1000" alt="VISION Academics" class="brand-logo">
+    </a>
+    <a href="index.html" class="back-link">← হোমে ফিরে যান</a>
+  </div>
+</header>
 
-        function callShopApi(payload){
-            const controller = new AbortController();
-            const timeout = setTimeout(()=>controller.abort(), 20000);
-            return fetch(SHOP_FORM_ENDPOINT, {
-                method: 'POST',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify(payload),
-                signal: controller.signal
-            })
-                .then(res=>{
-                    if(!res.ok) throw new Error('সার্ভার থেকে তথ্য পাওয়া যায়নি।');
-                    return res.json();
-                })
-                .catch(err=>{
-                    if(err.name === 'AbortError') throw new Error('সার্ভারে সাড়া পেতে বেশি সময় লাগছে। আবার চেষ্টা করুন।');
-                    throw err;
-                })
-                .finally(()=>clearTimeout(timeout));
-        }
+<main>
 
-        // ============================================================
-        // প্রোডাক্ট লোড + রেন্ডার
-        // (Google Sheet "shop item list" ট্যাব থেকে — শুধু Status = Active)
-        // ============================================================
-        let SHOP_PRODUCTS = [];
+  <section class="page-head" id="authPageHead">
+    <h1>স্টুডেন্ট রেজিস্ট্রেশন ও লগইন</h1>
+    <p>নতুন হলে রেজিস্ট্রেশন করুন, আগে থেকে অ্যাকাউন্ট থাকলে মোবাইল নম্বর ও পাসওয়ার্ড দিয়ে লগইন করুন।</p>
+  </section>
 
-        function escapeHtml(str){
-            const div = document.createElement('div');
-            div.textContent = String(str == null ? '' : str);
-            return div.innerHTML;
-        }
+  <section class="auth-wrap">
+    <div class="container">
+      <div class="auth-box">
 
-        function renderProducts(products){
-            const grid = document.getElementById('shopGrid');
+        <div class="tab-switch" id="tabSwitch">
+          <button type="button" class="tab-btn" id="tabRegisterBtn">রেজিস্ট্রেশন</button>
+          <button type="button" class="tab-btn" id="tabLoginBtn">লগইন</button>
+        </div>
 
-            if(!products.length){
-                grid.innerHTML = '<p class="shop-status-msg">এই মুহূর্তে কোনো প্রোডাক্ট পাওয়া যায়নি।</p>';
-                return;
+        <div class="panel" id="registerPanel">
+          <form id="regForm">
+            <div class="form-grid">
+
+              <div class="form-row full">
+                <label for="reg_name">নাম <span class="req">*</span></label>
+                <input type="text" id="reg_name" name="name" placeholder="যেমন: রহিম উদ্দিন" required>
+              </div>
+
+              <div class="form-row">
+                <label for="reg_level">লেভেল <span class="req">*</span></label>
+                <select id="reg_level" name="level" required>
+                  <option value="" disabled selected>নির্বাচন করুন</option>
+                  <option value="HSC">HSC</option>
+                  <option value="BBA">BBA</option>
+                  <option value="MBA">MBA</option>
+                  <option value="BBS">BBS</option>
+                  <option value="BBA Professional">BBA Professional</option>
+                </select>
+              </div>
+
+              <div class="form-row">
+                <label for="reg_department">ডিপার্টমেন্ট <span class="req">*</span></label>
+                <select id="reg_department" name="department" required>
+                  <option value="" disabled selected>নির্বাচন করুন</option>
+                  <option value="Accounting">Accounting</option>
+                  <option value="Management">Management</option>
+                  <option value="Marketing">Marketing</option>
+                  <option value="Finance">Finance</option>
+                </select>
+              </div>
+
+              <div class="form-row">
+                <label for="reg_year">বর্ষ <span class="req">*</span></label>
+                <select id="reg_year" name="year" required>
+                  <option value="" disabled selected>নির্বাচন করুন</option>
+                  <option value="1st Year">1st Year</option>
+                  <option value="2nd Year">2nd Year</option>
+                  <option value="3rd Year">3rd Year</option>
+                  <option value="4th Year">4th Year</option>
+                </select>
+              </div>
+
+              <div class="form-row">
+                <label for="reg_session">সেশন</label>
+                <input type="text" id="reg_session" name="session" placeholder="যেমন: ২০২৫-২৬">
+              </div>
+
+              <div class="form-row">
+                <label for="reg_institute">প্রতিষ্ঠানের নাম</label>
+                <input type="text" id="reg_institute" name="institute" placeholder="স্কুল/কলেজ/বিশ্ববিদ্যালয়">
+              </div>
+
+              <div class="form-row">
+                <label for="reg_mobile">মোবাইল নম্বর <span class="req">*</span></label>
+                <input type="tel" id="reg_mobile" name="mobile" placeholder="01XXXXXXXXX" required>
+              </div>
+
+              <div class="form-row">
+                <label for="reg_email">ইমেইল</label>
+                <input type="email" id="reg_email" name="email" placeholder="যেমন: example@mail.com">
+              </div>
+
+              <div class="form-row full">
+                <label for="reg_address">ঠিকানা</label>
+                <input type="text" id="reg_address" name="address" placeholder="বর্তমান ঠিকানা লিখুন">
+              </div>
+
+              <div class="form-row full">
+                <label for="reg_password">পাসওয়ার্ড <span class="req">*</span></label>
+                <input type="password" id="reg_password" name="password" placeholder="আপনার পাসওয়ার্ড দিন" required>
+              </div>
+
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="regSubmitBtn">রেজিস্ট্রেশন করুন</button>
+            <p class="form-status" id="regStatus"></p>
+          </form>
+          <p class="switch-hint">আগে থেকে অ্যাকাউন্ট আছে? <button type="button" id="goLoginLink">লগইন করুন</button></p>
+        </div>
+
+        <div class="panel" id="loginPanel">
+          <form id="loginForm">
+            <div class="form-row full">
+              <label for="login_mobile">মোবাইল নম্বর <span class="req">*</span></label>
+              <input type="tel" id="login_mobile" name="mobile" placeholder="01XXXXXXXXX" required>
+            </div>
+            <div class="form-row full">
+              <label for="login_password">পাসওয়ার্ড <span class="req">*</span></label>
+              <input type="password" id="login_password" name="password" placeholder="আপনার পাসওয়ার্ড" required>
+            </div>
+            <button type="submit" class="btn btn-primary" id="loginSubmitBtn">লগইন করুন</button>
+            <p class="form-status" id="loginStatus"></p>
+          </form>
+          <p class="switch-hint">অ্যাকাউন্ট নেই? <button type="button" id="goRegisterLink">রেজিস্ট্রেশন করুন</button></p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="auth-wrap" id="dashboardSection" style="display:none;">
+    <div class="container">
+      <div class="auth-box">
+        <div class="dash-head-v2">
+          <div class="profile-panel">
+            <div class="profile-panel-avatar" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 3 1 8l11 5 9-4.09V17h2V8L12 3Z"></path>
+                <path d="M5 10.5V16c0 1.5 3 3.5 7 3.5s7-2 7-3.5v-5.5"></path>
+              </svg>
+              <span class="profile-panel-dot" aria-hidden="true"></span>
+            </div>
+            <span class="profile-panel-label">Profile</span>
+          </div>
+
+          <div class="profile-main">
+            <div class="profile-main-top">
+              <div class="dash-welcome">
+                <h2 id="dashName">—</h2>
+                <p>VISION Academics-এ স্বাগতম</p>
+              </div>
+              <button type="button" class="logout-link-btn" id="logoutBtn">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><path d="M16 17l5-5-5-5"></path><path d="M21 12H9"></path></svg>
+                লগআউট করুন
+              </button>
+            </div>
+
+            <div class="info-pill-row">
+              <div class="info-pill">
+                <span class="info-pill-icon icon-blue" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M4 19.5V6a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v13"></path><path d="M6.5 4H20v15.5a1.5 1.5 0 0 1-1.5 1.5H6.5A2.5 2.5 0 0 1 4 18.5v0A2.5 2.5 0 0 1 6.5 16H20"></path></svg>
+                </span>
+                <span class="info-pill-text"><strong id="dashLevel">—</strong><small>Program</small></span>
+              </div>
+              <span class="info-pill-divider"></span>
+              <div class="info-pill">
+                <span class="info-pill-icon icon-green" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="2"></rect><path d="M3 9.5h18"></path><path d="M8 2.5v4"></path><path d="M16 2.5v4"></path></svg>
+                </span>
+                <span class="info-pill-text"><strong id="dashYear">—</strong><small>Academic Session</small></span>
+              </div>
+              <span class="info-pill-divider"></span>
+              <div class="info-pill">
+                <span class="info-pill-icon icon-purple" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="4" y="12" width="3.6" height="8" rx="1"></rect><rect x="10.2" y="7" width="3.6" height="13" rx="1"></rect><rect x="16.4" y="3" width="3.6" height="17" rx="1"></rect></svg>
+                </span>
+                <span class="info-pill-text"><strong id="dashDepartment">—</strong><small>Department</small></span>
+              </div>
+            </div>
+
+            <div class="contact-row">
+              <span class="contact-item">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                <span id="dashMobile">—</span>
+              </span>
+              <span class="contact-divider"></span>
+              <span class="contact-item contact-item-joined">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <span id="enrollmentDates">—</span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="learning-area" id="learningArea">
+          <div class="learning-head">
+            <h3>আমার কোর্স</h3>
+            <p>আপনার enrolled course থেকে subject বেছে নিয়ে class দেখুন।</p>
+          </div>
+          <div class="device-blocked-banner" id="deviceBlockedBanner" style="display:none;">
+            ⚠️ <strong>একাধিক ডিভাইসে লগইন সনাক্ত হয়েছে</strong> — আপনার কোর্স লক করা হয়েছে। আনলক করতে আমাদের সাথে যোগাযোগ করুন।
+          </div>
+          <div class="enrolled-course-list" id="enrolledCourseList"></div>
+          <div id="courseLearningPanel" style="display:none;">
+            <div class="filter-row" id="filterRow" style="display:none;">
+              <div class="filter-select-wrap">
+                <select id="subjectSelect" class="filter-select" aria-label="Subject"></select>
+              </div>
+              <div class="filter-select-wrap">
+                <select id="chapterSelect" class="filter-select" aria-label="Chapter"></select>
+              </div>
+            </div>
+            <div class="class-search-wrap" id="classSearchWrap" style="display:none;">
+              <input type="text" id="classSearchInput" class="class-search-input" placeholder="🔍 টপিক খুঁজুন...">
+            </div>
+            <div class="class-player-wrap" id="classPlayer" style="display:none;">
+              <div class="yt-mount" id="ytMount"></div>
+              <div class="yt-click-catcher" id="ytClickCatcher" title="প্লে/পজ করতে ক্লিক করুন"></div>
+              <div class="custom-controls" id="customControls">
+                <button type="button" class="cc-btn" id="ccPlayPause" aria-label="Play/Pause"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+                <span class="cc-time" id="ccTime">0:00 / 0:00</span>
+                <input type="range" class="cc-seek" id="ccSeek" min="0" max="1000" value="0" aria-label="Seek">
+                <button type="button" class="cc-btn" id="ccSettings" aria-label="Settings"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.5.5 0 0 0 .12-.61l-1.92-3.32a.5.5 0 0 0-.58-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.5.5 0 0 0-.5-.42h-3.84a.5.5 0 0 0-.5.42l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.5.5 0 0 0-.58.22L2.7 8.87a.5.5 0 0 0 .12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.5.5 0 0 0-.12.61l1.92 3.32c.14.24.44.34.68.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.26.42.5.42h3.84c.24 0 .46-.18.5-.42l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.24.09.54 0 .68-.22l1.92-3.32a.5.5 0 0 0-.12-.61l-2.01-1.58zM12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7z"/></svg></button>
+                <button type="button" class="cc-btn" id="ccFullscreen" aria-label="Fullscreen"><svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zM5 10h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg></button>
+              </div>
+              <div class="cc-settings-panel" id="ccSettingsPanel" style="display:none;">
+                <div class="cc-settings-main" id="ccSettingsMain">
+                  <button type="button" class="cc-settings-row" data-menu="quality">
+                    <span>মান</span>
+                    <span class="cc-settings-right"><span class="cc-settings-value" id="ccQualityValue">Auto</span> ›</span>
+                  </button>
+                  <button type="button" class="cc-settings-row" data-menu="speed">
+                    <span>গতি</span>
+                    <span class="cc-settings-right"><span class="cc-settings-value" id="ccSpeedValue">1x</span> ›</span>
+                  </button>
+                </div>
+                <div class="cc-settings-sub" id="ccQualityMenu" style="display:none;">
+                  <button type="button" class="cc-settings-back" data-back="quality">‹ মান</button>
+                  <div id="ccQualityOptions"></div>
+                </div>
+                <div class="cc-settings-sub" id="ccSpeedMenu" style="display:none;">
+                  <button type="button" class="cc-settings-back" data-back="speed">‹ গতি</button>
+                  <div id="ccSpeedOptions"></div>
+                </div>
+              </div>
+            </div>
+            <div class="class-list" id="classList"></div>
+          </div>
+          <div class="learning-empty" id="learningEmpty">এখনো কোনো course enrolled নেই।</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4>VISION Academics</h4>
+        <p>মানসম্পন্ন শিক্ষা, সবার নাগালে।</p>
+      </div>
+      <div>
+        <h4>যোগাযোগ</h4>
+        <p>📞 01764-859503</p>
+        <p>✉️ bbavission@gmail.com</p>
+      </div>
+      <div>
+        <h4>শর্টকাট</h4>
+        <a href="index.html#courses">কোর্সসমূহ</a>
+        <a href="index.html#teachers">শিক্ষকবৃন্দ</a>
+        <a href="index.html#contact">যোগাযোগ</a>
+      </div>
+    </div>
+    <p class="copyright">© ২০২৬ VISION Academics — সর্বস্বত্ব সংরক্ষিত।</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const FORM_ENDPOINT = "https://late-forest-4748.dreamsicreation.workers.dev";
+  const LS_USER_KEY = "va_user";
+  const LS_REGISTERED_KEY = "va_registered";
+  const LS_DEVICE_TOKEN_KEY = "va_device_token";
+  function getDeviceToken(){
+    let token = localStorage.getItem(LS_DEVICE_TOKEN_KEY);
+    if(!token){
+      token = (window.crypto && crypto.randomUUID)
+        ? crypto.randomUUID()
+        : (Date.now().toString(36) + Math.random().toString(36).slice(2));
+      localStorage.setItem(LS_DEVICE_TOKEN_KEY, token);
+    }
+    return token;
+  }
+  const classDataCache = new Map();
+  let courseDataRowsPromise = null;
+  let activeSubjectRows = [];
+  const enrollQuery = new URLSearchParams(window.location.search);
+  // সব matching-এই এখন loose normalize ব্যবহার হয় — case, extra space, এবং যেকোনো
+  // punctuation (dot, comma, hyphen ইত্যাদি) বাদ দিয়ে শুধু মূল শব্দ দিয়ে তুলনা করে।
+  const normalizeLoose = v => String(v ?? '').trim().toLowerCase().replace(/[^a-z0-9\u0980-\u09ff]+/g, ' ').replace(/\s+/g, ' ').trim();
+  const normalizeForMatch = normalizeLoose;
+  const clean = value => String(value ?? '').trim();
+  const enrollParam = enrollQuery.get('enroll');
+  const enrollSectorParam = clean(enrollQuery.get('sector')).toUpperCase();
+  const escapeHtml = value => clean(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  const SW_COURSE_PREFIX = 'SW::';
+  const SW_DEPARTMENTS = ['Accounting','Management','Marketing','Finance'];
+  const SW_YEAR_ORDINALS = ['1st','2nd','3rd','4th'];
+
+  function parseSubjectWiseCourseId(courseId){
+    const s = String(courseId || '');
+    if(!s.startsWith(SW_COURSE_PREFIX)) return null;
+    const parts = s.slice(SW_COURSE_PREFIX.length).split('::');
+    if(parts.length < 4) return null;
+    const [level, department, year, maybeSector, ...rest] = parts;
+    const isSector = ['nu','dcu'].includes(normalizeForMatch(maybeSector));
+    const nuDcu = isSector ? clean(maybeSector).toUpperCase() : '';
+    const subject = isSector ? rest.join('::') : [maybeSector, ...rest].join('::');
+    if(!level || !subject) return null;
+    return { level: clean(level), department: clean(department), year: clean(year), nuDcu, subject: clean(subject) };
+  }
+
+  function getSubjectWiseDisplayName(courseId){
+    const parsed = parseSubjectWiseCourseId(courseId);
+    return parsed ? parsed.subject : courseId;
+  }
+
+  function extractYearFromCourseName(courseName){
+    const norm = normalizeForMatch(courseName);
+    for(const ord of SW_YEAR_ORDINALS){
+      if(norm.includes(ord)) return `${ord} Year`;
+    }
+    return '';
+  }
+  function extractDepartmentFromCourseName(courseName){
+    const norm = normalizeForMatch(courseName);
+    for(const dept of SW_DEPARTMENTS){
+      if(norm.includes(normalizeForMatch(dept))) return dept;
+    }
+    return '';
+  }
+
+  function findSubjectWiseClassRows(allRows, parsed){
+    // subjectwise_course_name-এ level থাকে শুধু "BBA" (plain), sector আলাদা কলামে (nu_dcu)।
+    // কিন্তু course_data_bba_nu/course_data_bba_dcu টেবিলের row-এর level আসে "BBA NU"/"BBA DCU" হিসেবে।
+    // তাই মেলানোর আগে level + sector জোড়া লাগিয়ে সঠিক টেবিলের row বেছে নেওয়া হচ্ছে।
+    const effectiveLevel = parsed.nuDcu ? `${parsed.level} ${parsed.nuDcu}` : parsed.level;
+    return allRows.filter(r=>{
+      if(!r.subject || !r.url) return false;
+      if(normalizeLoose(r.level) !== normalizeLoose(effectiveLevel)) return false;
+      if(normalizeForMatch(r.subject) !== normalizeForMatch(parsed.subject)) return false;
+      if(parsed.department && parsed.year){
+        const rowDept = extractDepartmentFromCourseName(r.courseName);
+        const rowYear = extractYearFromCourseName(r.courseName);
+        if(normalizeForMatch(rowDept) !== normalizeForMatch(parsed.department)) return false;
+        if(normalizeForMatch(rowYear) !== normalizeForMatch(parsed.year)) return false;
+      }
+      return true;
+    });
+  }
+
+  const authPageHead = document.getElementById('authPageHead');
+  const tabRegisterBtn = document.getElementById('tabRegisterBtn');
+  const tabLoginBtn = document.getElementById('tabLoginBtn');
+  const registerPanel = document.getElementById('registerPanel');
+  const loginPanel = document.getElementById('loginPanel');
+  const dashboardSection = document.getElementById('dashboardSection');
+  const authWrapSection = registerPanel.closest('.auth-wrap');
+
+  const regForm = document.getElementById('regForm');
+  const regSubmitBtn = document.getElementById('regSubmitBtn');
+  const regStatus = document.getElementById('regStatus');
+
+  const loginForm = document.getElementById('loginForm');
+  const loginSubmitBtn = document.getElementById('loginSubmitBtn');
+  const loginStatus = document.getElementById('loginStatus');
+
+  const goLoginLink = document.getElementById('goLoginLink');
+  const goRegisterLink = document.getElementById('goRegisterLink');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const enrolledCourseList = document.getElementById('enrolledCourseList');
+  const courseLearningPanel = document.getElementById('courseLearningPanel');
+  const learningEmpty = document.getElementById('learningEmpty');
+  const filterRow = document.getElementById('filterRow');
+  const subjectSelect = document.getElementById('subjectSelect');
+  const chapterSelect = document.getElementById('chapterSelect');
+  const classSearchWrap = document.getElementById('classSearchWrap');
+  const classSearchInput = document.getElementById('classSearchInput');
+  const classPlayer = document.getElementById('classPlayer');
+  const classList = document.getElementById('classList');
+  const ytMount = document.getElementById('ytMount');
+  const ytClickCatcher = document.getElementById('ytClickCatcher');
+  const ccPlayPause = document.getElementById('ccPlayPause');
+  const ccSeek = document.getElementById('ccSeek');
+  const ccTime = document.getElementById('ccTime');
+  const ccFullscreen = document.getElementById('ccFullscreen');
+  const ccSettings = document.getElementById('ccSettings');
+  const ccSettingsPanel = document.getElementById('ccSettingsPanel');
+  const ccSettingsMain = document.getElementById('ccSettingsMain');
+  const ccQualityMenu = document.getElementById('ccQualityMenu');
+  const ccSpeedMenu = document.getElementById('ccSpeedMenu');
+  const ccQualityOptions = document.getElementById('ccQualityOptions');
+  const ccSpeedOptions = document.getElementById('ccSpeedOptions');
+  const ccQualityValue = document.getElementById('ccQualityValue');
+  const ccSpeedValue = document.getElementById('ccSpeedValue');
+  const loadingOverlay = document.getElementById('loadingOverlay');
+  const loadingText = document.getElementById('loadingText');
+
+  function showLoading(message){
+    if(loadingText) loadingText.textContent = message || 'তথ্য লোড হচ্ছে...';
+    if(loadingOverlay) loadingOverlay.classList.add('show');
+  }
+
+  function hideLoading(){
+    if(loadingOverlay) loadingOverlay.classList.remove('show');
+  }
+
+  hideLoading();
+
+  function showRegister(){
+    registerPanel.classList.add('active');
+    loginPanel.classList.remove('active');
+    tabRegisterBtn.classList.add('active');
+    tabLoginBtn.classList.remove('active');
+  }
+  function showLogin(){
+    loginPanel.classList.add('active');
+    registerPanel.classList.remove('active');
+    tabLoginBtn.classList.add('active');
+    tabRegisterBtn.classList.remove('active');
+    window.scrollTo(0, 0);
+  }
+  tabRegisterBtn.addEventListener('click', showRegister);
+  tabLoginBtn.addEventListener('click', showLogin);
+  goLoginLink.addEventListener('click', showLogin);
+  goRegisterLink.addEventListener('click', showRegister);
+
+  function formatDate(value){
+    if(!value) return '—';
+    const d=new Date(value);
+    if(Number.isNaN(d.getTime())) return String(value);
+    return new Intl.DateTimeFormat('en-GB',{day:'2-digit',month:'short',year:'numeric'}).format(d);
+  }
+
+  const enrolledCourseSectorMap = new Map();
+  function getEnrolledCourses(data){
+    const list = Array.isArray(data?.courses) ? data.courses : [];
+    list.forEach(c=>{
+      if(c && c.name) enrolledCourseSectorMap.set(normalizeForMatch(c.name), clean(c.nuDcu || ''));
+    });
+    return list;
+  }
+
+  function formatWatchTimeValue(minutes){
+    const total = Math.round(Number(minutes) || 0);
+    if(total <= 0) return '0 Minutes';
+    const h = Math.floor(total / 60), m = total % 60;
+    if(h > 0) return `${h}h ${m}m`;
+    return `${m} Minutes`;
+  }
+
+  // Stores the last known D1 total for each course. This is critical when
+  // admin changes get_wt from Yes back to No: the old D1 time must remain the
+  // starting point, and new watch time must be added locally on top of it.
+  const LS_WATCH_BASE_KEY = 'va_watch_base_v1';
+
+  function readWatchBaseStore(){
+    try{
+      const raw = localStorage.getItem(LS_WATCH_BASE_KEY);
+      const parsed = raw ? JSON.parse(raw) : {};
+      return parsed && typeof parsed === 'object' ? parsed : {};
+    }catch(e){ return {}; }
+  }
+
+  function writeWatchBaseStore(store){
+    try{
+      localStorage.setItem(LS_WATCH_BASE_KEY, JSON.stringify(store));
+    }catch(e){ console.error('Watch-time base localStorage write failed:', e); }
+  }
+
+  function getWatchBaseMinutes(course, sector, mobile, fallbackMinutes){
+    if(!course || !mobile) return Math.max(0, Number(fallbackMinutes) || 0);
+    const store = readWatchBaseStore();
+    const key = getWatchStorageKey(mobile, course, sector);
+
+    if(Object.prototype.hasOwnProperty.call(store, key)){
+      return Math.max(0, Number(store[key]) || 0);
+    }
+
+    // First time this browser sees the course, initialize the baseline from D1.
+    const fallback = Math.max(0, Number(fallbackMinutes) || 0);
+    store[key] = fallback;
+    writeWatchBaseStore(store);
+    return fallback;
+  }
+
+  function setWatchBaseMinutes(course, sector, mobile, minutes){
+    if(!course || !mobile) return;
+    const store = readWatchBaseStore();
+    store[getWatchStorageKey(mobile, course, sector)] = Math.max(0, Number(minutes) || 0);
+    writeWatchBaseStore(store);
+  }
+
+  function getDashboardWatchTimeMinutes(course, mobile){
+    if(!course) return 0;
+
+    const courseName = String(course.name || '').trim();
+    const sector = String(course.nuDcu || '').trim();
+    if(!courseName || !mobile) return Number(course.watchTime) || 0;
+
+    const isEnabled = String(course.getWt || '').trim().toLowerCase() === 'yes';
+
+    if(isEnabled){
+      // Yes = D1 is authoritative. Save it as the new local baseline.
+      const d1Minutes = Math.max(0, Number(course.watchTime) || 0);
+      setWatchBaseMinutes(courseName, sector, mobile, d1Minutes);
+      return d1Minutes;
+    }
+
+    // No/NULL = keep the previous accumulated total and add new local time.
+    const baseMinutes = getWatchBaseMinutes(courseName, sector, mobile, course.watchTime);
+    const pendingSeconds = getWatchPendingSeconds(courseName, sector, mobile);
+
+    let liveSeconds = 0;
+    if(
+      normalizeWatchCourse(courseName) === normalizeWatchCourse(currentWatchCourse) &&
+      normalizeForMatch(sector) === normalizeForMatch(currentWatchSector || '')
+    ){
+      liveSeconds = Number(watchPendingSeconds) || 0;
+    }
+
+    return Math.max(0, baseMinutes + ((pendingSeconds + liveSeconds) / 60));
+  }
+
+  function refreshDashboardWatchTimeDisplay(){
+    if(!dashboardData) return;
+
+    const courses = Array.isArray(dashboardData.courses) ? dashboardData.courses : [];
+    const mobile = String(dashboardData.mobile || getCurrentUserMobile() || '').trim();
+    if(!mobile) return;
+
+    enrolledCourseList.querySelectorAll('.enrolled-course-btn').forEach(btn=>{
+      const idx = Number(btn.dataset.idx);
+      const course = courses[idx];
+      const value = btn.querySelector('.ecb-wt-value');
+      if(!course || !value) return;
+      value.textContent = formatWatchTimeValue(getDashboardWatchTimeMinutes(course, mobile));
+    });
+  }
+
+  function startDashboardWatchTimeDisplay(){
+    if(dashboardWatchDisplayTimer) return;
+    dashboardWatchDisplayTimer = setInterval(refreshDashboardWatchTimeDisplay, 1000);
+  }
+
+  function stopDashboardWatchTimeDisplay(){
+    if(dashboardWatchDisplayTimer){
+      clearInterval(dashboardWatchDisplayTimer);
+      dashboardWatchDisplayTimer = null;
+    }
+  }
+
+  function driveDirectLink(url){
+    const value = String(url || '').trim();
+    if(!value) return '';
+    const m = value.match(/\/d\/([a-zA-Z0-9_-]+)/) || value.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+    if(!m) return value;
+    return `https://drive.usercontent.google.com/download?id=${m[1]}&export=download&authuser=0`;
+  }
+
+  function youtubeId(url){
+    const value=String(url || '').trim();
+    if(!value) return '';
+    try{
+      const u=new URL(value);
+      if(u.hostname.includes('youtu.be')) return u.pathname.split('/').filter(Boolean)[0] || '';
+      if(u.hostname.includes('youtube.com')){
+        if(u.searchParams.get('v')) return u.searchParams.get('v');
+        const parts=u.pathname.split('/').filter(Boolean);
+        const i=parts.indexOf('embed'); if(i>=0) return parts[i+1] || '';
+        const ss=parts.indexOf('shorts'); if(ss>=0) return parts[ss+1] || '';
+        const l=parts.indexOf('live'); if(l>=0) return parts[l+1] || '';
+      }
+    }catch(e){}
+    const m=value.match(/[?&]v=([^&]+)/i);
+    return m ? m[1] : '';
+  }
+
+  let ytPlayer = null;
+  let ytApiReady = false;
+  let pendingVideoId = null;
+  let ytProgressTimer = null;
+  let ytSeeking = false;
+
+  let currentWatchCourse = '';
+  let currentWatchSector = '';
+  let currentWatchGetWt = false;
+  let watchPendingSeconds = 0;
+  let watchTrackTimer = null;
+  let watchPersistTimer = null;
+  let watchSyncInProgress = false;
+  let dashboardWatchDisplayTimer = null;
+  let dashboardData = null;
+
+  const WATCH_FLUSH_THRESHOLD_SEC = 20;
+  const LS_WATCH_PENDING_KEY = 'va_watch_pending_v1';
+
+  function normalizeWatchCourse(value){
+    return normalizeForMatch(value);
+  }
+
+  function getWatchStorageKey(mobile, course, sector){
+    return [
+      normalizeMobileForMatch(mobile),
+      normalizeWatchCourse(course),
+      normalizeForMatch(sector || '')
+    ].join('::');
+  }
+
+  function readWatchPendingStore(){
+    try{
+      const raw = localStorage.getItem(LS_WATCH_PENDING_KEY);
+      const parsed = raw ? JSON.parse(raw) : {};
+      return parsed && typeof parsed === 'object' ? parsed : {};
+    }catch(e){
+      return {};
+    }
+  }
+
+  function writeWatchPendingStore(store){
+    try{
+      localStorage.setItem(LS_WATCH_PENDING_KEY, JSON.stringify(store));
+    }catch(e){
+      console.error('Watch-time localStorage write failed:', e);
+    }
+  }
+
+  function addWatchPendingSeconds(seconds, course, sector, mobile){
+    const sec = Math.max(0, Math.floor(Number(seconds) || 0));
+    if(sec <= 0 || !course || !mobile) return;
+
+    const store = readWatchPendingStore();
+    const key = getWatchStorageKey(mobile, course, sector);
+    store[key] = Math.max(0, Math.floor(Number(store[key]) || 0)) + sec;
+    writeWatchPendingStore(store);
+  }
+
+  function getWatchPendingSeconds(course, sector, mobile){
+    if(!course || !mobile) return 0;
+    const store = readWatchPendingStore();
+    const key = getWatchStorageKey(mobile, course, sector);
+    return Math.max(0, Math.floor(Number(store[key]) || 0));
+  }
+
+  function subtractWatchPendingSeconds(course, sector, mobile, seconds){
+    const sec = Math.max(0, Math.floor(Number(seconds) || 0));
+    if(sec <= 0 || !course || !mobile) return;
+
+    const store = readWatchPendingStore();
+    const key = getWatchStorageKey(mobile, course, sector);
+    const remaining = Math.max(0, Math.floor(Number(store[key]) || 0) - sec);
+
+    if(remaining > 0) store[key] = remaining;
+    else delete store[key];
+
+    writeWatchPendingStore(store);
+  }
+
+  function persistCurrentWatchPending(){
+    if(watchPendingSeconds <= 0 || !currentWatchCourse) return;
+
+    const mobile = getCurrentUserMobile();
+    if(!mobile){
+      watchPendingSeconds = 0;
+      return;
+    }
+
+    addWatchPendingSeconds(
+      watchPendingSeconds,
+      currentWatchCourse,
+      currentWatchSector,
+      mobile
+    );
+    watchPendingSeconds = 0;
+  }
+
+  function getCurrentUserMobile(){
+    try{
+      const user = JSON.parse(localStorage.getItem(LS_USER_KEY) || 'null');
+      return user && user.mobile ? String(user.mobile).trim() : '';
+    }catch(e){ return ''; }
+  }
+
+  function getCourseByWatchKey(course, sector){
+    try{
+      const user = JSON.parse(localStorage.getItem(LS_USER_KEY) || 'null');
+      const courses = Array.isArray(user?.courses) ? user.courses : [];
+      const targetCourse = normalizeWatchCourse(course);
+      const targetSector = normalizeForMatch(sector || '');
+
+      return courses.find(c =>
+        normalizeWatchCourse(c?.name) === targetCourse &&
+        normalizeForMatch(c?.nuDcu || '') === targetSector
+      ) || null;
+    }catch(e){
+      return null;
+    }
+  }
+
+  function isWatchSyncEnabled(course, sector){
+    const row = getCourseByWatchKey(course, sector);
+    return String(row?.getWt || '').trim().toLowerCase() === 'yes';
+  }
+
+  async function syncPendingWatchTime(data){
+    if(watchSyncInProgress) return false;
+
+    const mobile = String(data?.mobile || getCurrentUserMobile() || '').trim();
+    const courses = Array.isArray(data?.courses) ? data.courses : [];
+    if(!mobile || !courses.length) return false;
+
+    watchSyncInProgress = true;
+    let syncedAny = false;
+
+    try{
+      for(const course of courses){
+        if(String(course?.getWt || '').trim().toLowerCase() !== 'yes') continue;
+
+        const courseName = String(course?.name || '').trim();
+        const sector = String(course?.nuDcu || '').trim();
+        if(!courseName) continue;
+
+        const pending = getWatchPendingSeconds(courseName, sector, mobile);
+        if(pending <= 0) continue;
+
+        // Snapshot only this amount. New seconds added while syncing remain local.
+        const snapshotSeconds = pending;
+
+        try{
+          const result = await callApi({
+            action:'track_watch',
+            mobile: normalizeMobileForMatch(mobile),
+            course: courseName,
+            nuDcu: sector,
+            seconds: snapshotSeconds
+          });
+
+          if(result.status === 'ok'){
+            subtractWatchPendingSeconds(courseName, sector, mobile, snapshotSeconds);
+            if(typeof result.watchTimeMinutes === 'number'){
+              course.watchTime = result.watchTimeMinutes;
+              setWatchBaseMinutes(courseName, sector, mobile, result.watchTimeMinutes);
             }
-
-            grid.innerHTML = products.map(function(p, idx){
-                const outOfStock = Number(p.stock) <= 0;
-                const imageHtml = p.imageUrl
-                    ? '<img class="product-image" src="' + escapeHtml(p.imageUrl) + '" alt="' + escapeHtml(p.name) + '" loading="lazy">'
-                    : '<div class="product-image">' + escapeHtml(p.name) + '</div>';
-
-                return '' +
-                    '<article class="product-card">' +
-                        imageHtml +
-                        '<div class="product-body">' +
-                            '<h3>' + escapeHtml(p.name) + '</h3>' +
-                            '<div class="product-price">' +
-                                (p.oldPrice ? '<span class="price-old">৳' + escapeHtml(p.oldPrice) + '</span>' : '') +
-                                '<span class="price-new">৳' + escapeHtml(p.newPrice) + '</span>' +
-                            '</div>' +
-                            (outOfStock
-                                ? '<span class="stock-badge">স্টক শেষ</span><button class="order-btn" disabled style="opacity:.55;cursor:not-allowed;">স্টক নেই</button>'
-                                : '<button class="order-btn" data-index="' + idx + '">অর্ডার করুন</button>'
-                            ) +
-                        '</div>' +
-                    '</article>';
-            }).join('');
+            refreshDashboardWatchTimeDisplay();
+            syncedAny = true;
+          }
+        }catch(err){
+          console.error('Watch-time sync failed:', err);
+          // Keep the local value. It will retry on the next dashboard/login.
         }
+      }
+    }finally{
+      watchSyncInProgress = false;
+    }
 
-        function loadProducts(){
-            callShopApi({ action: 'get_products' })
-                .then(function(result){
-                    if(result.status === 'ok' && Array.isArray(result.data)){
-                        SHOP_PRODUCTS = result.data;
-                        renderProducts(SHOP_PRODUCTS);
-                    } else {
-                        document.getElementById('shopGrid').innerHTML =
-                            '<p class="shop-status-msg">❌ প্রোডাক্ট লোড করা যায়নি। পরে আবার চেষ্টা করুন।</p>';
-                    }
-                })
-                .catch(function(){
-                    document.getElementById('shopGrid').innerHTML =
-                        '<p class="shop-status-msg">❌ সার্ভারে সমস্যা হয়েছে। পরে আবার চেষ্টা করুন।</p>';
-                });
+    return syncedAny;
+  }
+
+  function startWatchTracking(){
+    stopWatchTracking();
+
+    watchTrackTimer = setInterval(()=>{
+      watchPendingSeconds += 1;
+
+      // Keep localStorage updated while the video is playing.
+      if(watchPendingSeconds >= 5){
+        persistCurrentWatchPending();
+      }
+
+      // D1 is contacted only after admin has enabled get_wt = Yes.
+      if(currentWatchGetWt && watchPendingSeconds >= WATCH_FLUSH_THRESHOLD_SEC){
+        flushWatchTime();
+      }
+    }, 1000);
+
+    if(!watchPersistTimer){
+      watchPersistTimer = setInterval(persistCurrentWatchPending, 5000);
+    }
+  }
+
+  function stopWatchTracking(){
+    if(watchTrackTimer){
+      clearInterval(watchTrackTimer);
+      watchTrackTimer = null;
+    }
+    if(watchPersistTimer){
+      clearInterval(watchPersistTimer);
+      watchPersistTimer = null;
+    }
+  }
+
+  async function flushWatchTime(useBeacon){
+    if(watchPendingSeconds <= 0 || !currentWatchCourse) return;
+
+    const mobile = getCurrentUserMobile();
+    if(!mobile){
+      watchPendingSeconds = 0;
+      return;
+    }
+
+    // Always save locally first. LocalStorage is the source of truth until
+    // the server gate is enabled and a successful sync is confirmed.
+    persistCurrentWatchPending();
+
+    if(!currentWatchGetWt) return;
+
+    const pending = getWatchPendingSeconds(currentWatchCourse, currentWatchSector, mobile);
+    if(pending <= 0) return;
+
+    try{
+      const result = await callApi({
+        action:'track_watch',
+        mobile: normalizeMobileForMatch(mobile),
+        course: currentWatchCourse,
+        nuDcu: currentWatchSector,
+        seconds: pending
+      });
+
+      if(result.status === 'ok'){
+        subtractWatchPendingSeconds(currentWatchCourse, currentWatchSector, mobile, pending);
+        if(typeof result.watchTimeMinutes === 'number'){
+          setWatchBaseMinutes(currentWatchCourse, currentWatchSector, mobile, result.watchTimeMinutes);
+          if(dashboardData){
+            const course = (Array.isArray(dashboardData.courses) ? dashboardData.courses : []).find(c =>
+              normalizeWatchCourse(c?.name) === normalizeWatchCourse(currentWatchCourse) &&
+              normalizeForMatch(c?.nuDcu || '') === normalizeForMatch(currentWatchSector || '')
+            );
+            if(course) course.watchTime = result.watchTimeMinutes;
+          }
         }
+        refreshDashboardWatchTimeDisplay();
+      }
+    }catch(err){
+      console.error('Current watch-time sync failed:', err);
+      // Never delete local pending time on failure.
+    }
+  }
 
-        loadProducts();
+  document.addEventListener('visibilitychange', ()=>{
+    if(document.visibilityState === 'hidden'){
+      stopWatchTracking();
+      persistCurrentWatchPending();
+    } else if(ytPlayer && typeof ytPlayer.getPlayerState === 'function' && window.YT && ytPlayer.getPlayerState() === YT.PlayerState.PLAYING){
+      startWatchTracking();
+    }
+  });
 
-        // ============================================================
-        // অর্ডার মডাল — খোলা/বন্ধ + ফর্ম হ্যান্ডলিং
-        // ============================================================
-        (function(){
-            const modal = document.getElementById('orderModal');
-            const closeBtn = document.getElementById('modalCloseBtn');
-            const nameEl = document.getElementById('modalProductName');
-            const priceEl = document.getElementById('modalProductPrice');
-            const sizeRow = document.getElementById('sizeRow');
-            const form = document.getElementById('orderForm');
-            const submitBtn = document.getElementById('orderSubmitBtn');
-            const status = document.getElementById('orderStatus');
+  window.addEventListener('pagehide', ()=>{
+    stopWatchTracking();
+    persistCurrentWatchPending();
+  });
 
-            function openModal(product){
-                nameEl.textContent = product.name;
-                priceEl.textContent = '৳' + product.newPrice;
-                sizeRow.style.display = product.hasSize ? '' : 'none';
-                document.getElementById('orderSize').required = !!product.hasSize;
-                form.dataset.productId = product.productId;
-                form.dataset.productName = product.name;
-                form.dataset.productPrice = product.newPrice;
-                status.className = 'form-status';
-                status.textContent = '';
-                modal.classList.add('open');
-                document.body.style.overflow = 'hidden';
+  function loadYouTubeApiOnce(){
+    if(window.YT && window.YT.Player){ ytApiReady = true; return; }
+    if(document.getElementById('ytIframeApiScript')) return;
+    const tag = document.createElement('script');
+    tag.id = 'ytIframeApiScript';
+    tag.src = 'https://www.youtube.com/iframe_api';
+    document.head.appendChild(tag);
+  }
+
+  window.onYouTubeIframeAPIReady = function(){
+    ytApiReady = true;
+    if(pendingVideoId){ const id = pendingVideoId; pendingVideoId = null; playClassVideo(id); }
+  };
+
+  const CC_ICONS = {
+    play: '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>',
+    pause: '<svg viewBox="0 0 24 24"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>'
+  };
+
+  function formatSeconds(sec){
+    sec = Math.max(0, Math.floor(sec || 0));
+    const m = Math.floor(sec/60), s = sec % 60;
+    return `${m}:${String(s).padStart(2,'0')}`;
+  }
+
+  function updatePlayerTimeUI(){
+    if(!ytPlayer || typeof ytPlayer.getCurrentTime !== 'function') return;
+    const cur = ytPlayer.getCurrentTime() || 0;
+    const dur = ytPlayer.getDuration() || 0;
+    if(!ytSeeking && dur) ccSeek.value = String(Math.floor((cur/dur) * 1000));
+    ccTime.textContent = `${formatSeconds(cur)} / ${formatSeconds(dur)}`;
+  }
+
+  function startProgressLoop(){
+    stopProgressLoop();
+    ytProgressTimer = setInterval(updatePlayerTimeUI, 500);
+  }
+  function stopProgressLoop(){
+    if(ytProgressTimer){ clearInterval(ytProgressTimer); ytProgressTimer = null; }
+  }
+
+  function onYtPlayerStateChange(e){
+    if(e.data === YT.PlayerState.PLAYING){
+      ccPlayPause.innerHTML = CC_ICONS.pause;
+      startProgressLoop();
+      startWatchTracking();
+    } else if(e.data === YT.PlayerState.PAUSED || e.data === YT.PlayerState.ENDED){
+      ccPlayPause.innerHTML = CC_ICONS.play;
+      if(e.data === YT.PlayerState.ENDED) stopProgressLoop();
+      stopWatchTracking();
+      flushWatchTime();
+    }
+  }
+
+  function createYtPlayer(id){
+    ytPlayer = new YT.Player(ytMount, {
+      videoId: id,
+      playerVars: {
+        autoplay: 1, controls: 0, disablekb: 1, rel: 0,
+        modestbranding: 1, iv_load_policy: 3, playsinline: 1, fs: 0,
+        origin: window.location.origin
+      },
+      events: {
+        onReady: (e)=>{
+          e.target.playVideo();
+          updatePlayerTimeUI();
+          populateQualityOptions();
+          populateSpeedOptions();
+        },
+        onStateChange: onYtPlayerStateChange
+      }
+    });
+  }
+
+  function playClassVideo(id){
+    if(!id) return;
+    classPlayer.style.display = 'block';
+    classPlayer.scrollIntoView({behavior:'smooth', block:'nearest'});
+    if(!(window.YT && window.YT.Player)){
+      pendingVideoId = id;
+      loadYouTubeApiOnce();
+      return;
+    }
+    if(!ytPlayer){
+      createYtPlayer(id);
+    } else {
+      ytPlayer.loadVideoById(id);
+    }
+  }
+
+  function stopClassPlayer(){
+    stopProgressLoop();
+    stopWatchTracking();
+    flushWatchTime();
+    if(ytPlayer && typeof ytPlayer.stopVideo === 'function'){
+      try{ ytPlayer.stopVideo(); }catch(e){}
+    }
+    closeSettingsPanel();
+    classPlayer.style.display = 'none';
+  }
+
+  if(ccPlayPause){
+    ccPlayPause.addEventListener('click', ()=>{
+      if(!ytPlayer) return;
+      if(ytPlayer.getPlayerState() === YT.PlayerState.PLAYING) ytPlayer.pauseVideo();
+      else ytPlayer.playVideo();
+    });
+  }
+  if(ytClickCatcher){
+    ytClickCatcher.addEventListener('click', ()=>{
+      if(!ytPlayer) return;
+      if(ytPlayer.getPlayerState() === YT.PlayerState.PLAYING) ytPlayer.pauseVideo();
+      else ytPlayer.playVideo();
+    });
+  }
+  if(ccSeek){
+    ccSeek.addEventListener('input', ()=>{ ytSeeking = true; });
+    ccSeek.addEventListener('change', ()=>{
+      if(!ytPlayer) return;
+      const dur = ytPlayer.getDuration() || 0;
+      const pct = Number(ccSeek.value) / 1000;
+      ytPlayer.seekTo(dur * pct, true);
+      ytSeeking = false;
+    });
+  }
+  if(ccFullscreen){
+    ccFullscreen.addEventListener('click', ()=>{
+      if(classPlayer.requestFullscreen) classPlayer.requestFullscreen();
+      else if(classPlayer.webkitRequestFullscreen) classPlayer.webkitRequestFullscreen();
+    });
+  }
+  classPlayer.addEventListener('contextmenu', (e)=> e.preventDefault());
+
+  const QUALITY_LABELS = {
+    highres:'অতি উচ্চমান', hd2160:'2160p', hd1440:'1440p', hd1080:'1080p',
+    hd720:'720p', large:'480p', medium:'360p', small:'240p', tiny:'144p', auto:'অটো'
+  };
+  const ALLOWED_SPEEDS = [1, 1.5, 2];
+  const SPEED_OPTION_LABELS = { 1:'1x (Normal)', 1.5:'1.5x', 2:'2x' };
+  const SPEED_VALUE_LABELS = { 1:'1x', 1.5:'1.5x', 2:'2x' };
+
+  function closeSettingsPanel(){
+    ccSettingsPanel.style.display = 'none';
+    ccSettingsMain.style.display = 'block';
+    ccQualityMenu.style.display = 'none';
+    ccSpeedMenu.style.display = 'none';
+  }
+
+  function populateQualityOptions(){
+    if(!ytPlayer || typeof ytPlayer.getAvailableQualityLevels !== 'function') return;
+    let levels = ytPlayer.getAvailableQualityLevels();
+    if(!levels || !levels.length) levels = ['auto'];
+    if(!levels.includes('auto')) levels = [...levels, 'auto'];
+    const current = (typeof ytPlayer.getPlaybackQuality === 'function' && ytPlayer.getPlaybackQuality()) || 'auto';
+    ccQualityOptions.innerHTML = levels.map(lv=>{
+      const label = QUALITY_LABELS[lv] || lv;
+      const active = lv === current ? ' active' : '';
+      return `<button type="button" class="cc-option${active}" data-quality="${lv}">${label}${lv===current ? ' ✓' : ''}</button>`;
+    }).join('');
+    ccQualityValue.textContent = QUALITY_LABELS[current] || current;
+    ccQualityOptions.querySelectorAll('[data-quality]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const q = btn.dataset.quality;
+        if(q !== 'auto' && typeof ytPlayer.setPlaybackQuality === 'function') ytPlayer.setPlaybackQuality(q);
+        ccQualityValue.textContent = QUALITY_LABELS[q] || q;
+        closeSettingsPanel();
+      });
+    });
+  }
+
+  function populateSpeedOptions(){
+    if(!ytPlayer || typeof ytPlayer.getAvailablePlaybackRates !== 'function') return;
+    const available = ytPlayer.getAvailablePlaybackRates() || [1];
+    let rates = ALLOWED_SPEEDS.filter(r=>available.includes(r));
+    if(!rates.length) rates = [1];
+    let current = (typeof ytPlayer.getPlaybackRate === 'function' && ytPlayer.getPlaybackRate()) || 1;
+    if(!rates.includes(current)) current = 1;
+    ccSpeedOptions.innerHTML = rates.map(r=>{
+      const label = SPEED_OPTION_LABELS[r] || `${r}x`;
+      const active = r === current ? ' active' : '';
+      return `<button type="button" class="cc-option${active}" data-rate="${r}">${label}${r===current ? ' ✓' : ''}</button>`;
+    }).join('');
+    ccSpeedValue.textContent = SPEED_VALUE_LABELS[current] || `${current}x`;
+    ccSpeedOptions.querySelectorAll('[data-rate]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const r = Number(btn.dataset.rate);
+        if(typeof ytPlayer.setPlaybackRate === 'function') ytPlayer.setPlaybackRate(r);
+        ccSpeedValue.textContent = SPEED_VALUE_LABELS[r] || `${r}x`;
+        closeSettingsPanel();
+      });
+    });
+  }
+
+  if(ccSettings){
+    ccSettings.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      const isOpen = ccSettingsPanel.style.display === 'block';
+      if(isOpen){ closeSettingsPanel(); return; }
+      populateQualityOptions();
+      populateSpeedOptions();
+      ccSettingsPanel.style.display = 'block';
+    });
+  }
+  if(ccSettingsMain){
+    ccSettingsMain.querySelectorAll('[data-menu]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const menu = btn.dataset.menu;
+        ccSettingsMain.style.display = 'none';
+        if(menu === 'quality') ccQualityMenu.style.display = 'block';
+        if(menu === 'speed') ccSpeedMenu.style.display = 'block';
+      });
+    });
+  }
+  document.querySelectorAll('.cc-settings-back').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      ccQualityMenu.style.display = 'none';
+      ccSpeedMenu.style.display = 'none';
+      ccSettingsMain.style.display = 'block';
+    });
+  });
+  document.addEventListener('click', (e)=>{
+    if(ccSettingsPanel.style.display === 'block' && !ccSettingsPanel.contains(e.target) && e.target !== ccSettings){
+      closeSettingsPanel();
+    }
+  });
+
+  function getCourseSector(courseName){
+    const sw = parseSubjectWiseCourseId(courseName);
+    if(sw) return clean(sw.nuDcu);
+    const stored = enrolledCourseSectorMap.get(normalizeForMatch(courseName));
+    if(stored) return clean(stored);
+    return clean(enrollSectorParam);
+  }
+
+  async function fetchClassData(courseName, explicitSector){
+    const sector = (explicitSector !== undefined && explicitSector !== null && explicitSector !== '')
+      ? clean(explicitSector)
+      : getCourseSector(courseName);
+    const cacheKey = `${courseName}::${sector}`;
+    if(classDataCache.has(cacheKey)) return classDataCache.get(cacheKey);
+    const notFound = {status:'error', message:'এই course-এর জন্য এখনো কোনো class/course materials পাওয়া যায়নি।'};
+    let result;
+    try{
+      const response = await fetch(FORM_ENDPOINT, {
+        method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'},
+        body:JSON.stringify({action:'get_course_data', courseName, nuDcu:sector}),
+        cache:'no-store'
+      });
+      if(!response.ok) throw new Error(`Course Data: HTTP ${response.status}`);
+      const json = await response.json();
+      if(json.status === 'error') throw new Error(json.message || 'Course Data API error.');
+      const allRows = Array.isArray(json.data) ? json.data : [];
+      const swParsed = parseSubjectWiseCourseId(courseName);
+      const sectorNorm = normalizeLoose(sector);
+      const matchedRows = swParsed ? findSubjectWiseClassRows(allRows, swParsed) : allRows.filter(r => {
+        if(normalizeForMatch(r.courseName) !== normalizeForMatch(courseName) || !r.subject || !r.url) return false;
+        if(sectorNorm){
+          const rowLevelWords = normalizeLoose(r.level).split(' ');
+          const rowSector = rowLevelWords[rowLevelWords.length - 1];
+          if(rowSector !== sectorNorm) return false;
+        }
+        return true;
+      });
+      const rows = matchedRows.map(r=>({subject:r.subject,chapter:r.chapter,className:r.className,url:r.url,pdfUrl:r.pdfUrl}));
+      result = rows.length ? {status:'ok',data:rows} : notFound;
+    }catch(error){
+      console.error('Class data fetch failed:', error);
+      result = error.name === 'AbortError'
+        ? {status:'error',message:'সার্ভারে সাড়া পেতে বেশি সময় লাগছে। ইন্টারনেট সংযোগ চেক করুন।'}
+        : notFound;
+    }
+    classDataCache.set(cacheKey,result);
+    return result;
+  }
+
+
+  function renderClassItems(rows){
+    classList.innerHTML = rows.length
+      ? rows.map((item,index)=>`<div class="class-item-row"><button type="button" class="class-item" data-video="${escapeHtml(item.url)}"><span class="class-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span><span class="class-meta"><span class="class-title">${escapeHtml(item.className || `Class ${index+1}`)}</span><span class="class-chapter">${escapeHtml(item.chapter || '')}</span></span></button>${item.pdfUrl ? `<a class="class-pdf-btn" href="${escapeHtml(driveDirectLink(item.pdfUrl))}" target="_blank" rel="noopener" title="Download PDF" onclick="event.stopPropagation()"><svg viewBox="0 0 40 50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><rect x="0" y="0" width="40" height="16" fill="#e21c1c"/><text x="20" y="12" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="9.5" font-weight="800" fill="#ffffff" letter-spacing="0.3">PDF</text><path d="M20 22v14" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/><path d="M14 30l6 6 6-6" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M12 42h16" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/></svg></a>` : ''}</div>`).join('')
+      : '<div class="learning-empty">কোনো ক্লাস খুঁজে পাওয়া যায়নি।</div>';
+    classList.querySelectorAll('.class-item').forEach(item=>item.addEventListener('click',()=>{
+      const id=youtubeId(item.dataset.video); if(!id) return;
+      playClassVideo(id);
+    }));
+  }
+
+  if(classSearchInput){
+    classSearchInput.addEventListener('input', ()=>{
+      const q = normalizeForMatch(classSearchInput.value);
+      if(!q){ renderClassItems(activeSubjectRows); return; }
+      const filtered = activeSubjectRows.filter(item=>{
+        const haystack = normalizeForMatch(`${item.className || ''}`);
+        return haystack.includes(q);
+      });
+      renderClassItems(filtered);
+    });
+  }
+
+  function populateChapterSelect(rows, subject){
+    const subjectRows = rows.filter(x=>normalizeForMatch(x.subject)===normalizeForMatch(subject));
+    const seenChapters = new Map();
+    subjectRows.forEach(x=>{
+      const key = normalizeForMatch(x.chapter);
+      if(key && !seenChapters.has(key)) seenChapters.set(key, x.chapter);
+    });
+    const chapters = [...seenChapters.values()];
+    chapterSelect.innerHTML = `<option value="">সব চ্যাপ্টার</option>` +
+      chapters.map(c=>`<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join('');
+    chapterSelect.disabled = chapters.length === 0;
+    return subjectRows;
+  }
+
+  async function loadCourseClasses(courseName, sector){
+    classLearningReset();
+    if(!courseName) return;
+    courseLearningPanel.style.display='block';
+    filterRow.style.display='flex';
+    subjectSelect.disabled = true;
+    chapterSelect.disabled = true;
+    subjectSelect.innerHTML = '<option>লোড হচ্ছে...</option>';
+    chapterSelect.innerHTML = '<option>—</option>';
+    classList.innerHTML='<div class="class-loading"><span class="spinner"></span>ক্লাস লোড হচ্ছে...</div>';
+    const result = await fetchClassData(courseName, sector);
+    const rows = (result.status === 'ok' && Array.isArray(result.data)) ? result.data : [];
+    if(!rows.length){
+      courseLearningPanel.style.display='block';
+      filterRow.style.display='none';
+      classList.innerHTML=`<div class="learning-empty">${escapeHtml(result.message || 'এই course-এর কোনো class এখনো পাওয়া যায়নি।')}</div>`;
+      return;
+    }
+    currentWatchCourse = courseName;
+    currentWatchSector = clean(sector);
+    currentWatchGetWt = isWatchSyncEnabled(courseName, sector);
+
+    const currentUserForSync = getCurrentUserMobile();
+    if(currentUserForSync && currentWatchGetWt){
+      const currentData = JSON.parse(localStorage.getItem(LS_USER_KEY) || 'null');
+      if(currentData) syncPendingWatchTime(currentData);
+    }
+
+    const subjectSelectWrap = subjectSelect.closest('.filter-select-wrap');
+    const swParsed = parseSubjectWiseCourseId(courseName);
+
+    if(swParsed){
+      courseLearningPanel.style.display='block';
+      filterRow.style.display='flex';
+      if(subjectSelectWrap) subjectSelectWrap.style.display='none';
+      subjectSelect.disabled = true;
+      subjectSelect.innerHTML = `<option value="${escapeHtml(swParsed.subject)}">${escapeHtml(swParsed.subject)}</option>`;
+
+      const applyFilters=()=>{
+        const chapter = chapterSelect.value;
+        stopClassPlayer();
+        let filtered = rows;
+        if(chapter) filtered = filtered.filter(x=>normalizeForMatch(x.chapter)===normalizeForMatch(chapter));
+        activeSubjectRows = filtered;
+        if(classSearchInput) classSearchInput.value='';
+        if(classSearchWrap) classSearchWrap.style.display = filtered.length ? 'block' : 'none';
+        renderClassItems(filtered);
+      };
+
+      chapterSelect.onchange = applyFilters;
+      populateChapterSelect(rows, swParsed.subject);
+      applyFilters();
+      return;
+    }
+
+    if(subjectSelectWrap) subjectSelectWrap.style.display='';
+
+    const seenSubjects = new Map();
+    rows.forEach(x => {
+      const key = normalizeForMatch(x.subject);
+      if(key && !seenSubjects.has(key)) seenSubjects.set(key, x.subject);
+    });
+    const subjects = [...seenSubjects.values()];
+    courseLearningPanel.style.display='block';
+    filterRow.style.display='flex';
+    subjectSelect.disabled = false;
+    subjectSelect.innerHTML = subjects.map(s=>`<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join('');
+
+    const applyFilters=()=>{
+      const subject = subjectSelect.value;
+      const chapter = chapterSelect.value;
+      stopClassPlayer();
+      let filtered = rows.filter(x=>normalizeForMatch(x.subject)===normalizeForMatch(subject));
+      if(chapter) filtered = filtered.filter(x=>normalizeForMatch(x.chapter)===normalizeForMatch(chapter));
+      activeSubjectRows = filtered;
+      if(classSearchInput) classSearchInput.value='';
+      if(classSearchWrap) classSearchWrap.style.display = filtered.length ? 'block' : 'none';
+      renderClassItems(filtered);
+    };
+
+    subjectSelect.onchange = ()=>{ populateChapterSelect(rows, subjectSelect.value); applyFilters(); };
+    chapterSelect.onchange = applyFilters;
+
+    populateChapterSelect(rows, subjects[0]);
+    applyFilters();
+  }
+
+  function classLearningReset(){
+    if(!courseLearningPanel) return;
+    courseLearningPanel.style.display='none';
+    filterRow.style.display='none';
+    subjectSelect.innerHTML=''; chapterSelect.innerHTML='';
+    subjectSelect.disabled = false;
+    const subjectSelectWrap = subjectSelect.closest('.filter-select-wrap');
+    if(subjectSelectWrap) subjectSelectWrap.style.display='';
+    stopClassPlayer(); classList.innerHTML='';
+    activeSubjectRows = [];
+    currentWatchCourse = '';
+    currentWatchSector = '';
+    currentWatchGetWt = false;
+    if(classSearchInput) classSearchInput.value='';
+    if(classSearchWrap) classSearchWrap.style.display='none';
+  }
+
+  function showExpiredNotice(course){
+    classLearningReset();
+    courseLearningPanel.style.display='block';
+    filterRow.style.display='none';
+    stopClassPlayer();
+    const expiresText = course.expiresAt ? escapeHtml(formatDate(course.expiresAt)) : '';
+    classList.innerHTML=`<div class="renew-notice">
+      <strong>⏳ এই কোর্সের মেয়াদ শেষ হয়ে গেছে</strong>
+      <p>${expiresText ? `মেয়াদ শেষ হয়েছে: ${expiresText}` : ''}<br>ক্লাস আবার দেখতে কোর্সটি রিনিউ করতে হবে। রিনিউ করতে আমাদের সাথে যোগাযোগ করুন।</p>
+    </div>`;
+  }
+
+  // ===== PENDING NOTICE (নতুন যোগ করা) =====
+  function showPendingNotice(course){
+    classLearningReset();
+    courseLearningPanel.style.display='block';
+    filterRow.style.display='none';
+    stopClassPlayer();
+    classList.innerHTML=`<div class="renew-notice">
+      <strong>⏳ কোর্সটি এখনো সক্রিয় করা হয়নি</strong>
+      <p>আপনার এনরোলমেন্টটি প্রশাসকের অনুমোদনের অপেক্ষায় রয়েছে।<br>সক্রিয় করা হলে ক্লাস মেটেরিয়াল দেখতে পাবেন।</p>
+    </div>`;
+  }
+
+  function showDeviceBlockedNotice(){
+    classLearningReset();
+    courseLearningPanel.style.display='block';
+    filterRow.style.display='none';
+    stopClassPlayer();
+    classList.innerHTML=`<div class="renew-notice">
+      <strong>🔒 একাধিক ডিভাইসে লগইন সনাক্ত হয়েছে</strong>
+      <p>নিরাপত্তার কারণে এই কোর্সটি লক করা হয়েছে। আনলক করতে আমাদের সাথে যোগাযোগ করুন।</p>
+    </div>`;
+  }
+
+  function renderEnrolledCourses(data){
+    dashboardData = data || null;
+    startDashboardWatchTimeDisplay();
+    const courses=getEnrolledCourses(data);
+    const isDeviceBlocked = !!data.deviceBlocked;
+    const deviceBlockedBanner = document.getElementById('deviceBlockedBanner');
+    if(deviceBlockedBanner) deviceBlockedBanner.style.display = isDeviceBlocked ? 'flex' : 'none';
+    enrolledCourseList.innerHTML=''; classLearningReset();
+    if(!courses.length){ learningEmpty.style.display='block'; return; }
+    learningEmpty.style.display='none';
+    enrolledCourseList.innerHTML=courses.map((course,i)=>{
+      const isExpired = String(course.status||'').trim().toLowerCase()==='expired';
+      const isPending = String(course.status||'').trim().toLowerCase()==='pending';
+      
+      let badge = '';
+      if (isDeviceBlocked) {
+        badge = '<span class="locked-badge">🔒 লকড</span>';
+      } else if (isExpired) {
+        badge = '<span class="expired-badge">মেয়াদ শেষ</span>';
+      } else if (isPending) {
+        badge = '<span class="pending-badge">⏳ অপেক্ষমাণ</span>';
+      } else {
+        badge = '<span class="active-badge">✓ সক্রিয়</span>';
+      }
+
+      const lockedClass = isDeviceBlocked ? ' is-locked' : (isExpired ? ' is-expired' : '');
+      const isSubjectWise = !!parseSubjectWiseCourseId(course.name);
+      const displayName = getSubjectWiseDisplayName(course.name);
+      const cornerLabel = isSubjectWise ? 'Subject' : 'Course';
+      const iconEmoji = isSubjectWise ? getSubjectIcon(displayName) : '🎓';
+      return `<button type="button" class="enrolled-course-btn${i===0?' active':''}${lockedClass}" data-course="${escapeHtml(course.name)}" data-sector="${escapeHtml(course.nuDcu||'')}" data-idx="${i}">
+        <span class="ecb-corner-badge">${cornerLabel}</span>
+        ${course.nuDcu ? `<span class="ecb-sector-badge">${escapeHtml(course.nuDcu)}</span>` : ''}
+        <span class="ecb-icon">${iconEmoji}</span>
+        <span class="ecb-body">
+          <span class="ecb-name">${escapeHtml(displayName)}</span>
+          <span class="ecb-meta"><span class="ecb-date"><span class="ecb-icon-emoji">📅</span> Enrolled: ${escapeHtml(formatDate(course.enrolledAt))}</span>${badge}</span>
+          <span class="ecb-watchtime"><span class="ecb-icon-emoji">⏱️</span> <span class="ecb-wt-label">Watch Time:</span> <span class="ecb-wt-value">${escapeHtml(formatWatchTimeValue(getDashboardWatchTimeMinutes(course, String(data?.mobile || getCurrentUserMobile() || '').trim())))}</span></span>
+        </span>
+      </button>`;
+    }).join('');
+    const selectCourse=idx=>{
+      enrolledCourseList.querySelectorAll('.enrolled-course-btn').forEach(btn=>btn.classList.toggle('active', Number(btn.dataset.idx)===idx));
+      const course = courses[idx];
+      if(!course) return;
+      const status = String(course.status || '').trim().toLowerCase();
+
+      if(isDeviceBlocked){
+        showDeviceBlockedNotice();
+      } else if(status === 'expired'){
+        showExpiredNotice(course);
+      } else if(status === 'pending'){
+        showPendingNotice(course);
+      } else {
+        loadCourseClasses(course.name, course.nuDcu);
+      }
+    };
+    enrolledCourseList.querySelectorAll('.enrolled-course-btn').forEach(btn=>btn.addEventListener('click',()=>selectCourse(Number(btn.dataset.idx))));
+    selectCourse(0);
+  }
+
+  function renderProfileInfo(data){
+    hideLoading();
+    document.getElementById('dashName').textContent = data.name || '—';
+    document.getElementById('dashLevel').textContent = data.level || '—';
+    document.getElementById('dashYear').textContent = data.year ? (data.session ? `${data.year} (${data.session})` : data.year) : '—';
+    document.getElementById('dashDepartment').textContent = data.department || '—';
+    document.getElementById('dashMobile').textContent = data.mobile || '—';
+    authPageHead.style.display = 'none';
+    authWrapSection.style.display = 'none';
+    dashboardSection.style.display = 'block';
+  }
+
+  function showCourseListSkeleton(){
+    const deviceBlockedBanner = document.getElementById('deviceBlockedBanner');
+    if(deviceBlockedBanner) deviceBlockedBanner.style.display = 'none';
+    learningEmpty.style.display = 'none';
+    classLearningReset();
+    enrolledCourseList.innerHTML = `<div class="enrolled-course-skel">
+      <div class="skel-card"><span class="skel-icon"></span><span class="skel-lines"><span class="skel-line skel-line-title"></span><span class="skel-line skel-line-sub"></span></span></div>
+      <div class="skel-card"><span class="skel-icon"></span><span class="skel-lines"><span class="skel-line skel-line-title"></span><span class="skel-line skel-line-sub"></span></span></div>
+    </div>`;
+  }
+
+  let vaToastTimer = null;
+  function vaShowToast(message){
+    let toast = document.getElementById('vaToast');
+    if(!toast){
+      toast = document.createElement('div');
+      toast.id = 'vaToast';
+      toast.className = 'va-toast';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.classList.add('show');
+    clearTimeout(vaToastTimer);
+    vaToastTimer = setTimeout(()=>toast.classList.remove('show'), 3200);
+  }
+
+  function showCourseListError(mobile){
+    const deviceBlockedBanner = document.getElementById('deviceBlockedBanner');
+    if(deviceBlockedBanner) deviceBlockedBanner.style.display = 'none';
+    learningEmpty.style.display = 'none';
+    classLearningReset();
+    enrolledCourseList.innerHTML = `<div class="renew-notice">
+      <strong>📶 কোর্সের তথ্য লোড করা যায়নি</strong>
+      <p>ইন্টারনেট সংযোগ চেক করে আবার চেষ্টা করুন।</p>
+      <button type="button" class="btn btn-outline" id="courseRetryBtn" style="margin-top:10px;">🔄 আবার চেষ্টা করুন</button>
+    </div>`;
+    const retryBtn = document.getElementById('courseRetryBtn');
+    if(retryBtn) retryBtn.addEventListener('click', ()=>{
+      showCourseListSkeleton();
+      refreshStudentData(mobile);
+    });
+  }
+
+  function renderJoinedDate(data){
+    const enrollmentDates=document.getElementById('enrollmentDates');
+    if(!enrollmentDates) return;
+    enrollmentDates.innerHTML = data && data.timestamp
+      ? `Joined: <strong>${escapeHtml(formatDate(data.timestamp))}</strong>`
+      : '—';
+  }
+
+  async function syncAndRenderDashboard(data){
+    dashboardData = data || null;
+    renderProfileInfo(data);
+    renderEnrolledCourses(data);
+    renderJoinedDate(data);
+    refreshDashboardWatchTimeDisplay();
+
+    const synced = await syncPendingWatchTime(data);
+    if(synced){
+      localStorage.setItem(LS_USER_KEY, JSON.stringify(data));
+      dashboardData = data || null;
+      renderEnrolledCourses(data);
+      refreshDashboardWatchTimeDisplay();
+    }
+  }
+
+  function renderDashboard(data){
+    dashboardData = data || null;
+    startDashboardWatchTimeDisplay();
+    renderProfileInfo(data);
+    renderEnrolledCourses(data);
+    renderJoinedDate(data);
+  }
+
+  function showAuthUI(){
+    authPageHead.style.display = 'block';
+    authWrapSection.style.display = 'block';
+    dashboardSection.style.display = 'none';
+  }
+
+  const cachedUser = localStorage.getItem(LS_USER_KEY);
+  if(cachedUser){
+    try{
+      const cachedData = JSON.parse(cachedUser);
+      if(enrollParam && cachedData && cachedData.mobile){
+        showAuthUI();
+        showLoading('কোর্সের তথ্য লোড হচ্ছে...');
+        enrollCourse(enrollParam)
+          .then(function(){
+            window.history.replaceState({}, document.title, 'student-login.html');
+            hideLoading();
+          })
+          .catch(function(err){
+            renderDashboard(cachedData);
+            hideLoading();
+            alert('❌ ' + (err.message || 'Course enrollment failed.'));
+          });
+      } else {
+        renderProfileInfo(cachedData);
+        showCourseListSkeleton();
+        refreshStudentData(cachedData.mobile);
+      }
+    }catch(e){
+      localStorage.removeItem(LS_USER_KEY);
+      showAuthUI();
+      localStorage.getItem(LS_REGISTERED_KEY) ? showLogin() : showRegister();
+    }
+  } else {
+    showAuthUI();
+    localStorage.getItem(LS_REGISTERED_KEY) ? showLogin() : showRegister();
+  }
+
+  function getSubjectIcon(subject){
+    const s = String(subject || '').toLowerCase();
+    const rules = [
+      [['বাংলা'], '📕'],
+      [['english','ইংরেজি'], '🔤'],
+      [['accounting','হিসাব'], '🧮'],
+      [['finance','ফিন্যান্স'], '💰'],
+      [['management','ম্যানেজমেন্ট'], '📊'],
+      [['marketing','মার্কেটিং'], '📢'],
+      [['economics','অর্থনীতি'], '📈'],
+      [['math','গণিত'], '➗'],
+      [['physics','পদার্থ'], '⚛️'],
+      [['chemistry','রসায়ন'], '🧪'],
+      [['biology','জীববিজ্ঞান'], '🧬'],
+      [['ict','computer','কম্পিউটার'], '💻'],
+      [['islam','ধর্ম'], '🕌'],
+      [['history','ইতিহাস'], '📜'],
+      [['geography','ভূগোল'], '🌍'],
+      [['statistics','পরিসংখ্যান'], '📉'],
+      [['law','আইন'], '⚖️'],
+    ];
+    for(const [keys, icon] of rules){
+      if(keys.some(k => s.includes(k))) return icon;
+    }
+    return '📘';
+  }
+
+  function normalizeMobileForMatch(mobile){
+    return String(mobile || '').trim().replace(/[\s-]/g, '');
+  }
+
+  async function refreshStudentData(mobile){
+    if(!mobile) return;
+    const isStillCurrentUser = ()=>{
+      const stillLoggedInRaw = localStorage.getItem(LS_USER_KEY);
+      if(!stillLoggedInRaw) return false;
+      let stillLoggedInMobile = '';
+      try{ stillLoggedInMobile = JSON.parse(stillLoggedInRaw)?.mobile || ''; }catch(e){}
+      return normalizeMobileForMatch(stillLoggedInMobile) === normalizeMobileForMatch(mobile);
+    };
+    try{
+      const result = await callApi({
+        action:'get_student',
+        mobile: normalizeMobileForMatch(mobile),
+        deviceToken: getDeviceToken()
+      });
+      if(!isStillCurrentUser()) return;
+      if(result.status === 'ok' && result.data){
+        result.data.mobile = String(mobile).trim();
+        localStorage.setItem(LS_USER_KEY, JSON.stringify(result.data));
+        syncAndRenderDashboard(result.data);
+      } else {
+        vaShowToast('📶 নেটওয়ার্ক সমস্যা হচ্ছে, একটু পর আবার চেষ্টা করুন।');
+        showCourseListError(mobile);
+      }
+    }catch(err){
+      console.error('Background student data refresh failed:', err);
+      if(isStillCurrentUser()){
+        vaShowToast('📶 নেটওয়ার্ক সমস্যা হচ্ছে, একটু পর আবার চেষ্টা করুন।');
+        showCourseListError(mobile);
+      }
+    }
+  }
+
+  function callApi(payload){
+    const controller = new AbortController();
+    const timeout = setTimeout(()=>controller.abort(), 20000);
+    return fetch(FORM_ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload),signal:controller.signal})
+      .then(res=>{
+        if(!res.ok) throw new Error('সার্ভার থেকে তথ্য পাওয়া যায়নি।');
+        return res.json();
+      })
+      .catch(err=>{
+        if(err.name === 'AbortError') throw new Error('সার্ভারে সাড়া পেতে বেশি সময় লাগছে। Apps Script deployment/access চেক করুন।');
+        throw err;
+      })
+      .finally(()=>clearTimeout(timeout));
+  }
+
+  async function enrollCourse(courseName){
+    const user=JSON.parse(localStorage.getItem(LS_USER_KEY) || 'null');
+    if(!user || !user.mobile) return false;
+
+    showLoading('কোর্সের class materials যাচাই করা হচ্ছে...');
+    const classCheck = await fetchClassData(courseName);
+    const hasMaterials = classCheck.status === 'ok' && Array.isArray(classCheck.data) && classCheck.data.length > 0;
+    if(!hasMaterials){
+      throw new Error(classCheck.message || 'এই কোর্সের জন্য এখনো কোনো course materials পাওয়া যায়নি। তাই এখন enroll করা সম্ভব হচ্ছে না, দয়া করে পরে আবার চেষ্টা করুন।');
+    }
+
+    showLoading('কোর্সের তথ্য লোড হচ্ছে...');
+    const fullMobile = String(user.mobile).trim();
+    const result=await callApi({
+      action:'enroll',
+      mobile:normalizeMobileForMatch(fullMobile),
+      displayMobile:fullMobile,
+      course:courseName,
+      nuDcu:getCourseSector(courseName),
+      deviceToken: getDeviceToken()
+    });
+    if(result.status !== 'ok') throw new Error(result.message || 'Course enrollment failed.');
+    if(result.data){
+      result.data.mobile = fullMobile;
+      localStorage.setItem(LS_USER_KEY,JSON.stringify(result.data));
+      await syncAndRenderDashboard(result.data);
+    }
+    return true;
+  }
+
+  regForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    regStatus.className = 'form-status';
+
+    const mobile = document.getElementById('reg_mobile').value.trim();
+    if(!/^01[0-9]{9}$/.test(mobile)){
+      regStatus.textContent = '❌ সঠিক মোবাইল নম্বর দিন (যেমন: 01XXXXXXXXX)।';
+      regStatus.className = 'form-status show err';
+      return;
+    }
+
+    const password = document.getElementById('reg_password').value;
+
+    const payload = {
+      action: 'register',
+      name: document.getElementById('reg_name').value.trim(),
+      level: document.getElementById('reg_level').value,
+      department: document.getElementById('reg_department').value,
+      year: document.getElementById('reg_year').value,
+      session: document.getElementById('reg_session').value.trim(),
+      institute: document.getElementById('reg_institute').value.trim(),
+      mobile: mobile,
+      email: document.getElementById('reg_email').value.trim(),
+      address: document.getElementById('reg_address').value.trim(),
+      password: password
+    };
+
+    regSubmitBtn.disabled = true;
+    regSubmitBtn.textContent = 'পাঠানো হচ্ছে...';
+    showLoading(enrollParam ? 'রেজিস্ট্রেশন ও কোর্স তথ্য লোড হচ্ছে...' : 'রেজিস্ট্রেশন সম্পন্ন করে ড্যাশবোর্ড লোড হচ্ছে...');
+
+    callApi(payload)
+      .then(function(result){
+        if(result.status === 'ok'){
+          localStorage.setItem(LS_REGISTERED_KEY, '1');
+          regForm.reset();
+          hideLoading();
+          showLogin();
+          loginStatus.textContent = '✅ রেজিস্ট্রেশন সফল হয়েছে। এখন লগইন করুন।';
+          loginStatus.className = 'form-status show ok';
+          document.getElementById('login_mobile').value = mobile;
+        } else {
+          throw new Error(result.message || 'রেজিস্ট্রেশন ব্যর্থ হয়েছে।');
+        }
+      })
+      .catch(function(err){
+        hideLoading();
+        regStatus.textContent = '❌ ' + (err.message || 'একটি সমস্যা হয়েছে, আবার চেষ্টা করুন।');
+        regStatus.className = 'form-status show err';
+      })
+      .finally(function(){
+        hideLoading();
+        regSubmitBtn.disabled = false;
+        regSubmitBtn.textContent = 'রেজিস্ট্রেশন করুন';
+      });
+  });
+
+  const deviceModalOverlay = document.getElementById('deviceModalOverlay');
+  const deviceModalCancelBtn = document.getElementById('deviceModalCancelBtn');
+  const deviceModalAgreeBtn = document.getElementById('deviceModalAgreeBtn');
+  let deviceModalTimer = null;
+
+  function openDeviceWarningModal(onAgree){
+    let secondsLeft = 10;
+    deviceModalAgreeBtn.disabled = true;
+    deviceModalAgreeBtn.textContent = `Yes, I Agree (${secondsLeft})`;
+    deviceModalOverlay.classList.add('show');
+
+    if(deviceModalTimer) clearInterval(deviceModalTimer);
+    deviceModalTimer = setInterval(function(){
+      secondsLeft -= 1;
+      if(secondsLeft <= 0){
+        clearInterval(deviceModalTimer);
+        deviceModalTimer = null;
+        deviceModalAgreeBtn.disabled = false;
+        deviceModalAgreeBtn.textContent = 'Yes, I Agree';
+      } else {
+        deviceModalAgreeBtn.textContent = `Yes, I Agree (${secondsLeft})`;
+      }
+    }, 1000);
+
+    function closeModal(){
+      deviceModalOverlay.classList.remove('show');
+      if(deviceModalTimer){ clearInterval(deviceModalTimer); deviceModalTimer = null; }
+      deviceModalAgreeBtn.removeEventListener('click', agreeHandler);
+      deviceModalCancelBtn.removeEventListener('click', cancelHandler);
+    }
+
+    function agreeHandler(){
+      if(deviceModalAgreeBtn.disabled) return;
+      closeModal();
+      onAgree();
+    }
+
+    function cancelHandler(){
+      closeModal();
+      loginSubmitBtn.disabled = false;
+      loginSubmitBtn.textContent = 'লগইন করুন';
+    }
+
+    deviceModalAgreeBtn.addEventListener('click', agreeHandler);
+    deviceModalCancelBtn.addEventListener('click', cancelHandler);
+  }
+
+  loginForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    loginStatus.className = 'form-status';
+
+    loginSubmitBtn.disabled = true;
+    loginSubmitBtn.textContent = 'লগইন হচ্ছে...';
+
+    openDeviceWarningModal(performLogin);
+  });
+
+  function performLogin(){
+    const mobile = document.getElementById('login_mobile').value.trim();
+    const mobileForMatch = normalizeMobileForMatch(mobile);
+    const password = document.getElementById('login_password').value;
+
+    loginSubmitBtn.disabled = true;
+    loginSubmitBtn.textContent = 'লগইন হচ্ছে...';
+
+    callApi({
+      action: 'login',
+      mobile: mobileForMatch,
+      displayMobile: mobile,
+      password: password,
+      deviceToken: getDeviceToken()
+    })
+      .then(async function(result){
+        if(result.status === 'ok'){
+          result.data.mobile = mobile;
+          localStorage.setItem(LS_USER_KEY, JSON.stringify(result.data));
+          localStorage.setItem(LS_REGISTERED_KEY, '1');
+          loginForm.reset();
+
+          if(enrollParam){
+            showLoading('কোর্সের তথ্য লোড হচ্ছে...');
+            try{
+              await enrollCourse(enrollParam);
+              window.history.replaceState({}, document.title, 'student-login.html');
+              hideLoading();
+            }catch(err){
+              renderDashboard(result.data);
+              hideLoading();
+              alert('❌ ' + (err.message || 'Course enrollment failed.'));
             }
+          } else {
+            await syncAndRenderDashboard(result.data);
+          }
+        } else {
+          loginStatus.textContent = '❌ ' + (result.message || 'লগইন ব্যর্থ হয়েছে।');
+          loginStatus.className = 'form-status show err';
+        }
+      })
+      .catch(function(){
+        hideLoading();
+        loginStatus.textContent = '❌ সার্ভারে সমস্যা হয়েছে, আবার চেষ্টা করুন।';
+        loginStatus.className = 'form-status show err';
+      })
+      .finally(function(){
+        hideLoading();
+        loginSubmitBtn.disabled = false;
+        loginSubmitBtn.textContent = 'লগইন করুন';
+      });
+  }
 
-            function closeModal(){
-                modal.classList.remove('open');
-                document.body.style.overflow = '';
-                form.reset();
-            }
+  logoutBtn.addEventListener('click', function(){
+    if(!confirm('আপনি কি সত্যিই লগআউট করতে চান?')) return;
+    localStorage.removeItem(LS_USER_KEY);
+    classLearningReset();
+    enrolledCourseList.innerHTML='';
+    learningEmpty.style.display='block';
+    showAuthUI();
+    showLogin();
+  });
 
-            document.getElementById('shopGrid').addEventListener('click', function(e){
-                const btn = e.target.closest('.order-btn');
-                if(!btn || btn.disabled) return;
-                const idx = Number(btn.dataset.index);
-                const product = SHOP_PRODUCTS[idx];
-                if(!product) return;
-                openModal(product);
-            });
-
-            closeBtn.addEventListener('click', closeModal);
-            modal.addEventListener('click', function(e){ if(e.target === modal) closeModal(); });
-            document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && modal.classList.contains('open')) closeModal(); });
-
-            // ============================================================
-            // ফর্ম সাবমিট — শপ Apps Script এ order পাঠায়
-            // (Products শীটের Stock-ও সেখানেই স্বয়ংক্রিয়ভাবে কমে যায়)
-            // ============================================================
-            form.addEventListener('submit', function(e){
-                e.preventDefault();
-
-                const phone = document.getElementById('orderPhone').value.trim();
-                if(!/^01[0-9]{9}$/.test(phone)){
-                    status.textContent = '❌ সঠিক মোবাইল নম্বর দিন (যেমন: 01XXXXXXXXX)।';
-                    status.className = 'form-status show err';
-                    return;
-                }
-
-                submitBtn.disabled = true;
-                submitBtn.textContent = 'প্রসেস হচ্ছে...';
-                status.className = 'form-status';
-
-                const orderData = {
-                    action: 'place_order',
-                    productId: form.dataset.productId,
-                    productName: form.dataset.productName,
-                    price: form.dataset.productPrice,
-                    customerName: document.getElementById('orderName').value.trim(),
-                    mobile: phone,
-                    address: document.getElementById('orderAddress').value.trim(),
-                    size: sizeRow.style.display !== 'none' ? document.getElementById('orderSize').value : '',
-                    quantity: document.getElementById('orderQty').value
-                };
-
-                callShopApi(orderData)
-                    .then(function(result){
-                        if(result.status === 'ok'){
-                            status.textContent = '✅ ' + (result.message || 'অর্ডার সফলভাবে গ্রহণ করা হয়েছে। শীঘ্রই আপনার নম্বরে যোগাযোগ করা হবে।');
-                            status.className = 'form-status show ok';
-                            form.reset();
-                            loadProducts(); // স্টক আপডেট রিফ্লেক্ট করতে প্রোডাক্ট তালিকা রিফ্রেশ
-                        } else {
-                            throw new Error(result.message || 'অর্ডার ব্যর্থ হয়েছে।');
-                        }
-                    })
-                    .catch(function(err){
-                        status.textContent = '❌ ' + (err.message || 'একটি সমস্যা হয়েছে, আবার চেষ্টা করুন।');
-                        status.className = 'form-status show err';
-                    })
-                    .finally(function(){
-                        submitBtn.disabled = false;
-                        submitBtn.textContent = 'অর্ডার কনফার্ম করুন';
-                    });
-            });
-        })();
-    </script>
-
+})();
+</script>
 </body>
 </html>
