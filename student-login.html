@@ -87,6 +87,390 @@ footer{background:#0B1220;color:#E2E8F0;padding:48px 0 22px;margin-top:10px}foot
 @media(max-width:480px){.dash-welcome h2{font-size:22px}.dash-welcome p{font-size:12px}.profile-main-top{align-items:center}.logout-link-btn{padding:8px 10px;font-size:12px}.info-pill{padding:10px 11px}.enrolled-course-btn{padding:14px}.learning-area{padding:14px}.class-title{font-size:13px}.class-chapter{font-size:11px}.class-player-wrap{border-radius:12px}.device-modal-actions{flex-direction:column}}
 
 </style>
+
+<style id="premium-dashboard-v3">
+:root{
+  --v3-bg:#f4f7fb;
+  --v3-surface:#ffffff;
+  --v3-surface-2:#f8fafc;
+  --v3-border:#e4e9f2;
+  --v3-text:#162033;
+  --v3-muted:#6b778c;
+  --v3-blue:#2457d6;
+  --v3-blue-2:#163fae;
+  --v3-blue-soft:#edf3ff;
+  --v3-green:#15966b;
+  --v3-red:#d94a4a;
+  --v3-shadow:0 12px 40px rgba(20,38,74,.07);
+  --v3-radius:18px;
+}
+
+/* Global */
+html,body{background:var(--v3-bg)!important;color:var(--v3-text)!important;}
+body{font-family:'Anek Bangla',sans-serif!important;}
+.container{max-width:1280px!important;}
+header.nav{
+  background:rgba(255,255,255,.94)!important;
+  border-bottom:1px solid var(--v3-border)!important;
+  box-shadow:0 1px 10px rgba(15,31,65,.04)!important;
+}
+.nav-inner{max-width:1280px!important;height:72px!important;}
+.brand .brand-logo{height:52px!important;}
+.back-link{color:var(--v3-muted)!important;font-weight:700!important;}
+.back-link:hover{color:var(--v3-blue)!important;}
+
+/* Authentication remains functional, but gets a cleaner shell */
+.page-head{padding:48px 0 18px!important;}
+.page-head h1{font-weight:800!important;letter-spacing:-.4px;}
+.page-head p{color:var(--v3-muted)!important;}
+.auth-wrap{padding:12px 0 34px!important;}
+.auth-box{
+  background:var(--v3-surface)!important;
+  border:1px solid var(--v3-border)!important;
+  border-radius:24px!important;
+  box-shadow:var(--v3-shadow)!important;
+}
+.auth-box::before{height:0!important;}
+.tab-switch{
+  background:#f1f4f9!important;
+  border:1px solid var(--v3-border)!important;
+  border-radius:13px!important;
+}
+.tab-btn{border-radius:9px!important;}
+.tab-btn.active{
+  background:#fff!important;color:var(--v3-blue)!important;
+  box-shadow:0 3px 12px rgba(24,52,110,.10)!important;
+}
+.form-row input,.form-row select{
+  background:#fff!important;border-color:#dfe5ef!important;
+  border-radius:11px!important;
+}
+.form-row input:focus,.form-row select:focus{
+  border-color:var(--v3-blue)!important;
+  box-shadow:0 0 0 3px rgba(36,87,214,.10)!important;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--v3-blue),var(--v3-blue-2))!important;
+  color:#fff!important;
+  box-shadow:0 9px 22px rgba(36,87,214,.22)!important;
+}
+
+/* ===== DASHBOARD: two-column professional LMS layout ===== */
+#dashboardSection{padding-top:24px!important;}
+#dashboardSection .container{
+  padding-left:20px!important;padding-right:20px!important;
+}
+#dashboardSection .auth-box{
+  max-width:1280px!important;
+  padding:22px!important;
+  border-radius:24px!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+}
+
+/* Left profile / right learning */
+#dashboardSection .dash-head-v2{
+  display:block!important;
+  margin:0!important;padding:0!important;border:0!important;
+}
+#dashboardSection .profile-main{
+  min-width:0!important;
+}
+#dashboardSection .dash-head-v2{
+  display:grid!important;
+  grid-template-columns:minmax(280px,360px) minmax(0,1fr)!important;
+  gap:18px!important;
+  align-items:stretch!important;
+}
+
+/* Profile card */
+#dashboardSection .profile-panel{
+  width:auto!important;
+  min-height:315px!important;
+  padding:26px!important;
+  border-radius:22px!important;
+  background:
+    radial-gradient(circle at 85% 15%,rgba(255,255,255,.20),transparent 28%),
+    linear-gradient(150deg,#102b72 0%,#1e4fc2 58%,#326fdc 100%)!important;
+  box-shadow:0 18px 42px rgba(24,64,153,.20)!important;
+  position:relative!important;
+  overflow:hidden!important;
+}
+#dashboardSection .profile-panel:before{
+  content:"";
+  position:absolute;inset:auto -45px -65px auto;
+  width:190px;height:190px;border-radius:50%;
+  background:rgba(255,255,255,.08);
+}
+#dashboardSection .profile-panel-avatar{
+  width:112px!important;height:112px!important;
+  margin-bottom:5px!important;
+  z-index:1;
+}
+#dashboardSection .profile-panel-avatar svg{
+  width:94px!important;height:94px!important;
+}
+#dashboardSection .profile-panel-label{
+  font-size:18px!important;letter-spacing:.5px!important;z-index:1;
+}
+
+/* Profile information panel */
+#dashboardSection .profile-main{
+  background:#fff!important;
+  border:1px solid var(--v3-border)!important;
+  border-radius:22px!important;
+  padding:24px!important;
+  box-shadow:var(--v3-shadow)!important;
+  justify-content:flex-start!important;
+}
+#dashboardSection .profile-main-top{
+  padding-bottom:18px!important;
+  border-bottom:1px solid var(--v3-border)!important;
+}
+#dashboardSection .dash-welcome h2{
+  font-size:28px!important;font-weight:800!important;color:var(--v3-text)!important;
+}
+#dashboardSection .dash-welcome p{
+  margin-top:5px!important;font-size:14px!important;color:var(--v3-muted)!important;
+}
+#dashboardSection .logout-link-btn{
+  border:1px solid #f0c8c8!important;
+  color:var(--v3-red)!important;
+  background:#fff7f7!important;
+  padding:8px 13px!important;
+}
+#dashboardSection .info-pill-row{
+  display:grid!important;
+  grid-template-columns:repeat(3,1fr)!important;
+  gap:10px!important;
+  background:transparent!important;
+  border:0!important;
+  padding:18px 0!important;
+}
+#dashboardSection .info-pill{
+  background:var(--v3-surface-2)!important;
+  border:1px solid var(--v3-border)!important;
+  border-radius:14px!important;
+  padding:12px!important;
+}
+#dashboardSection .info-pill-divider{display:none!important;}
+#dashboardSection .info-pill-icon{
+  width:38px!important;height:38px!important;
+}
+#dashboardSection .info-pill-text strong{font-size:14px!important;}
+#dashboardSection .info-pill-text small{font-size:11px!important;color:var(--v3-muted)!important;}
+#dashboardSection .contact-row{
+  padding-top:3px!important;gap:12px!important;
+}
+#dashboardSection .contact-item{
+  color:var(--v3-muted)!important;font-size:13px!important;
+}
+#dashboardSection .contact-item #dashMobile{color:var(--v3-text)!important;}
+#dashboardSection .contact-divider{background:var(--v3-border)!important;}
+
+/* Learning card becomes full-width below profile row */
+#dashboardSection .learning-area{
+  margin-top:18px!important;padding:22px!important;
+  background:#fff!important;
+  border:1px solid var(--v3-border)!important;
+  border-radius:22px!important;
+  box-shadow:var(--v3-shadow)!important;
+}
+#dashboardSection .learning-head{
+  display:flex!important;align-items:end!important;
+  justify-content:space-between!important;
+  gap:20px!important;
+  padding-bottom:17px!important;
+  border-bottom:1px solid var(--v3-border)!important;
+  margin-bottom:18px!important;
+}
+#dashboardSection .learning-head h3{
+  font-size:24px!important;font-weight:800!important;color:var(--v3-text)!important;
+}
+#dashboardSection .learning-head p{
+  font-size:13px!important;color:var(--v3-muted)!important;margin:0!important;
+}
+
+/* Course grid */
+#dashboardSection .enrolled-course-list{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:14px!important;margin-bottom:18px!important;
+}
+#dashboardSection .enrolled-course-btn{
+  min-height:92px!important;
+  padding:17px 18px!important;
+  border:1px solid var(--v3-border)!important;
+  border-radius:16px!important;
+  background:#fff!important;
+  box-shadow:0 3px 12px rgba(20,38,74,.035)!important;
+}
+#dashboardSection .enrolled-course-btn:hover{
+  transform:translateY(-2px)!important;
+  border-color:#b9c9ef!important;
+  box-shadow:0 12px 26px rgba(36,87,214,.10)!important;
+}
+#dashboardSection .enrolled-course-btn.active{
+  border-color:#7898e9!important;
+  background:linear-gradient(180deg,#f7faff,#fff)!important;
+  box-shadow:0 12px 28px rgba(36,87,214,.11)!important;
+}
+#dashboardSection .ecb-icon{
+  width:48px!important;height:48px!important;
+  border-radius:14px!important;
+  background:var(--v3-blue-soft)!important;
+  color:var(--v3-blue)!important;
+  box-shadow:none!important;
+}
+#dashboardSection .enrolled-course-btn.active .ecb-icon{
+  background:linear-gradient(135deg,var(--v3-blue),var(--v3-blue-2))!important;
+  color:#fff!important;
+  box-shadow:0 7px 15px rgba(36,87,214,.22)!important;
+}
+#dashboardSection .ecb-name{font-size:16px!important;font-weight:800!important;}
+#dashboardSection .ecb-date,#dashboardSection .ecb-watchtime{font-size:12px!important;color:var(--v3-muted)!important;}
+#dashboardSection .ecb-wt-value{color:var(--v3-blue)!important;}
+#dashboardSection .ecb-corner-badge,#dashboardSection .ecb-sector-badge{
+  font-size:10px!important;padding:4px 9px!important;
+}
+
+/* Controls */
+#dashboardSection .filter-row{
+  display:grid!important;
+  grid-template-columns:1fr 1fr!important;
+  gap:12px!important;margin:18px 0 12px!important;
+}
+#dashboardSection .filter-select-wrap:after{right:16px!important;}
+#dashboardSection .filter-select{
+  border:1px solid #24385f!important;
+  border-radius:12px!important;
+  background:linear-gradient(135deg,#17284b,#203c70)!important;
+  min-height:46px!important;
+}
+#dashboardSection .class-search-wrap{margin:0 0 14px!important;}
+#dashboardSection .class-search-input{
+  min-height:46px!important;
+  padding:10px 15px!important;
+  background:#f8fafc!important;
+  border:1px solid var(--v3-border)!important;
+  border-radius:12px!important;
+}
+
+/* Subject chips */
+#dashboardSection .subject-row{
+  padding:2px 0 12px!important;
+  gap:8px!important;
+}
+#dashboardSection .subject-btn{
+  background:#f7f9fc!important;
+  border:1px solid var(--v3-border)!important;
+  color:var(--v3-muted)!important;
+  border-radius:10px!important;
+  padding:8px 13px!important;
+}
+#dashboardSection .subject-btn:hover,
+#dashboardSection .subject-btn.active{
+  background:var(--v3-blue)!important;
+  border-color:var(--v3-blue)!important;
+  color:#fff!important;
+  box-shadow:0 7px 15px rgba(36,87,214,.18)!important;
+}
+
+/* Class list */
+#dashboardSection .class-list{gap:8px!important;}
+#dashboardSection .class-item-row{gap:8px!important;}
+#dashboardSection .class-item{
+  padding:10px 13px!important;
+  min-height:62px!important;
+  border:1px solid var(--v3-border)!important;
+  border-radius:13px!important;
+  background:#fff!important;
+}
+#dashboardSection .class-item:hover{
+  transform:none!important;
+  border-color:#b9c9ef!important;
+  box-shadow:0 7px 18px rgba(20,38,74,.06)!important;
+}
+#dashboardSection .class-play{
+  width:38px!important;height:38px!important;
+  background:var(--v3-blue)!important;color:#fff!important;
+  box-shadow:none!important;
+}
+#dashboardSection .class-item:hover .class-play{
+  transform:scale(1.04)!important;
+  box-shadow:0 5px 12px rgba(36,87,214,.2)!important;
+}
+#dashboardSection .class-title{font-weight:800!important;}
+#dashboardSection .class-chapter{color:var(--v3-muted)!important;}
+#dashboardSection .class-pdf-btn{
+  width:42px!important;border-color:var(--v3-border)!important;
+}
+
+/* Status states */
+#dashboardSection .device-blocked-banner{
+  border-radius:13px!important;
+  background:#fff6f5!important;border-color:#f2d0cc!important;
+}
+#dashboardSection .learning-empty{
+  border:1px dashed #cfd7e5!important;
+  background:#f8fafc!important;border-radius:14px!important;
+}
+
+/* Keep video PLAYER VISUALS/CONTROLS untouched from the existing implementation.
+   No selectors below target .class-player-wrap, .custom-controls, .cc-* or .yt-* . */
+
+/* Footer */
+footer{background:#101a2f!important;margin-top:28px!important;}
+footer .container{max-width:1280px!important;}
+
+/* Responsive */
+@media(max-width:900px){
+  #dashboardSection .dash-head-v2{
+    grid-template-columns:1fr!important;
+  }
+  #dashboardSection .profile-panel{
+    min-height:190px!important;
+    flex-direction:row!important;
+    justify-content:flex-start!important;
+    gap:20px!important;
+  }
+  #dashboardSection .profile-panel-avatar{
+    width:90px!important;height:90px!important;margin:0!important;
+  }
+  #dashboardSection .profile-panel-avatar svg{width:78px!important;height:78px!important;}
+  #dashboardSection .profile-main{padding:19px!important;}
+}
+@media(max-width:680px){
+  #dashboardSection .auth-box{padding:8px!important;}
+  #dashboardSection .learning-area{padding:14px!important;border-radius:18px!important;}
+  #dashboardSection .learning-head{
+    display:block!important;
+  }
+  #dashboardSection .learning-head p{margin-top:4px!important;}
+  #dashboardSection .enrolled-course-list{
+    grid-template-columns:1fr!important;
+  }
+  #dashboardSection .info-pill-row{
+    grid-template-columns:1fr!important;
+  }
+  #dashboardSection .contact-row{
+    flex-wrap:wrap!important;
+  }
+  #dashboardSection .contact-divider{display:none!important;}
+  #dashboardSection .filter-row{
+    grid-template-columns:1fr!important;
+  }
+}
+@media(max-width:430px){
+  #dashboardSection .container{padding-left:8px!important;padding-right:8px!important;}
+  #dashboardSection .profile-main-top{gap:8px!important;}
+  #dashboardSection .dash-welcome h2{font-size:22px!important;}
+  #dashboardSection .logout-link-btn{font-size:11px!important;padding:7px 9px!important;}
+  #dashboardSection .profile-panel{padding:18px!important;}
+}
+</style>
+
 </head>
 <body>
 <div class="loading-overlay" id="loadingOverlay" aria-live="polite" aria-busy="true">
