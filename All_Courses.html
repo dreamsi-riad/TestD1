@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>All Courses | VISION Academics</title>
+<meta name="description" content="VISION Academics-এর সকল কোর্স — SSC, HSC, BBA, MBA, BBS এবং BBA Professional।">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&family=Baloo+Da+2:wght@500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Anek+Bangla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --ink:#1E2A47;
+  --ink-soft:#4A5772;
+  --paper:#FAF7F0;
+  --paper-line:#E7DFCB;
+  --card:#FFFFFF;
+  --accent:#E8A33D;
+  --accent-dark:#C97F1F;
+  --sky:#5B8FBF;
+  --green:#4C8C6B;
+  --margin:#C84B4B;
+  --shadow:0 10px 30px rgba(30,42,71,.08);
+  --radius:14px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Anek Bangla',sans-serif;
+  line-height:1.65;
+}
+a{text-decoration:none;color:inherit}
+button{font-family:inherit;cursor:pointer}
+.container{max-width:1180px;margin:0 auto;padding:0 clamp(14px,3vw,40px)}
+
+/* Navbar — kept compact because this page intentionally contains only courses */
+header.nav{
+  position:sticky;top:0;z-index:50;
+  background:rgba(250,247,240,.94);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--paper-line);
+}
+.nav-inner{
+  max-width:2300px;margin:0 auto;height:64px;
+  padding:0 clamp(12px,2.6vw,64px);
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-logo{
+  height:64px;max-height:100%;width:auto;aspect-ratio:3.84/1;
+  object-fit:contain;display:block;
+}
+.nav-links{display:flex;gap:30px;font-weight:600;font-size:15.5px}
+.nav-links a{position:relative;color:var(--ink-soft);padding:4px 0}
+.nav-links a:hover,.nav-links a.active{color:var(--ink)}
+.nav-links a::after{
+  content:"";position:absolute;left:0;right:0;bottom:-3px;height:2px;
+  background:var(--accent);transform:scaleX(0);transform-origin:left;
+  transition:transform .25s ease;
+}
+.nav-links a:hover::after,.nav-links a.active::after{transform:scaleX(1)}
+.nav-cta{
+  display:inline-flex;align-items:center;gap:7px;
+  background:linear-gradient(135deg,#263a63,var(--ink) 60%);
+  color:#fff!important;padding:10px 20px;border-radius:999px;
+  font-weight:700;font-size:14.5px;white-space:nowrap;
+  box-shadow:0 3px 10px rgba(30,42,71,.25),inset 0 1px 1px rgba(255,255,255,.12);
+}
+.nav-cta svg{width:16px;height:16px;flex:none}
+.burger{display:none;background:none;border:0;font-size:26px;color:var(--ink)}
+@media(max-width:860px){
+  .nav-links{
+    position:absolute;top:100%;left:0;right:0;background:var(--paper);
+    flex-direction:column;padding:18px 28px 26px;gap:16px;
+    border-bottom:1px solid var(--paper-line);display:none;
+  }
+  .nav-links.open{display:flex}
+  .burger{display:block}
+}
+@media(max-width:480px){
+  .nav-inner{gap:8px;padding:0 12px}
+  .brand-logo{height:42px}
+  .nav-cta{padding:8px 12px;font-size:12.5px;gap:5px}
+  .nav-cta svg{width:14px;height:14px}
+  .burger{font-size:22px}
+}
+
+/* Page heading */
+.page-head{text-align:center;padding:38px 0 22px}
+.page-head .eyebrow{
+  display:inline-block;font-weight:700;font-size:13.5px;letter-spacing:.04em;
+  color:var(--accent-dark);background:#FBEFDA;padding:6px 16px;
+  border-radius:999px;margin-bottom:12px;
+}
+.page-head h1{
+  font-family:'Baloo Da 2',sans-serif;
+  font-weight:800;font-size:clamp(28px,4vw,40px);
+  line-height:1.2;margin:0 0 8px;
+}
+.page-head p{margin:0 auto;color:var(--ink-soft);font-size:15.5px}
+
+/* Six level buttons */
+.level-bar{
+  display:flex;gap:10px;flex-wrap:wrap;
+  justify-content:center;margin:0 0 30px;
+}
+.level-btn{
+  border:1.5px solid var(--paper-line);
+  background:#fff;color:var(--ink-soft);
+  border-radius:999px;padding:10px 18px;
+  font-size:14.5px;font-weight:700;
+  transition:all .2s ease;
+  box-shadow:0 5px 15px rgba(30,42,71,.05);
+}
+.level-btn:hover{
+  transform:translateY(-2px);
+  border-color:var(--cat-color,var(--accent));
+  color:var(--cat-color,var(--ink));
+  box-shadow:0 9px 20px rgba(30,42,71,.10);
+}
+.level-btn.active{
+  background:var(--cat-color,var(--ink));
+  border-color:var(--cat-color,var(--ink));
+  color:#fff;
+  box-shadow:0 9px 20px rgba(30,42,71,.18);
+}
+.level-btn .count{opacity:.78;font-size:12px;margin-left:4px}
+
+/* Course cards — copied conceptually from index.html */
+.course-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(270px,1fr));
+  gap:24px;
+  padding-bottom:60px;
+}
+.course-card{
+  background:var(--card);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow),0 0 0 0 rgba(79,143,255,0);
+  overflow:hidden;
+  border:1px solid var(--paper-line);
+  display:flex;flex-direction:column;
+  transition:transform .38s cubic-bezier(.22,1,.36,1),box-shadow .38s cubic-bezier(.22,1,.36,1);
+}
+.course-card:hover{
+  transform:translateY(-9px) scale(1.015);
+  box-shadow:0 26px 46px rgba(30,42,71,.20),0 0 34px 6px rgba(79,143,255,.45);
+}
+.course-image{
+  width:100%;aspect-ratio:16/10;object-fit:cover;background:#eee;display:block;
+}
+.course-top{
+  padding:8px 20px 4px;
+  display:flex;justify-content:space-between;align-items:flex-start;gap:10px;
+  border-bottom:1.5px dashed var(--paper-line);
+}
+.course-category{font-size:13px;font-weight:700}
+.course-tag{
+  font-family:'Baloo Da 2',sans-serif;font-size:12px;font-weight:700;
+  color:var(--green);background:rgba(76,140,107,.12);
+  padding:4px 10px;border-radius:999px;white-space:nowrap;
+}
+.course-body{padding:6px 20px 16px;flex:1;display:flex;flex-direction:column}
+.course-body h3{font-size:21px;margin:0 0 5px;line-height:1.35}
+.course-body p{color:var(--ink-soft);font-size:15px;margin:0;line-height:1.5}
+.course-foot{
+  margin-top:auto;padding-top:12px;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+}
+.price{display:flex;flex-direction:column;gap:2px;min-width:0}
+.price-row{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.price-now{
+  font-family:'Baloo Da 2',sans-serif;font-weight:800;font-size:22px;color:#5B4FE9;
+}
+.price-old{
+  font-weight:400;font-size:14px;color:#9AA1B5;
+  text-decoration:line-through;text-decoration-thickness:1px;
+}
+.price small{font-weight:500;font-size:13px;color:var(--green)}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:10px 18px;border-radius:999px;border:0;
+  font-weight:700;font-size:13.5px;white-space:nowrap;
+  transition:transform .18s ease,box-shadow .18s ease;
+}
+.btn-primary{
+  background:var(--accent);color:var(--ink);
+  box-shadow:0 8px 20px rgba(232,163,61,.4);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(232,163,61,.5)}
+.course-enrolled-trigger{background:#e9f8ef;color:#1f8a4c;box-shadow:none}
+.course-enrolled-trigger:hover{background:#dcf3e5;box-shadow:0 8px 18px rgba(31,138,76,.25)}
+.course-empty{
+  grid-column:1/-1;text-align:center;padding:50px 20px;
+  color:var(--ink-soft);background:#fff;border:1px dashed var(--paper-line);
+  border-radius:var(--radius);
+}
+.status{
+  text-align:center;color:var(--ink-soft);
+  padding:45px 20px;grid-column:1/-1;
+  background:#fff;border:1px solid var(--paper-line);border-radius:var(--radius);
+}
+.spinner{
+  width:26px;height:26px;border-radius:50%;
+  border:3px solid var(--paper-line);border-top-color:var(--accent);
+  animation:spin .8s linear infinite;margin:0 auto 10px;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Mobile: cards MUST stack vertically */
+@media(max-width:760px){
+  .page-head{padding:28px 0 18px}
+  .level-bar{
+    display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:9px;margin-bottom:24px;
+  }
+  .level-btn{padding:10px 8px;font-size:14px}
+  .course-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:16px;
+    padding-bottom:45px;
+  }
+  .course-card{width:100%;transform:none!important}
+  .course-card:hover{transform:none!important}
+}
+@media(max-width:420px){
+  .level-bar{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .course-body h3{font-size:19px}
+  .course-body{padding-left:16px;padding-right:16px}
+  .course-top{padding-left:16px;padding-right:16px}
+  .course-foot{align-items:flex-end}
+  .course-foot .btn{padding:9px 14px;font-size:13px}
+}
+</style>
+</head>
+
+<body>
+<header class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand" aria-label="VISION Academics">
+      <img src="https://drive.google.com/thumbnail?id=1qdX7gUF-pWOJNXO7HAEMrfwDWqDAqpsl&sz=w1000" alt="VISION Academics" class="brand-logo">
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="index.html#courses">কোর্সসমূহ</a>
+      <a href="index.html#why">কেন আমরা</a>
+      <a href="index.html#teachers">শিক্ষকবৃন্দ</a>
+      <a href="index.html#videos">ফ্রি ক্লাস</a>
+      <a href="shop.html">শপ</a>
+    </nav>
+    <a href="student-login.html" class="nav-cta" id="navLoginBtn">লগইন</a>
+    <button class="burger" id="burgerBtn" aria-label="মেনু">☰</button>
+  </div>
+</header>
+
+<main>
+  <section>
+    <div class="container">
+      <div class="page-head">
+        <span class="eyebrow">VISION Academics</span>
+        <h1>All Courses</h1>
+        <p>আপনার প্রয়োজন অনুযায়ী লেভেল বেছে নিয়ে সকল কোর্স দেখুন।</p>
+      </div>
+
+      <div class="level-bar" id="levelBar" aria-label="কোর্স লেভেল">
+        <button class="level-btn active" data-level="ALL">সকল কোর্স</button>
+        <button class="level-btn" data-level="SSC" style="--cat-color:#2F6FE4">SSC</button>
+        <button class="level-btn" data-level="HSC" style="--cat-color:#2FA86C">HSC</button>
+        <button class="level-btn" data-level="BBA" style="--cat-color:#C9337A">BBA</button>
+        <button class="level-btn" data-level="MBA" style="--cat-color:#7B4FE0">MBA</button>
+        <button class="level-btn" data-level="BBS" style="--cat-color:#DD7A1F">BBS</button>
+        <button class="level-btn" data-level="BBA Professional" style="--cat-color:#E0466B">BBA Professional</button>
+      </div>
+
+      <div class="course-grid" id="courseGrid">
+        <div class="status"><div class="spinner"></div>কোর্সের তথ্য লোড হচ্ছে...</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+const VISION_API="https://late-forest-4748.dreamsicreation.workers.dev";
+const normalize=v=>String(v??'').trim().toLowerCase().replace(/[^a-z0-9\u0980-\u09ff]+/g,' ').replace(/\s+/g,' ').trim();
+const clean=v=>String(v??'').trim();
+const esc=v=>clean(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const bn='০১২৩৪৫৬৭৮৯',en='0123456789';
+const toBn=v=>String(v??'').replace(/[0-9]/g,d=>bn[en.indexOf(d)]);
+
+function imageUrl(v){
+  const x=clean(v);
+  const f=x.match(/drive\.google\.com\/file\/d\/([^/]+)/i);
+  const i=x.match(/[?&]id=([^&]+)/i);
+  if(f)return `https://drive.google.com/thumbnail?id=${f[1]}&sz=w1000`;
+  if(x.includes('drive.google.com')&&i)return `https://drive.google.com/thumbnail?id=${i[1]}&sz=w1000`;
+  return x;
+}
+function slugify(v){
+  return clean(v).toLowerCase().replace(/&/g,' and ')
+    .replace(/[^a-z0-9\u0980-\u09ff]+/g,'-').replace(/^-+|-+$/g,'')||'course';
+}
+function uniqueSlug(name,cat,used){
+  const base=slugify(name), cp=slugify(cat);
+  let slug=base;
+  if(used.has(slug)) slug=`${cp}-${base}`;
+  let n=2;
+  while(used.has(slug)) slug=`${cp}-${base}-${n++}`;
+  used.add(slug);
+  return slug;
+}
+function parseFeatures(v){return clean(v).split(/[,،]/).map(clean).filter(Boolean)}
+function formatPrice(v){
+  const x=clean(v);
+  if(!x)return '';
+  return /[৳$€£]/.test(x)?toBn(x):`৳${toBn(x)}`;
+}
+function isSubjectWiseTag(tag){
+  const t=normalize(tag);
+  return t.includes('subject wise')||t.includes('improvement');
+}
+
+function getEnrolledCourseKeys(){
+  try{
+    const raw=localStorage.getItem('va_user');
+    if(!raw)return new Set();
+    const user=JSON.parse(raw);
+    const courses=Array.isArray(user?.courses)?user.courses:[];
+    return new Set(
+      courses.map(c=>`${normalize(c?.name)}::${normalize(c?.nuDcu)}`).filter(Boolean)
+    );
+  }catch(e){return new Set()}
+}
+
+async function fetchCourses(){
+  const r=await fetch(VISION_API,{
+    method:'POST',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body:JSON.stringify({action:'get_courses'}),
+    cache:'no-store'
+  });
+  if(!r.ok)throw Error(`Course Name: HTTP ${r.status}`);
+  const j=await r.json();
+  if(j.status==='error')throw Error(j.message||'Course Name API error');
+
+  const used=new Set();
+  return (j.data||[]).map(row=>{
+    const category=clean(row.level),name=clean(row.name);
+    if(!category||!name)return null;
+    return {
+      name,
+      tag:clean(row.tag),
+      image:imageUrl(row.image),
+      shortDescription:clean(row.shortDescription),
+      longDescription:clean(row.longDescription),
+      price:formatPrice(row.price),
+      oldPrice:formatPrice(row.oldPrice),
+      priceNote:clean(row.priceNote),
+      features:parseFeatures(row.featureText),
+      category,
+      slug:uniqueSlug(name,category,used)
+    };
+  }).filter(Boolean);
+}
+
+function cardHtml(c,enrolledKeys){
+  const colors={
+    SSC:'#2F6FE4',HSC:'#2FA86C',BBA:'#C9337A',
+    MBA:'#7B4FE0',BBS:'#DD7A1F','BBA Professional':'#E0466B'
+  };
+  const color=colors[c.category]||'#5B8FBF';
+  const sector=(normalize(c.category)==='bba'&&['nu','dcu'].includes(normalize(c.tag)))?normalize(c.tag):'';
+  const enrolled=enrolledKeys.has(`${normalize(c.name)}::${sector}`);
+
+  let actionHtml;
+  if(enrolled){
+    actionHtml='<a href="student-login.html" class="btn btn-primary course-enrolled-trigger">ভর্তি হয়েছেন ✓</a>';
+  }else if(isSubjectWiseTag(c.tag)){
+    actionHtml='<a href="per-subject.html" class="btn btn-primary">বিস্তারিত</a>';
+  }else{
+    actionHtml=`<a href="course-details.html?course=${encodeURIComponent(c.slug)}" class="btn btn-primary">বিস্তারিত</a>`;
+  }
+
+  return `
+  <article class="course-card">
+    <img class="course-image" src="${esc(c.image)}" alt="${esc(c.name)}" loading="lazy">
+    <div class="course-top">
+      <span class="course-category" style="color:${color}">${esc(c.category)}</span>
+      ${c.tag?`<span class="course-tag">${esc(c.tag)}</span>`:''}
+    </div>
+    <div class="course-body">
+      <h3>${esc(c.name)}</h3>
+      <p>${esc(c.shortDescription)}</p>
+      <div class="course-foot">
+        <div class="price">
+          <div class="price-row">
+            ${c.price?`<span class="price-now">${esc(c.price)}</span>`:''}
+            ${c.oldPrice?`<span class="price-old">${esc(c.oldPrice)}</span>`:''}
+          </div>
+          ${c.priceNote?`<small>${esc(c.priceNote)}</small>`:''}
+        </div>
+        ${actionHtml}
+      </div>
+    </div>
+  </article>`;
+}
+
+let allCourses=[];
+let activeLevel='ALL';
+
+function render(){
+  const grid=document.getElementById('courseGrid');
+  const enrolled=getEnrolledCourseKeys();
+  const list=activeLevel==='ALL'
+    ? allCourses
+    : allCourses.filter(c=>normalize(c.category)===normalize(activeLevel));
+
+  if(!list.length){
+    grid.innerHTML='<div class="course-empty"><strong>এই লেভেলে এখন কোনো কোর্স নেই।</strong><br>নতুন কোর্স যোগ করা হলে এখানে automatically দেখা যাবে।</div>';
+    return;
+  }
+  grid.innerHTML=list.map(c=>cardHtml(c,enrolled)).join('');
+}
+
+async function loadCourses(){
+  const grid=document.getElementById('courseGrid');
+  try{
+    allCourses=await fetchCourses();
+    render();
+  }catch(e){
+    console.error(e);
+    grid.innerHTML='<div class="status"><strong>কোর্সের তথ্য লোড করা যায়নি।</strong><br>ইন্টারনেট কানেকশন চেক করে আবার চেষ্টা করুন।</div>';
+  }
+}
+
+document.getElementById('levelBar').addEventListener('click',e=>{
+  const btn=e.target.closest('.level-btn');
+  if(!btn)return;
+  activeLevel=btn.dataset.level;
+  document.querySelectorAll('.level-btn').forEach(x=>x.classList.toggle('active',x===btn));
+  render();
+  document.getElementById('courseGrid').scrollIntoView({behavior:'smooth',block:'start'});
+});
+
+document.getElementById('burgerBtn').addEventListener('click',()=>{
+  document.getElementById('navLinks').classList.toggle('open');
+});
+document.querySelectorAll('#navLinks a').forEach(a=>{
+  a.addEventListener('click',()=>document.getElementById('navLinks').classList.remove('open'));
+});
+
+document.addEventListener('DOMContentLoaded',()=>{
+  const loginBtn=document.getElementById('navLoginBtn');
+  try{
+    const loggedIn=!!localStorage.getItem('va_user');
+    const icon='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>';
+    loginBtn.innerHTML=icon+'<span>'+(loggedIn?'প্রোফাইল':'লগইন')+'</span>';
+  }catch(e){}
+  loadCourses();
+});
+</script>
+</body>
+</html>
