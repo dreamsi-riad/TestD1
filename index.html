@@ -2177,7 +2177,8 @@ function vaShowToast(message){
         priceNote:clean(row.priceNote),
         features:features(row.featureText),
         category:level,
-        slug:''
+        slug:'',
+        topThis: String(row.topThis||'').trim().toLowerCase()==='yes'
       };
     }).filter(Boolean);
   }
@@ -2228,7 +2229,16 @@ function vaShowToast(message){
   function renderCourses(cat=null){activeCategory=cat;const list=cat?allCourses.filter(c=>normalizeForMatch(c.category)===normalizeForMatch(cat)):allCourses;courseGrid.innerHTML=staticSubjectWiseCardHtml()+(list.length?list.map(cardHtml).join(''):'<div class="course-empty"><strong>এই বিভাগে এখন কোনো কোর্স নেই।</strong><br>নতুন কোর্স যোগ করা হলে এখানে automatically দেখা যাবে।</div>');catGrid.querySelectorAll('.cat-card').forEach(x=>x.classList.toggle('active',x.dataset.cat===cat));toolbar.hidden=!allCourses.length;const n=list.length;resultCount.textContent=cat?`${cat}: ${toBn(n)}টি কোর্স`:`মোট ${toBn(n)}টি কোর্স`}
   function catSkelHtml(){return `<div class="cat-card-skel"><span class="skel-icon"></span><span class="skel-lines"><span class="skel-line big"></span><span class="skel-line small"></span></span></div>`}
   function courseSkelHtml(){return `<div class="course-card-skel"><span class="skel-img"></span><span class="skel-top"><span class="skel-pill"></span></span><span class="skel-body"><span class="skel-line title"></span><span class="skel-line desc1"></span><span class="skel-line desc2"></span><span class="skel-foot"><span class="skel-price"></span><span class="skel-btn"></span></span></span></div>`}
-  async function loadCourses(){errorBox.hidden=true;courseGrid.innerHTML=Array(3).fill(courseSkelHtml()).join('');catGrid.innerHTML=Array(6).fill(catSkelHtml()).join('');try{const used=new Set();allCourses=await fetchAllCourseRows();allCourses.forEach(c=>c.slug=uniqueSlug(c.name,c.category,used));renderCategories();renderCourses(null)}catch(e){console.error(e);catGrid.innerHTML='<div class="course-empty">ক্যাটাগরি লোড করা যায়নি।</div>';courseGrid.innerHTML='';toolbar.hidden=true;errorBox.hidden=false}}
+  // "top_this" কোনো কোর্সে yes করা থাকলে শুধু সেই কোর্সটাই দেখানো হবে —
+  // ক্যাটাগরি গ্রিড, টুলবার, এমনকি static "Subject Wise" কার্ডও হাইড হয়ে যাবে।
+  function renderTopThisOnly(c){
+    catGrid.style.display='none';
+    catGrid.innerHTML='';
+    toolbar.hidden=true;
+    resultCount.textContent='';
+    courseGrid.innerHTML=cardHtml(c);
+  }
+  async function loadCourses(){errorBox.hidden=true;courseGrid.innerHTML=Array(3).fill(courseSkelHtml()).join('');catGrid.innerHTML=Array(6).fill(catSkelHtml()).join('');try{const used=new Set();allCourses=await fetchAllCourseRows();allCourses.forEach(c=>c.slug=uniqueSlug(c.name,c.category,used));const topCourse=allCourses.find(c=>c.topThis);if(topCourse){renderTopThisOnly(topCourse);return}catGrid.style.display='';renderCategories();renderCourses(null)}catch(e){console.error(e);catGrid.innerHTML='<div class="course-empty">ক্যাটাগরি লোড করা যায়নি।</div>';courseGrid.innerHTML='';toolbar.hidden=true;errorBox.hidden=false}}
   catGrid.addEventListener('click',e=>{const b=e.target.closest('.cat-card');if(!b)return;e.preventDefault();const cat=b.dataset.cat,hasCourses=allCourses.some(c=>normalizeForMatch(c.category)===normalizeForMatch(cat));if(!hasCourses){vaShowToast('🔜 '+cat+' — শীঘ্রই আসছে, Coming Soon...');return}renderCourses(activeCategory===cat?null:cat);courseGrid.scrollIntoView({behavior:'smooth',block:'start'})});
   resetBtn.addEventListener('click',()=>renderCourses(null));retryBtn.addEventListener('click',loadCourses);loadCourses();
 })();
