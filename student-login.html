@@ -293,6 +293,8 @@ header.nav{
 .dash-welcome h2{ font-size:18.5px; font-weight:700; letter-spacing:.2px; }
 .dash-welcome p{ color:var(--ink-soft); margin-top:2px; font-size:13px; }
 .badge-row{ display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
+.dash-mobile-line{ margin-top:8px; font-size:13.5px; font-weight:600; color:var(--ink-soft); }
+.dash-mobile-line span{ color:var(--ink); font-weight:700; }
 .badge{
   display:inline-flex;
   align-items:center;
@@ -332,30 +334,11 @@ header.nav{
 .enrollment-dates{ display:flex; flex-direction:column; align-items:flex-end; gap:1px; font-size:12px; line-height:1.3; color:var(--ink-soft); white-space:nowrap; }
 .enrollment-dates strong{ color:var(--ink); font-weight:700; font-size:13.5px; }
 
-.dash-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:9px;
-  margin-bottom:18px;
-}
-@media(max-width:640px){ .dash-grid{ grid-template-columns:1fr 1fr; gap:8px; } }
-@media(max-width:400px){ .dash-grid{ grid-template-columns:1fr; } }
 @media(max-width:560px){
   .dash-head{ flex-direction:column; align-items:flex-start; }
   .dash-head-right{ align-items:flex-start; width:100%; }
   .enrollment-dates{ align-items:flex-start; }
 }
-.dash-item{
-  background:var(--paper);
-  border:1px solid var(--paper-line);
-  border-radius:10px;
-  padding:5px 13px;
-  transition:border-color .15s ease;
-}
-.dash-item:hover{ border-color:var(--accent); }
-.dash-item span{ display:block; }
-.dash-item .k{ font-size:11.5px; color:var(--ink-soft); font-weight:600; margin-bottom:0; line-height:1.3; }
-.dash-item .v{ font-size:14.5px; font-weight:700; color:var(--ink); line-height:1.3; }
 
 .learning-area{
   margin-top:5px;
@@ -1132,6 +1115,7 @@ footer a:hover{ color:#fff; }
                 <span class="badge badge-green" id="dashYear">—</span>
                 <span class="badge badge-purple" id="dashDepartment">—</span>
               </div>
+              <p class="dash-mobile-line">📱 <span id="dashMobile">—</span></p>
             </div>
           </div>
           <div class="dash-head-right">
@@ -1139,11 +1123,6 @@ footer a:hover{ color:#fff; }
             <div class="enrollment-dates" id="enrollmentDates">—</div>
             <button type="button" class="logout-link-btn" id="logoutBtn">লগআউট করুন</button>
           </div>
-        </div>
-
-        <div class="dash-grid">
-          <div class="dash-item"><span class="k">প্রতিষ্ঠান</span><span class="v" id="dashInstitute">—</span></div>
-          <div class="dash-item"><span class="k">মোবাইল</span><span class="v" id="dashMobile">—</span></div>
         </div>
 
         <div class="learning-area" id="learningArea">
@@ -2336,7 +2315,6 @@ footer a:hover{ color:#fff; }
     document.getElementById('dashLevel').textContent = data.level || '—';
     document.getElementById('dashYear').textContent = data.year ? (data.session ? `${data.year} (${data.session})` : data.year) : '—';
     document.getElementById('dashDepartment').textContent = data.department || '—';
-    document.getElementById('dashInstitute').textContent = data.institute || '—';
     document.getElementById('dashMobile').textContent = data.mobile || '—';
     authPageHead.style.display = 'none';
     authWrapSection.style.display = 'none';
