@@ -217,10 +217,16 @@ header.nav{
 @media(max-width:760px){
   .page-head{padding:28px 0 18px}
   .level-bar{
-    display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
-    gap:9px;margin-bottom:24px;
+    display:flex;flex-wrap:wrap;
+    justify-content:center;
+    gap:8px;margin-bottom:24px;
   }
-  .level-btn{padding:10px 8px;font-size:14px}
+  .level-btn{
+    width:auto;
+    flex:0 0 auto;
+    padding:9px 12px;
+    font-size:14px;
+  }
   .course-grid{
     display:grid;
     grid-template-columns:1fr;
@@ -231,7 +237,6 @@ header.nav{
   .course-card:hover{transform:none!important}
 }
 @media(max-width:420px){
-  .level-bar{grid-template-columns:repeat(2,minmax(0,1fr))}
   .course-body h3{font-size:19px}
   .course-body{padding-left:16px;padding-right:16px}
   .course-top{padding-left:16px;padding-right:16px}
@@ -263,9 +268,7 @@ header.nav{
   <section>
     <div class="container">
       <div class="page-head">
-        <span class="eyebrow">VISION Academics</span>
         <h1>All Courses</h1>
-        <p>আপনার প্রয়োজন অনুযায়ী লেভেল বেছে নিয়ে সকল কোর্স দেখুন।</p>
       </div>
 
       <div class="level-bar" id="levelBar" aria-label="কোর্স লেভেল">
