@@ -978,6 +978,560 @@ footer a:hover{ color:#fff; }
 .device-modal-agree:not(:disabled):hover{ transform:translateY(-2px); box-shadow:0 10px 22px rgba(232,163,61,.45); }
 .device-modal-agree:disabled{ opacity:.55; cursor:not-allowed; }
 
+
+/* =========================================================
+   VISION Academics — Premium Student Dashboard UI Refresh
+   UI/UX only: existing HTML structure, IDs and JavaScript
+   are intentionally preserved.
+   ========================================================= */
+
+:root{
+  --ink:#17213d;
+  --ink-2:#263452;
+  --muted:#71809a;
+  --bg:#f4f7fb;
+  --surface:#ffffff;
+  --surface-2:#f8faff;
+  --line:#e5eaf2;
+  --primary:#3157d5;
+  --primary-2:#2444ad;
+  --gold:#f2b84b;
+  --success:#18a66a;
+  --danger:#e05252;
+  --warning:#d68a1e;
+  --shadow-sm:0 4px 16px rgba(25,42,78,.06);
+  --shadow-md:0 14px 40px rgba(25,42,78,.10);
+  --shadow-lg:0 24px 70px rgba(25,42,78,.14);
+  --radius-sm:12px;
+  --radius-md:18px;
+  --radius-lg:26px;
+}
+
+html{background:var(--bg);}
+body{
+  background:
+    radial-gradient(circle at 7% 4%, rgba(49,87,213,.055), transparent 24rem),
+    radial-gradient(circle at 92% 12%, rgba(242,184,75,.07), transparent 22rem),
+    var(--bg);
+  color:var(--ink);
+}
+
+/* ---------- top navigation ---------- */
+header.nav{
+  background:rgba(255,255,255,.88);
+  border-bottom:1px solid rgba(229,234,242,.9);
+  box-shadow:0 2px 16px rgba(25,42,78,.035);
+  backdrop-filter:blur(18px) saturate(150%);
+}
+.nav-inner{
+  max-width:1240px;
+  height:72px;
+}
+.brand .brand-logo{height:58px;}
+.back-link{
+  padding:9px 14px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:#fff;
+  color:var(--ink-2);
+  transition:.2s ease;
+}
+.back-link:hover{
+  border-color:#cdd6ea;
+  background:var(--surface-2);
+  color:var(--primary);
+  transform:translateY(-1px);
+}
+
+/* ---------- auth/login polish ---------- */
+.page-head{
+  padding:54px 0 18px;
+}
+.page-head h1{
+  font-weight:800;
+  letter-spacing:-.6px;
+}
+.page-head p{color:var(--muted);}
+.auth-wrap{padding:16px 0 34px;}
+.auth-box{
+  background:rgba(255,255,255,.96);
+  border:1px solid var(--line);
+  border-radius:22px;
+  box-shadow:var(--shadow-md);
+  padding:20px 28px 24px;
+}
+.auth-box::before{
+  height:3px;
+  background:linear-gradient(90deg,var(--primary),#6685ea,var(--gold));
+}
+.tab-switch{
+  background:#f1f4f9;
+  border:1px solid var(--line);
+  padding:4px;
+  margin-bottom:24px;
+}
+.tab-btn{padding:12px 15px;}
+.tab-btn.active{
+  background:#fff;
+  color:var(--primary);
+  box-shadow:0 5px 16px rgba(30,55,120,.10);
+}
+.form-row input,
+.form-row select{
+  background:#fbfcfe;
+  border:1px solid #dfe5ef;
+  border-radius:12px;
+  min-height:46px;
+  transition:border-color .18s,box-shadow .18s,background .18s;
+}
+.form-row input:focus,
+.form-row select:focus{
+  background:#fff;
+  border-color:#7d96e7;
+  box-shadow:0 0 0 4px rgba(49,87,213,.09);
+}
+.btn{
+  min-height:48px;
+  border-radius:12px;
+}
+.btn-primary{
+  background:linear-gradient(135deg,var(--primary),var(--primary-2));
+  color:#fff;
+  box-shadow:0 10px 24px rgba(49,87,213,.22);
+}
+.btn-primary:hover{
+  transform:translateY(-2px);
+  box-shadow:0 14px 30px rgba(49,87,213,.28);
+}
+
+/* =========================================================
+   DASHBOARD
+   ========================================================= */
+#dashboardSection{
+  padding-top:24px;
+}
+#dashboardSection .container{
+  max-width:1240px;
+  padding-left:20px;
+  padding-right:20px;
+}
+#dashboardSection .auth-box{
+  max-width:none;
+  padding:22px;
+  border-radius:28px;
+  background:rgba(255,255,255,.94);
+  box-shadow:var(--shadow-lg);
+}
+
+/* ---------- profile hero ---------- */
+#dashboardSection .dash-head-v2{
+  position:relative;
+  display:grid;
+  grid-template-columns:152px minmax(0,1fr);
+  gap:22px;
+  margin:0 0 22px;
+  padding:0 0 22px;
+  border-bottom:1px solid var(--line);
+}
+
+#dashboardSection .profile-panel{
+  width:auto;
+  min-height:176px;
+  border-radius:22px;
+  padding:18px;
+  background:
+    radial-gradient(circle at 20% 12%, rgba(255,255,255,.20), transparent 35%),
+    linear-gradient(145deg,#18255b 0%,#294bb4 56%,#3d69d9 100%);
+  box-shadow:0 18px 38px rgba(38,68,160,.24);
+}
+#dashboardSection .profile-panel-avatar{
+  width:92px;
+  height:92px;
+}
+#dashboardSection .profile-panel-avatar svg{
+  width:82px;
+  height:82px;
+}
+#dashboardSection .profile-panel-label{
+  font-size:13px;
+  font-weight:700;
+  letter-spacing:.8px;
+  text-transform:uppercase;
+  opacity:.86;
+}
+
+#dashboardSection .profile-main{
+  gap:14px;
+  justify-content:space-between;
+  padding:2px 2px 0;
+}
+#dashboardSection .profile-main-top{
+  align-items:center;
+}
+#dashboardSection .dash-welcome h2{
+  font-size:clamp(23px,3vw,34px);
+  line-height:1.1;
+  font-weight:800;
+  letter-spacing:-.8px;
+}
+#dashboardSection .dash-welcome p{
+  margin-top:6px;
+  color:var(--muted);
+  font-size:14px;
+  font-weight:600;
+}
+
+#dashboardSection .logout-link-btn{
+  min-height:40px;
+  padding:8px 14px;
+  font-size:13px;
+  background:#fff;
+  border:1px solid #f1c8c5;
+  color:#d5534e;
+  box-shadow:0 3px 10px rgba(25,42,78,.04);
+}
+#dashboardSection .logout-link-btn:hover{
+  background:#fff6f5;
+  border-color:#e98e88;
+}
+
+/* ---------- student meta cards ---------- */
+#dashboardSection .info-pill-row{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  padding:0;
+  background:transparent;
+  border:0;
+}
+#dashboardSection .info-pill-divider{display:none;}
+#dashboardSection .info-pill{
+  min-width:0;
+  padding:11px 13px;
+  border:1px solid var(--line);
+  border-radius:15px;
+  background:linear-gradient(180deg,#fff,#f9fbfe);
+  box-shadow:var(--shadow-sm);
+}
+#dashboardSection .info-pill-icon{
+  width:38px;
+  height:38px;
+}
+#dashboardSection .info-pill-text strong{
+  font-size:14px;
+}
+#dashboardSection .info-pill-text small{
+  margin-top:2px;
+  font-size:11px;
+  color:#8490a4;
+  letter-spacing:.15px;
+}
+#dashboardSection .contact-row{
+  padding-top:2px;
+}
+#dashboardSection .contact-item{
+  font-size:13px;
+  color:#59677f;
+}
+#dashboardSection .contact-item svg{
+  color:#7b8aa5;
+  stroke:currentColor;
+}
+#dashboardSection .contact-item #dashMobile{
+  color:var(--primary);
+}
+
+/* ---------- learning section ---------- */
+#dashboardSection .learning-area{
+  margin-top:0;
+  padding-top:0;
+  border-top:0;
+}
+#dashboardSection .learning-head{
+  display:flex;
+  align-items:flex-end;
+  justify-content:space-between;
+  gap:18px;
+  margin-bottom:14px;
+}
+#dashboardSection .learning-head h3{
+  font-size:22px;
+  font-weight:800;
+  letter-spacing:-.35px;
+}
+#dashboardSection .learning-head p{
+  color:#8591a6;
+  font-size:12.5px;
+  margin:0;
+}
+
+/* course cards become a responsive grid */
+#dashboardSection .enrolled-course-list{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+  margin-bottom:16px;
+}
+#dashboardSection .enrolled-course-btn{
+  min-height:92px;
+  padding:17px 18px;
+  border:1px solid #e1e7f0;
+  border-radius:18px;
+  background:
+    radial-gradient(circle at 100% 0%,rgba(49,87,213,.045),transparent 38%),
+    #fff;
+  box-shadow:var(--shadow-sm);
+  transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease;
+}
+#dashboardSection .enrolled-course-btn:hover{
+  transform:translateY(-3px);
+  border-color:#bdcbee;
+  box-shadow:0 14px 28px rgba(25,42,78,.10);
+}
+#dashboardSection .enrolled-course-btn.active{
+  border-color:#8ea5e8;
+  background:
+    radial-gradient(circle at 100% 0%,rgba(49,87,213,.10),transparent 42%),
+    linear-gradient(180deg,#fff,#f8faff);
+  box-shadow:0 12px 28px rgba(49,87,213,.12), inset 0 0 0 1px rgba(49,87,213,.05);
+}
+#dashboardSection .ecb-icon{
+  width:48px;
+  height:48px;
+  border-radius:14px;
+  background:linear-gradient(145deg,#fff4d9,#f7d98f);
+  box-shadow:0 7px 15px rgba(242,184,75,.18);
+}
+#dashboardSection .enrolled-course-btn.active .ecb-icon{
+  background:linear-gradient(145deg,#f7ca69,#e39a27);
+}
+#dashboardSection .ecb-name{
+  font-size:15px;
+  font-weight:800;
+}
+#dashboardSection .ecb-date,
+#dashboardSection .ecb-watchtime{
+  font-size:11.5px;
+  color:#8792a5;
+}
+#dashboardSection .ecb-corner-badge{
+  top:8px;
+  right:8px;
+  padding:3px 8px;
+  border-radius:7px;
+  background:#eef2ff;
+  color:#5367a7;
+  font-size:9px;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+}
+#dashboardSection .ecb-sector-badge{
+  top:8px;
+  left:8px;
+  padding:3px 8px;
+  border-radius:7px;
+  background:#eaf7f1;
+  color:#27815a;
+  font-size:9px;
+}
+
+/* ---------- status banners ---------- */
+#dashboardSection .device-blocked-banner{
+  margin-bottom:14px;
+  padding:13px 15px;
+  border-radius:14px;
+  background:#fff6f5;
+  border:1px solid #f3d0cc;
+  color:#c94f49;
+  box-shadow:var(--shadow-sm);
+}
+
+/* ---------- filters ---------- */
+#dashboardSection #courseLearningPanel{
+  margin-top:8px;
+  padding:18px;
+  border:1px solid var(--line);
+  border-radius:20px;
+  background:#f9fbfe;
+}
+#dashboardSection .filter-row{
+  gap:10px;
+  margin:0 0 10px;
+}
+#dashboardSection .filter-select{
+  min-height:44px;
+  border-radius:12px;
+  border:1px solid #26365e;
+  background:linear-gradient(135deg,#26365e,#17213d);
+  box-shadow:0 7px 16px rgba(23,33,61,.12);
+}
+#dashboardSection .class-search-wrap{
+  margin:0 0 12px;
+}
+#dashboardSection .class-search-input{
+  min-height:44px;
+  padding:9px 14px;
+  border-radius:12px;
+  background:#fff;
+  border:1px solid var(--line);
+  box-shadow:0 3px 10px rgba(25,42,78,.035);
+}
+#dashboardSection .class-search-input:focus{
+  border-color:#8ba1e4;
+  box-shadow:0 0 0 4px rgba(49,87,213,.08);
+}
+
+/* ---------- video player ---------- */
+#dashboardSection .class-player-wrap{
+  margin:0 0 14px;
+  border-radius:18px;
+  box-shadow:0 18px 35px rgba(13,22,42,.16);
+}
+
+/* ---------- class list ---------- */
+#dashboardSection .class-list{
+  gap:8px;
+}
+#dashboardSection .class-item-row{gap:8px;}
+#dashboardSection .class-item{
+  min-height:62px;
+  padding:9px 12px;
+  border:1px solid #e2e7ef;
+  border-radius:13px;
+  background:#fff;
+  box-shadow:0 3px 10px rgba(25,42,78,.035);
+}
+#dashboardSection .class-item:hover{
+  transform:translateX(2px);
+  border-color:#b9c7e8;
+  box-shadow:0 8px 18px rgba(25,42,78,.08);
+}
+#dashboardSection .class-play{
+  width:38px;
+  height:38px;
+  background:linear-gradient(145deg,#f8ce72,#e4a031);
+}
+#dashboardSection .class-title{
+  font-size:13.5px;
+  font-weight:800;
+}
+#dashboardSection .class-chapter{
+  font-size:11px;
+  color:#8994a7;
+}
+#dashboardSection .class-pdf-btn{
+  width:38px;
+  border-radius:10px;
+}
+
+/* ---------- empty/loading states ---------- */
+#dashboardSection .learning-empty,
+#dashboardSection .class-loading,
+#dashboardSection .renew-notice{
+  border-radius:16px;
+  background:#f8faff;
+  border-color:#dfe5ef;
+}
+#dashboardSection .enrolled-course-skel .skel-card{
+  min-height:92px;
+  border-radius:18px;
+  background:#f7f9fc;
+}
+
+/* ---------- mobile ---------- */
+@media(max-width:760px){
+  #dashboardSection .auth-box{
+    padding:15px;
+    border-radius:22px;
+  }
+  #dashboardSection .dash-head-v2{
+    grid-template-columns:1fr;
+    gap:14px;
+    padding-bottom:17px;
+  }
+  #dashboardSection .profile-panel{
+    min-height:116px;
+    flex-direction:row;
+    justify-content:flex-start;
+    padding:12px 18px;
+    gap:14px;
+  }
+  #dashboardSection .profile-panel-avatar{
+    width:70px;height:70px;
+  }
+  #dashboardSection .profile-panel-avatar svg{
+    width:62px;height:62px;
+  }
+  #dashboardSection .profile-panel-label{
+    font-size:12px;
+  }
+  #dashboardSection .profile-main{
+    gap:12px;
+  }
+  #dashboardSection .info-pill-row{
+    grid-template-columns:1fr;
+  }
+  #dashboardSection .info-pill{
+    padding:9px 11px;
+  }
+  #dashboardSection .contact-row{
+    flex-wrap:wrap;
+    row-gap:6px;
+  }
+  #dashboardSection .learning-head{
+    display:block;
+  }
+  #dashboardSection .learning-head p{
+    margin-top:3px;
+  }
+  #dashboardSection .enrolled-course-list{
+    grid-template-columns:1fr;
+  }
+  #dashboardSection #courseLearningPanel{
+    padding:12px;
+  }
+}
+
+@media(max-width:480px){
+  #dashboardSection .container{
+    padding-left:8px;
+    padding-right:8px;
+  }
+  #dashboardSection .auth-box{
+    padding:10px;
+  }
+  #dashboardSection .dash-welcome h2{
+    font-size:21px;
+  }
+  #dashboardSection .profile-main-top{
+    align-items:flex-start;
+  }
+  #dashboardSection .logout-link-btn{
+    padding:7px 10px;
+    font-size:11px;
+  }
+  #dashboardSection .contact-item{
+    font-size:11px;
+  }
+  #dashboardSection .enrolled-course-btn{
+    min-height:84px;
+    padding:15px 14px;
+  }
+  #dashboardSection .ecb-icon{
+    width:43px;height:43px;
+  }
+}
+
+/* Respect reduced-motion preferences */
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    scroll-behavior:auto!important;
+    transition-duration:.01ms!important;
+  }
+}
+
 </style>
 </head>
 <body>
