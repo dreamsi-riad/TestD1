@@ -2178,11 +2178,13 @@ function vaShowToast(message){
         features:features(row.featureText),
         category:level,
         slug:'',
-        topThis: row.topThis===true || String(row.topThis||'').trim().toLowerCase()==='yes'
+        // D1 top_this is treated as a strict publish flag.
+        // Accept yes / true / 1 regardless of capitalization or surrounding spaces.
+        topThis: ['yes','true','1'].includes(String(row.topThis ?? '').trim().toLowerCase()) || row.topThis === true
       };
     }).filter(Boolean);
   }
-  function categoryHtml(cat,count){const m=CATEGORY_META[cat]||{color:'#5B8FBF',bg:'#EEF4F8',icon:'<circle cx="12" cy="12" r="8"/>'};return `<a href="#courses" class="cat-card" data-cat="${esc(cat)}" style="--cat-color:${m.color}"><span class="cat-icon" style="background:${m.bg}"><svg viewBox="0 0 24 24" fill="none" stroke="${m.color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${m.icon}</svg></span><span class="cat-text"><b>${esc(cat)}</b><span>${toBn(count)}টি কোর্স</span></span></a>`}
+  function categoryHtml(cat,count){const m=CATEGORY_META[cat]||{color:'#5B8FBF',bg:'#EEF4F8',icon:'<circle cx="12" cy="12" r="8"/>'};return `<a href="All_Courses.html?level=${encodeURIComponent(cat)}" class="cat-card" data-cat="${esc(cat)}" style="--cat-color:${m.color}"><span class="cat-icon" style="background:${m.bg}"><svg viewBox="0 0 24 24" fill="none" stroke="${m.color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${m.icon}</svg></span><span class="cat-text"><b>${esc(cat)}</b><span>${toBn(count)}টি কোর্স</span></span></a>`}
   // tag ঘরে "Subject Wise" বা "Improvement" লেখা থাকলে এই কার্ড normal course-details.html
   // এ না গিয়ে per-subject.html এ যাবে (সেখানে single-subject কোর্সগুলো লেভেল/ডিপার্টমেন্ট/ইয়ার
   // অনুযায়ী ফিল্টার করে দেখানো হয়), এবং course_data availability-check এড়িয়ে সরাসরি লিংক হবে।
@@ -2226,21 +2228,106 @@ function vaShowToast(message){
   // ভিন্ন হলেও যেন SHEET_TABS-এর সঠিক ক্যাটাগরির সাথে মিলে যায় (canonical নামেই count জমা হয়,
   // display-এ SHEET_TABS-এর আসল বানানই দেখানো হয়, sheet-এর raw ভ্যালু বদলায় না)।
   function renderCategories(){const counts={};allCourses.forEach(c=>{const tab=SHEET_TABS.find(t=>normalizeForMatch(t)===normalizeForMatch(c.category));const key=tab||c.category;counts[key]=(counts[key]||0)+1});catGrid.innerHTML=SHEET_TABS.map(t=>categoryHtml(t,counts[t]||0)).join('')}
-  function renderCourses(cat=null){activeCategory=cat;const list=cat?allCourses.filter(c=>normalizeForMatch(c.category)===normalizeForMatch(cat)):allCourses;courseGrid.innerHTML=staticSubjectWiseCardHtml()+(list.length?list.map(cardHtml).join(''):'<div class="course-empty"><strong>এই বিভাগে এখন কোনো কোর্স নেই।</strong><br>নতুন কোর্স যোগ করা হলে এখানে automatically দেখা যাবে।</div>');catGrid.querySelectorAll('.cat-card').forEach(x=>x.classList.toggle('active',x.dataset.cat===cat));toolbar.hidden=!allCourses.length;const n=list.length;resultCount.textContent=cat?`${cat}: ${toBn(n)}টি কোর্স`:`মোট ${toBn(n)}টি কোর্স`}
+  function renderCourses(cat=null){
+    activeCategory=cat;
+    const list=cat
+      ? allCourses.filter(c=>normalizeForMatch(c.category)===normalizeForMatch(cat))
+      : allCourses;
+
+    // Normal mode: show the static Subject Wise card + all course cards.
+    courseGrid.innerHTML=staticSubjectWiseCardHtml()+(
+      list.length
+        ? list.map(cardHtml).join('')
+        : '<div class="course-empty"><strong>এই বিভাগে এখন কোনো কোর্স নেই।</strong><br>নতুন কোর্স যোগ করা হলে এখানে automatically দেখা যাবে।</div>'
+    );
+
+    catGrid.style.display='';
+    toolbar.hidden=!allCourses.length;
+    catGrid.querySelectorAll('.cat-card').forEach(x=>x.classList.toggle('active',x.dataset.cat===cat));
+
+    const n=list.length;
+    resultCount.textContent=cat?`${cat}: ${toBn(n)}টি কোর্স`:`মোট ${toBn(n)}টি কোর্স`;
+  }
   function catSkelHtml(){return `<div class="cat-card-skel"><span class="skel-icon"></span><span class="skel-lines"><span class="skel-line big"></span><span class="skel-line small"></span></span></div>`}
   function courseSkelHtml(){return `<div class="course-card-skel"><span class="skel-img"></span><span class="skel-top"><span class="skel-pill"></span></span><span class="skel-body"><span class="skel-line title"></span><span class="skel-line desc1"></span><span class="skel-line desc2"></span><span class="skel-foot"><span class="skel-price"></span><span class="skel-btn"></span></span></span></div>`}
-  // "top_this" কোনো কোর্সে yes করা থাকলে শুধু সেই কোর্সটাই দেখানো হবে —
-  // ক্যাটাগরি গ্রিড, টুলবার, এমনকি static "Subject Wise" কার্ডও হাইড হয়ে যাবে।
-  function renderTopThisOnly(c){
-    catGrid.style.display='none';
-    catGrid.innerHTML='';
-    toolbar.hidden=true;
-    resultCount.textContent='';
-    courseGrid.innerHTML=cardHtml(c);
+  // ============================================================
+  // TOP THIS MODE
+  // ------------------------------------------------------------
+  // course_name.top_this = yes হলে ONLY top_this=yes course(s) show হবে.
+  // Category cards, section heading, toolbar এবং static Subject Wise card
+  // কিছুই render হবে না।
+  //
+  // একাধিক course-এ yes থাকলে সবগুলো show হবে।
+  // ============================================================
+  const coursesSection=document.getElementById('courses');
+  const coursesSectionHead=coursesSection ? coursesSection.querySelector('.section-head') : null;
+
+  function setTopThisMode(enabled){
+    // Category cards and their counts stay visible in both modes.
+    // top_this controls only the course cards shown below.
+    if(coursesSectionHead) coursesSectionHead.style.display='';
+    catGrid.style.display='';
+    if(enabled){
+      toolbar.hidden=true;
+      resultCount.textContent='';
+    }
   }
-  async function loadCourses(){errorBox.hidden=true;courseGrid.innerHTML=Array(3).fill(courseSkelHtml()).join('');catGrid.innerHTML=Array(6).fill(catSkelHtml()).join('');try{const used=new Set();allCourses=await fetchAllCourseRows();allCourses.forEach(c=>c.slug=uniqueSlug(c.name,c.category,used));const topCourse=allCourses.find(c=>c.topThis);if(topCourse){renderTopThisOnly(topCourse);return}catGrid.style.display='';renderCategories();renderCourses(null)}catch(e){console.error(e);catGrid.innerHTML='<div class="course-empty">ক্যাটাগরি লোড করা যায়নি।</div>';courseGrid.innerHTML='';toolbar.hidden=true;errorBox.hidden=false}}
-  catGrid.addEventListener('click',e=>{const b=e.target.closest('.cat-card');if(!b)return;e.preventDefault();const cat=b.dataset.cat,hasCourses=allCourses.some(c=>normalizeForMatch(c.category)===normalizeForMatch(cat));if(!hasCourses){vaShowToast('🔜 '+cat+' — শীঘ্রই আসছে, Coming Soon...');return}renderCourses(activeCategory===cat?null:cat);courseGrid.scrollIntoView({behavior:'smooth',block:'start'})});
-  resetBtn.addEventListener('click',()=>renderCourses(null));retryBtn.addEventListener('click',loadCourses);loadCourses();
+
+  function renderTopThisOnly(topCourses){
+    setTopThisMode(true);
+
+    // Counts are calculated from ALL courses, not only top_this courses.
+    renderCategories();
+
+    // Do not call renderCourses() here because that adds the static Subject Wise card.
+    // In top_this mode ONLY top_this=yes course(s) are shown.
+    courseGrid.innerHTML=topCourses.length
+      ? topCourses.map(cardHtml).join('')
+      : '';
+  }
+
+  async function loadCourses(){
+    errorBox.hidden=true;
+    courseGrid.innerHTML=Array(3).fill(courseSkelHtml()).join('');
+    catGrid.innerHTML=Array(6).fill(catSkelHtml()).join('');
+
+    try{
+      const used=new Set();
+      allCourses=await fetchAllCourseRows();
+      allCourses.forEach(c=>c.slug=uniqueSlug(c.name,c.category,used));
+
+      // Read ONLY courses explicitly marked top_this=yes/true/1.
+      const topCourses=allCourses.filter(c=>c.topThis===true);
+
+      if(topCourses.length){
+        renderTopThisOnly(topCourses);
+        return;
+      }
+
+      // No top_this course -> restore the normal page.
+      setTopThisMode(false);
+      renderCategories();
+      renderCourses(null);
+
+    }catch(e){
+      console.error('Course load failed:',e);
+      setTopThisMode(false);
+      catGrid.innerHTML='<div class="course-empty">ক্যাটাগরি লোড করা যায়নি।</div>';
+      courseGrid.innerHTML='';
+      toolbar.hidden=true;
+      errorBox.hidden=false;
+    }
+  }
+
+  resetBtn.addEventListener('click',()=>{
+    // If top_this mode is active, this button is hidden anyway.
+    // If normal mode is active, reset to all courses.
+    if(allCourses.some(c=>c.topThis===true)) return;
+    renderCourses(null);
+  });
+
+  retryBtn.addEventListener('click',loadCourses);
+  loadCourses();
 })();
 
 // ============================================================
