@@ -110,6 +110,11 @@ header.nav{
   display:flex;gap:10px;flex-wrap:wrap;
   justify-content:center;margin:0 0 30px;
 }
+
+.subject-wise-nav{
+  --cat-color: var(--ink);
+}
+
 .level-btn{
   border:1.5px solid var(--paper-line);
   background:#fff;color:var(--ink-soft);
@@ -279,8 +284,8 @@ header.nav{
         <button class="level-btn" data-level="MBA" style="--cat-color:#7B4FE0">MBA</button>
         <button class="level-btn" data-level="BBS" style="--cat-color:#DD7A1F">BBS</button>
         <button class="level-btn" data-level="BBA Professional" style="--cat-color:#E0466B">BBA Professional</button>
-        <a href="per-subject.html" class="level-btn" style="text-decoration:none;display:inline-flex;align-items:center;justify-content:center">Subject-wise Course</a>
-      </div>
+        <button class="level-btn subject-wise-nav" type="button" onclick="window.location.href='per-subject.html'">Subject-wise Course</button>
+              </div>
 
       <div class="course-grid" id="courseGrid">
         <div class="status"><div class="spinner"></div>কোর্সের তথ্য লোড হচ্ছে...</div>
@@ -442,9 +447,16 @@ async function loadCourses(){
   }
 }
 
+window.addEventListener('pageshow',()=>{
+  activeLevel='ALL';
+  document.querySelectorAll('.level-btn').forEach(x=>x.classList.toggle('active',x.dataset.level==='ALL'));
+  render();
+  window.scrollTo(0,0);
+});
+
 document.getElementById('levelBar').addEventListener('click',e=>{
   const btn=e.target.closest('.level-btn');
-  if(!btn)return;
+  if(!btn || btn.classList.contains('subject-wise-nav'))return;
   activeLevel=btn.dataset.level;
   document.querySelectorAll('.level-btn').forEach(x=>x.classList.toggle('active',x===btn));
   render();
