@@ -548,6 +548,44 @@ header.nav{
   .level-card{ font-size:clamp(20px, 6vw, 26px); padding:10.5px 8px; }
 }
 
+/* সব কোর্স দেখার বাটন — SSC/HSC/BBA লেভেল বাটনের ঠিক নিচে */
+.all-courses-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  width:100%;
+  padding:16px 18px;
+  border:2px solid var(--ink);
+  border-radius:999px;
+  background:transparent;
+  color:var(--ink);
+  font-family:'Baloo Da 2', sans-serif;
+  font-weight:800;
+  font-size:clamp(18px, 2.4vw, 22px);
+  cursor:pointer;
+  transition:transform .2s ease, box-shadow .2s ease, background .2s ease, color .2s ease;
+}
+.all-courses-btn svg{
+  width:22px;
+  height:22px;
+  flex:0 0 auto;
+  transition:transform .2s ease;
+}
+.all-courses-btn:hover{
+  background:var(--ink);
+  color:#fff;
+  transform:translateY(-2px);
+  box-shadow:0 10px 22px rgba(30,42,71,.22);
+}
+.all-courses-btn:hover svg{
+  transform:translateX(4px);
+}
+@media(max-width:480px){
+  .all-courses-btn{ padding:13px 14px; font-size:18px; }
+  .all-courses-btn svg{ width:18px; height:18px; }
+}
+
 /* teacher photo — horizontal auto-scroll carousel (feature photos, ratio 3840x2160) */
 .pinboard{
   position:relative;
@@ -1560,6 +1598,12 @@ footer{
             <span>BBA</span>
           </a>
         </div>
+
+        <!-- সব কোর্স দেখার বাটন — সরাসরি All_Courses.html পেজে নিয়ে যাবে -->
+        <a href="All_Courses.html" class="all-courses-btn">
+          All Courses
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+        </a>
       </div>
 
       <div class="hero-photo-area">
