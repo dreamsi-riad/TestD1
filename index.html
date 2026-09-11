@@ -748,6 +748,8 @@ section{ padding:52px 0; }
   display:flex;
   flex-direction:column;
   gap:1px;
+  flex:1 1 auto;
+  min-width:0;
 }
 .cat-text b{
   font-size:24px;
@@ -761,12 +763,33 @@ section{ padding:52px 0; }
   line-height:1.2;
 }
 @media (max-width:860px){
-  .cat-grid{ grid-template-columns:repeat(2, 1fr); }
-}
-@media (max-width:520px){
-  .cat-grid{ grid-template-columns:1fr; }
-  .cat-card{ padding:7px 14px; }
-  .cat-text b{ font-size:21px; }
+  /* ফোনে (পোর্ট্রেট/ল্যান্ডস্কেপ যেকোনো width) সবসময় ২ কলাম — কার্ডের height মোটামুটি স্থির
+     রেখে, উপলব্ধ width অনুযায়ী আইকন ও টেক্সট clamp() দিয়ে fluid scale করা হয় যাতে
+     ছোট width-এ যতটুকু জায়গা আছে তার সর্বোচ্চ ব্যবহার হয়, height বেড়ে না যায়। */
+  .cat-grid{ grid-template-columns:repeat(2, 1fr); gap:clamp(8px,2.6vw,20px); }
+  .cat-card{
+    padding:clamp(6px,1.8vw,12px) clamp(8px,2.6vw,16px);
+    gap:clamp(6px,2.2vw,12px);
+  }
+  .cat-icon{
+    width:clamp(30px,9.5vw,48px);
+    height:clamp(30px,9.5vw,48px);
+    border-radius:10px;
+  }
+  .cat-icon svg{ width:55%; height:55%; }
+  .cat-text b{
+    font-size:clamp(13px,4.4vw,22px);
+    line-height:1.1;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .cat-text span{
+    font-size:clamp(9.5px,2.7vw,13.5px);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
 }
 
 /* ---------- Program pills (like the original site's category tabs) ---------- */
@@ -1074,6 +1097,27 @@ section{ padding:52px 0; }
 }
 
 .video-data-loading,.video-data-state{width:100%;padding:18px;text-align:center;color:var(--ink-soft);font-family:'Hind Siliguri',sans-serif}.pill-row .video-data-loading,.pill-row .video-data-state{padding:8px 12px}.video-thumb:focus{outline:3px solid rgba(79,143,255,.35);outline-offset:2px}
+
+/* মোবাইলে ভিডিও কার্ড গ্রিডের বদলে পাশাপাশি (horizontal) স্ক্রল হবে — শিক্ষক কার্ডের মতোই,
+   ভিডিও ১টা থাকুক বা ৫টা, কার্ডের size একই থাকবে (পুরো width জুড়ে বড় হয়ে যাবে না) */
+@media(max-width:760px){
+  .video-grid{
+    display:flex;
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    gap:16px;
+    padding-bottom:10px;
+    -webkit-overflow-scrolling:touch;
+  }
+  .video-card{
+    flex:0 0 62%;
+    scroll-snap-align:start;
+  }
+}
+@media(max-width:480px){
+  .video-card{ flex:0 0 70%; }
+}
 
 /* ---------- Teachers ---------- */
 .teacher-grid{
