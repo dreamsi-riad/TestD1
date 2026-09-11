@@ -2364,10 +2364,19 @@ footer a:hover{ color:#fff; }
     });
   }
 
+  function renderJoinedDate(data){
+    const enrollmentDates=document.getElementById('enrollmentDates');
+    if(!enrollmentDates) return;
+    enrollmentDates.innerHTML = data && data.timestamp
+      ? `Joined: <strong>${escapeHtml(formatDate(data.timestamp))}</strong>`
+      : '—';
+  }
+
   async function syncAndRenderDashboard(data){
     dashboardData = data || null;
     renderProfileInfo(data);
     renderEnrolledCourses(data);
+    renderJoinedDate(data);
     refreshDashboardWatchTimeDisplay();
 
     const synced = await syncPendingWatchTime(data);
@@ -2384,12 +2393,7 @@ footer a:hover{ color:#fff; }
     startDashboardWatchTimeDisplay();
     renderProfileInfo(data);
     renderEnrolledCourses(data);
-    const enrollmentDates=document.getElementById('enrollmentDates');
-    if(enrollmentDates){
-      enrollmentDates.innerHTML = data && data.timestamp
-        ? `Joined: <strong>${escapeHtml(formatDate(data.timestamp))}</strong>`
-        : '—';
-    }
+    renderJoinedDate(data);
   }
 
   function showAuthUI(){
