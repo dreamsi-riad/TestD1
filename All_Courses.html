@@ -113,8 +113,20 @@ header.nav{
 
 .subject-wise-nav{
   --cat-color: var(--ink);
+  background:linear-gradient(135deg,#6C5CE7,#5B4FE9 60%)!important;
+  border:1.5px solid transparent!important;
+  color:#fff!important;
+  box-shadow:0 6px 16px rgba(91,79,233,.30)!important;
+  display:inline-flex;align-items:center;gap:7px;
 }
-
+.subject-wise-nav svg{width:15px;height:15px;flex:none}
+@media(hover:hover) and (pointer:fine){
+  .subject-wise-nav:hover{
+    transform:translateY(-2px);
+    box-shadow:0 10px 22px rgba(91,79,233,.40)!important;
+    filter:brightness(1.06);
+  }
+}
 .level-btn{
   border:1.5px solid var(--paper-line);
   background:#fff;color:var(--ink-soft);
@@ -137,13 +149,6 @@ header.nav{
   border-color:var(--cat-color,var(--ink));
   color:#fff;
   box-shadow:0 9px 20px rgba(30,42,71,.18);
-}
-.level-btn:active{
-  background:var(--cat-color,var(--ink));
-  border-color:var(--cat-color,var(--ink));
-  color:#fff;
-  transform:translateY(0);
-  box-shadow:0 4px 10px rgba(30,42,71,.15);
 }
 .level-btn .count{opacity:.78;font-size:12px;margin-left:4px}
 
@@ -294,7 +299,10 @@ header.nav{
         <button class="level-btn" data-level="MBA" style="--cat-color:#7B4FE0">MBA</button>
         <button class="level-btn" data-level="BBS" style="--cat-color:#DD7A1F">BBS</button>
         <button class="level-btn" data-level="BBA Professional" style="--cat-color:#E0466B">BBA Professional</button>
-        <button class="level-btn subject-wise-nav" type="button" onclick="this.blur();window.location.href='per-subject.html'">Subject-wise Course</button>
+        <button class="level-btn subject-wise-nav" type="button" onclick="this.blur();window.location.href='per-subject.html'">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Subject-wise Course
+        </button>
               </div>
 
       <div class="course-grid" id="courseGrid">
