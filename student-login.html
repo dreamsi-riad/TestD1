@@ -211,20 +211,22 @@ header.nav{
   width:100%;
 }
 .logout-link-btn{
-  margin-top:10px;
   display:inline-flex;
   align-items:center;
-  gap:6px;
-  background:transparent;
-  border:1.5px solid var(--paper-line);
-  color:var(--ink-soft);
-  font-weight:600;
-  font-size:13px;
-  padding:7px 16px;
+  gap:7px;
+  background:#fff;
+  border:1.5px solid #F2B6AE;
+  color:#DE5B4C;
+  font-weight:700;
+  font-size:13.5px;
+  padding:9px 18px;
   border-radius:999px;
   transition:border-color .15s ease, color .15s ease, background .15s ease;
+  flex:none;
+  white-space:nowrap;
 }
-.logout-link-btn:hover{ border-color:var(--margin); color:var(--margin); background:rgba(200,75,75,.06); }
+.logout-link-btn svg{ width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+.logout-link-btn:hover{ background:#FDEEEC; border-color:#DE5B4C; }
 .btn-primary{
   background:var(--accent);
   color:var(--ink);
@@ -263,67 +265,107 @@ header.nav{
   font-weight:700; text-decoration:underline; padding:0; font-size:14px;
 }
 
-.dash-head{
-  display:flex; align-items:center; justify-content:space-between;
-  gap:14px; margin-bottom:16px; flex-wrap:wrap;
-  padding-bottom:14px;
+/* ===== Dashboard profile header (v2) ===== */
+.dash-head-v2{
+  display:flex;
+  align-items:stretch;
+  gap:22px;
+  margin-bottom:22px;
+  padding-bottom:20px;
   border-bottom:1px solid var(--paper-line);
 }
-.profile-info{
-  display:flex;
-  align-items:center;
-  gap:14px;
-}
-.profile-avatar{
+.profile-panel{
   flex:none;
-  width:68px; height:68px;
+  width:176px;
+  border-radius:20px;
+  background:linear-gradient(150deg, #16225c 0%, #2850c8 55%, #3f7ee8 100%);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
+  padding:26px 14px;
+  box-shadow:0 14px 30px rgba(28,58,159,.28);
+}
+.profile-panel-avatar{
+  position:relative;
+  width:88px; height:88px;
   border-radius:50%;
   display:flex; align-items:center; justify-content:center;
-  background:linear-gradient(145deg, var(--accent), var(--accent-dark));
-  box-shadow:0 7px 16px rgba(232,163,61,.4), 0 0 0 3px #fff, 0 0 0 4px var(--paper-line);
+  background:rgba(255,255,255,.12);
+  border:2px solid rgba(255,255,255,.55);
+  box-shadow:0 0 0 6px rgba(255,255,255,.08);
 }
-.profile-avatar svg{
-  width:34px; height:34px;
+.profile-panel-avatar svg{
+  width:40px; height:40px;
   stroke:#fff;
   fill:none;
-  stroke-width:1.8;
+  stroke-width:1.6;
   stroke-linecap:round;
   stroke-linejoin:round;
 }
-.dash-welcome h2{ font-size:18.5px; font-weight:700; letter-spacing:.2px; }
-.dash-welcome p{ color:var(--ink-soft); margin-top:2px; font-size:13px; }
-.badge-row{ display:flex; flex-wrap:wrap; gap:8px; margin-top:8px; }
-.dash-mobile-line{ margin-top:8px; font-size:13.5px; font-weight:600; color:var(--ink-soft); }
-.dash-mobile-line span{ color:var(--ink); font-weight:700; }
-.badge{
-  display:inline-flex;
-  align-items:center;
-  font-size:13.5px;
-  font-weight:800;
-  padding:6px 14px;
-  border-radius:8px;
-  line-height:1.2;
+.profile-panel-dot{
+  position:absolute; right:1px; bottom:1px;
+  width:16px; height:16px;
+  border-radius:50%;
+  background:#34C463;
+  border:3px solid #16225c;
 }
-.badge-blue{ background:#DCE9FB; color:#1E4FA8; }
-.badge-green{ background:#DBF3E4; color:#1F7A4C; }
-.badge-purple{ background:#EDE0FB; color:#7C3AED; }
-.dash-head-right{
+.profile-panel-label{ color:#fff; font-weight:800; font-size:19px; letter-spacing:.3px; }
+
+.profile-main{
+  flex:1;
+  min-width:0;
   display:flex;
   flex-direction:column;
-  align-items:flex-end;
-  gap:8px;
+  gap:14px;
+  justify-content:center;
 }
-.role-tag{
-  display:inline-flex;
+.profile-main-top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.dash-welcome h2{ font-size:20px; font-weight:800; letter-spacing:.2px; color:var(--ink); }
+.dash-welcome p{ color:var(--ink-soft); margin-top:2px; font-size:13.5px; }
+
+.info-pill-row{
+  display:flex;
   align-items:center;
-  gap:5px;
-  font-size:12px;
-  font-weight:700;
-  color:var(--sky);
-  background:#EAF1F8;
-  padding:6px 14px;
-  border-radius:999px;
+  flex-wrap:wrap;
+  gap:16px;
+  background:var(--paper);
+  border:1px solid var(--paper-line);
+  border-radius:14px;
+  padding:12px 18px;
 }
+.info-pill{ display:flex; align-items:center; gap:10px; }
+.info-pill-icon{
+  flex:none;
+  width:36px; height:36px;
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+}
+.info-pill-icon svg{ width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round; }
+.info-pill-icon.icon-purple svg{ fill:currentColor; }
+.info-pill-icon.icon-blue{ background:#DCE9FB; color:#1E4FA8; }
+.info-pill-icon.icon-green{ background:#DBF3E4; color:#1F7A4C; }
+.info-pill-icon.icon-purple{ background:#EDE0FB; color:#7C3AED; }
+.info-pill-text{ display:flex; flex-direction:column; line-height:1.25; }
+.info-pill-text strong{ font-size:14.5px; font-weight:800; color:var(--ink); }
+.info-pill-text small{ font-size:12px; color:var(--ink-soft); font-weight:600; }
+.info-pill-divider{ width:1px; align-self:stretch; background:var(--paper-line); }
+
+.contact-row{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+.contact-item{ display:flex; align-items:center; gap:8px; font-size:14px; font-weight:700; color:var(--ink); }
+.contact-item svg{ width:17px; height:17px; stroke:var(--ink); fill:none; stroke-width:1.9; stroke-linecap:round; stroke-linejoin:round; flex:none; }
+.contact-item #dashMobile{ color:#2850c8; font-weight:800; }
+.contact-item-joined{ font-weight:600; color:var(--ink-soft); }
+.contact-item-joined strong{ color:var(--ink); font-weight:700; }
+.contact-divider{ width:1px; height:16px; background:var(--paper-line); }
+
 .status-pill{
   display:inline-flex; align-items:center; gap:6px;
   padding:7px 18px; border-radius:999px; font-weight:700; font-size:13.5px;
@@ -331,14 +373,19 @@ header.nav{
 .status-pill.pending{ background:#FBEBD3; color:var(--accent-dark); }
 .status-pill.approved{ background:#DCEEE3; color:var(--green); }
 .status-pill.other{ background:#F1E4E4; color:var(--margin); }
-.enrollment-dates{ display:flex; flex-direction:column; align-items:flex-end; gap:1px; font-size:12px; line-height:1.3; color:var(--ink-soft); white-space:nowrap; }
-.enrollment-dates strong{ color:var(--ink); font-weight:700; font-size:13.5px; }
 
-@media(max-width:560px){
-  .dash-head{ flex-direction:column; align-items:flex-start; }
-  .dash-head-right{ align-items:flex-start; width:100%; }
-  .enrollment-dates{ align-items:flex-start; }
+@media(max-width:700px){
+  .dash-head-v2{ flex-direction:column; }
+  .profile-panel{ width:100%; flex-direction:row; justify-content:flex-start; padding:16px 20px; gap:16px; }
+  .profile-panel-avatar{ width:56px; height:56px; }
+  .profile-panel-avatar svg{ width:26px; height:26px; }
+  .profile-panel-label{ font-size:16px; }
 }
+@media(max-width:640px){
+  .info-pill-divider{ display:none; }
+  .info-pill-row{ gap:12px 20px; }
+}
+
 
 .learning-area{
   margin-top:5px;
@@ -1099,29 +1146,64 @@ footer a:hover{ color:#fff; }
   <section class="auth-wrap" id="dashboardSection" style="display:none;">
     <div class="container">
       <div class="auth-box">
-        <div class="dash-head">
-          <div class="profile-info">
-            <div class="profile-avatar" aria-hidden="true">
+        <div class="dash-head-v2">
+          <div class="profile-panel">
+            <div class="profile-panel-avatar" aria-hidden="true">
               <svg viewBox="0 0 24 24">
                 <path d="M12 3 1 8l11 5 9-4.09V17h2V8L12 3Z"></path>
                 <path d="M5 10.5V16c0 1.5 3 3.5 7 3.5s7-2 7-3.5v-5.5"></path>
               </svg>
+              <span class="profile-panel-dot" aria-hidden="true"></span>
             </div>
-            <div class="dash-welcome">
-              <h2 id="dashName">—</h2>
-              <p>VISION Academics-এ স্বাগতম</p>
-              <div class="badge-row">
-                <span class="badge badge-blue" id="dashLevel">—</span>
-                <span class="badge badge-green" id="dashYear">—</span>
-                <span class="badge badge-purple" id="dashDepartment">—</span>
-              </div>
-              <p class="dash-mobile-line">📱 <span id="dashMobile">—</span></p>
-            </div>
+            <span class="profile-panel-label">Profile</span>
           </div>
-          <div class="dash-head-right">
-            <p class="role-tag">🎓 স্টুডেন্ট প্রোফাইল</p>
-            <div class="enrollment-dates" id="enrollmentDates">—</div>
-            <button type="button" class="logout-link-btn" id="logoutBtn">লগআউট করুন</button>
+
+          <div class="profile-main">
+            <div class="profile-main-top">
+              <div class="dash-welcome">
+                <h2 id="dashName">—</h2>
+                <p>VISION Academics-এ স্বাগতম</p>
+              </div>
+              <button type="button" class="logout-link-btn" id="logoutBtn">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><path d="M16 17l5-5-5-5"></path><path d="M21 12H9"></path></svg>
+                লগআউট করুন
+              </button>
+            </div>
+
+            <div class="info-pill-row">
+              <div class="info-pill">
+                <span class="info-pill-icon icon-blue" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M4 19.5V6a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v13"></path><path d="M6.5 4H20v15.5a1.5 1.5 0 0 1-1.5 1.5H6.5A2.5 2.5 0 0 1 4 18.5v0A2.5 2.5 0 0 1 6.5 16H20"></path></svg>
+                </span>
+                <span class="info-pill-text"><strong id="dashLevel">—</strong><small>Program</small></span>
+              </div>
+              <span class="info-pill-divider"></span>
+              <div class="info-pill">
+                <span class="info-pill-icon icon-green" aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><rect x="3" y="4.5" width="18" height="16" rx="2"></rect><path d="M3 9.5h18"></path><path d="M8 2.5v4"></path><path d="M16 2.5v4"></path></svg>
+                </span>
+                <span class="info-pill-text"><strong id="dashYear">—</strong><small>Academic Session</small></span>
+              </div>
+              <span class="info-pill-divider"></span>
+              <div class="info-pill">
+                <span class="info-pill-icon icon-purple" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><rect x="4" y="12" width="3.6" height="8" rx="1"></rect><rect x="10.2" y="7" width="3.6" height="13" rx="1"></rect><rect x="16.4" y="3" width="3.6" height="17" rx="1"></rect></svg>
+                </span>
+                <span class="info-pill-text"><strong id="dashDepartment">—</strong><small>Department</small></span>
+              </div>
+            </div>
+
+            <div class="contact-row">
+              <span class="contact-item">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                <span id="dashMobile">—</span>
+              </span>
+              <span class="contact-divider"></span>
+              <span class="contact-item contact-item-joined">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <span id="enrollmentDates">—</span>
+              </span>
+            </div>
           </div>
         </div>
 
