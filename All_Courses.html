@@ -423,7 +423,11 @@ function cardHtml(c,enrolledKeys){
 }
 
 let allCourses=[];
-let activeLevel='ALL';
+
+const VALID_LEVELS=['SSC','HSC','BBA','MBA','BBS','BBA Professional'];
+const requestedLevel=new URLSearchParams(window.location.search).get('level');
+const requestedLevelMatch=VALID_LEVELS.find(x=>normalize(x)===normalize(requestedLevel||''));
+let activeLevel=requestedLevelMatch||'ALL';
 
 function render(){
   const grid=document.getElementById('courseGrid');
@@ -451,9 +455,9 @@ async function loadCourses(){
 }
 
 window.addEventListener('pageshow',(event)=>{
-  activeLevel='ALL';
+  activeLevel=requestedLevelMatch||'ALL';
   document.querySelectorAll('.level-btn').forEach(x=>{
-    x.classList.toggle('active',x.dataset.level==='ALL');
+    x.classList.toggle('active',normalize(x.dataset.level)===normalize(activeLevel));
     x.blur();
   });
   if(document.activeElement && document.activeElement.blur) document.activeElement.blur();
@@ -488,13 +492,23 @@ document.querySelectorAll('#navLinks a').forEach(a=>{
 });
 
 document.addEventListener('DOMContentLoaded',()=>{
+  document.querySelectorAll('.level-btn').forEach(x=>{
+    x.classList.toggle('active',normalize(x.dataset.level)===normalize(activeLevel));
+  });
+
   const loginBtn=document.getElementById('navLoginBtn');
   try{
     const loggedIn=!!localStorage.getItem('va_user');
     const icon='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>';
     loginBtn.innerHTML=icon+'<span>'+(loggedIn?'প্রোফাইল':'লগইন')+'</span>';
   }catch(e){}
-  loadCourses();
+  loadCourses().then(()=>{
+    if(activeLevel!=='ALL'){
+      setTimeout(()=>{
+        document.getElementById('courseGrid').scrollIntoView({behavior:'smooth',block:'start'});
+      },80);
+    }
+  });
 });
 </script>
 </body>
