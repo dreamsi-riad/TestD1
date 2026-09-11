@@ -123,12 +123,15 @@ header.nav{
   transition:all .2s ease;
   box-shadow:0 5px 15px rgba(30,42,71,.05);
 }
-.level-btn:hover{
-  transform:translateY(-2px);
-  border-color:var(--cat-color,var(--accent));
-  color:var(--cat-color,var(--ink));
-  box-shadow:0 9px 20px rgba(30,42,71,.10);
+@media(hover:hover) and (pointer:fine){
+  .level-btn:hover{
+    transform:translateY(-2px);
+    border-color:var(--cat-color,var(--accent));
+    color:var(--cat-color,var(--ink));
+    box-shadow:0 9px 20px rgba(30,42,71,.10);
+  }
 }
+.level-btn{-webkit-tap-highlight-color:transparent}
 .level-btn.active{
   background:var(--cat-color,var(--ink));
   border-color:var(--cat-color,var(--ink));
@@ -284,7 +287,7 @@ header.nav{
         <button class="level-btn" data-level="MBA" style="--cat-color:#7B4FE0">MBA</button>
         <button class="level-btn" data-level="BBS" style="--cat-color:#DD7A1F">BBS</button>
         <button class="level-btn" data-level="BBA Professional" style="--cat-color:#E0466B">BBA Professional</button>
-        <button class="level-btn subject-wise-nav" type="button" onclick="window.location.href='per-subject.html'">Subject-wise Course</button>
+        <button class="level-btn subject-wise-nav" type="button" onclick="this.blur();window.location.href='per-subject.html'">Subject-wise Course</button>
               </div>
 
       <div class="course-grid" id="courseGrid">
@@ -447,10 +450,24 @@ async function loadCourses(){
   }
 }
 
-window.addEventListener('pageshow',()=>{
+window.addEventListener('pageshow',(event)=>{
   activeLevel='ALL';
-  document.querySelectorAll('.level-btn').forEach(x=>x.classList.toggle('active',x.dataset.level==='ALL'));
-  render();
+  document.querySelectorAll('.level-btn').forEach(x=>{
+    x.classList.toggle('active',x.dataset.level==='ALL');
+    x.blur();
+  });
+  if(document.activeElement && document.activeElement.blur) document.activeElement.blur();
+
+  // event.persisted === true মানে পেজটা bfcache (back/forward cache) থেকে
+  // ফিরে এসেছে — এই ক্ষেত্রে DOMContentLoaded আর নতুন করে চলে না, তাই
+  // loadCourses() নিজে থেকে আর চলবে না এবং পুরনো/ফাঁকা allCourses রয়ে যেতে
+  // পারে। তাই back এ আসলে ঠিক প্রথমবার পেজে ঢোকার মতোই আবার fetch করে
+  // সম্পূর্ণ fresh state দেখানো হচ্ছে।
+  if(event.persisted){
+    loadCourses();
+  }else{
+    render();
+  }
   window.scrollTo(0,0);
 });
 
