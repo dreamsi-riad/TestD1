@@ -1176,15 +1176,20 @@ section{ padding:52px 0; }
    box-shadow:var(--shadow);
  }
 
-/* ছোট width-এ কার্ড আরও ছোট শতাংশ-ভিত্তিক হবে যাতে touch-এ সহজে স্ক্রল করা যায় */
+/* ছোট width-এ কার্ড আরও ছোট শতাংশ-ভিত্তিক হবে যাতে touch-এ সহজে স্ক্রল করা যায়
+   (আগের সাইজ থেকে ~২০% ছোট — width, height, padding, font সব দিক থেকে) */
 @media(max-width:760px){
-  .teacher-grid{ gap:16px; }
+  .teacher-grid{ gap:13px; }
   .teacher-card{
-    flex:0 0 62%;
+    flex:0 0 50%;
   }
+  .teacher-info{ padding:13px 14px 16px; }
+  .teacher-info .name{ font-size:13.5px; }
+  .teacher-info .subject{ font-size:11px; margin-top:2px; }
+  .teacher-info .bio{ font-size:11px; margin-top:6px; }
 }
 @media(max-width:480px){
-  .teacher-card{ flex:0 0 70%; }
+  .teacher-card{ flex:0 0 56%; }
 }
 
 /* ---------- Message form ---------- */
