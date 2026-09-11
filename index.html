@@ -1055,7 +1055,7 @@ section{ padding:52px 0; }
   background:linear-gradient(160deg, var(--why-bg-start), var(--why-bg-end) 70%);
   border:1px solid var(--paper-line);
   border-radius:18px;
-  padding:12px 24px;
+  padding:8px 24px;
   overflow:hidden;
   box-shadow:0 0 0 0 rgba(79,143,255,0);
   transition:transform .38s cubic-bezier(.22,1,.36,1), box-shadow .38s cubic-bezier(.22,1,.36,1);
@@ -1117,16 +1117,16 @@ section{ padding:52px 0; }
 }
 .why-text p{
   font-family:'Anek Bangla', sans-serif;
-  font-size:18px;
-  line-height:1.55;
+  font-size:14px;
+  line-height:1.4;
   color:var(--ink-soft);
 }
 @media(max-width:480px){
-  .why-card{ padding:10px 18px; gap:14px; }
+  .why-card{ padding:8px 18px; gap:14px; }
   .why-icon-box{ width:58px; height:58px; border-radius:14px; }
   .why-icon{ width:28px; height:28px; }
   .why-text h3{ font-size:17px; }
-  .why-text p{ font-size:17px; }
+  .why-text p{ font-size:13px; }
 }
 
 /* ---------- Free YouTube videos ---------- */
@@ -1762,7 +1762,7 @@ footer{
           </div>
           <div class="why-text">
             <h3>অভিজ্ঞ শিক্ষক</h3>
-            <p>অভিজ্ঞ শিক্ষকদের সাথে নিরবচ্ছিন্ন লাইভ ক্লাস এবং রেকর্ডেড ক্লাস, যাতে শেখা হয় আরও সহজ ও পরিপূর্ণ।</p>
+            <p>অভিজ্ঞ শিক্ষকদের সাথে লাইভ ও রেকর্ডেড ক্লাসে শেখা হবে আরও সহজ।</p>
           </div>
         </div>
         <!-- কার্ড ২ — সাজানো স্টাডি প্ল্যান (নীল) -->
@@ -1772,7 +1772,7 @@ footer{
           </div>
           <div class="why-text">
             <h3>সাজানো স্টাডি প্ল্যান</h3>
-            <p>ভিডিও লেকচার, প্র্যাকটিস শিট, লাইভ ক্লাস এবং সম্পূর্ণ গাইডলাইন— সব কিছু এক জায়গায়, তোমার সাফল্যের জন্য।</p>
+            <p>ভিডিও লেকচার, প্র্যাকটিস শিট ও লাইভ ক্লাস — সব এক জায়গায়।</p>
           </div>
         </div>
         <!-- কার্ড ৩ — স্বপ্নের কাছেই (কমলা) -->
@@ -1782,7 +1782,2641 @@ footer{
           </div>
           <div class="why-text">
             <h3>স্বপ্নের কাছেই</h3>
-            <p>পড়ে যাবে প্রয়োজনের চেয়েও বেশি কোর্স ম্যাটেরিয়াল এবং সাজেশন, লক্ষ্যে পৌঁছানো হবে আরও সহজ।</p>
+            <p>প্রয়োজনের চেয়ে বেশি কোর্স ম্যাটেরিয়াল ও সাজেশন থাকবে হাতের কাছে।</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       ফ্রি ভিডিও লেকচার সেকশন
+       প্রতিটা ভিডিও কার্ডে data-yid অ্যাট্রিবিউটে ইউটিউব ভিডিওর ১১-ডিজিটের আইডি বসাতে হয়
+       (যেমন youtube.com/watch?v=এইটুকু অংশ) — ক্লিক করলে অটো প্লে হয়ে যাবে
+       ============================================================ -->
+  <section id="videos">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">ফ্রি ভিডিও লেকচার</span>
+        <p>নিচে থেকে বিভাগ বেছে নিয়ে দেখে নিন সেই বিভাগের ফ্রি ভিডিও লেকচারগুলো।</p>
+      </div>
+
+      <!-- ভিডিও বিভাগ ট্যাব — Google Sheet-এর "Free Class" tab থেকে automatically তৈরি হবে -->
+      <div class="pill-row" id="videoPillRow">
+        <div class="video-data-loading">ভিডিও বিভাগ লোড হচ্ছে...</div>
+      </div>
+
+      <div class="video-grid" id="videoGrid">
+        <div class="video-data-loading">ফ্রি ক্লাসের ভিডিও লোড হচ্ছে...</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       শিক্ষকবৃন্দ সেকশন — ৪ জন শিক্ষক
+       ============================================================ -->
+  <section id="teachers">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">আমাদের টিম</span>
+        <p>যারা প্রতিদিন ক্লাসে থেকে আপনার প্রস্তুতিকে এগিয়ে নেবেন।</p>
+      </div>
+      <div class="teacher-grid" id="teacherGrid" aria-live="polite">
+        <div class="teacher-data-state">শিক্ষকবৃন্দের তথ্য লোড হচ্ছে...</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       গ্যালারি সেকশন — অটো-স্ক্রলিং ইমেজ মার্কি (Drive link → auto image)
+       ============================================================ -->
+  <section id="gallery">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">গ্যালারি</span>
+      </div>
+    </div>
+    <div class="gallery-marquee-wrap" id="galleryWrap">
+      <div class="gallery-track" id="galleryTrack">
+        <div class="teacher-data-state">গ্যালারি লোড হচ্ছে...</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       শিক্ষার্থীদের মন্তব্য — একই "gallery" টেবিল থেকে লোড হয় (student_name,
+       short_text, long_text কলাম থেকে)। ম্যানুয়াল হরাইজন্টাল স্ক্রল — অটো-স্ক্রল নেই।
+       ============================================================ -->
+  <section id="student-comments">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">শিক্ষার্থীদের মতামত</span>
+      </div>
+      <div class="comment-scroll-wrap" id="commentScrollWrap">
+        <div class="comment-track" id="commentTrack">
+          <div class="comment-data-state">মন্তব্য লোড হচ্ছে...</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- "আমাদের মেসেজ পাঠান" ফর্ম সেকশন সম্পূর্ণ সরিয়ে দেওয়া হয়েছে -->
+
+  <!-- ============================================================
+       সরাসরি কল করুন (CTA ব্যান্ড) সেকশন
+       ফোন নম্বর ২ জায়গায় আছে: বাটনে দেখানো নম্বর (ctaPhoneNumber এর জায়গা) ও
+       tel: লিংকের আসল ডায়াল নম্বর (দেশের কোডসহ) — দুটোই বদলাতে ভুলবেন না
+       ============================================================ -->
+  <section>
+    <div class="cta-band">
+      <div class="cta-left">
+        <span class="eyebrow">সরাসরি যোগাযোগ</span>
+        <p>কোর্স, ক্লাস, পড়াশোনা, প্রোমো কোড অথবা যেকোনো বিষয়ে জানতে হলে এখনই কল করো।</p>
+      </div>
+      <div class="cta-divider"></div>
+      <div class="cta-right">
+        <a href="tel:+8801764859503" class="cta-phone">
+          <div class="call-badge">
+            <span class="ring"></span>
+            <span class="ring ring2"></span>
+            <span class="pulse"></span>
+            <span class="core">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </span>
+          </div>
+          <span class="tap-label">কল করতে ট্যাপ করুন</span>
+          <span class="num">01764-859503</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================================================
+     ফুটার / যোগাযোগ (পেজের একদম নিচের অংশ)
+     ============================================================ -->
+<footer id="contact">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4 style="font-family:'Baloo Da 2', sans-serif; font-weight:800; font-size:22px; color:var(--ink); margin-bottom:6px;">VISION Academics</h4>
+        <p>মানসম্পন্ন শিক্ষা, সবার নাগালে।</p>
+        <!-- সোশ্যাল মিডিয়া আইকন — Facebook, YouTube, Instagram -->
+        <div class="social-row">
+          <a href="https://www.facebook.com/BBAcoaching" title="Facebook">f</a>
+          <a href="https://www.youtube.com/@bbavisioncoaching" title="YouTube">▶</a>
+          <a href="#" title="Instagram">in</a>
+        </div>
+      </div>
+      <div>
+        <h4>যোগাযোগ</h4>
+        <p>📞 01764-859503</p>
+        <p>✉️ bbavission@gmail.com</p>
+        <p>📍 ১১২, দায়রা শরীফ আবাসিক এলাকা, (গেট-২) আজিমপুর</p>
+      </div>
+      <div>
+        <h4>শর্টকাট</h4>
+        <a href="#courses">কোর্সসমূহ</a>
+        <a href="#teachers">শিক্ষকবৃন্দ</a>
+        <a href="#why">কেন আমরা</a>
+      </div>
+    </div>
+    <p class="copyright">© ২০২৬ VISION Academics — সর্বস্বত্ব সংরক্ষিত।</p>
+  </div>
+</footer>
+
+<script>
+/* =========================================================================================
+   এখানে UI interaction + course-data loader রাখা হয়েছে।
+   আগে Course data সরাসরি Google Sheet থেকে (gviz) আসত, এখন Cloudflare
+   Worker + D1 (VISION_API) থেকে JSON action কল দিয়ে আসে।
+   ========================================================================================= */
+const VISION_API = "https://late-forest-4748.dreamsicreation.workers.dev";
+
+// Sheet থেকে আসা টেক্সট তুলনা/মিলানোর (matching) জন্য normalize করার হেল্পার।
+// শিটে ভুলবশত extra space বা capital/small letter ভিন্ন হলেও যেন মিল খুঁজে পায়,
+// সেজন্য শুধু তুলনার সময় এটা ব্যবহার হয় — আসল টেক্সট/casing যেমন শিটে আছে তেমনই display হয়, বদলায় না।
+// সব matching-এই এখন loose normalize ব্যবহার হয় — case, extra space, এবং যেকোনো
+// punctuation (dot, comma, hyphen ইত্যাদি) বাদ দিয়ে শুধু মূল শব্দ দিয়ে তুলনা করে।
+const normalizeForMatch = v => String(v ?? '').trim().toLowerCase().replace(/[^a-z0-9\u0980-\u09ff]+/g, ' ').replace(/\s+/g, ' ').trim();
+
+// মোবাইল নেভবার মেনু খোলা/বন্ধ করা
+document.getElementById('burgerBtn').addEventListener('click', () => {
+  document.getElementById('navLinks').classList.toggle('open');
+});
+document.querySelectorAll('#navLinks a').forEach(link => {
+  link.addEventListener('click', () => {
+    document.getElementById('navLinks').classList.remove('open');
+  });
+});
+
+// হিরো স্ট্যাটস — কার্ডগুলো একটার পর একটা (stagger) fade+slide-up হয়ে দেখা দেবে,
+// এবং সংখ্যাগুলো ০ থেকে গুনতে গুনতে উঠবে (একবার স্ক্রিনে দেখা গেলে)
+(function(){
+  document.querySelectorAll('#hero-stats .stat-card').forEach((card, i) => {
+    setTimeout(() => card.classList.add('visible'), 80 + i * 140);
+  });
+
+  const bnDigits = '০১২৩৪৫৬৭৮৯';
+  const enDigits = '0123456789';
+  const bn2en = s => s.replace(/[০-৯]/g, d => enDigits[bnDigits.indexOf(d)]);
+  const en2bn = n => String(n).replace(/[0-9]/g, d => bnDigits[enDigits.indexOf(d)]);
+
+  const numberEls = document.querySelectorAll('.stat-number');
+
+  function animateCount(el){
+    const finalText = el.getAttribute('data-final');
+    const suffix = finalText.replace(/[০-৯]/g, '');
+    const target = parseInt(bn2en(finalText.replace(/[^০-৯]/g, '')), 10);
+    const duration = 2400;
+    const start = performance.now();
+
+    function tick(now){
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = Math.round(target * eased);
+      el.textContent = en2bn(current) + suffix;
+      if(progress < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  const statsBox = document.getElementById('hero-stats');
+  if(statsBox && numberEls.length){
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          numberEls.forEach(animateCount);
+          observer.disconnect();
+        }
+      });
+    }, { threshold: 0.3 });
+    observer.observe(statsBox);
+  }
+})();
+
+// পিনবোর্ড ছবি — অটো-স্ক্রল ক্যারোসেল (৩ সেকেন্ড পরপর, ইনফিনিট লুপ)
+(function(){
+  const track = document.getElementById('pinTrack');
+  const totalReal = track.children.length - 1; // শেষেরটা ক্লোন, তাই ১ বাদ
+  let pinIndex = 0;
+  const TRANSITION_MS = 700;
+
+  function goNext(){
+    pinIndex++;
+    track.style.transition = `transform ${TRANSITION_MS}ms ease`;
+    track.style.transform = `translateX(-${pinIndex * 100}%)`;
+
+    if(pinIndex === totalReal){
+      // শেষ (ক্লোন করা) স্লাইডে পৌঁছে গেলে, ট্রানজিশন শেষ হবার পর নিঃশব্দে শুরুতে ফিরিয়ে আনা হয়
+      setTimeout(() => {
+        track.style.transition = 'none';
+        pinIndex = 0;
+        track.style.transform = `translateX(0%)`;
+      }, TRANSITION_MS);
+    }
+  }
+
+  if(totalReal > 1){
+    setInterval(goNext, 3000);
+  }
+})();
+
+// ============================================================
+// Google Sheet → Dynamic Teachers
+// Teachers tab columns: A Name, B Photo URL, C Subject, D Designation
+// ============================================================
+(function(){
+  // আগে সরাসরি gviz দিয়ে "Teachers" Tab পড়া হতো, এখন Cloudflare Worker
+  // (D1-এর "teachers" টেবিল) থেকে action=get_teachers দিয়ে আসে।
+  const teacherGrid = document.getElementById('teacherGrid');
+  if(!teacherGrid) return;
+
+  const clean = v => String(v ?? '').trim();
+  const esc = v => clean(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  function imageUrl(v){
+    const x=clean(v);
+    const f=x.match(/drive\.google\.com\/file\/d\/([^/]+)/i);
+    const i=x.match(/[?&]id=([^&]+)/i);
+    if(f) return `https://drive.google.com/thumbnail?id=${f[1]}&sz=w1000`;
+    if(x.includes('drive.google.com')&&i) return `https://drive.google.com/thumbnail?id=${i[1]}&sz=w1000`;
+    return x;
+  }
+  async function loadTeachers(){
+    teacherGrid.innerHTML='<div class="teacher-data-state">শিক্ষকবৃন্দের তথ্য লোড হচ্ছে...</div>';
+    try{
+      const r=await fetch(VISION_API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'get_teachers'}),cache:'no-store'});
+      if(!r.ok) throw Error(`Teachers: HTTP ${r.status}`);
+      const j=await r.json();
+      if(j.status==='error') throw Error(j.message||'Teachers API error');
+      const teachers=(j.data||[]).map(row=>{
+        const name=clean(row.name);
+        if(!name) return null;
+        return {name, photo:imageUrl(row.photo), subject:clean(row.subject)};
+      }).filter(Boolean);
+
+      if(!teachers.length){
+        teacherGrid.innerHTML='<div class="teacher-data-state">এখনো কোনো শিক্ষক তথ্য পাওয়া যায়নি।</div>';
+        return;
+      }
+
+      teacherGrid.innerHTML=teachers.map(t=>`
+        <div class="teacher-card">
+          <img class="teacher-photo" src="${esc(t.photo)}" alt="${esc(t.name)}" loading="lazy">
+          <div class="teacher-info">
+            <div class="name">${esc(t.name)}</div>
+            <div class="subject">${esc(t.subject)}</div>
+          </div>
+          <svg class="teacher-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+        </div>
+      `).join('');
+    }catch(e){
+      console.error(e);
+      teacherGrid.innerHTML='<div class="teacher-data-state">শিক্ষকদের তথ্য লোড করা যায়নি। ইন্টারনেট কানেকশন চেক করুন।</div>';
+    }
+  }
+  loadTeachers();
+})();
+
+// ============================================================
+// গ্যালারি + শিক্ষার্থীদের মন্তব্য — দুটোই D1 "gallery" টেবিল থেকে আসে (একই action:
+// get_gallery), শুধু ছবি অটো-স্ক্রলিং মার্কিতে যায় আর কমেন্টগুলো ম্যানুয়াল স্ক্রল কার্ডে যায়।
+// ============================================================
+(function(){
+  const galleryWrap = document.getElementById('galleryWrap');
+  const galleryTrack = document.getElementById('galleryTrack');
+  const commentTrack = document.getElementById('commentTrack');
+  const commentSection = document.getElementById('student-comments');
+  if(!galleryTrack && !commentTrack) return;
+
+  const esc = v => String(v ?? '').trim().replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const userIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>';
+
+  function renderGalleryImages(images){
+    if(!galleryTrack || !galleryWrap) return;
+    if(!images.length){
+      galleryWrap.style.display = 'none';
+      return;
+    }
+    // seamless loop: ছবির লিস্টটা ২ বার বসিয়ে ৫০% পর্যন্ত scroll করে আবার শুরুতে ফিরে যায়
+    const imagesHtml = images.map(url => `<img src="${esc(url)}" alt="Gallery" loading="lazy">`).join('');
+    galleryTrack.innerHTML = imagesHtml + imagesHtml;
+
+    // যত বেশি ছবি, তত বেশি সময় লাগবে এক চক্র শেষ করতে — যাতে স্পিড সবসময় একরকম আস্তে থাকে
+    const duration = Math.max(24, images.length * 5);
+    galleryTrack.style.animationDuration = duration + 's';
+  }
+
+  function renderComments(comments){
+    if(!commentTrack || !commentSection) return;
+    if(!comments.length){
+      commentSection.style.display = 'none';
+      return;
+    }
+    commentTrack.innerHTML = comments.map(c => `
+      <div class="comment-card">
+        <span class="comment-icon">${userIcon}</span>
+        <div class="comment-name">${esc(c.name)}</div>
+        ${c.shortText ? `<div class="comment-short">${esc(c.shortText)}</div>` : ''}
+        ${c.longText ? `<div class="comment-text">${esc(c.longText)}</div>` : ''}
+      </div>
+    `).join('');
+  }
+
+  async function loadGallery(){
+    try{
+      const r = await fetch(VISION_API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'get_gallery'}),cache:'no-store'});
+      if(!r.ok) throw Error(`Gallery: HTTP ${r.status}`);
+      const j = await r.json();
+      if(j.status === 'error') throw Error(j.message || 'Gallery API error');
+
+      // ব্যাকওয়ার্ড-কম্প্যাটিবিলিটি: পুরনো response শুধু array of urls হতে পারে,
+      // নতুন response { images: [...], comments: [...] } — দুটোই সামলানো হয়েছে
+      const data = j.data;
+      const images = Array.isArray(data) ? data.filter(Boolean) : (Array.isArray(data?.images) ? data.images.filter(Boolean) : []);
+      const comments = Array.isArray(data?.comments) ? data.comments.filter(c => c && c.name) : [];
+
+      renderGalleryImages(images);
+      renderComments(comments);
+    }catch(e){
+      console.error('Gallery load failed:', e);
+      if(galleryWrap) galleryWrap.style.display = 'none';
+      if(commentSection) commentSection.style.display = 'none';
+    }
+  }
+  loadGallery();
+})();
+
+// ============================================================
+// সব জায়গায় ব্যবহারের জন্য common toast function (নিচে মাঝখানে ভেসে ওঠে)
+// ============================================================
+let vaToastTimer = null;
+function vaShowToast(message){
+  let toast = document.getElementById('vaToast');
+  if(!toast){
+    toast = document.createElement('div');
+    toast.id = 'vaToast';
+    toast.className = 'va-toast';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = message;
+  toast.classList.add('show');
+  clearTimeout(vaToastTimer);
+  vaToastTimer = setTimeout(()=>toast.classList.remove('show'), 3200);
+}
+
+// ============================================================
+// Google Sheet → Dynamic Courses
+// ============================================================
+(function(){
+  // আগে প্রতিটা লেভেলের (SSC/HSC/BBA...) জন্য আলাদা Tab ছিল। এখন সব লেভেলের কোর্স
+  // একটাই "course_name" টেবিলে থাকে, প্রথম কলাম (Level) দিয়ে আলাদা করা হয়। SHEET_TABS
+  // তালিকাটা শুধু category card-এর ধারাবাহিক ক্রম আর "কোনো কোর্স নেই" চেকের জন্য রাখা হলো।
+  const SHEET_TABS = ['SSC','HSC','BBA','MBA','BBS','BBA Professional'];
+  const catGrid=document.getElementById('catGrid'), courseGrid=document.getElementById('courseGrid'), toolbar=document.getElementById('courseDataToolbar'), resultCount=document.getElementById('courseResultCount'), errorBox=document.getElementById('courseDataError'), retryBtn=document.getElementById('courseRetryBtn');
+  const CATEGORY_META={
+    'SSC':{color:'#2F6FE4',bg:'#EAF1FE',icon:'<path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12.5V17c0 1.5 2.5 3 6 3s6-1.5 6-3v-4.5"/><path d="M22 10v6"/>'},
+    'HSC':{color:'#2FA86C',bg:'#E9F8EF',icon:'<path d="M3 21h18"/><path d="M5 21V9l7-5 7 5v12"/><path d="M9 21v-6h6v6"/><path d="M9 9h.01"/><path d="M15 9h.01"/>'},
+    'BBA':{color:'#C9337A',bg:'#FBEAF3',icon:'<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>'},
+    'MBA':{color:'#7B4FE0',bg:'#F1ECFC',icon:'<path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12.5V17c0 1.5 2.5 3 6 3s6-1.5 6-3v-4.5"/><path d="M22 10v6"/>'},
+    'BBS':{color:'#DD7A1F',bg:'#FDF1E4',icon:'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/>'},
+    'BBA Professional':{color:'#E0466B',bg:'#FCEAF0',icon:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>'}
+  };
+  let allCourses=[],activeCategory=null;
+  const bn='০১২৩৪৫৬৭৮৯',en='0123456789';
+  const toBn=v=>String(v??'').replace(/[0-9]/g,d=>bn[en.indexOf(d)]);
+  const clean=v=>String(v??'').trim();
+  const esc=v=>clean(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  function imageUrl(v){const x=clean(v),f=x.match(/drive\.google\.com\/file\/d\/([^/]+)/i),i=x.match(/[?&]id=([^&]+)/i);if(f)return `https://drive.google.com/thumbnail?id=${f[1]}&sz=w1000`;if(x.includes('drive.google.com')&&i)return `https://drive.google.com/thumbnail?id=${i[1]}&sz=w1000`;return x}
+  function slugify(v){return clean(v).toLowerCase().replace(/&/g,' and ').replace(/[^a-z0-9\u0980-\u09ff]+/g,'-').replace(/^-+|-+$/g,'')||'course'}
+  function uniqueSlug(name,cat,used){const base=slugify(name),cp=slugify(cat);let slug=base;if(used.has(slug))slug=`${cp}-${base}`;let n=2;while(used.has(slug))slug=`${cp}-${base}-${n++}`;used.add(slug);return slug}
+  function features(v){return clean(v).split(/[,،]/).map(clean).filter(Boolean)}
+  function price(v){const x=clean(v);if(!x)return '';return /[৳$€£]/.test(x)?toBn(x):`৳${toBn(x)}`}
+  // localStorage-এ ক্যাশ করা student data (student-login.html থেকে লগইন করলে সেট হয়) থেকে
+  // enrolled কোর্সের নামগুলো বের করা হয় — কেউ লগইন না করে থাকলে খালি Set রিটার্ন হবে,
+  // তখন কোর্স কার্ড আগের মতোই স্বাভাবিক দেখাবে।
+  function getEnrolledCourseNames(){
+    try{
+      const raw = localStorage.getItem('va_user');
+      if(!raw) return new Set();
+      const user = JSON.parse(raw);
+      const courses = Array.isArray(user?.courses) ? user.courses : [];
+      return new Set(courses.map(c=>`${normalizeForMatch(c?.name)}::${normalizeForMatch(c?.nuDcu)}`).filter(Boolean));
+    }catch(e){ return new Set(); }
+  }
+  const enrolledCourseNames = getEnrolledCourseNames();
+  async function fetchAllCourseRows(){
+    const r=await fetch(VISION_API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'get_courses'}),cache:'no-store'});
+    if(!r.ok)throw Error(`Course Name: HTTP ${r.status}`);
+    const j=await r.json();
+    if(j.status==='error') throw Error(j.message||'Course Name API error');
+    return (j.data||[]).map(row=>{
+      const level=clean(row.level), name=clean(row.name);
+      if(!level||!name) return null;
+      return {
+        name,
+        tag:clean(row.tag),
+        image:imageUrl(row.image),
+        shortDescription:clean(row.shortDescription),
+        longDescription:clean(row.longDescription),
+        price:price(row.price),
+        oldPrice:price(row.oldPrice),
+        priceNote:clean(row.priceNote),
+        features:features(row.featureText),
+        category:level,
+        slug:'',
+        // D1 top_this is treated as a strict publish flag.
+        // Accept yes / true / 1 regardless of capitalization or surrounding spaces.
+        topThis: ['yes','true','1'].includes(String(row.topThis ?? '').trim().toLowerCase()) || row.topThis === true
+      };
+    }).filter(Boolean);
+  }
+  function categoryHtml(cat,count){const m=CATEGORY_META[cat]||{color:'#5B8FBF',bg:'#EEF4F8',icon:'<circle cx="12" cy="12" r="8"/>'};return `<a href="All_Courses.html?level=${encodeURIComponent(cat)}" class="cat-card" data-cat="${esc(cat)}" style="--cat-color:${m.color}"><span class="cat-icon" style="background:${m.bg}"><svg viewBox="0 0 24 24" fill="none" stroke="${m.color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${m.icon}</svg></span><span class="cat-text"><b>${esc(cat)}</b><span>${toBn(count)}টি কোর্স</span></span></a>`}
+  // tag ঘরে "Subject Wise" বা "Improvement" লেখা থাকলে এই কার্ড normal course-details.html
+  // এ না গিয়ে per-subject.html এ যাবে (সেখানে single-subject কোর্সগুলো লেভেল/ডিপার্টমেন্ট/ইয়ার
+  // অনুযায়ী ফিল্টার করে দেখানো হয়), এবং course_data availability-check এড়িয়ে সরাসরি লিংক হবে।
+  function isSubjectWiseTag(tag){const t=normalizeForMatch(tag);return t.includes('subject wise')||t.includes('improvement')}
+  // এই কার্ডটি কোনো ডেটা থেকে আসে না — সবসময় প্রথম কার্ড হিসেবে দেখানো হয় এবং
+  // "বিস্তারিত" বাটনে ক্লিক করলে সরাসরি per-subject.html-এ নিয়ে যায়।
+  function staticSubjectWiseCardHtml(){
+    // ============================================================
+    // ⭐ "বিষয়ভিত্তিক কোর্স (Subject Wise)" কার্ডের ছবি এখানে বদলাতে হবে ⭐
+    // ------------------------------------------------------------
+    // এই ছবিটা এখন কোনো আলাদা ফাইল না — একটা কোড দিয়ে বানানো (SVG) বেগুনি-নীল
+    // গ্রেডিয়েন্ট ছবি (দুইটা বই আইকনসহ), সরাসরি নিচের লাইনেই বসানো আছে।
+    //
+    // ➤ নিজের একটা ছবি (jpg/png/Google Drive লিংক ইত্যাদি) দিতে চাইলে, নিচের
+    //   পুরো লাইনটা (const img = ...;) মুছে ফেলে এর বদলে এভাবে লিখুন:
+    //
+    //   const img = 'https://your-image-link-here.jpg';
+    //
+    //   (Google Drive-এর ছবি হলে driveImageUrl() ফাংশনের মতো
+    //    https://drive.google.com/thumbnail?id=FILE_ID&sz=w1000 ফরম্যাটে দিন)
+    // ============================================================
+    const img='data:image/svg+xml;utf8,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="400" height="250" viewBox="0 0 400 250"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7B4FE0"/><stop offset="1" stop-color="#2F6FE4"/></linearGradient></defs><rect width="400" height="250" fill="url(#g)"/><g fill="#ffffff" opacity="0.95"><path d="M118 78h58a10 10 0 0 1 10 10v92a8 8 0 0 0-8-8h-60a8 8 0 0 0-8 8V88a10 10 0 0 1 8-10z"/><path d="M282 78h-58a10 10 0 0 0-10 10v92a8 8 0 0 1 8-8h60a8 8 0 0 1 8 8V88a10 10 0 0 0-8-10z"/></g></svg>');
+    // ============================================================
+    // ⬆️ ছবি বদলানোর কোড এখানেই শেষ — নিচের অংশে হাত দেওয়ার দরকার নেই ⬆️
+    // ============================================================
+    return `<article class="course-card" data-category="Subject Wise" data-course-slug="subject-wise-static">
+      <img class="course-image" src="${img}" alt="বিষয়ভিত্তিক কোর্স" loading="lazy">
+      <div class="course-top"><span class="eyebrow" style="color:#7B4FE0">বিষয়ভিত্তিক</span><span class="course-tag">Subject Wise</span></div>
+      <div class="course-body">
+        <h3>বিষয়ভিত্তিক কোর্স (Subject Wise)</h3>
+        <p>একটি নির্দিষ্ট বিষয় বেছে নিয়ে আলাদাভাবে ভর্তি হতে চাইলে এখান থেকে দেখুন।</p>
+        <div class="course-foot">
+          <div class="price"></div>
+          <a href="per-subject.html" class="btn btn-primary">বিস্তারিত</a>
+        </div>
+      </div>
+    </article>`;
+  }
+  function cardHtml(c){const m=CATEGORY_META[c.category]||{color:'#5B8FBF'};const cSector=(normalizeForMatch(c.category)==='bba' && ['nu','dcu'].includes(normalizeForMatch(c.tag))) ? normalizeForMatch(c.tag) : '';const isEnrolled=enrolledCourseNames.has(`${normalizeForMatch(c.name)}::${cSector}`);let actionHtml;if(isEnrolled){actionHtml=`<a href="student-login.html" class="btn btn-primary course-enrolled-trigger">ভর্তি হয়েছেন ✓</a>`}else if(isSubjectWiseTag(c.tag)){actionHtml=`<a href="per-subject.html" class="btn btn-primary">বিস্তারিত</a>`}else{actionHtml=`<a href="course-details.html?course=${encodeURIComponent(c.slug)}" data-course-name="${esc(c.name)}" class="btn btn-primary course-details-trigger">বিস্তারিত</a>`}return `<article class="course-card" data-category="${esc(c.category)}" data-course-slug="${esc(c.slug)}"><img class="course-image" src="${esc(c.image)}" alt="${esc(c.name)}" loading="lazy"><div class="course-top"><span class="eyebrow" style="color:${m.color}">${esc(c.category)}</span>${c.tag?`<span class="course-tag">${esc(c.tag)}</span>`:''}</div><div class="course-body"><h3>${esc(c.name)}</h3><p>${esc(c.shortDescription)}</p><div class="course-foot"><div class="price"><div class="price-row">${c.price?`<span class="price-now">${esc(c.price)}</span>`:''}${c.oldPrice?`<span class="price-old">${esc(c.oldPrice)}</span>`:''}</div>${c.priceNote?`<small>${esc(c.priceNote)}</small>`:''}</div>${actionHtml}</div></div></article>`}
+  // ক্যাটাগরি অনুযায়ী কোর্স গোনার সময় sheet-এর "level" কলামে extra space/capital-small
+  // ভিন্ন হলেও যেন SHEET_TABS-এর সঠিক ক্যাটাগরির সাথে মিলে যায় (canonical নামেই count জমা হয়,
+  // display-এ SHEET_TABS-এর আসল বানানই দেখানো হয়, sheet-এর raw ভ্যালু বদলায় না)।
+  function renderCategories(){const counts={};allCourses.forEach(c=>{const tab=SHEET_TABS.find(t=>normalizeForMatch(t)===normalizeForMatch(c.category));const key=tab||c.category;counts[key]=(counts[key]||0)+1});catGrid.innerHTML=SHEET_TABS.map(t=>categoryHtml(t,counts[t]||0)).join('')}
+  function renderCourses(cat=null){
+    activeCategory=cat;
+    const list=cat
+      ? allCourses.filter(c=>normalizeForMatch(c.category)===normalizeForMatch(cat))
+      : allCourses;
+
+    // Normal mode: show the static Subject Wise card + all course cards.
+    courseGrid.innerHTML=staticSubjectWiseCardHtml()+(
+      list.length
+        ? list.map(cardHtml).join('')
+        : '<div class="course-empty"><strong>এই বিভাগে এখন কোনো কোর্স নেই।</strong><br>নতুন কোর্স যোগ করা হলে এখানে automatically দেখা যাবে।</div>'
+    );
+
+    catGrid.style.display='';
+    toolbar.hidden=!allCourses.length;
+    catGrid.querySelectorAll('.cat-card').forEach(x=>x.classList.toggle('active',x.dataset.cat===cat));
+
+    const n=list.length;
+    resultCount.textContent=cat?`${cat}: ${toBn(n)}টি কোর্স`:`মোট ${toBn(n)}টি কোর্স`;
+  }
+  function catSkelHtml(){return `<div class="cat-card-skel"><span class="skel-icon"></span><span class="skel-lines"><span class="skel-line big"></span><span class="skel-line small"></span></span></div>`}
+  function courseSkelHtml(){return `<div class="course-card-skel"><span class="skel-img"></span><span class="skel-top"><span class="skel-pill"></span></span><span class="skel-body"><span class="skel-line title"></span><span class="skel-line desc1"></span><span class="skel-line desc2"></span><span class="skel-foot"><span class="skel-price"></span><span class="skel-btn"></span></span></span></div>`}
+  // ============================================================
+  // TOP THIS MODE
+  // ------------------------------------------------------------
+  // course_name.top_this = yes হলে ONLY top_this=yes course(s) show হবে.
+  // Category cards, section heading, toolbar এবং static Subject Wise card
+  // কিছুই render হবে না।
+  //
+  // একাধিক course-এ yes থাকলে সবগুলো show হবে।
+  // ============================================================
+  const coursesSection=document.getElementById('courses');
+  const coursesSectionHead=coursesSection ? coursesSection.querySelector('.section-head') : null;
+
+  function setTopThisMode(enabled){
+    // Category cards and their counts stay visible in both modes.
+    // top_this controls only the course cards shown below.
+    if(coursesSectionHead) coursesSectionHead.style.display='';
+    catGrid.style.display='';
+    if(enabled){
+      toolbar.hidden=true;
+      resultCount.textContent='';
+    }
+  }
+
+  function renderTopThisOnly(topCourses){
+    setTopThisMode(true);
+
+    // Counts are calculated from ALL courses, not only top_this courses.
+    renderCategories();
+
+    // Do not call renderCourses() here because that adds the static Subject Wise card.
+    // In top_this mode ONLY top_this=yes course(s) are shown.
+    courseGrid.innerHTML=topCourses.length
+      ? topCourses.map(cardHtml).join('')
+      : '';
+  }
+
+  async function loadCourses(){
+    errorBox.hidden=true;
+    courseGrid.innerHTML=Array(3).fill(courseSkelHtml()).join('');
+    catGrid.innerHTML=Array(6).fill(catSkelHtml()).join('');
+
+    try{
+      const used=new Set();
+      allCourses=await fetchAllCourseRows();
+      allCourses.forEach(c=>c.slug=uniqueSlug(c.name,c.category,used));
+
+      // Read ONLY courses explicitly marked top_this=yes/true/1.
+      const topCourses=allCourses.filter(c=>c.topThis===true);
+
+      if(topCourses.length){
+        renderTopThisOnly(topCourses);
+        return;
+      }
+
+      // No top_this course -> restore the normal page.
+      setTopThisMode(false);
+      renderCategories();
+      renderCourses(null);
+
+    }catch(e){
+      console.error('Course load failed:',e);
+      setTopThisMode(false);
+      catGrid.innerHTML='<div class="course-empty">ক্যাটাগরি লোড করা যায়নি।</div>';
+      courseGrid.innerHTML='';
+      toolbar.hidden=true;
+      errorBox.hidden=false;
+    }
+  }
+
+  retryBtn.addEventListener('click',loadCourses);
+  loadCourses();
+})();
+
+// ============================================================
+// "বিস্তারিত" বাটনে ক্লিক করলে সরাসরি course-details.html-এ না পাঠিয়ে
+// আগে Course Data Tab-এ (gviz দিয়ে, একবারই fetch করে cache করা হয়) চেক করে
+// ঐ কোর্সের নামে কোনো class data row আছে কিনা। data না থাকলে course-details.html-এ
+// না গিয়ে সাথে সাথে একটা toast মেসেজ দেখায় যে কোর্সটি এখনো available না।
+// ============================================================
+(function(){
+  const clean = v => String(v ?? '').trim();
+  const availabilityCache = new Map();
+  let courseDataRowsPromise = null;
+
+  // পুরো "course_data" টেবিল একবারই fetch করে cache রাখা হয় (প্রতিটা কোর্সের জন্য
+  // আলাদা করে fetch করার দরকার নেই, কারণ এখন সব কোর্সের class data একই টেবিলে)।
+  function loadCourseDataRows(){
+    if(!courseDataRowsPromise){
+      courseDataRowsPromise = (async ()=>{
+        const controller = new AbortController();
+        const timeout = setTimeout(()=>controller.abort(), 15000);
+        try{
+          const r = await fetch(VISION_API, {
+            method:'POST',
+            headers:{'Content-Type':'text/plain;charset=utf-8'},
+            body: JSON.stringify({ action:'get_course_data' }),
+            cache:'no-store',
+            signal:controller.signal
+          });
+          if(!r.ok) throw Error(`Course Data: HTTP ${r.status}`);
+          const json = await r.json();
+          if(json.status === 'error') throw Error(json.message || 'Course Data API returned an error.');
+          return (json.data || []).map(row => ({ courseName: clean(row.courseName) }));
+        } finally {
+          clearTimeout(timeout);
+        }
+      })().catch(err=>{ courseDataRowsPromise = null; throw err; });
+    }
+    return courseDataRowsPromise;
+  }
+
+  async function courseHasClassData(courseName){
+    if(availabilityCache.has(courseName)) return availabilityCache.get(courseName);
+    let available = false;
+    try{
+      const rows = await loadCourseDataRows();
+      available = rows.some(r => normalizeForMatch(r.courseName) === normalizeForMatch(courseName));
+    }catch(e){
+      console.error('Class availability check failed:', e);
+    }
+    availabilityCache.set(courseName, available);
+    return available;
+  }
+
+  document.addEventListener('click', function(e){
+    const link = e.target.closest('.course-details-trigger');
+    if(!link) return;
+    e.preventDefault();
+    if(link.dataset.checking === '1') return;
+
+    const courseName = link.dataset.courseName || '';
+    const href = link.getAttribute('href');
+    // আসল টেক্সট data attribute-এ সেভ রাখা হচ্ছে, যাতে bfcache
+    // থেকে restore হলেও (pageshow handler-এ) সেটা পড়ে রিসেট করা যায়।
+    if(!link.dataset.originalText) link.dataset.originalText = link.textContent;
+    link.dataset.checking = '1';
+    link.style.opacity = '.6';
+    link.textContent = 'যাচাই হচ্ছে...';
+
+    courseHasClassData(courseName).then(available=>{
+      if(available){
+        window.location.href = href;
+        return;
+      }
+      vaShowToast('😕 এই কোর্সটি এখনো available না — ক্লাস উপাদান শীঘ্রই যোগ করা হবে।');
+      link.textContent = link.dataset.originalText || link.textContent;
+      link.style.opacity = '';
+      delete link.dataset.checking;
+    });
+  });
+
+  // মোবাইল ব্রাউজারে course-details পেজ থেকে "Back" চাপলে অনেক সময়
+  // bfcache (back-forward cache) থেকে এই পেজটা ঠিক আগের DOM state সহ
+  // ফিরে আসে — অর্থাৎ বাটন তখনও "যাচাই হচ্ছে..." অবস্থায় "আটকে" থাকে
+  // এবং dataset.checking='1' থাকার কারণে আর ক্লিক কাজ করে না।
+  // pageshow ইভেন্টে event.persisted true হলে বুঝি bfcache থেকে
+  // ফিরেছে — তখন সব ট্রিগার বাটনের state জোর করে রিসেট করে দিচ্ছি।
+  window.addEventListener('pageshow', function(e){
+    if(!e.persisted) return;
+    document.querySelectorAll('.course-details-trigger[data-checking="1"]').forEach(function(link){
+      delete link.dataset.checking;
+      link.style.opacity = '';
+      if(link.dataset.originalText) link.textContent = link.dataset.originalText;
+    });
+  });
+})();
+
+// ============================================================
+// Google Sheet → Dynamic Free Classes
+// Free Class tab columns: A Level, B Video Title, C YouTube URL
+// যত data row → তত video card
+// ============================================================
+(function(){
+  // আগে সরাসরি gviz দিয়ে "Free Class" Tab পড়া হতো, এখন Cloudflare Worker
+  // (D1-এর "free_class" টেবিল) থেকে action=get_free_classes দিয়ে আসে।
+  const pillRow = document.getElementById('videoPillRow');
+  const videoGrid = document.getElementById('videoGrid');
+  let videos = [];
+  let activeCategory = '';
+
+  const clean = v => String(v ?? '').trim();
+  const esc = v => clean(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  function youtubeId(url){
+    const x = clean(url);
+    if(!x) return '';
+    const patterns = [
+      /[?&]v=([A-Za-z0-9_-]{11})/i,
+      /youtu\.be\/([A-Za-z0-9_-]{11})/i,
+      /youtube(?:-nocookie)?\.com\/embed\/([A-Za-z0-9_-]{11})/i,
+      /youtube(?:-nocookie)?\.com\/shorts\/([A-Za-z0-9_-]{11})/i,
+      /youtube(?:-nocookie)?\.com\/live\/([A-Za-z0-9_-]{11})/i
+    ];
+    for(const re of patterns){
+      const m = x.match(re);
+      if(m) return m[1];
+    }
+    // যদি সরাসরি 11-character YouTube ID দেওয়া হয়, সেটাও গ্রহণ করবে
+    return /^[A-Za-z0-9_-]{11}$/.test(x) ? x : '';
+  }
+
+  async function fetchVideos(){
+    const r = await fetch(VISION_API, {
+      method:'POST',
+      headers:{'Content-Type':'text/plain;charset=utf-8'},
+      body: JSON.stringify({ action:'get_free_classes' }),
+      cache:'no-store'
+    });
+    if(!r.ok) throw Error(`Free Class: HTTP ${r.status}`);
+    const j = await r.json();
+    if(j.status === 'error') throw Error(j.message || 'Free Class API error');
+    return (j.data || []).map(row => {
+      const category = clean(row.category);
+      const title = clean(row.title);
+      const url = clean(row.url);
+      const id = youtubeId(url);
+      if(!category || !title || !id) return null;
+      return {category, title, url, id};
+    }).filter(Boolean);
+  }
+
+  function renderPills(){
+    // sheet-এ একই category ভিন্ন space/case দিয়ে একাধিকবার থাকলেও যেন duplicate পিল/ট্যাব না হয়,
+    // তাই normalize করে unique category বের করা হয় (প্রথমবার যেভাবে পাওয়া গেছে সেই বানানটাই দেখানো হয়)।
+    const seenCategories = new Map();
+    videos.forEach(v => {
+      const key = normalizeForMatch(v.category);
+      if(key && !seenCategories.has(key)) seenCategories.set(key, v.category);
+    });
+    const categories = [...seenCategories.values()];
+    if(!categories.length){
+      pillRow.innerHTML = '<div class="video-data-state">এখনো কোনো Free Class যোগ করা হয়নি।</div>';
+      return;
+    }
+    if(!activeCategory || !categories.some(c => normalizeForMatch(c) === normalizeForMatch(activeCategory))) activeCategory = categories[0];
+    pillRow.innerHTML = categories.map((cat, i) =>
+      `<button class="pill${normalizeForMatch(cat) === normalizeForMatch(activeCategory) ? ' active' : ''}" data-vcat="${esc(cat)}">${esc(cat)}</button>`
+    ).join('');
+  }
+
+  function cardHtml(v){
+    return `<div class="video-card" data-vcategory="${esc(v.category)}">
+      <div class="video-thumb" data-yid="${esc(v.id)}" role="button" tabindex="0" aria-label="${esc(v.title)} ভিডিও চালান">
+        <img src="https://img.youtube.com/vi/${encodeURIComponent(v.id)}/hqdefault.jpg" alt="${esc(v.title)}" loading="lazy">
+        <div class="video-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="video-title">${esc(v.title)}</div>
+    </div>`;
+  }
+
+  function bindVideoPlayers(){
+    videoGrid.querySelectorAll('.video-thumb').forEach(thumbEl => {
+      const play = () => {
+        const id = thumbEl.dataset.yid;
+        if(!id || thumbEl.querySelector('iframe')) return;
+        thumbEl.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${encodeURIComponent(id)}?autoplay=1&playsinline=1&rel=0" title="video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+      };
+      thumbEl.addEventListener('click', play);
+      thumbEl.addEventListener('keydown', e => {
+        if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); play(); }
+      });
+    });
+  }
+
+  function renderVideos(){
+    const list = videos.filter(v => normalizeForMatch(v.category) === normalizeForMatch(activeCategory));
+    videoGrid.innerHTML = list.length
+      ? list.map(cardHtml).join('')
+      : '<div class="video-data-state">এই বিভাগে এখনো কোনো Free Class নেই।</div>';
+    bindVideoPlayers();
+  }
+
+  pillRow.addEventListener('click', e => {
+    const btn = e.target.closest('.pill');
+    if(!btn) return;
+    activeCategory = btn.dataset.vcat;
+    pillRow.querySelectorAll('.pill').forEach(p => p.classList.toggle('active', p === btn));
+    renderVideos();
+  });
+
+  async function loadFreeClasses(){
+    pillRow.innerHTML = '<div class="video-data-loading">ভিডিও বিভাগ লোড হচ্ছে...</div>';
+    videoGrid.innerHTML = '<div class="video-data-loading">ফ্রি ক্লাসের ভিডিও লোড হচ্ছে...</div>';
+    try{
+      videos = await fetchVideos();
+      renderPills();
+      renderVideos();
+    }catch(e){
+      console.error(e);
+      pillRow.innerHTML = '<div class="video-data-state">ভিডিও বিভাগ লোড করা যায়নি।</div>';
+      videoGrid.innerHTML = '<div class="video-data-state">ইন্টারনেট কানেকশন চেক করুন।</div>';
+    }
+  }
+
+  loadFreeClasses();
+})();
+
+// "আমাদের মেসেজ পাঠান" ফর্ম সেকশন সম্পূর্ণ সরিয়ে দেওয়া হয়েছে — এই JS handler-ও তাই বাদ দেওয়া হলো
+
+// নোট: নেভবারের "লগইন" বাটন সরাসরি student-login.html পেজে নিয়ে যায়।
+// প্রতিটা কোর্স কার্ডের "বিস্তারিত" বাটন সব কোর্সের জন্য একই course-details.html
+// পেজে নিয়ে যায়, শুধু URL এর শেষে ?course=স্লাগ অংশটা আলাদা আলাদা হয়
+// (যেমন ?course=ssc-accounting-batch)। course-details.html পেজে সেই স্লাগ পড়ে
+// সেই অনুযায়ী কোর্সের তথ্য (নাম, বিবরণ, দাম, ফিচার লিস্ট ইত্যাদি) দেখানো হবে।
+</script>
+
+<!-- ===== ফ্লোটিং WhatsApp বাটন (স্থির কোর + ঘোরা রিং/পালস এনিমেশন + লাল নোটিফিকেশন ডট + হোভারে টেক্সট লেবেল) =====
+     নাম্বার বদলাতে চাইলে নিচের href এর "8801764859503" অংশটুকু বদলান
+     (দেশের কোডসহ, শুরুতে + বা ০ থাকবে না) -->
+<a href="https://wa.me/8801764859503" target="_blank" rel="noopener" class="wa-fab" aria-label="WhatsApp এ চ্যাট করুন">
+  <span class="wa-label">এখনই চ্যাট করুন</span>
+  <span class="core">
+    <span class="ring"></span>
+    <span class="ring ring2"></span>
+    <span class="pulse"></span>
+    <span class="badge"></span>
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M20.52 3.449C12.831-3.984.106 1.407.101 11.892c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652a11.85 11.85 0 0 0 5.683 1.448h.005c9.435 0 14.834-11.023 8.512-18.35a11.86 11.86 0 0 0-.015-.017zM12.023 21.674h-.004a9.85 9.85 0 0 1-5.023-1.376l-.36-.214-3.741.981.999-3.648-.235-.374a9.85 9.85 0 0 1-1.51-5.24c.004-5.45 4.436-9.882 9.887-9.882 2.64 0 5.122 1.03 6.988 2.898a9.82 9.82 0 0 1 2.893 6.994c-.003 5.45-4.436 9.861-9.894 9.861z"/></svg>
+  </span>
+</a>
+
+<script>
+(function(){
+  const btn = document.getElementById('navLoginBtn');
+  if (!btn) return;
+
+  try {
+    const loggedIn = !!localStorage.getItem('va_user');
+    const icon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>';
+    btn.innerHTML = icon + '<span>' + (loggedIn ? 'প্রোফাইল' : 'লগইন') + '</span>';
+  } catch(e) {}
+})();
+</script>
+
+</body>
+</html><!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BBA VISION | VISION Plus - HSC, BBA, MBA, BBS Coaching | VISION Academics</title>
+<meta name="description" content="BBA VISION ও VISION Plus - VISION Academics-এর অফিসিয়াল প্লাটফর্ম, বাংলাদেশের সেরা HSC, BBA, MBA, BBS admission coaching। অভিজ্ঞ শিক্ষক, লাইভ ক্লাস, পিডিএফ নোট আর সাপ্তাহিক পরীক্ষা সহ সম্পূর্ণ কোর্স।">
+<meta name="keywords" content="BBA VISION, VISION Plus, HSC, BBA, MBA, BBS, coaching, Best BBA coaching in Bangladesh, Best BBA platform, HSC admission coaching, সেরা বিবিএ প্লাটফর্ম, বিবিএ ভিশন, বিবিএ, এমবিএ, বিবিএস">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.visionacademics.online/">
+
+<!-- Open Graph tags: Facebook/WhatsApp e link share korle preview dekhabe -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="BBA VISION | VISION Plus - HSC, BBA, MBA, BBS Coaching | VISION Academics">
+<meta property="og:description" content="BBA VISION ও VISION Plus - বাংলাদেশের সেরা HSC, BBA, MBA, BBS admission coaching প্লাটফর্ম। লাইভ ক্লাস, নোট, মডেল টেস্ট সহ সম্পূর্ণ কোর্স।">
+<meta property="og:url" content="https://www.visionacademics.online/">
+<meta property="og:image" content="https://www.visionacademics.online/og-image.jpg">
+<meta property="og:locale" content="bn_BD">
+
+<!-- Twitter card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="BBA VISION | VISION Plus - HSC, BBA, MBA, BBS Coaching">
+<meta name="twitter:description" content="বাংলাদেশের সেরা BBA, MBA, BBS admission কোচিং প্লাটফর্ম।">
+<meta name="twitter:image" content="https://www.visionacademics.online/og-image.jpg">
+
+<meta name="google-site-verification" content="izg5ddFmOt6TFiqisARrqQGlld1H6dOl1w42efkPkQ4" />
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+<!-- Structured Data: Google ke bujhay je eta ekta educational institution -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "EducationalOrganization",
+  "name": "VISION Academics",
+  "alternateName": ["BBA VISION", "VISION Plus"],
+  "url": "https://www.visionacademics.online/",
+  "logo": "https://drive.google.com/thumbnail?id=1qdX7gUF-pWOJNXO7HAEMrfwDWqDAqpsl&sz=w1000",
+  "description": "বাংলাদেশের সেরা HSC, BBA, MBA, BBS admission কোচিং প্লাটফর্ম। লাইভ ক্লাস, নোট, মডেল টেস্ট সহ সম্পূর্ণ কোর্স।",
+  "sameAs": []
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&family=Baloo+Da+2:wght@500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Anek+Bangla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+/* =========================================================
+   COURSE DATA NOTE
+   কোর্সের নাম, badge, image, description, price এবং features এখন Google Sheet
+   থেকে dynamic ভাবে লোড হয়। Sheet-এর ৬টি Tab-ই category হিসেবে ব্যবহৃত হয়।
+   ========================================================= */
+
+:root{
+  --ink:#1E2A47;
+  --ink-soft:#4A5772;
+  --paper:#FAF7F0;
+  --paper-line:#E7DFCB;
+  --card:#FFFFFF;
+  --accent:#E8A33D;
+  --accent-dark:#C97F1F;
+  --margin:#C84B4B;
+  --sky:#5B8FBF;
+  --green:#4C8C6B;
+  --shadow:0 10px 30px rgba(30,42,71,0.08);
+  --radius:14px;
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth; overflow-x:hidden;}
+
+/* ===== ফ্লোটিং WhatsApp আইকন (সব পেজের নিচে ডান কর্নারে ফিক্সড থাকবে) =====
+   নাম্বার বদলাতে চাইলে নিচের HTML অংশে "wa.me/" এর পরের নাম্বারটা বদলান।
+   পিছনের এনিমেশন (ঘোরা ড্যাশড রিং + পালস ইফেক্ট) একদম "যোগাযোগ" সেকশনের
+   কল আইকনের (.call-badge) মতোই করা হয়েছে, শুধু রঙ WhatsApp সবুজ (#25D366)।
+   এছাড়া লাল নোটিফিকেশন ডট ও হোভারে টেক্সট লেবেল স্লাইড-আউট যোগ করা হয়েছে। */
+.wa-fab{
+  position:fixed;
+  right:22px;
+  bottom:22px;
+  z-index:9999;
+  display:flex;
+  align-items:center;
+}
+.wa-fab .wa-label{
+  background:#fff;
+  color:var(--ink);
+  font-family:'Baloo Da 2', sans-serif;
+  font-weight:700;
+  font-size:14.5px;
+  white-space:nowrap;
+  border-radius:999px;
+  box-shadow:0 10px 24px rgba(22,34,63,.18);
+  max-width:0;
+  opacity:0;
+  padding:12px 0;
+  margin-right:0;
+  overflow:hidden;
+  transition:max-width .35s ease, opacity .3s ease, margin-right .35s ease, padding-left .35s ease, padding-right .35s ease;
+}
+.wa-fab:hover .wa-label{
+  max-width:220px;
+  opacity:1;
+  margin-right:12px;
+  padding-left:18px;
+  padding-right:18px;
+}
+.wa-fab .core{
+  position:relative;
+  flex:0 0 auto;
+  width:58px; height:58px;
+  border-radius:50%;
+  background:#25D366;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 10px 24px rgba(37,211,102,.42);
+  transition:transform .2s ease;
+}
+.wa-fab:hover .core{ transform:scale(1.06); }
+.wa-fab svg{ width:28px; height:28px; fill:#fff; }
+.wa-fab .ring{
+  position:absolute; inset:-6px;
+  border-radius:50%;
+  border:1.5px dashed rgba(37,211,102,.55);
+  animation:spin-slow 14s linear infinite;
+}
+.wa-fab .ring.ring2{
+  inset:-15px;
+  border-color:rgba(37,211,102,.28);
+  animation-duration:20s;
+  animation-direction:reverse;
+}
+.wa-fab .pulse{
+  position:absolute; inset:0;
+  border-radius:50%;
+  background:#25D366;
+  opacity:.55;
+  animation:pulse-ring 2.2s ease-out infinite;
+}
+.wa-fab .badge{
+  position:absolute;
+  top:-2px; right:-2px;
+  width:16px; height:16px;
+  border-radius:50%;
+  background:#FF3B30;
+  border:2px solid var(--paper);
+  z-index:2;
+}
+.wa-fab .badge::after{
+  content:"";
+  position:absolute; inset:0;
+  border-radius:50%;
+  background:#FF3B30;
+  animation:wa-badge-ping 1.8s ease-out infinite;
+}
+@keyframes wa-badge-ping{
+  0%{ transform:scale(1); opacity:.7; }
+  100%{ transform:scale(2.4); opacity:0; }
+}
+@media (max-width:600px){
+  .wa-fab{ right:16px; bottom:16px; }
+  .wa-fab .core{ width:52px; height:52px; }
+  .wa-fab svg{ width:25px; height:25px; }
+  .wa-fab .wa-label{ display:none; } /* মোবাইলে হোভার নেই বলে লেবেল বাদ, শুধু আইকন */
+}
+
+/* ===== "বিস্তারিত" বাটনে ক্লিক করলে course এখনো available কিনা যাচাই করার
+   সময় দেখানো toast মেসেজ (নিচে মাঝখানে ভেসে ওঠে, কয়েক সেকেন্ড পর মিলিয়ে যায়) ===== */
+.va-toast{
+  position:fixed;
+  left:50%;
+  bottom:26px;
+  transform:translateX(-50%) translateY(16px);
+  background:var(--ink);
+  color:#fff;
+  padding:14px 24px;
+  border-radius:999px;
+  font-family:'Baloo Da 2', sans-serif;
+  font-weight:600;
+  font-size:14.5px;
+  box-shadow:0 14px 30px rgba(30,42,71,.3);
+  z-index:9998;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .3s ease, transform .3s ease;
+  max-width:min(90vw, 420px);
+  text-align:center;
+}
+.va-toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+  pointer-events:auto;
+}
+@media (max-width:600px){
+  .va-toast{ font-size:13px; padding:12px 18px; bottom:80px; }
+}
+
+body{
+  margin:0;
+  color:var(--ink);
+  font-family:'Anek Bangla', sans-serif;
+  font-size:17px;
+  line-height:1.65;
+  background:var(--paper);
+}
+
+h1,h2,h3{
+  font-family:'Anek Bangla', sans-serif;
+  margin:0;
+  color:var(--ink);
+  font-weight:400;
+}
+
+.eyebrow{
+  font-family:'Baloo Da 2', sans-serif;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-size:18px;
+  color:var(--accent-dark);
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+}
+.eyebrow::before{
+  content:"";
+  width:18px;
+  height:2px;
+  background:var(--accent-dark);
+  display:inline-block;
+}
+
+a{ color:inherit; text-decoration:none; }
+img{ max-width:100%; display:block; }
+button{ font-family:inherit; cursor:pointer; }
+
+.container{
+  max-width:min(2300px, 100%);
+  margin:0 auto;
+  padding:0 clamp(12px, 2.6vw, 64px);
+}
+
+/* ---------- Navbar ---------- */
+header.nav{
+  position:sticky; top:0; z-index:50;
+  background:rgba(250,247,240,0.92);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--paper-line);
+}
+.nav-inner{
+  max-width:min(2300px, 100%);
+  margin:0 auto;
+  height:64px;
+  padding:0 clamp(12px, 2.6vw, 64px);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-family:'Baloo Da 2', sans-serif;
+  font-weight:800;
+  font-size:22px;
+  line-height:1.15;
+  color:var(--ink);
+}
+.brand .dot{
+  width:12px;height:12px;border-radius:3px;
+  background:var(--accent);
+  transform:rotate(45deg);
+  flex:none;
+}
+.brand .brand-logo{
+  height:64px;
+  max-height:100%;
+  width:auto;
+  aspect-ratio:3.84/1;
+  object-fit:contain;
+  flex:none;
+}
+.nav-links{
+  display:flex;
+  gap:30px;
+  font-weight:600;
+  font-size:15.5px;
+}
+.nav-links a{
+  position:relative;
+  color:var(--ink-soft);
+  padding:4px 0;
+}
+.nav-links a:hover{ color:var(--ink); }
+.nav-links a::after{
+  content:"";
+  position:absolute; left:0; right:0; bottom:-3px;
+  height:2px; background:var(--accent);
+  transform:scaleX(0); transform-origin:left;
+  transition:transform .25s ease;
+}
+.nav-links a:hover::after{ transform:scaleX(1); }
+.nav-cta{
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  background:linear-gradient(135deg, #263a63, var(--ink) 60%);
+  color:#fff !important;
+  padding:10px 20px;
+  border-radius:999px;
+  font-weight:700;
+  font-size:14.5px;
+  white-space:nowrap;
+  box-shadow:0 3px 10px rgba(30,42,71,.25), inset 0 1px 1px rgba(255,255,255,.12);
+}
+.nav-cta svg{ flex:none; width:16px; height:16px; }
+.burger{ display:none; background:none; border:none; font-size:18px; color:var(--ink); }
+
+@media(max-width:860px){
+  .nav-links{
+    position:absolute; top:100%; left:0; right:0;
+    background:var(--paper);
+    flex-direction:column;
+    padding:18px 28px 26px;
+    gap:16px;
+    border-bottom:1px solid var(--paper-line);
+    display:none;
+  }
+  .nav-links.open{ display:flex; }
+  .burger{ display:block; }
+}
+
+/* ছোট মোবাইল স্ক্রিনে logo + লগইন বাটন + বার্গার মিলে viewport-এর চেয়ে
+   বেশি জায়গা নিয়ে ফেলছিল (logo height:64px ফিক্সড রেখে shrink হচ্ছিল না),
+   ফলে পুরো পেজ horizontally overflow করে "zoom করা"-র মতো দেখাচ্ছিল। */
+@media(max-width:480px){
+  .nav-inner{ gap:8px; }
+  .brand .brand-logo{ height:42px; }
+  .nav-cta{ padding:8px 12px; font-size:12.5px; gap:5px; }
+  .nav-cta svg{ width:14px; height:14px; }
+  .burger{ font-size:22px; }
+}
+
+/* ---------- Hero ---------- */
+.hero{
+  padding:32px 0 24px;
+  overflow:hidden;
+}
+.hero-grid{
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  grid-template-areas:
+    "content photo"
+    "stats   stats";
+  gap:30px 50px;
+  align-items:center;
+}
+.hero-content-area{ grid-area:content; align-self:center; }
+.hero-stats-area{ grid-area:stats; }
+.hero-photo-area{ grid-area:photo; align-self:center; }
+@media(max-width:900px){
+  .hero-grid{
+    grid-template-columns:1fr;
+    grid-template-areas:
+      "photo"
+      "content"
+      "stats";
+    gap:20px;
+  }
+}
+@media(max-width:720px){
+  .hero{ padding:10px 0 24px; }
+}
+/* হিরোর ঠিক পরের সেকশনের উপরের ফাঁকা জায়গা কমানো (শুধু হিরোর সাথে লাগোয়া সেকশনের জন্য) */
+.hero + section{ padding-top:36px; }
+@media(max-width:720px){
+  .hero + section{ padding-top:26px; }
+}
+.hero h1{
+  font-size:clamp(34px, 5vw, 54px);
+  line-height:1.25;
+  margin-top:10px;
+}
+.hero h1 span{
+  position:relative;
+  white-space:nowrap;
+}
+.hero-content-area h1{
+  margin-bottom:22px;
+}
+@media(max-width:900px){
+  .hero-content-area h1{ margin-top:0; margin-bottom:16px; }
+}
+.hero p.lead{
+  margin-top:8px;
+  font-size:18px;
+  color:var(--ink-soft);
+  max-width:52ch;
+}
+.hero-actions{
+  margin-top:10px;
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+}
+.hero-actions .btn{
+  border-radius:10px;
+}
+.btn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:14px 26px;
+  border-radius:999px;
+  font-weight:700;
+  font-size:15px;
+  border:none;
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.btn-primary{
+  background:var(--accent);
+  color:var(--ink);
+  box-shadow:0 8px 20px rgba(232,163,61,.4);
+}
+.btn-primary:hover{ transform:translateY(-2px); box-shadow:0 12px 26px rgba(232,163,61,.5); }
+.course-enrolled-trigger{
+  background:#e9f8ef;
+  color:#1f8a4c;
+  box-shadow:none;
+}
+.course-enrolled-trigger:hover{ background:#dcf3e5; transform:translateY(-2px); box-shadow:0 8px 18px rgba(31,138,76,.25); }
+.btn-outline{
+  background:transparent;
+  color:var(--ink);
+  border:1.5px solid var(--ink);
+}
+.btn-outline:hover{ background:var(--ink); color:#fff; }
+
+.hero-stats{
+  margin-top:25px;
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+}
+.stat-card{
+  flex:1 1 140px;
+  min-width:0;
+  background:#fff;
+  border:1px solid var(--paper-line);
+  border-radius:14px;
+  box-shadow:var(--shadow);
+  padding:12px 10px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  opacity:0;
+  transform:translateY(22px);
+  transition:opacity .9s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1), box-shadow .3s cubic-bezier(.22,1,.36,1);
+}
+.stat-card.visible{
+  opacity:1;
+  transform:translateY(0);
+}
+.stat-icon-box{
+  flex:0 0 auto;
+  width:44px;
+  height:44px;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  overflow:hidden;
+  box-shadow:
+    0 8px 16px -4px var(--glow-color, rgba(0,0,0,.3)),
+    inset 0 1px 1px rgba(255,255,255,.55),
+    inset 0 -8px 10px rgba(0,0,0,.18);
+  transition:transform .3s cubic-bezier(.22,1,.36,1), box-shadow .3s cubic-bezier(.22,1,.36,1);
+}
+.stat-card:hover .stat-icon-box{
+  transform:translateY(-2px) scale(1.05);
+  box-shadow:
+    0 12px 22px -4px var(--glow-color, rgba(0,0,0,.35)),
+    inset 0 1px 1px rgba(255,255,255,.6),
+    inset 0 -8px 10px rgba(0,0,0,.18);
+}
+.stat-icon-box::before{
+  content:"";
+  position:absolute;
+  top:-45%;
+  left:-15%;
+  width:130%;
+  height:75%;
+  background:linear-gradient(180deg, rgba(255,255,255,.6), rgba(255,255,255,0) 75%);
+  border-radius:50%;
+  pointer-events:none;
+}
+.stat-icon{
+  width:22px;
+  height:22px;
+  position:relative;
+  z-index:1;
+  filter:drop-shadow(0 1px 1px rgba(0,0,0,.2));
+}
+.stat-text{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+}
+.stat-text b{
+  font-family:'Baloo Da 2', sans-serif;
+  font-size:20px;
+  line-height:1.15;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.stat-text span{
+  font-size:12px;
+  color:var(--ink-soft);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+@media(max-width:480px){
+  .hero-stats{ gap:6px; }
+  .stat-card{ flex:1 1 calc(50% - 6px); padding:8px 6px; gap:6px; border-radius:12px; }
+  .stat-icon-box{ width:34px; height:34px; border-radius:10px; }
+  .stat-icon{ width:17px; height:17px; }
+  .stat-text b{ font-size:clamp(13px,4vw,17px); }
+  .stat-text span{ font-size:clamp(8.5px,2.4vw,10.5px); }
+}
+
+/* সব কোর্স দেখার বাটন */
+.all-courses-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  width:230px;
+  padding:11px 16px;
+  border:2px solid var(--ink);
+  border-radius:999px;
+  background:transparent;
+  color:var(--ink);
+  font-family:'Baloo Da 2', sans-serif;
+  font-weight:800;
+  font-size:16px;
+  cursor:pointer;
+  transition:transform .2s ease, box-shadow .2s ease, background .2s ease, color .2s ease;
+}
+.all-courses-btn svg{
+  width:22px;
+  height:22px;
+  flex:0 0 auto;
+  transition:transform .2s ease;
+}
+.all-courses-btn:hover{
+  background:var(--ink);
+  color:#fff;
+  transform:translateY(-2px);
+  box-shadow:0 10px 22px rgba(30,42,71,.22);
+}
+.all-courses-btn:hover svg{
+  transform:translateX(4px);
+}
+@media(max-width:480px){
+  .all-courses-btn{ width:220px; padding:10px 14px; font-size:15px; }
+  .all-courses-btn svg{ width:17px; height:17px; }
+}
+
+/* teacher photo — horizontal auto-scroll carousel (feature photos, ratio 3840x2160) */
+.pinboard{
+  position:relative;
+  border-radius:var(--radius);
+  overflow:hidden;
+  box-shadow:0 16px 30px rgba(30,42,71,.18);
+  background:#eee;
+}
+.pin-track{
+  display:flex;
+  width:100%;
+}
+.pin-card{
+  position:relative;
+  flex:0 0 100%;
+  width:100%;
+}
+.pin-card img{
+  width:100%;
+  aspect-ratio:3840/2160;
+  object-fit:cover;
+  display:block;
+  background:#eee;
+}
+.pin-card .name{
+  position:absolute;
+  left:0; right:0; bottom:0;
+  padding:16px 18px;
+  background:linear-gradient(to top, rgba(30,42,71,.75), rgba(30,42,71,0));
+  color:#fff;
+  font-family:'Baloo Da 2', sans-serif;
+  font-size:14.5px;
+  font-weight:600;
+}
+@media(max-width:900px){
+  .pinboard{ margin-top:10px; }
+  .pin-card .name{ font-size:13px; padding:12px 14px; }
+}
+
+/* ---------- গ্যালারি: অটো-স্ক্রলিং ইমেজ মার্কি ---------- */
+.gallery-marquee-wrap{
+  overflow:hidden;
+  position:relative;
+  width:100%;
+  -webkit-mask-image:linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+  mask-image:linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+}
+.gallery-track{
+  display:flex;
+  align-items:center;
+  gap:18px;
+  width:max-content;
+  animation:galleryScroll 40s linear infinite;
+}
+.gallery-track:hover{ animation-play-state:paused; }
+.gallery-track img{
+  height:220px;
+  width:auto;
+  max-width:340px;
+  object-fit:cover;
+  border-radius:14px;
+  box-shadow:0 12px 26px rgba(30,42,71,.16);
+  background:#eee;
+  flex:0 0 auto;
+}
+@keyframes galleryScroll{
+  from{ transform:translateX(0); }
+  to{ transform:translateX(-50%); }
+}
+@media(max-width:640px){
+  .gallery-track{ gap:12px; }
+  .gallery-track img{ height:130px; max-width:200px; border-radius:10px; }
+}
+
+/* ---------- শিক্ষার্থীদের মন্তব্য: ম্যানুয়াল হরাইজন্টাল স্ক্রল কার্ড ---------- */
+/* অটো-স্ক্রল করে না — কমেন্ট বেশি হলে ইউজার নিজে পাশে স্ক্রল করে দেখবে */
+.comment-scroll-wrap{
+  overflow-x:auto;
+  overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;
+  scroll-snap-type:x proximity;
+  padding-bottom:10px;
+  margin-top:8px;
+}
+.comment-track{
+  display:flex;
+  gap:18px;
+  width:max-content;
+}
+.comment-card{
+  flex:0 0 auto;
+  width:270px;
+  background:#fff;
+  border:1px solid var(--paper-line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:22px 20px 18px;
+  scroll-snap-align:start;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  transition:transform .3s cubic-bezier(.22,1,.36,1), box-shadow .3s cubic-bezier(.22,1,.36,1);
+}
+.comment-card:hover{ transform:translateY(-6px); box-shadow:0 22px 40px rgba(30,42,71,.16); }
+.comment-card .comment-icon{
+  width:52px;
+  height:52px;
+  border-radius:50%;
+  background:#D3E4FC;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#2F6FE4;
+  flex:0 0 auto;
+}
+.comment-card .comment-icon svg{ width:26px; height:26px; }
+.comment-card .comment-name{
+  font-family:'Baloo Da 2', sans-serif;
+  font-weight:700;
+  font-size:16px;
+  color:var(--ink);
+  margin-top:12px;
+}
+.comment-card .comment-short{
+  color:var(--accent-dark);
+  font-size:12.5px;
+  font-weight:600;
+  margin-top:3px;
+}
+.comment-card .comment-text{
+  color:var(--ink-soft);
+  font-size:13.5px;
+  line-height:1.55;
+  margin-top:12px;
+  display:-webkit-box;
+  -webkit-line-clamp:4;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+.comment-data-state{
+  width:100%;
+  text-align:center;
+  padding:28px 20px;
+  color:var(--ink-soft);
+  background:#fff;
+  border:1px solid var(--paper-line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
+@media(max-width:640px){
+  .comment-card{ width:230px; padding:18px 16px 14px; }
+}
+
+/* ---------- Section shell ---------- */
+section{ padding:52px 0; }
+.section-head{
+  max-width:640px;
+  margin-bottom:34px;
+}
+.section-head h2,
+.section-head p{
+  display:none;
+}
+.section-head .eyebrow{
+  margin:0;
+}
+
+/* ---------- ক্যাটাগরি কুইক-কার্ড (কোর্সসমূহ সেকশনের ফিল্টার হিসেবে ব্যবহৃত) ---------- */
+.cat-grid{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:22px;
+  margin-bottom:36px;
+}
+.cat-card{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  background:#fff;
+  border-radius:14px;
+  padding:8px 16px;
+  border:2px solid transparent;
+  box-shadow:0 8px 22px rgba(30,42,71,0.06);
+  transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.cat-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 14px 30px rgba(30,42,71,0.12);
+}
+.cat-card.active{
+  border-color:var(--cat-color, var(--ink));
+  box-shadow:0 14px 30px rgba(30,42,71,0.14);
+}
+.cat-icon{
+  flex:0 0 auto;
+  width:48px;
+  height:48px;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.cat-icon svg{
+  width:26px;
+  height:26px;
+}
+.cat-text{
+  display:flex;
+  flex-direction:column;
+  gap:1px;
+  flex:1 1 auto;
+  min-width:0;
+}
+.cat-text b{
+  font-size:24px;
+  font-weight:800;
+  line-height:1.05;
+  color:var(--cat-color, var(--ink));
+}
+.cat-text span{
+  font-size:13.5px;
+  color:var(--ink-soft);
+  line-height:1.2;
+}
+@media (max-width:860px){
+  /* ফোনে (পোর্ট্রেট/ল্যান্ডস্কেপ যেকোনো width) সবসময় ২ কলাম — কার্ডের height মোটামুটি স্থির
+     রেখে, উপলব্ধ width অনুযায়ী আইকন ও টেক্সট clamp() দিয়ে fluid scale করা হয় যাতে
+     ছোট width-এ যতটুকু জায়গা আছে তার সর্বোচ্চ ব্যবহার হয়, height বেড়ে না যায়। */
+  .cat-grid{ grid-template-columns:repeat(2, 1fr); gap:clamp(8px,2.6vw,20px); }
+  .cat-card{
+    padding:clamp(6px,1.8vw,12px) clamp(8px,2.6vw,16px);
+    gap:clamp(6px,2.2vw,12px);
+  }
+  .cat-icon{
+    width:clamp(30px,9.5vw,48px);
+    height:clamp(30px,9.5vw,48px);
+    border-radius:10px;
+  }
+  .cat-icon svg{ width:55%; height:55%; }
+  .cat-text b{
+    font-size:clamp(13px,4.4vw,22px);
+    line-height:1.1;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .cat-text span{
+    font-size:clamp(9.5px,2.7vw,13.5px);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+}
+
+/* ---------- Program pills (like the original site's category tabs) ---------- */
+.pill-row{
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+  margin-bottom:36px;
+}
+.pill{
+  padding:16px 32px;
+  border-radius:999px;
+  background:#fff;
+  border:1px solid var(--paper-line);
+  font-weight:700;
+  font-size:18px;
+  color:var(--ink-soft);
+  transition:.2s ease;
+}
+.pill.active, .pill:hover{
+  background:var(--ink);
+  color:#fff;
+  border-color:var(--ink);
+}
+@media (max-width:480px){
+  .pill{
+    padding:12px 22px;
+    font-size:15.5px;
+  }
+}
+
+/* ---------- Course cards ("exam admit card" styling) ---------- */
+.course-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(270px,1fr));
+  gap:24px;
+  scroll-margin-top:82px; /* মোবাইলে ক্যাটাগরি কার্ডে ক্লিক করলে স্টিকি নেভবারের নিচে গিয়ে থামে */
+}
+.course-card{
+  background:var(--card);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow), 0 0 0 0 rgba(79,143,255,0);
+  overflow:hidden;
+  border:1px solid var(--paper-line);
+  display:flex;
+  flex-direction:column;
+  transition:transform .38s cubic-bezier(.22,1,.36,1), box-shadow .38s cubic-bezier(.22,1,.36,1);
+}
+.course-card:hover{ transform:translateY(-9px) scale(1.015); box-shadow:0 26px 46px rgba(30,42,71,.20), 0 0 34px 6px rgba(79,143,255,.45); }
+/* উপরে display:flex থাকার কারণে JS দিয়ে hidden অ্যাট্রিবিউট বসালেও কার্ড লুকাচ্ছিল না —
+   এই রুলটা [hidden] অবস্থায় জোর করে লুকিয়ে দেবে (কোর্স ফিল্টার বাটন কাজ করার জন্য জরুরি) */
+.course-card[hidden]{ display:none; }
+.course-image{
+  width:100%;
+  aspect-ratio:16/10;
+  object-fit:cover;
+  background:#eee;
+  display:block;
+}
+.course-top{
+  padding:8px 20px 4px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:10px;
+  border-bottom:1.5px dashed var(--paper-line);
+}
+.course-tag{
+  font-family:'Baloo Da 2', sans-serif;
+  font-size:12px;
+  font-weight:700;
+  color:var(--green);
+  background:rgba(76,140,107,.12);
+  padding:4px 10px;
+  border-radius:999px;
+}
+.course-body{ padding:6px 20px 16px; flex:1; display:flex; flex-direction:column; }
+.course-body h3{
+  font-size:21px;
+  margin-bottom:5px;
+}
+.course-body p{
+  color:var(--ink-soft);
+  font-size:15px;
+  margin:0;
+  line-height:1.5;
+}
+.course-foot{
+  margin-top:auto;
+  padding-top:12px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.price{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+.price-row{
+  display:flex;
+  align-items:baseline;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.price-now{
+  font-family:'Baloo Da 2', sans-serif;
+  font-weight:800;
+  font-size:22px;
+  color:#5B4FE9;
+}
+.price-old{
+  font-family:'Anek Bangla', sans-serif;
+  font-weight:400;
+  font-size:14px;
+  color:#9AA1B5;
+  text-decoration:line-through;
+  text-decoration-thickness:1px;
+}
+.price small{
+  font-family:'Anek Bangla', sans-serif;
+  font-weight:500;
+  font-size:13px;
+  color:var(--green);
+}
+.course-foot .btn{ padding:10px 18px; font-size:13.5px; }
+
+/* মোবাইলে কোর্স কার্ড গ্রিডের বদলে পাশাপাশি (horizontal) স্ক্রল হবে */
+@media(max-width:760px){
+  .course-grid{
+    display:flex;
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    gap:16px;
+    padding-bottom:10px;
+    -webkit-overflow-scrolling:touch;
+  }
+  .course-card{
+    flex:0 0 82%;
+    scroll-snap-align:start;
+  }
+}
+@media(max-width:480px){
+  .course-card{ flex:0 0 88%; }
+  .course-card-skel{ flex:0 0 88%; }
+}
+@media(max-width:760px){
+  .course-card-skel{ flex:0 0 82%; scroll-snap-align:start; }
+}
+
+/* ---------- Dynamic Google Sheet course system ---------- */
+.course-data-loading{grid-column:1/-1;min-height:120px;display:flex;align-items:center;justify-content:center;gap:12px;color:var(--ink-soft);font-weight:600;background:#fff;border:1px dashed var(--paper-line);border-radius:var(--radius)}
+.course-loader{width:22px;height:22px;border-radius:50%;border:3px solid var(--paper-line);border-top-color:var(--accent);animation:course-spin .8s linear infinite}
+@keyframes course-spin{to{transform:rotate(360deg)}}
+.course-data-loading.category-loading{min-height:72px;grid-column:1/-1}
+
+/* ---------- Skeleton loading placeholders (ক্যাটাগরি ও কোর্স কার্ড লোড হওয়ার
+   সময় আসল কার্ডের shape-ই মিমিক করে দেখায়, তাই ডেটা আসার পর layout shift/jump
+   হয় না) ---------- */
+@keyframes skel-sweep{
+  0%{ left:-60%; }
+  100%{ left:120%; }
+}
+.cat-card-skel{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  background:#fff;
+  border-radius:14px;
+  padding:8px 16px;
+  border:2px solid transparent;
+  box-shadow:0 8px 22px rgba(30,42,71,0.06);
+  position:relative;
+  overflow:hidden;
+}
+.cat-card-skel .skel-icon{ width:48px; height:48px; border-radius:12px; background:#ece4cf; flex-shrink:0; }
+.cat-card-skel .skel-lines{ display:flex; flex-direction:column; gap:7px; flex:1; }
+.cat-card-skel .skel-line{ border-radius:6px; background:#ece4cf; }
+.cat-card-skel .skel-line.big{ width:55%; height:18px; }
+.cat-card-skel .skel-line.small{ width:70%; height:12px; }
+.course-card-skel{
+  background:var(--card);
+  border-radius:var(--radius);
+  border:1px solid var(--paper-line);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+}
+.course-card-skel .skel-img{ width:100%; aspect-ratio:16/10; background:#ece4cf; }
+.course-card-skel .skel-top{ padding:12px 20px 8px; display:flex; justify-content:space-between; border-bottom:1.5px dashed var(--paper-line); }
+.course-card-skel .skel-pill{ height:18px; width:70px; border-radius:999px; background:#ece4cf; }
+.course-card-skel .skel-body{ padding:12px 20px 16px; flex:1; display:flex; flex-direction:column; gap:9px; }
+.course-card-skel .skel-line{ border-radius:6px; background:#ece4cf; }
+.course-card-skel .skel-line.title{ width:70%; height:17px; }
+.course-card-skel .skel-line.desc1{ width:95%; height:11px; }
+.course-card-skel .skel-line.desc2{ width:78%; height:11px; }
+.course-card-skel .skel-foot{ margin-top:auto; padding-top:14px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
+.course-card-skel .skel-price{ width:74px; height:22px; border-radius:6px; background:#ece4cf; }
+.course-card-skel .skel-btn{ width:92px; height:36px; border-radius:8px; background:#ece4cf; }
+.cat-card-skel::after,
+.course-card-skel::after{
+  content:'';
+  position:absolute;
+  top:0; left:-60%;
+  width:60%; height:100%;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.75), transparent);
+  animation:skel-sweep 1.6s ease-in-out infinite;
+}
+.course-data-toolbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:-10px 0 20px}
+.course-result-count{color:var(--ink-soft);font-size:14.5px;font-weight:600}
+.course-data-error{margin-top:20px;padding:28px;text-align:center;background:#fff;border:1px solid #F0C7C7;border-radius:var(--radius);color:var(--ink)}
+.course-data-error p{color:var(--ink-soft);margin:8px 0 18px}
+.course-empty{grid-column:1/-1;text-align:center;padding:55px 20px;background:#fff;border:1px dashed var(--paper-line);border-radius:var(--radius);color:var(--ink-soft)}
+@media(max-width:600px){.course-data-toolbar{align-items:flex-start;margin-top:0}}
+
+/* ---------- Why us ---------- */
+.why-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:22px;
+}
+.why-card{
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:18px;
+  background:linear-gradient(160deg, var(--why-bg-start), var(--why-bg-end) 70%);
+  border:1px solid var(--paper-line);
+  border-radius:18px;
+  padding:8px 24px;
+  overflow:hidden;
+  box-shadow:0 0 0 0 rgba(79,143,255,0);
+  transition:transform .38s cubic-bezier(.22,1,.36,1), box-shadow .38s cubic-bezier(.22,1,.36,1);
+}
+.why-card:hover{ transform:translateY(-8px); box-shadow:0 22px 38px rgba(30,42,71,.16); }
+.why-card::after{
+  content:"";
+  position:absolute;
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  background:var(--why-tint);
+  right:-50px;
+  bottom:-60px;
+  opacity:.55;
+  pointer-events:none;
+}
+.why-icon-box{
+  position:relative;
+  z-index:1;
+  flex:0 0 auto;
+  width:72px;
+  height:72px;
+  border-radius:18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  box-shadow:
+    0 10px 18px -4px var(--glow-color, rgba(0,0,0,.3)),
+    inset 0 1px 1px rgba(255,255,255,.55),
+    inset 0 -8px 10px rgba(0,0,0,.18);
+}
+.why-icon-box::before{
+  content:"";
+  position:absolute;
+  top:-45%;
+  left:-15%;
+  width:130%;
+  height:75%;
+  background:linear-gradient(180deg, rgba(255,255,255,.6), rgba(255,255,255,0) 75%);
+  border-radius:50%;
+  pointer-events:none;
+}
+.why-icon{
+  width:34px;
+  height:34px;
+  position:relative;
+  z-index:1;
+  filter:drop-shadow(0 1px 1px rgba(0,0,0,.2));
+}
+.why-text{ position:relative; z-index:1; min-width:0; }
+.why-text h3{
+  font-family:'Anek Bangla', sans-serif;
+  font-weight:800;
+  font-size:20px;
+  color:#1E2A47;
+  margin-bottom:2px;
+}
+.why-text p{
+  font-family:'Anek Bangla', sans-serif;
+  font-size:14px;
+  line-height:1.4;
+  color:var(--ink-soft);
+}
+@media(max-width:480px){
+  .why-card{ padding:8px 18px; gap:14px; }
+  .why-icon-box{ width:58px; height:58px; border-radius:14px; }
+  .why-icon{ width:28px; height:28px; }
+  .why-text h3{ font-size:17px; }
+  .why-text p{ font-size:13px; }
+}
+
+/* ---------- Free YouTube videos ---------- */
+.video-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(190px,210px));
+  justify-content:start;
+  gap:18px;
+}
+.video-card{
+  background:#fff;
+  border:1px solid var(--paper-line);
+  border-radius:var(--radius);
+  overflow:hidden;
+  box-shadow:var(--shadow);
+}
+.video-thumb{
+  position:relative;
+  aspect-ratio:16/9;
+  background:#000;
+  cursor:pointer;
+  overflow:hidden;
+}
+.video-thumb img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  transition:transform .3s ease;
+}
+.video-thumb:hover img{ transform:scale(1.05); }
+.video-thumb iframe{
+  width:100%;
+  height:100%;
+  border:0;
+  display:block;
+}
+.video-play-btn{
+  position:absolute;
+  top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  width:56px; height:56px;
+  border-radius:50%;
+  background:rgba(30,42,71,.85);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:.2s ease;
+}
+.video-thumb:hover .video-play-btn{
+  background:var(--accent);
+  transform:translate(-50%,-50%) scale(1.08);
+}
+.video-play-btn svg{
+  width:20px; height:20px;
+  fill:#fff;
+  margin-left:3px;
+}
+.video-card .video-title{
+  padding:14px 16px;
+  font-family:'Baloo Da 2', sans-serif;
+  font-weight:600;
+  font-size:14.5px;
+  color:var(--ink);
+}
+
+.video-data-loading,.video-data-state{width:100%;padding:18px;text-align:center;color:var(--ink-soft);font-family:'Hind Siliguri',sans-serif}.pill-row .video-data-loading,.pill-row .video-data-state{padding:8px 12px}.video-thumb:focus{outline:3px solid rgba(79,143,255,.35);outline-offset:2px}
+
+/* মোবাইলে ভিডিও কার্ড গ্রিডের বদলে পাশাপাশি (horizontal) স্ক্রল হবে — শিক্ষক কার্ডের মতোই,
+   ভিডিও ১টা থাকুক বা ৫টা, কার্ডের size একই থাকবে (পুরো width জুড়ে বড় হয়ে যাবে না) */
+@media(max-width:760px){
+  .video-grid{
+    display:flex;
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    gap:16px;
+    padding-bottom:10px;
+    -webkit-overflow-scrolling:touch;
+  }
+  .video-card{
+    flex:0 0 62%;
+    scroll-snap-align:start;
+  }
+}
+@media(max-width:480px){
+  .video-card{ flex:0 0 70%; }
+}
+
+/* ---------- Teachers ---------- */
+/* width-এ সব কার্ড না ধরলে পরের লাইনে যাবে না — horizontal scroll হবে (ডেস্কটপ/মোবাইল সব জায়গায়) */
+.teacher-grid{
+  display:flex;
+  flex-wrap:nowrap;
+  overflow-x:auto;
+  gap:22px;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  padding-top:14px;
+  padding-bottom:8px;
+}
+.teacher-card{
+  position:relative;
+  flex:0 0 226px;
+  scroll-snap-align:start;
+  border-radius:22px;
+  overflow:hidden;
+  border:2px solid #E4D8FF;
+  background:#fff;
+  box-shadow:var(--shadow), 0 0 0 0 rgba(79,143,255,0);
+  transition:transform .38s cubic-bezier(.22,1,.36,1), box-shadow .38s cubic-bezier(.22,1,.36,1), border-color .38s ease;
+}
+.teacher-card:hover{ transform:translateY(-9px) scale(1.015); border-color:#C9B3FF; box-shadow:0 26px 46px rgba(30,42,71,.20), 0 0 34px 6px rgba(79,143,255,.45); }
+.teacher-photo{
+  width:100%;
+  aspect-ratio:0.79;
+  object-fit:cover;
+  object-position:top center;
+  display:block;
+  background:#eee;
+}
+.teacher-info{
+  position:absolute;
+  left:0; right:0; bottom:0;
+  padding:10px 16px 14px;
+  background:linear-gradient(to top, rgba(12,14,26,.88) 0%, rgba(12,14,26,.55) 45%, rgba(12,14,26,0) 100%);
+  color:#fff;
+}
+.teacher-info .name{
+  font-family:'Baloo Da 2', sans-serif;
+  font-weight:700;
+  font-size:16px;
+  padding-right:22px;
+}
+.teacher-info .subject{
+  color:#fff;
+  font-size:12.5px;
+  font-weight:700;
+  margin-top:2px;
+}
+.teacher-arrow{
+  position:absolute;
+  right:14px;
+  bottom:16px;
+  width:16px;
+  height:16px;
+  color:rgba(255,255,255,.9);
+}
+ .teacher-data-state{
+   flex:1 1 100%;
+   text-align:center;
+   padding:28px 20px;
+   color:var(--ink-soft);
+   background:#fff;
+   border:1px solid var(--paper-line);
+   border-radius:var(--radius);
+   box-shadow:var(--shadow);
+ }
+
+/* ছোট width-এ কার্ড আরও ছোট শতাংশ-ভিত্তিক হবে যাতে touch-এ সহজে স্ক্রল করা যায় */
+@media(max-width:760px){
+  .teacher-grid{ gap:13px; }
+  .teacher-card{
+    flex:0 0 49%;
+  }
+  .teacher-info{ padding:8px 13px 11px; }
+  .teacher-info .name{ font-size:13.5px; }
+  .teacher-info .subject{ font-size:11px; margin-top:1px; }
+  .teacher-arrow{ width:13px; height:13px; right:11px; bottom:12px; }
+}
+@media(max-width:480px){
+  .teacher-card{ flex:0 0 55%; }
+}
+
+/* ---------- Message form ---------- */
+.message-box{
+  max-width:640px;
+  margin:0 auto;
+  background:#fff;
+  border:1px solid var(--paper-line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:34px 30px;
+}
+.message-box .section-head{ margin-bottom:26px; max-width:none; }
+.form-row{ margin-bottom:16px; display:flex; flex-direction:column; gap:6px; }
+.form-row label{ font-weight:600; font-size:14.5px; color:var(--ink); }
+.form-row input,
+.form-row textarea{
+  font-family:inherit;
+  font-size:15px;
+  padding:12px 14px;
+  border-radius:10px;
+  border:1.5px solid var(--paper-line);
+  background:var(--paper);
+  color:var(--ink);
+  outline:none;
+  transition:border-color .15s ease;
+}
+.form-row input:focus,
+.form-row textarea:focus{ border-color:var(--accent); }
+.form-row textarea{ resize:vertical; min-height:100px; }
+.form-status{
+  margin-top:14px;
+  font-size:14.5px;
+  font-weight:600;
+  text-align:center;
+  display:none;
+}
+.form-status.show{ display:block; }
+.form-status.ok{ color:var(--green); }
+.form-status.err{ color:var(--margin); }
+
+/* ---------- CTA band : "admission ticket" style call card ---------- */
+.cta-band{
+  position:relative;
+  background:
+    radial-gradient(circle at 18% 20%, rgba(232,163,61,.16), transparent 55%),
+    radial-gradient(circle at 88% 82%, rgba(91,143,191,.18), transparent 55%),
+    #16223F;
+  color:#fff;
+  border-radius:26px;
+  padding:0;
+  margin:0 28px;
+  overflow:hidden;
+  display:flex;
+  align-items:stretch;
+  box-shadow:0 20px 44px rgba(22,34,63,.28);
+}
+.cta-left{
+  position:relative;
+  flex:1 1 auto;
+  padding:44px 20px 44px 44px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:10px;
+}
+.cta-band .eyebrow{ color:var(--accent); }
+.cta-band .eyebrow::before{ background:var(--accent); }
+.cta-band h2,
+.cta-band p{
+  display:none;
+}
+.cta-band .eyebrow{
+  margin:0;
+}
+
+/* dashed "ticket" divider with punched notches, only between the two halves */
+.cta-divider{
+  position:relative;
+  flex:0 0 auto;
+  width:0;
+  border-left:2px dashed rgba(255,255,255,.25);
+  margin:22px 0;
+}
+.cta-divider::before,
+.cta-divider::after{
+  content:"";
+  position:absolute; left:50%;
+  width:26px; height:26px;
+  background:var(--paper);
+  border-radius:50%;
+  transform:translateX(-50%);
+}
+.cta-divider::before{ top:-13px; }
+.cta-divider::after{ bottom:-13px; }
+
+.cta-right{
+  position:relative;
+  flex:0 0 auto;
+  width:280px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:32px;
+}
+.cta-phone{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+  text-align:center;
+}
+.call-badge{
+  position:relative;
+  width:64px; height:64px;
+  display:flex; align-items:center; justify-content:center;
+}
+.call-badge .ring{
+  position:absolute; inset:0;
+  border-radius:50%;
+  border:1.5px dashed rgba(232,163,61,.55);
+  animation:spin-slow 14s linear infinite;
+}
+.call-badge .ring.ring2{
+  inset:-9px;
+  border-color:rgba(232,163,61,.28);
+  animation-duration:20s;
+  animation-direction:reverse;
+}
+.call-badge .pulse{
+  position:absolute; inset:0;
+  border-radius:50%;
+  background:var(--accent);
+  opacity:.55;
+  animation:pulse-ring 2.2s ease-out infinite;
+}
+.call-badge .core{
+  position:relative;
+  width:64px; height:64px;
+  border-radius:50%;
+  background:var(--accent);
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 8px 18px rgba(232,163,61,.4);
+}
+.call-badge svg{ width:26px; height:26px; stroke:var(--ink); }
+@keyframes pulse-ring{
+  0%{ transform:scale(1); opacity:.5; }
+  100%{ transform:scale(1.7); opacity:0; }
+}
+@keyframes spin-slow{
+  from{ transform:rotate(0deg); }
+  to{ transform:rotate(360deg); }
+}
+.cta-phone .tap-label{
+  font-size:12.5px;
+  font-weight:700;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:#8E9AB8;
+}
+.cta-phone .num{
+  font-family:'Baloo Da 2', sans-serif;
+  font-weight:800;
+  font-size:24px;
+  color:#fff;
+  letter-spacing:.01em;
+}
+.cta-phone:hover .num{ color:var(--accent); }
+.cta-phone:hover .call-badge .core{ transform:scale(1.06); }
+.call-badge .core{ transition:transform .2s ease; }
+
+@media(max-width:760px){
+  .cta-band{ flex-direction:column; }
+  .cta-left{ padding:34px 28px 8px; text-align:center; align-items:center; }
+  .cta-band p{ max-width:44ch; }
+  .cta-divider{
+    width:auto; height:0; align-self:stretch;
+    border-left:none; border-top:2px dashed rgba(255,255,255,.25);
+    margin:22px 28px 0;
+  }
+  .cta-divider::before{ top:auto; left:-13px; transform:translateY(-50%); }
+  .cta-divider::after{ bottom:auto; left:auto; right:-13px; top:0; transform:translateY(-50%); }
+  .cta-right{ width:auto; padding:26px 28px 34px; }
+}
+@media(max-width:480px){
+  .cta-phone .num{ font-size:20px; }
+}
+
+/* ---------- Footer ---------- */
+footer{
+  padding:60px 0 30px;
+  color:var(--ink-soft);
+  font-size:14.5px;
+}
+.footer-grid{
+  display:grid;
+  grid-template-columns:1.3fr 1fr 1fr;
+  gap:40px;
+  padding-bottom:36px;
+  border-bottom:1px solid var(--paper-line);
+}
+@media(max-width:760px){
+  .footer-grid{ grid-template-columns:1fr; }
+}
+.footer-grid h4{
+  font-family:'Baloo Da 2', sans-serif;
+  color:var(--ink);
+  font-size:15px;
+  margin-bottom:14px;
+}
+.footer-grid p, .footer-grid a{ display:block; margin-bottom:8px; }
+.footer-grid a:hover{ color:var(--accent-dark); }
+.social-row{ display:flex; gap:10px; margin-top:14px; }
+.social-row a{
+  width:36px; height:36px; border-radius:50%;
+  background:#fff; border:1px solid var(--paper-line);
+  display:flex; align-items:center; justify-content:center;
+  font-size:15px;
+}
+.copyright{
+  text-align:center;
+  margin-top:26px;
+  font-size:13px;
+}
+
+@media(max-width:600px){
+  .cta-band{ margin:0 10px; }
+  section{ padding:48px 0; }
+  .container, .nav-inner{
+    width:100%;
+    max-width:100%;
+    padding-left:12px;
+    padding-right:12px;
+  }
+}
+@media(max-width:380px){
+  .container, .nav-inner{
+    padding-left:10px;
+    padding-right:10px;
+  }
+  .cta-band{ margin-left:8px; margin-right:8px; }
+}
+
+/* ---------- Large screens: TV / smartboard / large monitors ----------
+   ছোট স্ক্রিনের জন্য উপরে যেমন স্কেল-ডাউন করা আছে, বড় স্ক্রিন (TV/স্মার্টবোর্ড) দূর থেকে
+   দেখা হয় বলে টেক্সট ও এলিমেন্ট আনুপাতিকভাবে একটু বড় করে দেওয়া হলো, যাতে দূর থেকেও স্পষ্ট পড়া যায় */
+@media(min-width:1440px){
+  body{ font-size:18px; }
+  .brand{ font-size:24px; }
+  .brand .brand-logo{ height:72px; }
+  .nav-inner{ height:76px; }
+  .nav-links{ font-size:17px; gap:36px; }
+  .nav-cta{ padding:12px 24px; font-size:16px; }
+  .hero h1{ font-size:clamp(48px, 3.6vw, 68px); }
+  .hero p.lead{ font-size:20px; max-width:58ch; }
+  .btn{ padding:16px 30px; font-size:16.5px; }
+  .stat-text b{ font-size:23px; }
+  .stat-text span{ font-size:13.5px; }
+  
+  .section-head p{ font-size:18px; }
+  .course-body h3{ font-size:23px; }
+  .course-body p{ font-size:16px; }
+  .price-now{ font-size:25px; }
+  .teacher-info .name{ font-size:19px; }
+}
+@media(min-width:1920px){
+  body{ font-size:19px; }
+  .hero h1{ font-size:clamp(56px, 3.4vw, 80px); }
+  .hero p.lead{ font-size:22px; }
+}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="#top" class="brand">
+      <!-- নেভবারের লোগো — এই একটা ছবিতেই লোগো + প্রতিষ্ঠানের নাম দুটোই আছে
+           (ছবির রেশিও প্রায় 3840x1000 ≈ 3.84:1 রাখলে সবচেয়ে ভালো ফিট হবে, বিকৃত হবে না) -->
+      <img src="https://drive.google.com/thumbnail?id=1qdX7gUF-pWOJNXO7HAEMrfwDWqDAqpsl&sz=w1000" alt="VISION Academics" class="brand-logo">
+    </a>
+    <!-- নেভবার মেনু লিংক (উপরের সারির লেখাগুলো) -->
+    <nav class="nav-links" id="navLinks">
+      <a href="All_Courses.html">কোর্সসমূহ</a>
+      <a href="#videos">ফ্রি ক্লাস</a>
+      <a href="#teachers">শিক্ষকবৃন্দ</a>
+      <a href="shop.html">শপ</a>
+      <a href="#why">কেন আমরা</a>
+    </nav>
+    <!-- নেভবারের ডানপাশের "ভর্তি হোন" বাটন — ক্লিক করলে সরাসরি student-login.html পেজে যাবে -->
+    <a href="student-login.html" class="nav-cta" id="navLoginBtn">লগইন</a>
+    <button class="burger" id="burgerBtn">☰</button>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============================================================
+       হিরো সেকশন — পেজের সবচেয়ে উপরের বড় অংশ
+       ============================================================ -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-content-area">
+        <!-- নতুন হিরো হেডিং -->
+        <h1>শিখো সেরাদের সাথে-</h1>
+
+        <!-- সব কোর্স দেখার বাটন — সরাসরি All_Courses.html পেজে নিয়ে যাবে -->
+        <a href="All_Courses.html" class="all-courses-btn">
+          All Courses
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+
+      <div class="hero-photo-area">
+        <!-- পিনবোর্ড — ৩ সেকেন্ড পরপর ঘুরতে থাকা ৫টা ছবি; ৬ষ্ঠটা (সবার শেষে) সিমলেস লুপ
+             তৈরির জন্য ১ম ছবিরই একটা ক্লোন — ১ম ছবি বদলালে এই ক্লোনটাও বদলে দিতে হবে -->
+        <div class="pinboard">
+          <div class="pin-track" id="pinTrack">
+
+            <!-- পিনবোর্ড ছবি ১ -->
+            <div class="pin-card">
+              <img src="https://drive.google.com/thumbnail?id=1EBhp2WQxX67bHg-n3IfBHcTUHVnJGl5J&sz=w1000" alt="শিক্ষক ১">
+              <div class="name">শিক্ষক ১</div>
+            </div>
+            <!-- পিনবোর্ড ছবি ২ -->
+            <div class="pin-card">
+              <img src="https://drive.google.com/thumbnail?id=10RBYtYJ6QLCXIWk9RzYCRv7jJE0IC32c&sz=w1000" alt="শিক্ষক ২">
+              <div class="name">শিক্ষক ২</div>
+            </div>
+            <!-- পিনবোর্ড ছবি ৩ -->
+            <div class="pin-card">
+              <img src="https://drive.google.com/thumbnail?id=1vKpuNjA6-sdRXEVsz0bRbBKDiDYpe1HZ&sz=w1000" alt="শিক্ষক ৩">
+              <div class="name">শিক্ষক ৩</div>
+            </div>
+            <!-- পিনবোর্ড ছবি ৪ -->
+            <div class="pin-card">
+              <img src="https://drive.google.com/thumbnail?id=1OJRuJiIo4YmQudchH2fNBwsEkDUjTvMk&sz=w1000" alt="শিক্ষক ৪">
+              <div class="name">শিক্ষক ৪</div>
+            </div>
+            <!-- পিনবোর্ড ছবি ৫ -->
+            <div class="pin-card">
+              <img src="https://drive.google.com/thumbnail?id=1FvjNQ_wFDhC46_bdxf2jbF4miMWK733v&sz=w1000" alt="শিক্ষক ৫">
+              <div class="name">শিক্ষক ৫</div>
+            </div>
+            <!-- ক্লোন (ছবি ১ এর সিমলেস-লুপ ক্লোন — হাত দেওয়ার দরকার নেই, ছবি ১ বদলালে এটাও বদলান) -->
+            <div class="pin-card">
+              <img src="https://drive.google.com/thumbnail?id=1EBhp2WQxX67bHg-n3IfBHcTUHVnJGl5J&sz=w1000" alt="শিক্ষক ১">
+              <div class="name">শিক্ষক ১</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-stats-area">
+        <!-- হিরো স্ট্যাটস — ৪টা সংখ্যা কার্ড (স্ক্রিনে আসলে ০ থেকে গুনে গুনে সংখ্যাটায় উঠবে) -->
+        <div class="hero-stats" id="hero-stats">
+
+          <!-- স্ট্যাটস কার্ড ১ — অভিজ্ঞ শিক্ষক -->
+          <div class="stat-card">
+            <div class="stat-icon-box" style="background:linear-gradient(145deg,#5B8DEF,#1E3A8A); --glow-color:rgba(30,58,138,.55)">
+              <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>
+            </div>
+            <div class="stat-text">
+              <b class="stat-number" style="color:#1E3A8A" data-final="১৫+">০</b>
+              <span>অভিজ্ঞ শিক্ষক</span>
+            </div>
+          </div>
+
+          <!-- স্ট্যাটস কার্ড ২ — শিক্ষার্থী -->
+          <div class="stat-card">
+            <div class="stat-icon-box" style="background:linear-gradient(145deg,#FF7A85,#C82333); --glow-color:rgba(200,35,51,.55)">
+              <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div class="stat-text">
+              <b class="stat-number" style="color:#C82333" data-final="১০০০০+">০</b>
+              <span>শিক্ষার্থী</span>
+            </div>
+          </div>
+
+          <!-- স্ট্যাটস কার্ড ৩ — কোর্সের সংখ্যা -->
+          <div class="stat-card">
+            <div class="stat-icon-box" style="background:linear-gradient(145deg,#4ADE94,#0F5132); --glow-color:rgba(15,81,50,.5)">
+              <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            </div>
+            <div class="stat-text">
+              <b class="stat-number" style="color:#0F5132" data-final="১০+">০</b>
+              <span>কোর্সের সংখ্যা</span>
+            </div>
+          </div>
+
+          <!-- স্ট্যাটস কার্ড ৪ — ইউটিউব সাবস্ক্রাইবার (স্ট্যাটিক সংখ্যা) -->
+          <div class="stat-card">
+            <div class="stat-icon-box" style="background:linear-gradient(145deg,#FF6B6B,#E1302E); --glow-color:rgba(225,48,46,.55)">
+              <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.42a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.42 8.6.42 8.6.42s6.88 0 8.6-.42a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33Z" fill="#fff" stroke="none"/><path d="m9.75 15.02 5.75-3.27-5.75-3.27v6.54Z" fill="#E1302E" stroke="none"/></svg>
+            </div>
+            <div class="stat-text">
+              <b style="color:#E1302E">১০,০০,০০০+</b>
+              <span>ইউটিউব সাবস্ক্রাইবার</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       কোর্সসমূহ সেকশন
+       ============================================================ -->
+  <section id="courses">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">আমাদের প্রোগ্রামসমূহ</span>
+        <p>নিচে থেকে বিভাগ বেছে নিয়ে দেখে নিন কোর্সের বিস্তারিত ও ফি।</p>
+      </div>
+
+      <!-- ============================================================
+           DYNAMIC COURSE AREA
+           Google Sheet-এর ৬টি Tab থেকে category + course data লোড হবে।
+           ============================================================ -->
+      <div class="cat-grid" id="catGrid" aria-label="কোর্স ক্যাটাগরি">
+        <div class="cat-card-skel"><span class="skel-icon"></span><span class="skel-lines"><span class="skel-line big"></span><span class="skel-line small"></span></span></div>
+        <div class="cat-card-skel"><span class="skel-icon"></span><span class="skel-lines"><span class="skel-line big"></span><span class="skel-line small"></span></span></div>
+        <div class="cat-card-skel"><span class="skel-icon"></span><span class="skel-lines"><span class="skel-line big"></span><span class="skel-line small"></span></span></div>
+        <div class="cat-card-skel"><span class="skel-icon"></span><span class="skel-lines"><span class="skel-line big"></span><span class="skel-line small"></span></span></div>
+        <div class="cat-card-skel"><span class="skel-icon"></span><span class="skel-lines"><span class="skel-line big"></span><span class="skel-line small"></span></span></div>
+        <div class="cat-card-skel"><span class="skel-icon"></span><span class="skel-lines"><span class="skel-line big"></span><span class="skel-line small"></span></span></div>
+      </div>
+
+      <div class="course-data-toolbar" id="courseDataToolbar" hidden>
+        <div class="course-result-count" id="courseResultCount"></div>
+      </div>
+
+      <div class="course-grid" id="courseGrid" aria-live="polite">
+        <div class="course-card-skel"><span class="skel-img"></span><span class="skel-top"><span class="skel-pill"></span></span><span class="skel-body"><span class="skel-line title"></span><span class="skel-line desc1"></span><span class="skel-line desc2"></span><span class="skel-foot"><span class="skel-price"></span><span class="skel-btn"></span></span></span></div>
+        <div class="course-card-skel"><span class="skel-img"></span><span class="skel-top"><span class="skel-pill"></span></span><span class="skel-body"><span class="skel-line title"></span><span class="skel-line desc1"></span><span class="skel-line desc2"></span><span class="skel-foot"><span class="skel-price"></span><span class="skel-btn"></span></span></span></div>
+        <div class="course-card-skel"><span class="skel-img"></span><span class="skel-top"><span class="skel-pill"></span></span><span class="skel-body"><span class="skel-line title"></span><span class="skel-line desc1"></span><span class="skel-line desc2"></span><span class="skel-foot"><span class="skel-price"></span><span class="skel-btn"></span></span></span></div>
+      </div>
+
+      <div class="course-data-error" id="courseDataError" hidden>
+        <strong>কোর্সের তথ্য লোড করা যায়নি</strong>
+        <p>ইন্টারনেট কানেকশন চেক করে আবার চেষ্টা করুন।</p>
+        <button type="button" class="btn btn-primary" id="courseRetryBtn">আবার চেষ্টা করুন</button>
+      </div>
+
+  <!-- ============================================================
+       কেন আমরা সেকশন — ৩টা স্ট্যাটিক কার্ড, আইকন + টাইটেল + বর্ণনা কোড দিয়ে বানানো (কোনো ছবি নেই)
+       ============================================================ -->
+  <section id="why">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">আমাদের বিশেষত্ব</span>
+      </div>
+      <div class="why-grid">
+        <!-- কার্ড ১ — অভিজ্ঞ শিক্ষক (বেগুনি) -->
+        <div class="why-card" style="--why-bg-start:#F1EAFF; --why-bg-end:#ffffff; --why-tint:rgba(124,58,237,.14)">
+          <div class="why-icon-box" style="background:linear-gradient(145deg,#A78BFA,#6D28D9); --glow-color:rgba(109,40,217,.5)">
+            <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12.5V17c0 1.5 2.5 3 6 3s6-1.5 6-3v-4.5"/><path d="M22 10v6"/></svg>
+          </div>
+          <div class="why-text">
+            <h3>অভিজ্ঞ শিক্ষক</h3>
+            <p>অভিজ্ঞ শিক্ষকদের সাথে লাইভ ও রেকর্ডেড ক্লাসে শেখা হবে আরও সহজ।</p>
+          </div>
+        </div>
+        <!-- কার্ড ২ — সাজানো স্টাডি প্ল্যান (নীল) -->
+        <div class="why-card" style="--why-bg-start:#EAF3FF; --why-bg-end:#ffffff; --why-tint:rgba(37,99,235,.14)">
+          <div class="why-icon-box" style="background:linear-gradient(145deg,#60A5FA,#1D4ED8); --glow-color:rgba(29,78,216,.5)">
+            <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/><path d="M10.5 8.5v4l4-2-4-2Z" fill="#fff" stroke="none"/></svg>
+          </div>
+          <div class="why-text">
+            <h3>সাজানো স্টাডি প্ল্যান</h3>
+            <p>ভিডিও লেকচার, প্র্যাকটিস শিট ও লাইভ ক্লাস — সব এক জায়গায়।</p>
+          </div>
+        </div>
+        <!-- কার্ড ৩ — স্বপ্নের কাছেই (কমলা) -->
+        <div class="why-card" style="--why-bg-start:#FFF3E6; --why-bg-end:#ffffff; --why-tint:rgba(217,119,6,.14)">
+          <div class="why-icon-box" style="background:linear-gradient(145deg,#FBBF60,#D97706); --glow-color:rgba(217,119,6,.5)">
+            <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1" fill="#fff" stroke="none"/><path d="M17 7l3.5-3.5M20.5 3.5h-3M20.5 3.5v3"/></svg>
+          </div>
+          <div class="why-text">
+            <h3>স্বপ্নের কাছেই</h3>
+            <p>প্রয়োজনের চেয়ে বেশি কোর্স ম্যাটেরিয়াল ও সাজেশন থাকবে হাতের কাছে।</p>
           </div>
         </div>
       </div>
