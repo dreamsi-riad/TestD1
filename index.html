@@ -1060,12 +1060,10 @@ section{ padding:52px 0; }
 }
 .course-data-toolbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:-10px 0 20px}
 .course-result-count{color:var(--ink-soft);font-size:14.5px;font-weight:600}
-.course-reset-btn{border:1px solid var(--paper-line);background:#fff;color:var(--ink);border-radius:999px;padding:9px 16px;font:600 13.5px inherit;cursor:pointer;transition:.2s ease}
-.course-reset-btn:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
 .course-data-error{margin-top:20px;padding:28px;text-align:center;background:#fff;border:1px solid #F0C7C7;border-radius:var(--radius);color:var(--ink)}
 .course-data-error p{color:var(--ink-soft);margin:8px 0 18px}
 .course-empty{grid-column:1/-1;text-align:center;padding:55px 20px;background:#fff;border:1px dashed var(--paper-line);border-radius:var(--radius);color:var(--ink-soft)}
-@media(max-width:600px){.course-data-toolbar{align-items:flex-start;flex-direction:column;margin-top:0}.course-reset-btn{width:100%}}
+@media(max-width:600px){.course-data-toolbar{align-items:flex-start;margin-top:0}}
 
 /* ---------- Why us ---------- */
 .why-grid{
@@ -1695,7 +1693,6 @@ footer{
 
       <div class="course-data-toolbar" id="courseDataToolbar" hidden>
         <div class="course-result-count" id="courseResultCount"></div>
-        <button type="button" class="course-reset-btn" id="courseResetBtn">সব কোর্স দেখুন</button>
       </div>
 
       <div class="course-grid" id="courseGrid" aria-live="polite">
@@ -2126,7 +2123,7 @@ function vaShowToast(message){
   // একটাই "course_name" টেবিলে থাকে, প্রথম কলাম (Level) দিয়ে আলাদা করা হয়। SHEET_TABS
   // তালিকাটা শুধু category card-এর ধারাবাহিক ক্রম আর "কোনো কোর্স নেই" চেকের জন্য রাখা হলো।
   const SHEET_TABS = ['SSC','HSC','BBA','MBA','BBS','BBA Professional'];
-  const catGrid=document.getElementById('catGrid'), courseGrid=document.getElementById('courseGrid'), toolbar=document.getElementById('courseDataToolbar'), resultCount=document.getElementById('courseResultCount'), resetBtn=document.getElementById('courseResetBtn'), errorBox=document.getElementById('courseDataError'), retryBtn=document.getElementById('courseRetryBtn');
+  const catGrid=document.getElementById('catGrid'), courseGrid=document.getElementById('courseGrid'), toolbar=document.getElementById('courseDataToolbar'), resultCount=document.getElementById('courseResultCount'), errorBox=document.getElementById('courseDataError'), retryBtn=document.getElementById('courseRetryBtn');
   const CATEGORY_META={
     'SSC':{color:'#2F6FE4',bg:'#EAF1FE',icon:'<path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12.5V17c0 1.5 2.5 3 6 3s6-1.5 6-3v-4.5"/><path d="M22 10v6"/>'},
     'HSC':{color:'#2FA86C',bg:'#E9F8EF',icon:'<path d="M3 21h18"/><path d="M5 21V9l7-5 7 5v12"/><path d="M9 21v-6h6v6"/><path d="M9 9h.01"/><path d="M15 9h.01"/>'},
@@ -2318,13 +2315,6 @@ function vaShowToast(message){
       errorBox.hidden=false;
     }
   }
-
-  resetBtn.addEventListener('click',()=>{
-    // If top_this mode is active, this button is hidden anyway.
-    // If normal mode is active, reset to all courses.
-    if(allCourses.some(c=>c.topThis===true)) return;
-    renderCourses(null);
-  });
 
   retryBtn.addEventListener('click',loadCourses);
   loadCourses();
