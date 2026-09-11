@@ -1176,7 +1176,7 @@ section{ padding:52px 0; }
 .teacher-card:hover{ transform:translateY(-9px) scale(1.015); border-color:#C9B3FF; box-shadow:0 26px 46px rgba(30,42,71,.20), 0 0 34px 6px rgba(79,143,255,.45); }
 .teacher-photo{
   width:100%;
-  aspect-ratio:0.85;
+  aspect-ratio:0.79;
   object-fit:cover;
   object-position:top center;
   display:block;
@@ -1196,16 +1196,10 @@ section{ padding:52px 0; }
   padding-right:22px;
 }
 .teacher-info .subject{
-  color:rgba(255,255,255,.78);
-  font-size:12.5px;
-  font-weight:500;
-  margin-top:2px;
-}
-.teacher-info .bio{
   color:#fff;
-  font-weight:700;
   font-size:12.5px;
-  margin-top:4px;
+  font-weight:700;
+  margin-top:2px;
 }
 .teacher-arrow{
   position:absolute;
@@ -1235,7 +1229,6 @@ section{ padding:52px 0; }
   .teacher-info{ padding:8px 13px 11px; }
   .teacher-info .name{ font-size:13.5px; }
   .teacher-info .subject{ font-size:11px; margin-top:1px; }
-  .teacher-info .bio{ font-size:11px; margin-top:3px; }
   .teacher-arrow{ width:13px; height:13px; right:11px; bottom:12px; }
 }
 @media(max-width:480px){
@@ -1505,7 +1498,6 @@ footer{
   .course-body p{ font-size:16px; }
   .price-now{ font-size:25px; }
   .teacher-info .name{ font-size:19px; }
-  .teacher-info .bio{ font-size:14.5px; }
 }
 @media(min-width:1920px){
   body{ font-size:19px; }
@@ -1977,7 +1969,7 @@ document.querySelectorAll('#navLinks a').forEach(link => {
       const teachers=(j.data||[]).map(row=>{
         const name=clean(row.name);
         if(!name) return null;
-        return {name, photo:imageUrl(row.photo), subject:clean(row.subject), designation:clean(row.designation)};
+        return {name, photo:imageUrl(row.photo), subject:clean(row.subject)};
       }).filter(Boolean);
 
       if(!teachers.length){
@@ -1991,7 +1983,6 @@ document.querySelectorAll('#navLinks a').forEach(link => {
           <div class="teacher-info">
             <div class="name">${esc(t.name)}</div>
             <div class="subject">${esc(t.subject)}</div>
-            <div class="bio">${esc(t.designation)}</div>
           </div>
           <svg class="teacher-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
         </div>
