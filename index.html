@@ -350,11 +350,24 @@ header.nav{
 .hero-grid{
   display:grid;
   grid-template-columns:1.05fr .95fr;
+  grid-template-areas:
+    "stats levels"
+    "stats photo";
   gap:50px;
   align-items:center;
 }
+.hero-stats-area{ grid-area:stats; }
+.hero-levels-area{ grid-area:levels; }
+.hero-photo-area{ grid-area:photo; }
 @media(max-width:900px){
-  .hero-grid{ grid-template-columns:1fr; gap:20px; }
+  .hero-grid{
+    grid-template-columns:1fr;
+    grid-template-areas:
+      "photo"
+      "stats"
+      "levels";
+    gap:20px;
+  }
 }
 @media(max-width:720px){
   .hero{ padding:10px 0 24px; }
@@ -1490,12 +1503,7 @@ footer{
        ============================================================ -->
   <section class="hero">
     <div class="container hero-grid">
-      <div>
-        <!-- বড় হেডিং — দ্বিতীয় অংশ (span-এর ভেতরেরটুকু) রঙিন করে দেখানো হয় -->
-        <h1>নিজের প্রস্তুতি হোক <span>সঠিক পথে</span></h1>
-        <!-- হেডিং-এর নিচে বড় প্যারাগ্রাফ (lead টেক্সট) -->
-        <p class="lead">অভিজ্ঞ শিক্ষকদের হাত ধরে, সাজানো নোট আর নিয়মিত পরীক্ষার মাধ্যমে গড়ে তুলুন প্রকৃত দক্ষতা — ক্লাসরুমে হোক বা অনলাইনে।</p>
-
+      <div class="hero-stats-area">
         <!-- হিরো স্ট্যাটস — ৩টা সংখ্যা কার্ড (স্ক্রিনে আসলে ০ থেকে গুনে গুনে সংখ্যাটায় উঠবে) -->
         <div class="hero-stats" id="hero-stats">
 
@@ -1535,7 +1543,7 @@ footer{
         </div>
       </div>
 
-      <div>
+      <div class="hero-levels-area">
         <!-- হিরোর ডানপাশে ৩টা লেভেল ব্যাজ: SSC / HSC / BBA — ক্লিক করলে সরাসরি
              কোর্স সেকশনে গিয়ে সেই ক্যাটাগরির কোর্স ফিল্টার হয়ে দেখাবে -->
         <div class="hero-levels">
@@ -1552,7 +1560,9 @@ footer{
             <span>BBA</span>
           </a>
         </div>
+      </div>
 
+      <div class="hero-photo-area">
         <!-- পিনবোর্ড — ৩ সেকেন্ড পরপর ঘুরতে থাকা ৫টা ছবি; ৬ষ্ঠটা (সবার শেষে) সিমলেস লুপ
              তৈরির জন্য ১ম ছবিরই একটা ক্লোন — ১ম ছবি বদলালে এই ক্লোনটাও বদলে দিতে হবে -->
         <div class="pinboard">
