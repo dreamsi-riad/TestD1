@@ -2178,7 +2178,7 @@ function vaShowToast(message){
         features:features(row.featureText),
         category:level,
         slug:'',
-        topThis: String(row.topThis||'').trim().toLowerCase()==='yes'
+        topThis: row.topThis===true || String(row.topThis||'').trim().toLowerCase()==='yes'
       };
     }).filter(Boolean);
   }
