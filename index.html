@@ -535,6 +535,7 @@ header.nav{
 /* সব কোর্স দেখার বাটন — ফ্ল্যাট ডিপ পার্পল */
 .all-courses-btn{
   position:relative;
+  overflow:hidden;
   display:inline-flex;
   align-items:center;
   justify-content:center;
@@ -557,6 +558,21 @@ header.nav{
   width:20px;height:20px;
   flex:0 0 auto;
   transition:transform .2s ease;
+}
+.all-courses-btn::after{
+  content:"";
+  position:absolute;
+  top:0; left:-60%;
+  width:40%; height:100%;
+  background:linear-gradient(115deg, transparent, rgba(255,255,255,.55), transparent);
+  transform:skewX(-20deg);
+  pointer-events:none;
+  animation:allCoursesShine 3s ease-in-out infinite;
+}
+@keyframes allCoursesShine{
+  0%{ left:-60%; }
+  35%{ left:130%; }
+  100%{ left:130%; }
 }
 @media(hover:hover) and (pointer:fine){
   .all-courses-btn:hover{
