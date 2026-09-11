@@ -2385,11 +2385,11 @@ footer a:hover{ color:#fff; }
     renderProfileInfo(data);
     renderEnrolledCourses(data);
     const enrollmentDates=document.getElementById('enrollmentDates');
-    const enrolledCourses=getEnrolledCourses(data);
-    if(enrollmentDates && enrolledCourses.length){
-      const latest=enrolledCourses[enrolledCourses.length-1];
-      enrollmentDates.innerHTML=`Joined: <strong>${escapeHtml(formatDate(latest.enrolledAt))}</strong>`;
-    } else if(enrollmentDates){ enrollmentDates.textContent='—'; }
+    if(enrollmentDates){
+      enrollmentDates.innerHTML = data && data.timestamp
+        ? `Joined: <strong>${escapeHtml(formatDate(data.timestamp))}</strong>`
+        : '—';
+    }
   }
 
   function showAuthUI(){
