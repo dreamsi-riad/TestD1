@@ -496,7 +496,6 @@ document.getElementById('levelBar').addEventListener('click',e=>{
   activeLevel=btn.dataset.level;
   document.querySelectorAll('.level-btn').forEach(x=>x.classList.toggle('active',x===btn));
   render();
-  document.getElementById('courseGrid').scrollIntoView({behavior:'smooth',block:'start'});
 });
 
 document.getElementById('burgerBtn').addEventListener('click',()=>{
