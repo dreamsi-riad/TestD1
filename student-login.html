@@ -2134,7 +2134,7 @@ footer a:hover{ color:#fff; }
     try{
       const response = await fetch(FORM_ENDPOINT, {
         method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'},
-        body:JSON.stringify({action:'get_course_data', courseName, nuDcu:sector, sessionToken:localStorage.getItem(LS_STUDENT_SESSION_TOKEN_KEY) || ''}),
+        body:JSON.stringify({action:'get_course_data', courseName, nuDcu:sector, sessionToken:localStorage.getItem(LS_STUDENT_SESSION_TOKEN_KEY) || '', deviceToken:getDeviceToken()}),
         cache:'no-store'
       });
       if(!response.ok) throw new Error(`Course Data: HTTP ${response.status}`);
@@ -2602,8 +2602,9 @@ footer a:hover{ color:#fff; }
     const timeout = setTimeout(()=>controller.abort(), 20000);
     const requestPayload = {...payload};
     const sessionToken = localStorage.getItem(LS_STUDENT_SESSION_TOKEN_KEY);
-    if(sessionToken && requestPayload.action !== 'login' && requestPayload.action !== 'register'){
-      requestPayload.sessionToken = sessionToken;
+    if(requestPayload.action !== 'login' && requestPayload.action !== 'register'){
+      if(sessionToken) requestPayload.sessionToken = sessionToken;
+      requestPayload.deviceToken = getDeviceToken();
     }
     return fetch(FORM_ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(requestPayload),signal:controller.signal})
       .then(res=>{
