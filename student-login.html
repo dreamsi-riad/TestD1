@@ -513,6 +513,14 @@ header.nav{
   line-height:1.5;
 }
 .enrolled-course-btn.is-locked{ opacity:.75; }
+.lock-reason{
+  display:block;
+  margin-top:4px;
+  color:#c0392b;
+  font-size:clamp(10.5px, 2.8vw, 13px);
+  font-weight:600;
+  line-height:1.35;
+}
 .locked-badge{
   display:inline-block;
   padding:2px 8px;
@@ -2329,6 +2337,18 @@ footer a:hover{ color:#fff; }
     </div>`;
   }
 
+  function showCourseLockedNotice(course){
+    classLearningReset();
+    courseLearningPanel.style.display='block';
+    filterRow.style.display='none';
+    stopClassPlayer();
+    const reason = String(course?.lockComment || '').trim();
+    classList.innerHTML=`<div class="renew-notice">
+      <strong>🔒 এই কোর্সটি লক করা হয়েছে</strong>
+      <p>${reason ? `লক করার কারণ: <strong>${escapeHtml(reason)}</strong>` : 'এই কোর্সটি বর্তমানে লক করা আছে।'}<br>সমস্যা সমাধানের জন্য আমাদের সাথে যোগাযোগ করুন।</p>
+    </div>`;
+  }
+
   function showDeviceBlockedNotice(){
     classLearningReset();
     courseLearningPanel.style.display='block';
@@ -2353,9 +2373,11 @@ footer a:hover{ color:#fff; }
     enrolledCourseList.innerHTML=courses.map((course,i)=>{
       const isExpired = String(course.status||'').trim().toLowerCase()==='expired';
       const isPending = String(course.status||'').trim().toLowerCase()==='pending';
+      const isCourseLocked = isDeviceBlocked || !!course.locked;
+      const lockReason = String(course.lockComment || '').trim();
       
       let badge = '';
-      if (isDeviceBlocked) {
+      if (isCourseLocked) {
         badge = '<span class="locked-badge">🔒 লকড</span>';
       } else if (isExpired) {
         badge = '<span class="expired-badge">মেয়াদ শেষ</span>';
@@ -2365,7 +2387,7 @@ footer a:hover{ color:#fff; }
         badge = '<span class="active-badge">✓ সক্রিয়</span>';
       }
 
-      const lockedClass = isDeviceBlocked ? ' is-locked' : (isExpired ? ' is-expired' : '');
+      const lockedClass = isCourseLocked ? ' is-locked' : (isExpired ? ' is-expired' : '');
       const isSubjectWise = !!parseSubjectWiseCourseId(course.name);
       const displayName = getSubjectWiseDisplayName(course.name);
       const cornerLabel = isSubjectWise ? 'Subject' : 'Course';
@@ -2377,6 +2399,7 @@ footer a:hover{ color:#fff; }
         <span class="ecb-body">
           <span class="ecb-name">${escapeHtml(displayName)}</span>
           <span class="ecb-meta"><span class="ecb-date"><span class="ecb-icon-emoji">📅</span> Enrolled: ${escapeHtml(formatDate(course.enrolledAt))}</span>${badge}</span>
+          ${lockReason ? `<span class="lock-reason">কারণ: ${escapeHtml(lockReason)}</span>` : ''}
           <span class="ecb-watchtime"><span class="ecb-icon-emoji">⏱️</span> <span class="ecb-wt-label">Watch Time:</span> <span class="ecb-wt-value">${escapeHtml(formatWatchTimeValue(getDashboardWatchTimeMinutes(course, String(data?.mobile || getCurrentUserMobile() || '').trim())))}</span></span>
         </span>
       </button>`;
@@ -2387,7 +2410,9 @@ footer a:hover{ color:#fff; }
       if(!course) return;
       const status = String(course.status || '').trim().toLowerCase();
 
-      if(isDeviceBlocked){
+      if(course.locked){
+        showCourseLockedNotice(course);
+      } else if(isDeviceBlocked){
         showDeviceBlockedNotice();
       } else if(status === 'expired'){
         showExpiredNotice(course);
