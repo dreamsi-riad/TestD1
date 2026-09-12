@@ -2673,15 +2673,37 @@ footer a:hover{ color:#fff; }
       .finally(()=>clearTimeout(timeout));
   }
 
+  // get_course_data now requires an ACTIVE enrollment for the exact course
+  // being requested — it can no longer double as a pre-enroll "does this
+  // course have materials yet" check, since the student isn't enrolled at
+  // this point. This uses the lightweight, public, un-authenticated
+  // get_course_availability action instead (same one the homepage uses),
+  // which only returns a flat list of course names — no subject/url/pdf.
+  async function courseMaterialsExist(courseName){
+    try{
+      const response = await fetch(FORM_ENDPOINT, {
+        method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'},
+        body: JSON.stringify({ action:'get_course_availability' }),
+        cache:'no-store'
+      });
+      if(!response.ok) return false;
+      const json = await response.json();
+      if(json.status !== 'ok' || !Array.isArray(json.data)) return false;
+      return json.data.some(name => normalizeForMatch(name) === normalizeForMatch(courseName));
+    }catch(err){
+      console.error('Course availability check failed:', err);
+      return false;
+    }
+  }
+
   async function enrollCourse(courseName){
     const user=JSON.parse(localStorage.getItem(LS_USER_KEY) || 'null');
     if(!user || !user.mobile) return false;
 
     showLoading('কোর্সের class materials যাচাই করা হচ্ছে...');
-    const classCheck = await fetchClassData(courseName);
-    const hasMaterials = classCheck.status === 'ok' && Array.isArray(classCheck.data) && classCheck.data.length > 0;
+    const hasMaterials = await courseMaterialsExist(courseName);
     if(!hasMaterials){
-      throw new Error(classCheck.message || 'এই কোর্সের জন্য এখনো কোনো course materials পাওয়া যায়নি। তাই এখন enroll করা সম্ভব হচ্ছে না, দয়া করে পরে আবার চেষ্টা করুন।');
+      throw new Error('এই কোর্সের জন্য এখনো কোনো course materials পাওয়া যায়নি। তাই এখন enroll করা সম্ভব হচ্ছে না, দয়া করে পরে আবার চেষ্টা করুন।');
     }
 
     showLoading('কোর্সের তথ্য লোড হচ্ছে...');
