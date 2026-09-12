@@ -1308,7 +1308,7 @@ footer a:hover{ color:#fff; }
   const LS_USER_KEY = "va_user";
   const LS_REGISTERED_KEY = "va_registered";
   const LS_DEVICE_TOKEN_KEY = "va_device_token";
-  const LS_STUDENT_SESSION_TOKEN_KEY = "va_student_session_token";
+  const LS_SESSION_TOKEN_KEY = "va_student_session_token";
   function getDeviceToken(){
     let token = localStorage.getItem(LS_DEVICE_TOKEN_KEY);
     if(!token){
@@ -2569,7 +2569,7 @@ footer a:hover{ color:#fff; }
     try{
       const result = await callApi({
         action:'get_student',
-        mobile: normalizeMobileForMatch(mobile),
+        sessionToken: localStorage.getItem(LS_SESSION_TOKEN_KEY) || '',
         deviceToken: getDeviceToken()
       });
       if(!isStillCurrentUser()) return;
@@ -2578,13 +2578,6 @@ footer a:hover{ color:#fff; }
         localStorage.setItem(LS_USER_KEY, JSON.stringify(result.data));
         syncAndRenderDashboard(result.data);
       } else {
-        if(String(result?.message || '').toLowerCase().includes('session')){
-          localStorage.removeItem(LS_STUDENT_SESSION_TOKEN_KEY);
-          localStorage.removeItem(LS_USER_KEY);
-          showAuthUI();
-          showLogin();
-          return;
-        }
         vaShowToast('📶 নেটওয়ার্ক সমস্যা হচ্ছে, একটু পর আবার চেষ্টা করুন।');
         showCourseListError(mobile);
       }
@@ -2600,12 +2593,7 @@ footer a:hover{ color:#fff; }
   function callApi(payload){
     const controller = new AbortController();
     const timeout = setTimeout(()=>controller.abort(), 20000);
-    const requestPayload = {...payload};
-    const sessionToken = localStorage.getItem(LS_STUDENT_SESSION_TOKEN_KEY);
-    if(sessionToken && requestPayload.action !== 'login' && requestPayload.action !== 'register'){
-      requestPayload.sessionToken = sessionToken;
-    }
-    return fetch(FORM_ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(requestPayload),signal:controller.signal})
+    return fetch(FORM_ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload),signal:controller.signal})
       .then(res=>{
         if(!res.ok) throw new Error('সার্ভার থেকে তথ্য পাওয়া যায়নি।');
         return res.json();
@@ -2778,11 +2766,11 @@ footer a:hover{ color:#fff; }
     })
       .then(async function(result){
         if(result.status === 'ok'){
-          if(result.token){
-            localStorage.setItem(LS_STUDENT_SESSION_TOKEN_KEY, String(result.token));
-          }
           result.data.mobile = mobile;
           localStorage.setItem(LS_USER_KEY, JSON.stringify(result.data));
+          if(result.token){
+            localStorage.setItem(LS_SESSION_TOKEN_KEY, String(result.token));
+          }
           localStorage.setItem(LS_REGISTERED_KEY, '1');
           loginForm.reset();
 
@@ -2820,7 +2808,7 @@ footer a:hover{ color:#fff; }
   logoutBtn.addEventListener('click', function(){
     if(!confirm('আপনি কি সত্যিই লগআউট করতে চান?')) return;
     localStorage.removeItem(LS_USER_KEY);
-    localStorage.removeItem(LS_STUDENT_SESSION_TOKEN_KEY);
+    localStorage.removeItem(LS_SESSION_TOKEN_KEY);
     classLearningReset();
     enrolledCourseList.innerHTML='';
     learningEmpty.style.display='block';
