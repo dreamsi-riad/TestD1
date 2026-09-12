@@ -1876,6 +1876,21 @@ footer a:hover{ color:#fff; }
           }
         }
         refreshDashboardWatchTimeDisplay();
+      } else if(result.courseLocked){
+        // Manual course lock freezes watch time. Keep the server-recorded
+        // total visible and discard pending seconds that could not be synced.
+        subtractWatchPendingSeconds(currentWatchCourse, currentWatchSector, mobile, pending);
+        if(typeof result.watchTimeMinutes === 'number'){
+          setWatchBaseMinutes(currentWatchCourse, currentWatchSector, mobile, result.watchTimeMinutes);
+          if(dashboardData){
+            const course = (Array.isArray(dashboardData.courses) ? dashboardData.courses : []).find(c =>
+              normalizeWatchCourse(c?.name) === normalizeWatchCourse(currentWatchCourse) &&
+              normalizeForMatch(c?.nuDcu || '') === normalizeForMatch(currentWatchSector || '')
+            );
+            if(course) course.watchTime = result.watchTimeMinutes;
+          }
+        }
+        refreshDashboardWatchTimeDisplay();
       }
     }catch(err){
       console.error('Current watch-time sync failed:', err);
@@ -2147,7 +2162,18 @@ footer a:hover{ color:#fff; }
       });
       if(!response.ok) throw new Error(`Course Data: HTTP ${response.status}`);
       const json = await response.json();
-      if(json.status === 'error') throw new Error(json.message || 'Course Data API error.');
+      if(json.status === 'error') {
+        if(json.courseLocked) {
+          result = {
+            status: 'locked',
+            lockComment: String(json.lockComment || '').trim(),
+            message: json.message || 'এই কোর্সটি বর্তমানে লক করা আছে।'
+          };
+          classDataCache.set(cacheKey, result);
+          return result;
+        }
+        throw new Error(json.message || 'Course Data API error.');
+      }
       const allRows = Array.isArray(json.data) ? json.data : [];
       const swParsed = parseSubjectWiseCourseId(courseName);
       const sectorNorm = normalizeLoose(sector);
@@ -2220,6 +2246,10 @@ footer a:hover{ color:#fff; }
     chapterSelect.innerHTML = '<option>—</option>';
     classList.innerHTML='<div class="class-loading"><span class="spinner"></span>ক্লাস লোড হচ্ছে...</div>';
     const result = await fetchClassData(courseName, sector);
+    if(result.status === 'locked'){
+      showCourseLockedNotice({lockComment: result.lockComment});
+      return;
+    }
     const rows = (result.status === 'ok' && Array.isArray(result.data)) ? result.data : [];
     if(!rows.length){
       courseLearningPanel.style.display='block';
@@ -2373,7 +2403,7 @@ footer a:hover{ color:#fff; }
     enrolledCourseList.innerHTML=courses.map((course,i)=>{
       const isExpired = String(course.status||'').trim().toLowerCase()==='expired';
       const isPending = String(course.status||'').trim().toLowerCase()==='pending';
-      const isCourseLocked = isDeviceBlocked || !!course.locked;
+      const isCourseLocked = !!course.locked;
       const lockReason = String(course.lockComment || '').trim();
       
       let badge = '';
