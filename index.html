@@ -2416,17 +2416,23 @@ function vaShowToast(message){
         const controller = new AbortController();
         const timeout = setTimeout(()=>controller.abort(), 15000);
         try{
+          // NOTE: get_course_data is now session-protected (student login
+          // required) and also returns full subject/chapter/url/pdfUrl for
+          // every course. The homepage only needs a yes/no "does this course
+          // have materials yet" answer, so it uses the lightweight, public,
+          // un-authenticated get_course_availability action instead, which
+          // returns nothing but a flat list of course names.
           const r = await fetch(VISION_API, {
             method:'POST',
             headers:{'Content-Type':'text/plain;charset=utf-8'},
-            body: JSON.stringify({ action:'get_course_data' }),
+            body: JSON.stringify({ action:'get_course_availability' }),
             cache:'no-store',
             signal:controller.signal
           });
-          if(!r.ok) throw Error(`Course Data: HTTP ${r.status}`);
+          if(!r.ok) throw Error(`Course Availability: HTTP ${r.status}`);
           const json = await r.json();
-          if(json.status === 'error') throw Error(json.message || 'Course Data API returned an error.');
-          return (json.data || []).map(row => ({ courseName: clean(row.courseName) }));
+          if(json.status === 'error') throw Error(json.message || 'Course Availability API returned an error.');
+          return (json.data || []).map(name => ({ courseName: clean(name) }));
         } finally {
           clearTimeout(timeout);
         }
