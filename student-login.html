@@ -2711,7 +2711,6 @@ footer a:hover{ color:#fff; }
     const result=await callApi({
       action:'enroll',
       mobile:normalizeMobileForMatch(fullMobile),
-      displayMobile:fullMobile,
       course:courseName,
       nuDcu:getCourseSector(courseName),
       deviceToken: getDeviceToken()
@@ -2850,7 +2849,6 @@ footer a:hover{ color:#fff; }
     callApi({
       action: 'login',
       mobile: mobileForMatch,
-      displayMobile: mobile,
       password: password,
       deviceToken: getDeviceToken()
     })
