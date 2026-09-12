@@ -1308,6 +1308,7 @@ footer a:hover{ color:#fff; }
   const LS_USER_KEY = "va_user";
   const LS_REGISTERED_KEY = "va_registered";
   const LS_DEVICE_TOKEN_KEY = "va_device_token";
+  const LS_SESSION_TOKEN_KEY = "va_student_session_token";
   function getDeviceToken(){
     let token = localStorage.getItem(LS_DEVICE_TOKEN_KEY);
     if(!token){
@@ -2568,7 +2569,7 @@ footer a:hover{ color:#fff; }
     try{
       const result = await callApi({
         action:'get_student',
-        mobile: normalizeMobileForMatch(mobile),
+        sessionToken: localStorage.getItem(LS_SESSION_TOKEN_KEY) || '',
         deviceToken: getDeviceToken()
       });
       if(!isStillCurrentUser()) return;
@@ -2767,6 +2768,9 @@ footer a:hover{ color:#fff; }
         if(result.status === 'ok'){
           result.data.mobile = mobile;
           localStorage.setItem(LS_USER_KEY, JSON.stringify(result.data));
+          if(result.token){
+            localStorage.setItem(LS_SESSION_TOKEN_KEY, String(result.token));
+          }
           localStorage.setItem(LS_REGISTERED_KEY, '1');
           loginForm.reset();
 
@@ -2804,6 +2808,7 @@ footer a:hover{ color:#fff; }
   logoutBtn.addEventListener('click', function(){
     if(!confirm('আপনি কি সত্যিই লগআউট করতে চান?')) return;
     localStorage.removeItem(LS_USER_KEY);
+    localStorage.removeItem(LS_SESSION_TOKEN_KEY);
     classLearningReset();
     enrolledCourseList.innerHTML='';
     learningEmpty.style.display='block';
