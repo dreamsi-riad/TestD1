@@ -263,6 +263,36 @@ header.nav{
   .course-foot{align-items:flex-end}
   .course-foot .btn{padding:9px 14px;font-size:13px}
 }
+
+/* ===== "বিস্তারিত" বাটনে ক্লিক করলে course এখনো available কিনা যাচাই করার
+   সময় দেখানো toast মেসেজ (নিচে মাঝখানে ভেসে ওঠে, কয়েক সেকেন্ড পর মিলিয়ে যায়) ===== */
+.va-toast{
+  position:fixed;
+  left:50%;
+  bottom:26px;
+  transform:translateX(-50%) translateY(16px);
+  background:var(--ink);
+  color:#fff;
+  padding:14px 24px;
+  border-radius:999px;
+  font-weight:600;
+  font-size:14.5px;
+  box-shadow:0 14px 30px rgba(30,42,71,.3);
+  z-index:9998;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .3s ease, transform .3s ease;
+  max-width:min(90vw, 420px);
+  text-align:center;
+}
+.va-toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+  pointer-events:auto;
+}
+@media (max-width:600px){
+  .va-toast{ font-size:13px; padding:12px 18px; bottom:80px; }
+}
 </style>
 </head>
 
@@ -410,7 +440,7 @@ function cardHtml(c,enrolledKeys){
   }else if(isSubjectWiseTag(c.tag)){
     actionHtml='<a href="per-subject.html" class="btn btn-primary">বিস্তারিত</a>';
   }else{
-    actionHtml=`<a href="course-details.html?course=${encodeURIComponent(c.slug)}" class="btn btn-primary">বিস্তারিত</a>`;
+    actionHtml=`<a href="course-details.html?course=${encodeURIComponent(c.slug)}" data-course-name="${esc(c.name)}" class="btn btn-primary course-details-trigger">বিস্তারিত</a>`;
   }
 
   return `
@@ -518,6 +548,109 @@ document.addEventListener('DOMContentLoaded',()=>{
   }catch(e){}
   loadCourses();
 });
+
+// ============================================================
+// সব জায়গায় ব্যবহারের জন্য common toast function (নিচে মাঝখানে ভেসে ওঠে)
+// ============================================================
+let vaToastTimer = null;
+function vaShowToast(message){
+  let toast = document.getElementById('vaToast');
+  if(!toast){
+    toast = document.createElement('div');
+    toast.id = 'vaToast';
+    toast.className = 'va-toast';
+    document.body.appendChild(toast);
+  }
+  toast.textContent = message;
+  toast.classList.add('show');
+  clearTimeout(vaToastTimer);
+  vaToastTimer = setTimeout(()=>toast.classList.remove('show'), 3200);
+}
+
+// ============================================================
+// "বিস্তারিত" বাটনে ক্লিক করলে সরাসরি course-details.html-এ না পাঠিয়ে
+// আগে চেক করে ঐ কোর্সের নামে কোনো class data আছে কিনা (index.html-এর
+// সাথে সামঞ্জস্যপূর্ণ — একই get_course_availability action ব্যবহার করে)।
+// data না থাকলে course-details.html-এ না গিয়ে toast মেসেজ দেখায়।
+// ============================================================
+(function(){
+  const availabilityCache = new Map();
+  let courseDataRowsPromise = null;
+
+  function loadCourseDataRows(){
+    if(!courseDataRowsPromise){
+      courseDataRowsPromise = (async ()=>{
+        const controller = new AbortController();
+        const timeout = setTimeout(()=>controller.abort(), 15000);
+        try{
+          const r = await fetch(VISION_API, {
+            method:'POST',
+            headers:{'Content-Type':'text/plain;charset=utf-8'},
+            body: JSON.stringify({ action:'get_course_availability' }),
+            cache:'no-store',
+            signal:controller.signal
+          });
+          if(!r.ok) throw Error(`Course Availability: HTTP ${r.status}`);
+          const json = await r.json();
+          if(json.status === 'error') throw Error(json.message || 'Course Availability API returned an error.');
+          return (json.data || []).map(name => ({ courseName: clean(name) }));
+        } finally {
+          clearTimeout(timeout);
+        }
+      })().catch(err=>{ courseDataRowsPromise = null; throw err; });
+    }
+    return courseDataRowsPromise;
+  }
+
+  async function courseHasClassData(courseName){
+    if(availabilityCache.has(courseName)) return availabilityCache.get(courseName);
+    let available = false;
+    try{
+      const rows = await loadCourseDataRows();
+      available = rows.some(r => normalize(r.courseName) === normalize(courseName));
+    }catch(e){
+      console.error('Class availability check failed:', e);
+    }
+    availabilityCache.set(courseName, available);
+    return available;
+  }
+
+  document.addEventListener('click', function(e){
+    const link = e.target.closest('.course-details-trigger');
+    if(!link) return;
+    e.preventDefault();
+    if(link.dataset.checking === '1') return;
+
+    const courseName = link.dataset.courseName || '';
+    const href = link.getAttribute('href');
+    if(!link.dataset.originalText) link.dataset.originalText = link.textContent;
+    link.dataset.checking = '1';
+    link.style.opacity = '.6';
+    link.textContent = 'যাচাই হচ্ছে...';
+
+    courseHasClassData(courseName).then(available=>{
+      if(available){
+        window.location.href = href;
+        return;
+      }
+      vaShowToast('😕 এই কোর্সটি এখনো available না — ক্লাস উপাদান শীঘ্রই যোগ করা হবে।');
+      link.textContent = link.dataset.originalText || link.textContent;
+      link.style.opacity = '';
+      delete link.dataset.checking;
+    });
+  });
+
+  // মোবাইল ব্রাউজারে bfcache থেকে ফিরে এলে বাটন "যাচাই হচ্ছে..." অবস্থায়
+  // আটকে থাকতে পারে — pageshow-তে event.persisted true হলে state রিসেট।
+  window.addEventListener('pageshow', function(e){
+    if(!e.persisted) return;
+    document.querySelectorAll('.course-details-trigger[data-checking="1"]').forEach(function(link){
+      delete link.dataset.checking;
+      link.style.opacity = '';
+      if(link.dataset.originalText) link.textContent = link.dataset.originalText;
+    });
+  });
+})();
 </script>
 </body>
 </html>
