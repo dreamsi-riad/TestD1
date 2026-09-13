@@ -1318,6 +1318,7 @@ section{ padding:30px 0; }
   border:2px solid #E4D8FF;
   background:#fff;
   box-shadow:var(--shadow), 0 0 0 0 rgba(79,143,255,0);
+  cursor:pointer;
   transition:transform .38s cubic-bezier(.22,1,.36,1), box-shadow .38s cubic-bezier(.22,1,.36,1), border-color .38s ease;
 }
 .teacher-card:hover{ transform:translateY(-9px) scale(1.015); border-color:#C9B3FF; box-shadow:0 26px 46px rgba(30,42,71,.20), 0 0 34px 6px rgba(79,143,255,.45); }
@@ -2138,14 +2139,14 @@ document.querySelectorAll('#navLinks a').forEach(link => {
       }
 
       teacherGrid.innerHTML=teachers.map(t=>`
-        <div class="teacher-card">
+        <a class="teacher-card" href="teachers.html">
           <img class="teacher-photo" src="${esc(t.photo)}" alt="${esc(t.name)}" loading="lazy">
           <div class="teacher-info">
             <div class="name">${esc(t.name)}</div>
             <div class="subject">${esc(t.subject)}</div>
           </div>
           <svg class="teacher-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
-        </div>
+        </a>
       `).join('');
     }catch(e){
       console.error(e);
