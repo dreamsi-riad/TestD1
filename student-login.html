@@ -2737,6 +2737,27 @@ footer a:hover{ color:#fff; }
     return true;
   }
 
+  // লেভেল অনুযায়ী ডিপার্টমেন্ট লিস্ট পাল্টানো: HSC নির্বাচন করলে
+  // Science/Commerce/Arts দেখাবে, বাকি সব লেভেলে (BBA, MBA, BBS, BBA Professional)
+  // আগের মতোই ৪টা department option দেখাবে।
+  const DEPARTMENTS_BY_LEVEL = {
+    HSC: ['Science', 'Commerce', 'Arts']
+  };
+  const DEFAULT_DEPARTMENTS = ['Accounting', 'Management', 'Marketing', 'Finance'];
+
+  function updateDepartmentOptions(level){
+    const departments = DEPARTMENTS_BY_LEVEL[level] || DEFAULT_DEPARTMENTS;
+    const select = document.getElementById('reg_department');
+    const previousValue = select.value;
+    select.innerHTML = '<option value="" disabled selected>নির্বাচন করুন</option>' +
+      departments.map(d => `<option value="${d}">${d}</option>`).join('');
+    if(departments.includes(previousValue)) select.value = previousValue;
+  }
+
+  document.getElementById('reg_level').addEventListener('change', function(){
+    updateDepartmentOptions(this.value);
+  });
+
   regForm.addEventListener('submit', function(e){
     e.preventDefault();
     regStatus.className = 'form-status';
