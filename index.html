@@ -1577,32 +1577,17 @@ footer{
   .cta-band{ margin-left:8px; margin-right:8px; }
 }
 
-/* ---------- Large screens: TV / smartboard / large monitors ----------
-   ছোট স্ক্রিনের জন্য উপরে যেমন স্কেল-ডাউন করা আছে, বড় স্ক্রিন (TV/স্মার্টবোর্ড) দূর থেকে
-   দেখা হয় বলে টেক্সট ও এলিমেন্ট আনুপাতিকভাবে একটু বড় করে দেওয়া হলো, যাতে দূর থেকেও স্পষ্ট পড়া যায় */
-@media(min-width:1440px){
-  body{ font-size:18px; }
-  .brand{ font-size:24px; }
-  .brand .brand-logo{ height:72px; }
-  .nav-inner{ height:76px; }
-  .nav-links{ font-size:17px; gap:36px; }
-  .nav-cta{ padding:12px 24px; font-size:16px; }
-  .hero h1{ font-size:clamp(48px, 3.6vw, 68px); }
-  .hero p.lead{ font-size:20px; max-width:58ch; }
-  .btn{ padding:16px 30px; font-size:16.5px; }
-  .stat-text b{ font-size:23px; }
-  .stat-text span{ font-size:13.5px; }
-  
-  .section-head p{ font-size:18px; }
-  .course-body h3{ font-size:23px; }
-  .course-body p{ font-size:16px; }
-  .price-now{ font-size:25px; }
-  .teacher-info .name{ font-size:19px; }
-}
-@media(min-width:1920px){
-  body{ font-size:19px; }
-  .hero h1{ font-size:clamp(56px, 3.4vw, 80px); }
-  .hero p.lead{ font-size:22px; }
+/* ---------- ল্যাপটপ ও তার বড় স্ক্রিন: সবকিছু uniformly ১৫% বড় ----------
+   ফোনে (max-width breakpoint গুলোতে) সাইজ ইতিমধ্যে perfect, তাই ওগুলো অপরিবর্তিত রাখা
+   হয়েছে। কিন্তু আগে বড় স্ক্রিনের জন্য শুধু কিছু নির্দিষ্ট টেক্সট (body font-size, hero,
+   button ইত্যাদি) হাতে-কলমে বড় করা ছিল, আর সেটাও শুরু হতো 1440px থেকে — মানে বেশিরভাগ
+   কমন ল্যাপটপ স্ক্রিন (যেমন 1366px, 1280px চওড়া) পুরোপুরি এর বাইরে থেকে যেত এবং ছোট
+   দেখাত। এখন সেটার বদলে `zoom` দিয়ে পুরো body-টাই ১৫% বড় করা হচ্ছে — এটা আসল লে-আউট
+   রি-ফ্লো করে (শুধু ভিজ্যুয়াল zoom না), তাই card, button, গ্যাপ, আইকন, টেক্সট — সবকিছুই
+   একই অনুপাতে বড় হয়, এবং এটা ল্যাপটপ (~900px) থেকে শুরু করে যেকোনো বড় মনিটর/TV পর্যন্ত
+   সমানভাবে প্রযোজ্য হয়। */
+@media(min-width:901px){
+  body{ zoom:1.15; }
 }
 </style>
 </head>
