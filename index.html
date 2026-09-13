@@ -668,84 +668,93 @@ header.nav{
   .gallery-track img{ height:130px; max-width:200px; border-radius:10px; }
 }
 
-/* ---------- শিক্ষার্থীদের মন্তব্য: ম্যানুয়াল হরাইজন্টাল স্ক্রল কার্ড ---------- */
-/* অটো-স্ক্রল করে না — কমেন্ট বেশি হলে ইউজার নিজে পাশে স্ক্রল করে দেখবে */
-.comment-scroll-wrap{
-  overflow-x:auto;
-  overflow-y:hidden;
-  -webkit-overflow-scrolling:touch;
-  scroll-snap-type:x proximity;
-  padding-bottom:10px;
-  margin-top:8px;
+/* ---------- শিক্ষার্থীদের মতামত: অটো-স্ক্রলিং ১:১ ইমেজ মার্কি (গ্যালারির উল্টো দিকে) ---------- */
+/* ছবিগুলো "gallery" টেবিলের feedback_url কলাম থেকে আসে (drive link → auto-format) */
+.feedback-marquee-wrap{
+  overflow:hidden;
+  position:relative;
+  width:100%;
+  -webkit-mask-image:linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+  mask-image:linear-gradient(to right, transparent, black 6%, black 94%, transparent);
 }
-.comment-track{
+.feedback-track{
   display:flex;
+  align-items:center;
   gap:18px;
   width:max-content;
+  /* গ্যালারি বাম দিকে যায় (0 → -50%), এটা উল্টো দিকে যাবে (-50% → 0) — একই স্পিড/স্টাইল */
+  animation:feedbackScroll 40s linear infinite;
 }
-.comment-card{
+.feedback-track:hover{ animation-play-state:paused; }
+.feedback-track img{
+  height:220px;
+  width:220px;
+  aspect-ratio:1/1;
+  object-fit:cover;
+  border-radius:14px;
+  box-shadow:0 12px 26px rgba(30,42,71,.16);
+  background:#eee;
   flex:0 0 auto;
-  width:270px;
-  background:#fff;
-  border:1px solid var(--paper-line);
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  padding:22px 20px 18px;
-  scroll-snap-align:start;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  text-align:center;
-  transition:transform .3s cubic-bezier(.22,1,.36,1), box-shadow .3s cubic-bezier(.22,1,.36,1);
+  cursor:zoom-in;
 }
-.comment-card:hover{ transform:translateY(-6px); box-shadow:0 22px 40px rgba(30,42,71,.16); }
-.comment-card .comment-icon{
-  width:52px;
-  height:52px;
-  border-radius:50%;
-  background:#D3E4FC;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:#2F6FE4;
-  flex:0 0 auto;
+@keyframes feedbackScroll{
+  from{ transform:translateX(-50%); }
+  to{ transform:translateX(0); }
 }
-.comment-card .comment-icon svg{ width:26px; height:26px; }
-.comment-card .comment-name{
-  font-family:'Baloo Da 2', sans-serif;
-  font-weight:700;
-  font-size:16px;
-  color:var(--ink);
-  margin-top:12px;
-}
-.comment-card .comment-short{
-  color:var(--accent-dark);
-  font-size:12.5px;
-  font-weight:600;
-  margin-top:3px;
-}
-.comment-card .comment-text{
-  color:var(--ink-soft);
-  font-size:13.5px;
-  line-height:1.55;
-  margin-top:12px;
-  display:-webkit-box;
-  -webkit-line-clamp:4;
-  -webkit-box-orient:vertical;
-  overflow:hidden;
-}
-.comment-data-state{
+.feedback-data-state{
   width:100%;
   text-align:center;
   padding:28px 20px;
   color:var(--ink-soft);
-  background:#fff;
-  border:1px solid var(--paper-line);
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
 }
 @media(max-width:640px){
-  .comment-card{ width:230px; padding:18px 16px 14px; }
+  .feedback-track{ gap:12px; }
+  .feedback-track img{ height:130px; width:130px; border-radius:10px; }
+}
+
+/* ---------- ইমেজ প্রিভিউ মোডাল (গ্যালারি/ফিডব্যাক ছবিতে ক্লিক করলে বড় করে দেখা যায়) ---------- */
+.img-modal-overlay{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  background:rgba(15,20,34,.88);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:28px;
+}
+.img-modal-overlay.active{ display:flex; }
+.img-modal-overlay img{
+  max-width:min(90vw, 560px);
+  max-height:85vh;
+  width:auto;
+  height:auto;
+  aspect-ratio:1/1;
+  object-fit:cover;
+  border-radius:18px;
+  box-shadow:0 30px 60px rgba(0,0,0,.45);
+  background:#111;
+}
+.img-modal-close{
+  position:absolute;
+  top:20px;
+  right:24px;
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.32);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:24px;
+  line-height:1;
+  cursor:pointer;
+}
+.img-modal-close:hover{ background:rgba(255,255,255,.24); }
+@media(max-width:640px){
+  .img-modal-close{ top:12px; right:14px; width:38px; height:38px; }
 }
 
 /* ---------- Section shell ---------- */
@@ -1869,21 +1878,28 @@ footer{
   </section>
 
   <!-- ============================================================
-       শিক্ষার্থীদের মন্তব্য — একই "gallery" টেবিল থেকে লোড হয় (student_name,
-       short_text, long_text কলাম থেকে)। ম্যানুয়াল হরাইজন্টাল স্ক্রল — অটো-স্ক্রল নেই।
+       শিক্ষার্থীদের মতামত — একই "gallery" টেবিলের feedback_url কলাম থেকে লোড হয়
+       (drive link → auto-format, ঠিক image_url এর মতোই)। ১:১ রেশিও, অটো-স্ক্রল —
+       গ্যালারির উল্টো দিকে, একই স্পিডে। ছবিতে ক্লিক করলে স্ক্রল থেমে মোডাল খুলবে।
        ============================================================ -->
-  <section id="student-comments">
+  <section id="student-feedback">
     <div class="container">
       <div class="section-head">
         <span class="eyebrow">শিক্ষার্থীদের মতামত</span>
       </div>
-      <div class="comment-scroll-wrap" id="commentScrollWrap">
-        <div class="comment-track" id="commentTrack">
-          <div class="comment-data-state">মন্তব্য লোড হচ্ছে...</div>
-        </div>
+    </div>
+    <div class="feedback-marquee-wrap" id="feedbackWrap">
+      <div class="feedback-track" id="feedbackTrack">
+        <div class="feedback-data-state">মতামত লোড হচ্ছে...</div>
       </div>
     </div>
   </section>
+
+  <!-- ইমেজ প্রিভিউ মোডাল — গ্যালারি ও ফিডব্যাক দুই মার্কির ছবির জন্যই ব্যবহৃত হয় -->
+  <div class="img-modal-overlay" id="imgModalOverlay">
+    <div class="img-modal-close" id="imgModalClose" aria-label="বন্ধ করুন">&times;</div>
+    <img id="imgModalImage" src="" alt="বড় করে দেখুন">
+  </div>
 
   <!-- "আমাদের মেসেজ পাঠান" ফর্ম সেকশন সম্পূর্ণ সরিয়ে দেওয়া হয়েছে -->
 
@@ -2106,18 +2122,46 @@ document.querySelectorAll('#navLinks a').forEach(link => {
 })();
 
 // ============================================================
-// গ্যালারি + শিক্ষার্থীদের মন্তব্য — দুটোই D1 "gallery" টেবিল থেকে আসে (একই action:
-// get_gallery), শুধু ছবি অটো-স্ক্রলিং মার্কিতে যায় আর কমেন্টগুলো ম্যানুয়াল স্ক্রল কার্ডে যায়।
+// গ্যালারি + শিক্ষার্থীদের মতামত (ছবি) — দুটোই D1 "gallery" টেবিল থেকে আসে (একই action:
+// get_gallery)। গ্যালারি image_url কলাম থেকে, মতামত feedback_url কলাম থেকে (উভয়ই
+// drive link → auto-format)। দুটোই অটো-স্ক্রলিং মার্কি, শুধু দিক উল্টো। ছবিতে ক্লিক
+// করলে স্ক্রল থেমে মোডালে বড় করে দেখা যায়।
 // ============================================================
 (function(){
   const galleryWrap = document.getElementById('galleryWrap');
   const galleryTrack = document.getElementById('galleryTrack');
-  const commentTrack = document.getElementById('commentTrack');
-  const commentSection = document.getElementById('student-comments');
-  if(!galleryTrack && !commentTrack) return;
+  const feedbackWrap = document.getElementById('feedbackWrap');
+  const feedbackTrack = document.getElementById('feedbackTrack');
+  const feedbackSection = document.getElementById('student-feedback');
+  if(!galleryTrack && !feedbackTrack) return;
 
   const esc = v => String(v ?? '').trim().replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  const userIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>';
+
+  // ---------- ছবি প্রিভিউ মোডাল ----------
+  const modalOverlay = document.getElementById('imgModalOverlay');
+  const modalImage = document.getElementById('imgModalImage');
+  const modalClose = document.getElementById('imgModalClose');
+  let pausedTrack = null;
+
+  function openImageModal(src, track){
+    if(!modalOverlay || !modalImage) return;
+    modalImage.src = src;
+    modalOverlay.classList.add('active');
+    pausedTrack = track || null;
+    if(pausedTrack) pausedTrack.style.animationPlayState = 'paused';
+  }
+  function closeImageModal(){
+    if(!modalOverlay) return;
+    modalOverlay.classList.remove('active');
+    modalImage.src = '';
+    if(pausedTrack) pausedTrack.style.animationPlayState = 'running';
+    pausedTrack = null;
+  }
+  if(modalOverlay){
+    modalClose?.addEventListener('click', closeImageModal);
+    modalOverlay.addEventListener('click', (e)=>{ if(e.target === modalOverlay) closeImageModal(); });
+    document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeImageModal(); });
+  }
 
   function renderGalleryImages(images){
     if(!galleryTrack || !galleryWrap) return;
@@ -2132,22 +2176,30 @@ document.querySelectorAll('#navLinks a').forEach(link => {
     // যত বেশি ছবি, তত বেশি সময় লাগবে এক চক্র শেষ করতে — যাতে স্পিড সবসময় একরকম আস্তে থাকে
     const duration = Math.max(24, images.length * 5);
     galleryTrack.style.animationDuration = duration + 's';
+
+    galleryTrack.querySelectorAll('img').forEach(img=>{
+      img.style.cursor = 'zoom-in';
+      img.addEventListener('click', ()=> openImageModal(img.src, galleryTrack));
+    });
   }
 
-  function renderComments(comments){
-    if(!commentTrack || !commentSection) return;
-    if(!comments.length){
-      commentSection.style.display = 'none';
+  function renderFeedbackImages(images){
+    if(!feedbackTrack || !feedbackWrap) return;
+    if(!images.length){
+      feedbackWrap.style.display = 'none';
+      if(feedbackSection) feedbackSection.style.display = 'none';
       return;
     }
-    commentTrack.innerHTML = comments.map(c => `
-      <div class="comment-card">
-        <span class="comment-icon">${userIcon}</span>
-        <div class="comment-name">${esc(c.name)}</div>
-        ${c.shortText ? `<div class="comment-short">${esc(c.shortText)}</div>` : ''}
-        ${c.longText ? `<div class="comment-text">${esc(c.longText)}</div>` : ''}
-      </div>
-    `).join('');
+    const imagesHtml = images.map(url => `<img src="${esc(url)}" alt="শিক্ষার্থীর মতামত" loading="lazy">`).join('');
+    feedbackTrack.innerHTML = imagesHtml + imagesHtml;
+
+    // গ্যালারির মতোই স্পিড হিসাব — একই নিয়ম, শুধু keyframes উল্টো দিকে যায়
+    const duration = Math.max(24, images.length * 5);
+    feedbackTrack.style.animationDuration = duration + 's';
+
+    feedbackTrack.querySelectorAll('img').forEach(img=>{
+      img.addEventListener('click', ()=> openImageModal(img.src, feedbackTrack));
+    });
   }
 
   async function loadGallery(){
@@ -2158,17 +2210,18 @@ document.querySelectorAll('#navLinks a').forEach(link => {
       if(j.status === 'error') throw Error(j.message || 'Gallery API error');
 
       // ব্যাকওয়ার্ড-কম্প্যাটিবিলিটি: পুরনো response শুধু array of urls হতে পারে,
-      // নতুন response { images: [...], comments: [...] } — দুটোই সামলানো হয়েছে
+      // নতুন response { images: [...], feedbackImages: [...] } — দুটোই সামলানো হয়েছে
       const data = j.data;
       const images = Array.isArray(data) ? data.filter(Boolean) : (Array.isArray(data?.images) ? data.images.filter(Boolean) : []);
-      const comments = Array.isArray(data?.comments) ? data.comments.filter(c => c && c.name) : [];
+      const feedbackImages = Array.isArray(data?.feedbackImages) ? data.feedbackImages.filter(Boolean) : [];
 
       renderGalleryImages(images);
-      renderComments(comments);
+      renderFeedbackImages(feedbackImages);
     }catch(e){
       console.error('Gallery load failed:', e);
       if(galleryWrap) galleryWrap.style.display = 'none';
-      if(commentSection) commentSection.style.display = 'none';
+      if(feedbackWrap) feedbackWrap.style.display = 'none';
+      if(feedbackSection) feedbackSection.style.display = 'none';
     }
   }
   loadGallery();
