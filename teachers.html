@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<link rel="preload" as="image" href="assets/logo.png" fetchpriority="high">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>শিক্ষকবৃন্দ | VISION Academics</title>
+<meta name="description" content="VISION Academics-এর অভিজ্ঞ শিক্ষকবৃন্দ — যেকোনো শিক্ষকের ছবিতে ক্লিক করে তাঁর পড়ানো কোর্সসমূহ দেখুন।">
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&family=Baloo+Da+2:wght@500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Anek+Bangla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --ink:#1E2A47;
+  --ink-soft:#4A5772;
+  --paper:#FAF7F0;
+  --paper-line:#E7DFCB;
+  --card:#FFFFFF;
+  --accent:#E8A33D;
+  --accent-dark:#C97F1F;
+  --sky:#5B8FBF;
+  --green:#4C8C6B;
+  --margin:#C84B4B;
+  --shadow:0 10px 30px rgba(30,42,71,.08);
+  --radius:14px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'Anek Bangla',sans-serif;
+  line-height:1.65;
+}
+a{text-decoration:none;color:inherit}
+button{font-family:inherit;cursor:pointer}
+.container{max-width:1180px;margin:0 auto;padding:0 clamp(14px,3vw,40px)}
+
+/* Navbar — same as All_Courses.html */
+header.nav{
+  position:sticky;top:0;z-index:50;
+  background:rgba(250,247,240,.94);
+  backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--paper-line);
+}
+.nav-inner{
+  max-width:2300px;margin:0 auto;height:64px;
+  padding:0 clamp(12px,2.6vw,64px);
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+}
+.brand{display:flex;align-items:center;gap:10px}
+.brand-logo{
+  height:64px;max-height:100%;width:auto;aspect-ratio:3.84/1;
+  object-fit:contain;display:block;
+}
+.nav-links{display:flex;gap:30px;font-weight:600;font-size:15.5px}
+.nav-links a{position:relative;color:var(--ink-soft);padding:4px 0}
+.nav-links a:hover,.nav-links a.active{color:var(--ink)}
+.nav-links a::after{
+  content:"";position:absolute;left:0;right:0;bottom:-3px;height:2px;
+  background:var(--accent);transform:scaleX(0);transform-origin:left;
+  transition:transform .25s ease;
+}
+.nav-links a:hover::after,.nav-links a.active::after{transform:scaleX(1)}
+.nav-cta{
+  display:inline-flex;align-items:center;gap:7px;
+  background:linear-gradient(135deg,#263a63,var(--ink) 60%);
+  color:#fff!important;padding:10px 20px;border-radius:999px;
+  font-weight:700;font-size:14.5px;white-space:nowrap;
+  box-shadow:0 3px 10px rgba(30,42,71,.25),inset 0 1px 1px rgba(255,255,255,.12);
+}
+.nav-cta svg{width:16px;height:16px;flex:none}
+.burger{display:none;background:none;border:0;font-size:26px;color:var(--ink)}
+@media(max-width:860px){
+  .nav-links{
+    position:absolute;top:100%;left:0;right:0;background:var(--paper);
+    flex-direction:column;padding:18px 28px 26px;gap:16px;
+    border-bottom:1px solid var(--paper-line);display:none;
+  }
+  .nav-links.open{display:flex}
+  .burger{display:block}
+}
+@media(max-width:480px){
+  .nav-inner{gap:8px;padding:0 12px}
+  .brand-logo{height:42px}
+  .nav-cta{padding:8px 12px;font-size:12.5px;gap:5px}
+  .nav-cta svg{width:14px;height:14px}
+  .burger{font-size:22px}
+}
+
+/* Page heading */
+.page-head{text-align:center;padding:38px 0 22px}
+.page-head .eyebrow{
+  display:inline-block;font-weight:700;font-size:13.5px;letter-spacing:.04em;
+  color:var(--accent-dark);background:#FBEFDA;padding:6px 16px;
+  border-radius:999px;margin-bottom:12px;
+}
+.page-head h1{
+  font-family:'Baloo Da 2',sans-serif;
+  font-weight:800;font-size:clamp(28px,4vw,40px);
+  line-height:1.2;margin:0 0 8px;
+}
+.page-head p{margin:0 auto;color:var(--ink-soft);font-size:15.5px}
+
+/* ---------- Teacher cards — same visual language as .teacher-card
+   (index.html) but sized like .course-card (All_Courses.html) i.e.
+   bigger, laid out in a grid instead of a horizontal-scroll strip ---------- */
+.teacher-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(270px,1fr));
+  gap:24px;
+  padding-bottom:60px;
+}
+.teacher-card{
+  position:relative;
+  border-radius:var(--radius);
+  overflow:hidden;
+  border:1px solid var(--paper-line);
+  background:var(--card);
+  box-shadow:var(--shadow),0 0 0 0 rgba(79,143,255,0);
+  cursor:pointer;
+  transition:transform .38s cubic-bezier(.22,1,.36,1),box-shadow .38s cubic-bezier(.22,1,.36,1),border-color .38s ease;
+}
+.teacher-card:hover{
+  transform:translateY(-9px) scale(1.015);
+  border-color:#C9B3FF;
+  box-shadow:0 26px 46px rgba(30,42,71,.20),0 0 34px 6px rgba(79,143,255,.45);
+}
+.teacher-photo{
+  width:100%;
+  aspect-ratio:0.85;
+  object-fit:cover;
+  object-position:top center;
+  display:block;
+  background:#eee;
+}
+.teacher-info{
+  position:absolute;
+  left:0;right:0;bottom:0;
+  padding:16px 20px 18px;
+  background:linear-gradient(to top, rgba(12,14,26,.90) 0%, rgba(12,14,26,.60) 48%, rgba(12,14,26,0) 100%);
+  color:#fff;
+}
+.teacher-info .name{
+  font-family:'Baloo Da 2', sans-serif;
+  font-weight:700;
+  font-size:20px;
+  padding-right:26px;
+}
+.teacher-info .designation{
+  font-size:13.5px;
+  font-weight:600;
+  opacity:.9;
+  margin-top:2px;
+}
+.teacher-info .subject{
+  color:var(--accent);
+  font-size:13.5px;
+  font-weight:700;
+  margin-top:4px;
+}
+.teacher-arrow{
+  position:absolute;
+  right:18px;
+  bottom:20px;
+  width:19px;
+  height:19px;
+  color:rgba(255,255,255,.9);
+}
+.teacher-hint{
+  position:absolute;
+  top:14px;
+  right:14px;
+  background:rgba(255,255,255,.92);
+  color:var(--ink);
+  font-size:11.5px;
+  font-weight:700;
+  padding:5px 11px;
+  border-radius:999px;
+  box-shadow:0 4px 10px rgba(30,42,71,.15);
+}
+.teacher-data-state{
+  grid-column:1/-1;
+  text-align:center;
+  padding:45px 20px;
+  color:var(--ink-soft);
+  background:#fff;
+  border:1px solid var(--paper-line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+}
+.spinner{
+  width:26px;height:26px;border-radius:50%;
+  border:3px solid var(--paper-line);border-top-color:var(--accent);
+  animation:spin .8s linear infinite;margin:0 auto 10px;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media(max-width:760px){
+  .page-head{padding:28px 0 18px}
+  .teacher-grid{grid-template-columns:1fr 1fr;gap:14px;padding-bottom:45px}
+  .teacher-card:hover{transform:none}
+  .teacher-info{padding:12px 14px 14px}
+  .teacher-info .name{font-size:16px;padding-right:22px}
+  .teacher-info .designation{font-size:11.5px}
+  .teacher-info .subject{font-size:11.5px}
+  .teacher-arrow{width:15px;height:15px;right:13px;bottom:15px}
+}
+@media(max-width:420px){
+  .teacher-grid{grid-template-columns:1fr}
+}
+
+/* ---------- Teacher modal (shows the courses this teacher takes) ---------- */
+.teacher-modal-overlay{
+  position:fixed;inset:0;z-index:200;
+  background:rgba(15,18,32,.58);
+  display:none;
+  align-items:flex-start;justify-content:center;
+  padding:5vh 16px;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+}
+.teacher-modal-overlay.open{display:flex}
+.teacher-modal{
+  background:var(--card);
+  border-radius:20px;
+  width:100%;max-width:620px;
+  box-shadow:0 30px 70px rgba(15,18,32,.35);
+  overflow:hidden;
+  animation:tmPop .28s cubic-bezier(.22,1,.36,1);
+}
+@keyframes tmPop{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+.teacher-modal-close{
+  position:absolute;top:14px;right:14px;
+  width:34px;height:34px;border-radius:50%;
+  background:rgba(255,255,255,.9);
+  border:1px solid var(--paper-line);
+  font-size:17px;line-height:1;color:var(--ink);
+  display:flex;align-items:center;justify-content:center;
+  z-index:2;
+}
+.teacher-modal-close:hover{background:#fff}
+.tm-head{
+  position:relative;
+  display:flex;align-items:center;gap:16px;
+  padding:26px 26px 20px;
+  background:linear-gradient(135deg,#263a63,var(--ink) 65%);
+  color:#fff;
+}
+.tm-head img{
+  width:76px;height:76px;border-radius:16px;object-fit:cover;
+  flex:none;background:#eee;border:2px solid rgba(255,255,255,.35);
+}
+.tm-head-info h2{
+  font-family:'Baloo Da 2',sans-serif;
+  font-size:21px;margin:0 0 3px;line-height:1.3;
+}
+.tm-head-info .designation{font-size:13px;opacity:.85;font-weight:600}
+.tm-head-info .subject{font-size:13.5px;color:var(--accent);font-weight:700;margin-top:3px}
+.tm-body{padding:20px 26px 28px;max-height:60vh;overflow-y:auto}
+.tm-courses-label{
+  font-family:'Baloo Da 2',sans-serif;
+  font-size:14px;font-weight:700;color:var(--ink-soft);
+  text-transform:uppercase;letter-spacing:.04em;
+  margin-bottom:14px;
+}
+.tm-course-list{display:flex;flex-direction:column;gap:10px}
+.tm-course-row{
+  display:flex;align-items:center;gap:14px;
+  padding:10px;border:1px solid var(--paper-line);border-radius:14px;
+  background:var(--paper);
+  transition:border-color .2s ease,transform .2s ease;
+}
+.tm-course-row:hover{border-color:var(--accent);transform:translateY(-2px)}
+.tm-course-thumb{
+  width:64px;height:64px;border-radius:10px;object-fit:cover;
+  flex:none;background:#eee;
+}
+.tm-course-meta{flex:1;min-width:0}
+.tm-course-name{font-weight:700;font-size:15px;line-height:1.3}
+.tm-course-cat{color:var(--ink-soft);font-size:12.5px;margin-top:2px}
+.tm-course-price{
+  font-family:'Baloo Da 2',sans-serif;font-weight:800;font-size:15px;
+  color:#5B4FE9;white-space:nowrap;
+}
+.tm-empty{
+  text-align:center;color:var(--ink-soft);padding:30px 10px;
+  font-size:14.5px;
+}
+
+/* ---------- ল্যাপটপ ও তার বড় স্ক্রিন: uniformly ১০% বড় ---------- */
+@media(min-width:901px){
+  body{ zoom:1.10; }
+}
+</style>
+</head>
+
+<body>
+<header class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand" aria-label="VISION Academics">
+      <img src="assets/logo.png" alt="VISION Academics" class="brand-logo" fetchpriority="high" decoding="async">
+    </a>
+    <nav class="nav-links" id="navLinks">
+      <a href="index.html#courses">কোর্সসমূহ</a>
+      <a href="index.html#why">কেন আমরা</a>
+      <a href="teachers.html" class="active">শিক্ষকবৃন্দ</a>
+      <a href="index.html#videos">ফ্রি ক্লাস</a>
+      <a href="shop.html">শপ</a>
+    </nav>
+    <a href="student-login.html" class="nav-cta" id="navLoginBtn">লগইন</a>
+    <button class="burger" id="burgerBtn" aria-label="মেনু">☰</button>
+  </div>
+</header>
+
+<main>
+  <section>
+    <div class="container">
+      <div class="page-head">
+        <span class="eyebrow">আমাদের টিম</span>
+        <h1>শিক্ষকবৃন্দ</h1>
+        <p>যেকোনো শিক্ষকের ছবিতে ক্লিক করে দেখুন তিনি কোন কোন কোর্স পড়ান।</p>
+      </div>
+
+      <div class="teacher-grid" id="teacherGrid">
+        <div class="teacher-data-state"><div class="spinner"></div>শিক্ষকবৃন্দের তথ্য লোড হচ্ছে...</div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Teacher → courses modal -->
+<div class="teacher-modal-overlay" id="teacherModalOverlay">
+  <div class="teacher-modal" role="dialog" aria-modal="true" aria-labelledby="tmName">
+    <button class="teacher-modal-close" id="teacherModalClose" aria-label="বন্ধ করুন">✕</button>
+    <div class="tm-head">
+      <img id="tmPhoto" src="" alt="">
+      <div class="tm-head-info">
+        <h2 id="tmName"></h2>
+        <div class="designation" id="tmDesignation"></div>
+        <div class="subject" id="tmSubject"></div>
+      </div>
+    </div>
+    <div class="tm-body">
+      <div class="tm-courses-label">এই শিক্ষকের কোর্সসমূহ</div>
+      <div class="tm-course-list" id="tmCourseList"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const VISION_API="https://late-forest-4748.dreamsicreation.workers.dev";
+const normalize=v=>String(v??'').trim().toLowerCase().replace(/[^a-z0-9\u0980-\u09ff]+/g,' ').replace(/\s+/g,' ').trim();
+const clean=v=>String(v??'').trim();
+const esc=v=>clean(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const bn='০১২৩৪৫৬৭৮৯',en='0123456789';
+const toBn=v=>String(v??'').replace(/[0-9]/g,d=>bn[en.indexOf(d)]);
+
+function imageUrl(v){
+  const x=clean(v);
+  const f=x.match(/drive\.google\.com\/file\/d\/([^/]+)/i);
+  const i=x.match(/[?&]id=([^&]+)/i);
+  if(f)return `https://drive.google.com/thumbnail?id=${f[1]}&sz=w1000`;
+  if(x.includes('drive.google.com')&&i)return `https://drive.google.com/thumbnail?id=${i[1]}&sz=w1000`;
+  return x;
+}
+function slugify(v){
+  return clean(v).toLowerCase().replace(/&/g,' and ')
+    .replace(/[^a-z0-9\u0980-\u09ff]+/g,'-').replace(/^-+|-+$/g,'')||'course';
+}
+function uniqueSlug(name,cat,used){
+  const base=slugify(name), cp=slugify(cat);
+  let slug=base;
+  if(used.has(slug)) slug=`${cp}-${base}`;
+  let n=2;
+  while(used.has(slug)) slug=`${cp}-${base}-${n++}`;
+  used.add(slug);
+  return slug;
+}
+function parseFeatures(v){return clean(v).split(/[,،]/).map(clean).filter(Boolean)}
+function formatPrice(v){
+  const x=clean(v);
+  if(!x)return '';
+  return /[৳$€£]/.test(x)?toBn(x):`৳${toBn(x)}`;
+}
+function initials(name){
+  return esc(clean(name).slice(0,1).toUpperCase()||'?');
+}
+
+async function fetchTeachers(){
+  const r=await fetch(VISION_API,{
+    method:'POST',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body:JSON.stringify({action:'get_teachers'}),
+    cache:'no-store'
+  });
+  if(!r.ok)throw Error(`Teachers: HTTP ${r.status}`);
+  const j=await r.json();
+  if(j.status==='error')throw Error(j.message||'Teachers API error');
+  return (j.data||[]).map(row=>{
+    const name=clean(row.name);
+    if(!name)return null;
+    return{
+      name,
+      photo:imageUrl(row.photo),
+      subject:clean(row.subject),
+      designation:clean(row.designation)
+    };
+  }).filter(Boolean);
+}
+
+// একই ভাবে (course-details.html-এর মতো) course_name টেবিলের "teachers"
+// কলাম কমা দিয়ে ভাঙা হচ্ছে, যাতে প্রতিটি কোর্সের সাথে কারা কারা যুক্ত তা জানা যায়।
+async function fetchCourses(){
+  const r=await fetch(VISION_API,{
+    method:'POST',
+    headers:{'Content-Type':'text/plain;charset=utf-8'},
+    body:JSON.stringify({action:'get_courses'}),
+    cache:'no-store'
+  });
+  if(!r.ok)throw Error(`Course Name: HTTP ${r.status}`);
+  const j=await r.json();
+  if(j.status==='error')throw Error(j.message||'Course Name API error');
+
+  const used=new Set();
+  return (j.data||[]).map(row=>{
+    const category=clean(row.level),name=clean(row.name);
+    if(!category||!name)return null;
+    return{
+      name,
+      tag:clean(row.tag),
+      image:imageUrl(row.image),
+      shortDescription:clean(row.shortDescription),
+      price:formatPrice(row.price),
+      oldPrice:formatPrice(row.oldPrice),
+      teacherNames:parseFeatures(row.teachers),
+      category,
+      slug:''
+    };
+  }).filter(Boolean).map(c=>({...c,slug:uniqueSlug(c.name,c.category,used)}));
+}
+
+let allTeachers=[];
+let allCourses=[];
+
+function teacherCardHtml(t){
+  return `
+  <article class="teacher-card" data-teacher="${esc(t.name)}" tabindex="0" role="button" aria-label="${esc(t.name)}-এর কোর্স দেখুন">
+    ${t.photo?`<img class="teacher-photo" src="${esc(t.photo)}" alt="${esc(t.name)}" loading="lazy">`
+      :`<div class="teacher-photo" style="display:flex;align-items:center;justify-content:center;font-family:'Baloo Da 2',sans-serif;font-weight:700;font-size:34px;color:#7B4FE0;background:#F1ECFF">${initials(t.name)}</div>`}
+    <div class="teacher-info">
+      <div class="name">${esc(t.name)}</div>
+      ${t.designation?`<div class="designation">${esc(t.designation)}</div>`:''}
+      ${t.subject?`<div class="subject">${esc(t.subject)}</div>`:''}
+    </div>
+    <span class="teacher-hint">কোর্স দেখুন</span>
+    <svg class="teacher-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+  </article>`;
+}
+
+function renderTeachers(){
+  const grid=document.getElementById('teacherGrid');
+  if(!allTeachers.length){
+    grid.innerHTML='<div class="teacher-data-state">এখনো কোনো শিক্ষক তথ্য পাওয়া যায়নি।</div>';
+    return;
+  }
+  grid.innerHTML=allTeachers.map(teacherCardHtml).join('');
+}
+
+async function loadAll(){
+  const grid=document.getElementById('teacherGrid');
+  try{
+    [allTeachers,allCourses]=await Promise.all([fetchTeachers(),fetchCourses().catch(()=>[])]);
+    renderTeachers();
+  }catch(e){
+    console.error(e);
+    grid.innerHTML='<div class="teacher-data-state">শিক্ষকদের তথ্য লোড করা যায়নি। ইন্টারনেট কানেকশন চেক করুন।</div>';
+  }
+}
+
+// ---------- Modal: দেখানো টিচারের নামের সাথে course.teacherNames মিলিয়ে
+// তার কোর্সগুলো বের করা হচ্ছে (normalize করে, যেমন course-details.html-এ) ----------
+const overlay=document.getElementById('teacherModalOverlay');
+const tmPhoto=document.getElementById('tmPhoto');
+const tmName=document.getElementById('tmName');
+const tmDesignation=document.getElementById('tmDesignation');
+const tmSubject=document.getElementById('tmSubject');
+const tmCourseList=document.getElementById('tmCourseList');
+
+function courseRowHtml(c){
+  const priceHtml=c.price?`<span class="tm-course-price">${esc(c.price)}</span>`:'';
+  return `
+  <a class="tm-course-row" href="course-details.html?course=${encodeURIComponent(c.slug)}">
+    ${c.image?`<img class="tm-course-thumb" src="${esc(c.image)}" alt="${esc(c.name)}" loading="lazy">`:'<div class="tm-course-thumb"></div>'}
+    <div class="tm-course-meta">
+      <div class="tm-course-name">${esc(c.name)}</div>
+      <div class="tm-course-cat">${esc(c.category)}${c.tag?` • ${esc(c.tag)}`:''}</div>
+    </div>
+    ${priceHtml}
+  </a>`;
+}
+
+function openTeacherModal(name){
+  const teacher=allTeachers.find(t=>t.name===name);
+  if(!teacher)return;
+
+  tmPhoto.src=teacher.photo||'';
+  tmPhoto.alt=teacher.name;
+  tmPhoto.style.display=teacher.photo?'':'none';
+  tmName.textContent=teacher.name;
+  tmDesignation.textContent=teacher.designation||'';
+  tmDesignation.style.display=teacher.designation?'':'none';
+  tmSubject.textContent=teacher.subject||'';
+  tmSubject.style.display=teacher.subject?'':'none';
+
+  const key=normalize(teacher.name);
+  const matched=allCourses.filter(c=>(c.teacherNames||[]).some(n=>normalize(n)===key));
+
+  tmCourseList.innerHTML=matched.length
+    ? matched.map(courseRowHtml).join('')
+    : '<div class="tm-empty">এই শিক্ষকের জন্য এখনো কোনো কোর্স যোগ করা হয়নি।</div>';
+
+  overlay.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeTeacherModal(){
+  overlay.classList.remove('open');
+  document.body.style.overflow='';
+}
+
+document.getElementById('teacherGrid').addEventListener('click',e=>{
+  const card=e.target.closest('.teacher-card');
+  if(!card)return;
+  openTeacherModal(card.dataset.teacher);
+});
+document.getElementById('teacherGrid').addEventListener('keydown',e=>{
+  if(e.key!=='Enter' && e.key!==' ')return;
+  const card=e.target.closest('.teacher-card');
+  if(!card)return;
+  e.preventDefault();
+  openTeacherModal(card.dataset.teacher);
+});
+document.getElementById('teacherModalClose').addEventListener('click',closeTeacherModal);
+overlay.addEventListener('click',e=>{ if(e.target===overlay) closeTeacherModal(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape' && overlay.classList.contains('open')) closeTeacherModal(); });
+
+document.getElementById('burgerBtn').addEventListener('click',()=>{
+  document.getElementById('navLinks').classList.toggle('open');
+});
+document.querySelectorAll('#navLinks a').forEach(a=>{
+  a.addEventListener('click',()=>document.getElementById('navLinks').classList.remove('open'));
+});
+
+document.addEventListener('DOMContentLoaded',()=>{
+  const loginBtn=document.getElementById('navLoginBtn');
+  try{
+    const loggedIn=!!localStorage.getItem('va_user');
+    const icon='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>';
+    loginBtn.innerHTML=icon+'<span>'+(loggedIn?'প্রোফাইল':'লগইন')+'</span>';
+  }catch(e){}
+  loadAll();
+});
+</script>
+</body>
+</html>
