@@ -986,6 +986,14 @@ footer a:hover{ color:#fff; }
 .device-modal-agree:not(:disabled):hover{ transform:translateY(-2px); box-shadow:0 10px 22px rgba(232,163,61,.45); }
 .device-modal-agree:disabled{ opacity:.55; cursor:not-allowed; }
 
+/* ---------- ল্যাপটপ ও তার বড় স্ক্রিন: সবকিছু uniformly ১৫% বড় ----------
+   ফোনে (max-width breakpoint গুলোতে) সাইজ ইতিমধ্যে perfect, তাই ওগুলো অপরিবর্তিত।
+   zoom আসল লে-আউট রি-ফ্লো করে (শুধু ভিজ্যুয়াল স্কেল না), তাই card, button, গ্যাপ,
+   আইকন, টেক্সট — সবকিছুই একই অনুপাতে বড় হয়, ল্যাপটপ (~900px) থেকে বড় মনিটর পর্যন্ত। */
+@media(min-width:901px){
+  body{ zoom:1.15; }
+}
+
 </style>
 </head>
 <body>
