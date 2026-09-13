@@ -478,6 +478,7 @@ header.nav{
     inset 0 1px 1px rgba(255,255,255,.55),
     inset 0 -8px 10px rgba(0,0,0,.18);
   transition:transform .3s cubic-bezier(.22,1,.36,1), box-shadow .3s cubic-bezier(.22,1,.36,1);
+  animation:statGlowPulse 2.6s ease-in-out infinite;
 }
 .stat-card:hover .stat-icon-box{
   transform:translateY(-2px) scale(1.05);
@@ -496,6 +497,51 @@ header.nav{
   background:linear-gradient(180deg, rgba(255,255,255,.6), rgba(255,255,255,0) 75%);
   border-radius:50%;
   pointer-events:none;
+}
+/* ঝিলিক (shine) — একটা আলোর রেখা প্রতি কয়েক সেকেন্ডে আইকন বক্সের উপর দিয়ে
+   বয়ে যায়, যাতে ইউজারের চোখে সহজে পড়ে। প্রতিটা কার্ডে আলাদা delay দেওয়া
+   হয়েছে যাতে সবগুলো একসাথে না চমকে, একটার পর একটা চমকায়। */
+.stat-icon-box::after{
+  content:"";
+  position:absolute;
+  top:0;
+  left:-160%;
+  width:55%;
+  height:100%;
+  background:linear-gradient(115deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.9) 50%, rgba(255,255,255,0) 100%);
+  transform:skewX(-22deg);
+  pointer-events:none;
+  animation:statShineSweep 3.4s ease-in-out infinite;
+}
+.stat-card:nth-child(1) .stat-icon-box::after,
+.stat-card:nth-child(1) .stat-icon-box{ animation-delay:0s; }
+.stat-card:nth-child(2) .stat-icon-box::after,
+.stat-card:nth-child(2) .stat-icon-box{ animation-delay:.5s; }
+.stat-card:nth-child(3) .stat-icon-box::after,
+.stat-card:nth-child(3) .stat-icon-box{ animation-delay:1s; }
+.stat-card:nth-child(4) .stat-icon-box::after,
+.stat-card:nth-child(4) .stat-icon-box{ animation-delay:1.5s; }
+@keyframes statShineSweep{
+  0%{ left:-160%; }
+  22%{ left:160%; }
+  100%{ left:160%; }
+}
+@keyframes statGlowPulse{
+  0%,100%{
+    box-shadow:
+      0 8px 16px -4px var(--glow-color, rgba(0,0,0,.3)),
+      inset 0 1px 1px rgba(255,255,255,.55),
+      inset 0 -8px 10px rgba(0,0,0,.18);
+  }
+  50%{
+    box-shadow:
+      0 10px 22px -2px var(--glow-color, rgba(0,0,0,.55)),
+      inset 0 1px 1px rgba(255,255,255,.42),
+      inset 0 -8px 10px rgba(0,0,0,.18);
+  }
+}
+@media (prefers-reduced-motion: reduce){
+  .stat-icon-box, .stat-icon-box::after{ animation:none; }
 }
 .stat-icon{
   width:22px;
@@ -1691,11 +1737,11 @@ footer{
 
           <!-- স্ট্যাটস কার্ড ২ — শিক্ষার্থী -->
           <div class="stat-card">
-            <div class="stat-icon-box" style="background:linear-gradient(145deg,#FF7A85,#C82333); --glow-color:rgba(200,35,51,.55)">
+            <div class="stat-icon-box" style="background:linear-gradient(145deg,#F6C453,#A9740A); --glow-color:rgba(169,116,10,.55)">
               <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
             </div>
             <div class="stat-text">
-              <b class="stat-number" style="color:#C82333" data-final="১০০০০+">০</b>
+              <b class="stat-number" style="color:#A9740A" data-final="১০০০০+">০</b>
               <span>শিক্ষার্থী</span>
             </div>
           </div>
