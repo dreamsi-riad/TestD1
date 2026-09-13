@@ -2823,6 +2823,11 @@ footer a:hover{ color:#fff; }
     function agreeHandler(){
       if(deviceModalAgreeBtn.disabled) return;
       closeModal();
+      // Dialog-e "Yes" click korar sathe sathe smooth loading animation শুরু —
+      // login সম্পন্ন হয়ে dashboard render হওয়া পর্যন্ত এটা দেখাবে। animation টা
+      // নিজে থেকেই বন্ধ হয়ে যাবে renderProfileInfo()-এর ভেতরের hideLoading() কল
+      // থেকে, যেটা dashboard visible হওয়ার ঠিক আগ মুহূর্তে চলে (দেখুন: renderProfileInfo)।
+      showLoading('লগইন করা হচ্ছে...');
       onAgree();
     }
 
