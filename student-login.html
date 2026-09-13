@@ -1043,8 +1043,8 @@ footer a:hover{ color:#fff; }
       <div class="auth-box">
 
         <div class="tab-switch" id="tabSwitch">
-          <button type="button" class="tab-btn" id="tabRegisterBtn">রেজিস্ট্রেশন</button>
           <button type="button" class="tab-btn" id="tabLoginBtn">লগইন</button>
+          <button type="button" class="tab-btn" id="tabRegisterBtn">রেজিস্ট্রেশন</button>
         </div>
 
         <div class="panel" id="registerPanel">
@@ -2583,11 +2583,15 @@ footer a:hover{ color:#fff; }
     }catch(e){
       localStorage.removeItem(LS_USER_KEY);
       showAuthUI();
-      localStorage.getItem(LS_REGISTERED_KEY) ? showLogin() : showRegister();
+      // এখন থেকে সবসময় Login ট্যাব default-এ দেখাবে (আগে registered থাকুক বা না থাকুক) —
+      // Register button-এ ক্লিক করলে তখনো registration করা যাবে, শুধু default view বদলেছে।
+      showLogin();
     }
   } else {
     showAuthUI();
-    localStorage.getItem(LS_REGISTERED_KEY) ? showLogin() : showRegister();
+    // এখন থেকে সবসময় Login ট্যাব default-এ দেখাবে (আগে registered থাকুক বা না থাকুক) —
+    // Register button-এ ক্লিক করলে তখনো registration করা যাবে, শুধু default view বদলেছে।
+    showLogin();
   }
 
   function getSubjectIcon(subject){
