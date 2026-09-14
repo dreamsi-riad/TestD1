@@ -2465,9 +2465,14 @@ footer a:hover{ color:#fff; }
       const discountNum = parseAmount(discountVal) || 0;
       const paidNum = parseAmount(paidVal);
       let dueVal = '';
+      let isFullyPaid = false;
       if (priceNum !== null && paidNum !== null) {
         const due = priceNum - discountNum - paidNum;
-        dueVal = String(due > 0 ? due : 0);
+        if (due > 0) {
+          dueVal = String(due);
+        } else {
+          isFullyPaid = true;
+        }
       }
 
       const priceLine = coursePriceVal
@@ -2476,7 +2481,7 @@ footer a:hover{ color:#fff; }
       const paidLine = paidVal
         ? `<span class="ecb-billing"><span class="ecb-icon-emoji">✅</span> Paid: <span class="ecb-billing-value">${escapeHtml(paidVal)}</span>${dueVal ? `<span class="ecb-billing-due">Due: <span class="ecb-billing-value">${escapeHtml(dueVal)}</span></span>` : ''}</span>`
         : '';
-      const nextDateLine = nextDateVal
+      const nextDateLine = (nextDateVal && !isFullyPaid)
         ? `<span class="ecb-billing"><span class="ecb-icon-emoji">🗓️</span> Next Payment: <span class="ecb-billing-value">${escapeHtml(nextDateVal)}</span></span>`
         : '';
 
