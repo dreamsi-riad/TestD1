@@ -376,6 +376,51 @@ header.nav{
   margin-top:5px;
   padding-top:5px;
   border-top:1px solid var(--paper-line);
+  position:relative;
+  overflow:hidden;
+}
+.learning-view[hidden]{ display:none; }
+@keyframes vaViewInFromRight{
+  from{ opacity:0; transform:translateX(26px); }
+  to{ opacity:1; transform:translateX(0); }
+}
+@keyframes vaViewInFromLeft{
+  from{ opacity:0; transform:translateX(-26px); }
+  to{ opacity:1; transform:translateX(0); }
+}
+.learning-view-detail.va-anim-in{ animation:vaViewInFromRight .32s cubic-bezier(.22,.61,.36,1) both; }
+.learning-view-list.va-anim-in{ animation:vaViewInFromLeft .32s cubic-bezier(.22,.61,.36,1) both; }
+.detail-header{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:14px;
+}
+.detail-back-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  flex-shrink:0;
+  background:#fff;
+  border:1.5px solid var(--paper-line);
+  border-radius:10px;
+  padding:9px 13px;
+  font:700 clamp(12px, 3.3vw, 13.5px)/1 'Anek Bangla',sans-serif;
+  color:var(--ink);
+  cursor:pointer;
+  transition:.15s ease;
+  box-shadow:0 2px 6px rgba(30,42,71,.05);
+}
+.detail-back-btn:hover{ border-color:var(--accent); color:var(--accent-dark, var(--accent)); transform:translateX(-2px); }
+.detail-back-btn svg{ width:15px; height:15px; stroke:currentColor; stroke-width:2.4; fill:none; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+.detail-title{
+  font:700 clamp(15px, 4.2vw, 19px)/1.3 'Anek Bangla',sans-serif;
+  color:var(--ink);
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  flex:1;
+  min-width:0;
 }
 .learning-head{ margin-bottom:8px; }
 .learning-head h3{ font-size:clamp(16px, 4.6vw, 20px); font-weight:700; margin-bottom:1px; }
@@ -1254,60 +1299,74 @@ footer a:hover{ color:#fff; }
         </div>
 
         <div class="learning-area" id="learningArea">
-          <div class="learning-head">
-            <h3>আমার কোর্স</h3>
-            <p>আপনার enrolled course থেকে subject বেছে নিয়ে class দেখুন।</p>
-          </div>
-          <div class="device-blocked-banner" id="deviceBlockedBanner" style="display:none;">
-            ⚠️ <strong>একাধিক ডিভাইসে লগইন সনাক্ত হয়েছে</strong> — আপনার কোর্স লক করা হয়েছে। আনলক করতে আমাদের সাথে যোগাযোগ করুন।
-          </div>
-          <div class="enrolled-course-list" id="enrolledCourseList"></div>
-          <div id="courseLearningPanel" style="display:none;">
-            <div class="filter-row" id="filterRow" style="display:none;">
-              <div class="filter-select-wrap">
-                <select id="subjectSelect" class="filter-select" aria-label="Subject"></select>
-              </div>
-              <div class="filter-select-wrap">
-                <select id="chapterSelect" class="filter-select" aria-label="Chapter"></select>
-              </div>
+
+          <div class="learning-view learning-view-list" id="courseListView">
+            <div class="learning-head">
+              <h3>আমার কোর্স</h3>
+              <p>আপনার enrolled course থেকে subject বেছে নিয়ে class দেখুন।</p>
             </div>
-            <div class="class-search-wrap" id="classSearchWrap" style="display:none;">
-              <input type="text" id="classSearchInput" class="class-search-input" placeholder="🔍 টপিক খুঁজুন...">
+            <div class="device-blocked-banner" id="deviceBlockedBanner" style="display:none;">
+              ⚠️ <strong>একাধিক ডিভাইসে লগইন সনাক্ত হয়েছে</strong> — আপনার কোর্স লক করা হয়েছে। আনলক করতে আমাদের সাথে যোগাযোগ করুন।
             </div>
-            <div class="class-player-wrap" id="classPlayer" style="display:none;">
-              <div class="yt-mount" id="ytMount"></div>
-              <div class="yt-click-catcher" id="ytClickCatcher" title="প্লে/পজ করতে ক্লিক করুন"></div>
-              <div class="custom-controls" id="customControls">
-                <button type="button" class="cc-btn" id="ccPlayPause" aria-label="Play/Pause"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
-                <span class="cc-time" id="ccTime">0:00 / 0:00</span>
-                <input type="range" class="cc-seek" id="ccSeek" min="0" max="1000" value="0" aria-label="Seek">
-                <button type="button" class="cc-btn" id="ccSettings" aria-label="Settings"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.5.5 0 0 0 .12-.61l-1.92-3.32a.5.5 0 0 0-.58-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.5.5 0 0 0-.5-.42h-3.84a.5.5 0 0 0-.5.42l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.5.5 0 0 0-.58.22L2.7 8.87a.5.5 0 0 0 .12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.5.5 0 0 0-.12.61l1.92 3.32c.14.24.44.34.68.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.26.42.5.42h3.84c.24 0 .46-.18.5-.42l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.24.09.54 0 .68-.22l1.92-3.32a.5.5 0 0 0-.12-.61l-2.01-1.58zM12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7z"/></svg></button>
-                <button type="button" class="cc-btn" id="ccFullscreen" aria-label="Fullscreen"><svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zM5 10h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg></button>
-              </div>
-              <div class="cc-settings-panel" id="ccSettingsPanel" style="display:none;">
-                <div class="cc-settings-main" id="ccSettingsMain">
-                  <button type="button" class="cc-settings-row" data-menu="quality">
-                    <span>মান</span>
-                    <span class="cc-settings-right"><span class="cc-settings-value" id="ccQualityValue">Auto</span> ›</span>
-                  </button>
-                  <button type="button" class="cc-settings-row" data-menu="speed">
-                    <span>গতি</span>
-                    <span class="cc-settings-right"><span class="cc-settings-value" id="ccSpeedValue">1x</span> ›</span>
-                  </button>
+            <div class="enrolled-course-list" id="enrolledCourseList"></div>
+            <div class="learning-empty" id="learningEmpty">এখনো কোনো course enrolled নেই।</div>
+          </div>
+
+          <div class="learning-view learning-view-detail" id="courseDetailView" hidden>
+            <div class="detail-header">
+              <button type="button" class="detail-back-btn" id="detailBackBtn" aria-label="ফিরে যান">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+                <span>ফিরে যান</span>
+              </button>
+              <h3 class="detail-title" id="detailTitle">—</h3>
+            </div>
+            <div id="courseLearningPanel" style="display:none;">
+              <div class="filter-row" id="filterRow" style="display:none;">
+                <div class="filter-select-wrap">
+                  <select id="subjectSelect" class="filter-select" aria-label="Subject"></select>
                 </div>
-                <div class="cc-settings-sub" id="ccQualityMenu" style="display:none;">
-                  <button type="button" class="cc-settings-back" data-back="quality">‹ মান</button>
-                  <div id="ccQualityOptions"></div>
-                </div>
-                <div class="cc-settings-sub" id="ccSpeedMenu" style="display:none;">
-                  <button type="button" class="cc-settings-back" data-back="speed">‹ গতি</button>
-                  <div id="ccSpeedOptions"></div>
+                <div class="filter-select-wrap">
+                  <select id="chapterSelect" class="filter-select" aria-label="Chapter"></select>
                 </div>
               </div>
+              <div class="class-search-wrap" id="classSearchWrap" style="display:none;">
+                <input type="text" id="classSearchInput" class="class-search-input" placeholder="🔍 টপিক খুঁজুন...">
+              </div>
+              <div class="class-player-wrap" id="classPlayer" style="display:none;">
+                <div class="yt-mount" id="ytMount"></div>
+                <div class="yt-click-catcher" id="ytClickCatcher" title="প্লে/পজ করতে ক্লিক করুন"></div>
+                <div class="custom-controls" id="customControls">
+                  <button type="button" class="cc-btn" id="ccPlayPause" aria-label="Play/Pause"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+                  <span class="cc-time" id="ccTime">0:00 / 0:00</span>
+                  <input type="range" class="cc-seek" id="ccSeek" min="0" max="1000" value="0" aria-label="Seek">
+                  <button type="button" class="cc-btn" id="ccSettings" aria-label="Settings"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.5.5 0 0 0 .12-.61l-1.92-3.32a.5.5 0 0 0-.58-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.5.5 0 0 0-.5-.42h-3.84a.5.5 0 0 0-.5.42l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.5.5 0 0 0-.58.22L2.7 8.87a.5.5 0 0 0 .12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.5.5 0 0 0-.12.61l1.92 3.32c.14.24.44.34.68.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.26.42.5.42h3.84c.24 0 .46-.18.5-.42l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.24.09.54 0 .68-.22l1.92-3.32a.5.5 0 0 0-.12-.61l-2.01-1.58zM12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7z"/></svg></button>
+                  <button type="button" class="cc-btn" id="ccFullscreen" aria-label="Fullscreen"><svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zM5 10h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg></button>
+                </div>
+                <div class="cc-settings-panel" id="ccSettingsPanel" style="display:none;">
+                  <div class="cc-settings-main" id="ccSettingsMain">
+                    <button type="button" class="cc-settings-row" data-menu="quality">
+                      <span>মান</span>
+                      <span class="cc-settings-right"><span class="cc-settings-value" id="ccQualityValue">Auto</span> ›</span>
+                    </button>
+                    <button type="button" class="cc-settings-row" data-menu="speed">
+                      <span>গতি</span>
+                      <span class="cc-settings-right"><span class="cc-settings-value" id="ccSpeedValue">1x</span> ›</span>
+                    </button>
+                  </div>
+                  <div class="cc-settings-sub" id="ccQualityMenu" style="display:none;">
+                    <button type="button" class="cc-settings-back" data-back="quality">‹ মান</button>
+                    <div id="ccQualityOptions"></div>
+                  </div>
+                  <div class="cc-settings-sub" id="ccSpeedMenu" style="display:none;">
+                    <button type="button" class="cc-settings-back" data-back="speed">‹ গতি</button>
+                    <div id="ccSpeedOptions"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="class-list" id="classList"></div>
             </div>
-            <div class="class-list" id="classList"></div>
           </div>
-          <div class="learning-empty" id="learningEmpty">এখনো কোনো course enrolled নেই।</div>
+
         </div>
 
       </div>
@@ -1445,6 +1504,11 @@ footer a:hover{ color:#fff; }
   const goRegisterLink = document.getElementById('goRegisterLink');
   const logoutBtn = document.getElementById('logoutBtn');
   const enrolledCourseList = document.getElementById('enrolledCourseList');
+  const learningArea = document.getElementById('learningArea');
+  const courseListView = document.getElementById('courseListView');
+  const courseDetailView = document.getElementById('courseDetailView');
+  const detailBackBtn = document.getElementById('detailBackBtn');
+  const detailTitle = document.getElementById('detailTitle');
   const courseLearningPanel = document.getElementById('courseLearningPanel');
   const learningEmpty = document.getElementById('learningEmpty');
   const filterRow = document.getElementById('filterRow');
@@ -2419,6 +2483,39 @@ footer a:hover{ color:#fff; }
     </div>`;
   }
 
+  // ===== COURSE LIST <-> COURSE DETAIL "PAGE" TRANSITION =====
+  // Same physical page — just slides the detail view in/out so it feels
+  // like navigating to a separate screen, without a new .html file.
+  function showCourseDetailView(){
+    if(!courseListView || !courseDetailView) return;
+    courseListView.hidden = true;
+    courseListView.classList.remove('va-anim-in');
+    courseDetailView.hidden = false;
+    courseDetailView.classList.remove('va-anim-in');
+    void courseDetailView.offsetWidth; // reflow so the animation restarts every time
+    courseDetailView.classList.add('va-anim-in');
+    if(learningArea && learningArea.scrollIntoView){
+      learningArea.scrollIntoView({behavior:'smooth', block:'start'});
+    }
+  }
+
+  function showCourseListView(){
+    if(!courseListView || !courseDetailView) return;
+    courseDetailView.hidden = true;
+    courseDetailView.classList.remove('va-anim-in');
+    courseListView.hidden = false;
+    courseListView.classList.remove('va-anim-in');
+    void courseListView.offsetWidth;
+    courseListView.classList.add('va-anim-in');
+  }
+
+  if(detailBackBtn){
+    detailBackBtn.addEventListener('click', ()=>{
+      classLearningReset();
+      showCourseListView();
+    });
+  }
+
   function renderEnrolledCourses(data){
     dashboardData = data || null;
     startDashboardWatchTimeDisplay();
@@ -2427,6 +2524,10 @@ footer a:hover{ color:#fff; }
     const deviceBlockedBanner = document.getElementById('deviceBlockedBanner');
     if(deviceBlockedBanner) deviceBlockedBanner.style.display = isDeviceBlocked ? 'flex' : 'none';
     enrolledCourseList.innerHTML=''; classLearningReset();
+    // Full dashboard (re)renders (login / refresh) always start back on the
+    // course-grid "page", not stuck inside whichever course was last opened.
+    if(courseDetailView) { courseDetailView.hidden = true; courseDetailView.classList.remove('va-anim-in'); }
+    if(courseListView) { courseListView.hidden = false; courseListView.classList.remove('va-anim-in'); }
     if(!courses.length){ learningEmpty.style.display='block'; return; }
     learningEmpty.style.display='none';
     enrolledCourseList.innerHTML=courses.map((course,i)=>{
@@ -2506,6 +2607,9 @@ footer a:hover{ color:#fff; }
       if(!course) return;
       const status = String(course.status || '').trim().toLowerCase();
 
+      if(detailTitle) detailTitle.textContent = getSubjectWiseDisplayName(course.name) || course.name || 'কোর্স';
+      showCourseDetailView();
+
       if(course.locked){
         showCourseLockedNotice(course);
       } else if(isDeviceBlocked){
@@ -2519,7 +2623,6 @@ footer a:hover{ color:#fff; }
       }
     };
     enrolledCourseList.querySelectorAll('.enrolled-course-btn').forEach(btn=>btn.addEventListener('click',()=>selectCourse(Number(btn.dataset.idx))));
-    selectCourse(0);
   }
 
   function renderProfileInfo(data){
