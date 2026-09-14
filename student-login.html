@@ -830,43 +830,6 @@ header.nav{
   0%{ background-position:100% 50%; }
   100%{ background-position:0 50%; }
 }
-.enrolled-course-skel{ display:grid; gap:10px; margin-bottom:14px; }
-.enrolled-course-skel .skel-card{
-  position:relative;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:12px 14px;
-  min-height:46px;
-  border:1px solid var(--paper-line);
-  border-radius:10px;
-  background:var(--paper);
-  overflow:hidden;
-}
-.enrolled-course-skel .skel-icon{
-  width:32px; height:32px;
-  border-radius:50%;
-  background:#ece4cf;
-  flex-shrink:0;
-}
-.enrolled-course-skel .skel-lines{ flex:1; display:flex; flex-direction:column; gap:7px; }
-.enrolled-course-skel .skel-line{ height:11px; border-radius:6px; background:#ece4cf; }
-.enrolled-course-skel .skel-line-title{ width:62%; }
-.enrolled-course-skel .skel-line-sub{ width:36%; height:9px; }
-.enrolled-course-skel .skel-card::after{
-  content:'';
-  position:absolute;
-  top:0; left:-60%;
-  width:60%; height:100%;
-  background:linear-gradient(90deg, transparent, rgba(255,255,255,.75), transparent);
-  animation:skel-sweep 1.6s ease-in-out infinite;
-}
-.enrolled-course-skel .skel-card:nth-child(2)::after{ animation-delay:.22s; }
-@keyframes skel-sweep{
-  0%{ left:-60%; }
-  100%{ left:120%; }
-}
-
 .va-toast{
   position:fixed;
   left:50%;
@@ -2669,10 +2632,7 @@ footer a:hover{ color:#fff; }
     if(deviceBlockedBanner) deviceBlockedBanner.style.display = 'none';
     learningEmpty.style.display = 'none';
     classLearningReset();
-    enrolledCourseList.innerHTML = `<div class="enrolled-course-skel">
-      <div class="skel-card"><span class="skel-icon"></span><span class="skel-lines"><span class="skel-line skel-line-title"></span><span class="skel-line skel-line-sub"></span></span></div>
-      <div class="skel-card"><span class="skel-icon"></span><span class="skel-lines"><span class="skel-line skel-line-title"></span><span class="skel-line skel-line-sub"></span></span></div>
-    </div>`;
+    enrolledCourseList.innerHTML = `<div class="class-loading"><span class="spinner"></span>কোর্স লোড হচ্ছে...</div>`;
   }
 
   let vaToastTimer = null;
