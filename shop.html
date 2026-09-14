@@ -132,6 +132,11 @@
         .product-image {
             width: 100%;
             aspect-ratio: 4/3;
+            display: block;
+            object-fit: cover;
+        }
+        /* ছবি না থাকলে placeholder হিসেবে <div class="product-image"> ব্যবহার হয় — শুধু তখনই টেক্সট + প্যাডিং + গ্রেডিয়েন্ট দেখাবে */
+        div.product-image {
             display: flex;
             align-items: center;
             justify-content: center;
@@ -141,7 +146,6 @@
             font-weight: 700;
             font-size: 16px;
             color: #fff;
-            object-fit: cover;
             background: linear-gradient(135deg,#1E2A47,#2F3F66);
         }
         .shop-status-msg {
