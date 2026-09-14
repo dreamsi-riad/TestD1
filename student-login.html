@@ -453,6 +453,14 @@ header.nav{
 .ecb-billing .ecb-icon-emoji{ font-size:13px; line-height:1; }
 .ecb-billing-value{ font-weight:700; color:var(--ink); }
 .ecb-billing-discount{ font-weight:600; color:var(--ink-soft); }
+.ecb-billing-due{
+  margin-left:10px;
+  padding-left:10px;
+  border-left:1px solid var(--paper-line, #e4d9bd);
+  color:#c0392b;
+  font-weight:600;
+}
+.ecb-billing-due .ecb-billing-value{ color:#c0392b; }
 .ecb-name{ color:var(--ink); order:1; }
 .ecb-meta{ display:flex; align-items:center; flex-wrap:wrap; gap:6px; order:2; }
 .ecb-date{
@@ -2449,11 +2457,24 @@ footer a:hover{ color:#fff; }
       const paidVal = String(course.paid || '').trim();
       const nextDateVal = String(course.nextDate || '').trim();
 
+      const parseAmount = v => {
+        const n = parseFloat(String(v).replace(/[^\d.-]/g, ''));
+        return isNaN(n) ? null : n;
+      };
+      const priceNum = parseAmount(coursePriceVal);
+      const discountNum = parseAmount(discountVal) || 0;
+      const paidNum = parseAmount(paidVal);
+      let dueVal = '';
+      if (priceNum !== null && paidNum !== null) {
+        const due = priceNum - discountNum - paidNum;
+        dueVal = String(due > 0 ? due : 0);
+      }
+
       const priceLine = coursePriceVal
-        ? `<span class="ecb-billing"><span class="ecb-icon-emoji">💰</span> Price: <span class="ecb-billing-value">${escapeHtml(coursePriceVal)}</span>${discountVal ? ` <span class="ecb-billing-discount">(${escapeHtml(discountVal)})</span>` : ''}</span>`
+        ? `<span class="ecb-billing"><span class="ecb-icon-emoji">💰</span> Price: <span class="ecb-billing-value">${escapeHtml(coursePriceVal)}</span>${discountVal ? ` <span class="ecb-billing-discount">(dis: ${escapeHtml(discountVal)})</span>` : ''}</span>`
         : '';
       const paidLine = paidVal
-        ? `<span class="ecb-billing"><span class="ecb-icon-emoji">✅</span> Paid: <span class="ecb-billing-value">${escapeHtml(paidVal)}</span></span>`
+        ? `<span class="ecb-billing"><span class="ecb-icon-emoji">✅</span> Paid: <span class="ecb-billing-value">${escapeHtml(paidVal)}</span>${dueVal ? `<span class="ecb-billing-due">Due: <span class="ecb-billing-value">${escapeHtml(dueVal)}</span></span>` : ''}</span>`
         : '';
       const nextDateLine = nextDateVal
         ? `<span class="ecb-billing"><span class="ecb-icon-emoji">🗓️</span> Next Payment: <span class="ecb-billing-value">${escapeHtml(nextDateVal)}</span></span>`
