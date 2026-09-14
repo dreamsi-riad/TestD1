@@ -1216,7 +1216,7 @@ footer a:hover{ color:#fff; }
   <section class="auth-wrap" id="dashboardSection" style="display:none;">
     <div class="container">
       <div class="auth-box">
-        <div class="dash-head-v2">
+        <div class="dash-head-v2" id="dashHeadV2">
           <div class="profile-panel">
             <div class="profile-panel-avatar" aria-hidden="true">
               <svg viewBox="0 0 24 24">
@@ -1505,6 +1505,7 @@ footer a:hover{ color:#fff; }
   const logoutBtn = document.getElementById('logoutBtn');
   const enrolledCourseList = document.getElementById('enrolledCourseList');
   const learningArea = document.getElementById('learningArea');
+  const dashHeadV2 = document.getElementById('dashHeadV2');
   const courseListView = document.getElementById('courseListView');
   const courseDetailView = document.getElementById('courseDetailView');
   const detailBackBtn = document.getElementById('detailBackBtn');
@@ -2494,6 +2495,14 @@ footer a:hover{ color:#fff; }
     courseDetailView.classList.remove('va-anim-in');
     void courseDetailView.offsetWidth; // reflow so the animation restarts every time
     courseDetailView.classList.add('va-anim-in');
+    if(dashHeadV2) dashHeadV2.style.display = 'none';
+    // Push a history entry so the device/browser back button closes this
+    // "page" instead of leaving the site — see popstate handler below.
+    try{
+      if(!history.state || history.state.vaView !== 'courseDetail'){
+        history.pushState({vaView:'courseDetail'}, '', location.pathname + location.search + '#course-materials');
+      }
+    }catch(e){}
     if(learningArea && learningArea.scrollIntoView){
       learningArea.scrollIntoView({behavior:'smooth', block:'start'});
     }
@@ -2507,13 +2516,30 @@ footer a:hover{ color:#fff; }
     courseListView.classList.remove('va-anim-in');
     void courseListView.offsetWidth;
     courseListView.classList.add('va-anim-in');
+    if(dashHeadV2) dashHeadV2.style.display = '';
   }
 
-  if(detailBackBtn){
-    detailBackBtn.addEventListener('click', ()=>{
+  // "ফিরে যান" বাটন চাপলে সত্যিকারের browser history.back() ট্রিগার করা হয়,
+  // যাতে UI বাটন আর ডিভাইসের physical/browser back বাটন — দুটোই একই পথে
+  // (popstate হ্যান্ডলারে) গিয়ে একইভাবে কোর্স-লিস্ট ভিউতে ফিরে আসে।
+  function goBackToCourseList(){
+    if(history.state && history.state.vaView === 'courseDetail'){
+      history.back();
+    } else {
       classLearningReset();
       showCourseListView();
-    });
+    }
+  }
+
+  window.addEventListener('popstate', function(){
+    if(courseDetailView && !courseDetailView.hidden){
+      classLearningReset();
+      showCourseListView();
+    }
+  });
+
+  if(detailBackBtn){
+    detailBackBtn.addEventListener('click', goBackToCourseList);
   }
 
   function renderEnrolledCourses(data){
@@ -2528,6 +2554,7 @@ footer a:hover{ color:#fff; }
     // course-grid "page", not stuck inside whichever course was last opened.
     if(courseDetailView) { courseDetailView.hidden = true; courseDetailView.classList.remove('va-anim-in'); }
     if(courseListView) { courseListView.hidden = false; courseListView.classList.remove('va-anim-in'); }
+    if(dashHeadV2) dashHeadV2.style.display = '';
     if(!courses.length){ learningEmpty.style.display='block'; return; }
     learningEmpty.style.display='none';
     enrolledCourseList.innerHTML=courses.map((course,i)=>{
