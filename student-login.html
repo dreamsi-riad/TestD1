@@ -441,6 +441,18 @@ header.nav{
   color:var(--accent-dark, #b9791f);
 }
 .ecb-watchtime .ecb-icon-emoji{ font-size:13px; line-height:1; }
+.ecb-billing{
+  font-size:clamp(11px, 2.9vw, 13.5px);
+  font-weight:600;
+  color:var(--ink-soft);
+  display:flex;
+  align-items:center;
+  gap:5px;
+  order:4;
+}
+.ecb-billing .ecb-icon-emoji{ font-size:13px; line-height:1; }
+.ecb-billing-value{ font-weight:700; color:var(--ink); }
+.ecb-billing-discount{ font-weight:600; color:var(--ink-soft); }
 .ecb-name{ color:var(--ink); order:1; }
 .ecb-meta{ display:flex; align-items:center; flex-wrap:wrap; gap:6px; order:2; }
 .ecb-date{
@@ -2431,6 +2443,22 @@ footer a:hover{ color:#fff; }
       const displayName = getSubjectWiseDisplayName(course.name);
       const cornerLabel = isSubjectWise ? 'Subject' : 'Course';
       const iconEmoji = isSubjectWise ? getSubjectIcon(displayName) : '🎓';
+
+      const coursePriceVal = String(course.coursePrice || '').trim();
+      const discountVal = String(course.discount || '').trim();
+      const paidVal = String(course.paid || '').trim();
+      const nextDateVal = String(course.nextDate || '').trim();
+
+      const priceLine = coursePriceVal
+        ? `<span class="ecb-billing"><span class="ecb-icon-emoji">💰</span> Price: <span class="ecb-billing-value">${escapeHtml(coursePriceVal)}</span>${discountVal ? ` <span class="ecb-billing-discount">(${escapeHtml(discountVal)})</span>` : ''}</span>`
+        : '';
+      const paidLine = paidVal
+        ? `<span class="ecb-billing"><span class="ecb-icon-emoji">✅</span> Paid: <span class="ecb-billing-value">${escapeHtml(paidVal)}</span></span>`
+        : '';
+      const nextDateLine = nextDateVal
+        ? `<span class="ecb-billing"><span class="ecb-icon-emoji">🗓️</span> Next Payment: <span class="ecb-billing-value">${escapeHtml(nextDateVal)}</span></span>`
+        : '';
+
       return `<button type="button" class="enrolled-course-btn${i===0?' active':''}${lockedClass}" data-course="${escapeHtml(course.name)}" data-sector="${escapeHtml(course.nuDcu||'')}" data-idx="${i}">
         <span class="ecb-corner-badge">${cornerLabel}</span>
         ${course.nuDcu ? `<span class="ecb-sector-badge">${escapeHtml(course.nuDcu)}</span>` : ''}
@@ -2440,6 +2468,9 @@ footer a:hover{ color:#fff; }
           <span class="ecb-meta"><span class="ecb-date"><span class="ecb-icon-emoji">📅</span> Enrolled: ${escapeHtml(formatDate(course.enrolledAt))}</span>${badge}</span>
           ${lockReason ? `<span class="lock-reason">কারণ: ${escapeHtml(lockReason)}</span>` : ''}
           <span class="ecb-watchtime"><span class="ecb-icon-emoji">⏱️</span> <span class="ecb-wt-label">Watch Time:</span> <span class="ecb-wt-value">${escapeHtml(formatWatchTimeValue(getDashboardWatchTimeMinutes(course, String(data?.mobile || getCurrentUserMobile() || '').trim())))}</span></span>
+          ${priceLine}
+          ${paidLine}
+          ${nextDateLine}
         </span>
       </button>`;
     }).join('');
