@@ -1014,6 +1014,28 @@ footer a:hover{ color:#fff; }
 }
 .device-modal-agree:not(:disabled):hover{ transform:translateY(-2px); box-shadow:0 10px 22px rgba(232,163,61,.45); }
 .device-modal-agree:disabled{ opacity:.55; cursor:not-allowed; }
+.otp-input{
+  width:100%;
+  box-sizing:border-box;
+  text-align:center;
+  font-size:24px;
+  letter-spacing:10px;
+  padding:12px 10px;
+  margin:16px 0 4px;
+  border:1px solid #ddd;
+  border-radius:10px;
+  font-family:inherit;
+}
+.otp-input:focus{ outline:none; border-color:#E8A33D; }
+.otp-resend-btn{
+  background:none;
+  border:none;
+  color:#E8A33D;
+  font-weight:600;
+  cursor:pointer;
+  padding:0;
+}
+.otp-resend-btn:disabled{ color:#999; cursor:not-allowed; }
 
 /* ---------- ল্যাপটপ ও তার বড় স্ক্রিন: সবকিছু uniformly ১০% বড় ----------
    ফোনে (max-width breakpoint গুলোতে) সাইজ ইতিমধ্যে perfect, তাই ওগুলো অপরিবর্তিত।
@@ -1046,6 +1068,26 @@ footer a:hover{ color:#fff; }
       <button type="button" class="device-modal-cancel" id="deviceModalCancelBtn">Cancel</button>
       <button type="button" class="device-modal-agree" id="deviceModalAgreeBtn" disabled>Yes, I Agree (10)</button>
     </div>
+  </div>
+</div>
+
+<div class="device-modal-overlay" id="otpModalOverlay" role="dialog" aria-modal="true" aria-labelledby="otpModalTitle">
+  <div class="device-modal-box">
+    <div class="device-modal-icon">📩</div>
+    <div class="device-modal-title" id="otpModalTitle">মোবাইল যাচাই করুন</div>
+    <div class="device-modal-text" id="otpModalText">
+      <span id="otpModalMobile"></span> নম্বরে ৬ সংখ্যার OTP পাঠানো হয়েছে। নিচে কোডটি বসান।
+    </div>
+    <input type="text" id="otpInput" inputmode="numeric" pattern="[0-9]*" maxlength="6"
+           autocomplete="one-time-code" placeholder="৬ সংখ্যার OTP" class="otp-input">
+    <p class="form-status" id="otpModalStatus"></p>
+    <div class="device-modal-actions">
+      <button type="button" class="device-modal-cancel" id="otpModalCancelBtn">Cancel</button>
+      <button type="button" class="device-modal-agree" id="otpModalVerifyBtn">যাচাই করুন</button>
+    </div>
+    <p class="switch-hint" style="margin-top:12px;">
+      OTP পাননি? <button type="button" class="otp-resend-btn" id="otpResendBtn" disabled>আবার পাঠান (60)</button>
+    </p>
   </div>
 </div>
 
@@ -2816,7 +2858,7 @@ footer a:hover{ color:#fff; }
     const timeout = setTimeout(()=>controller.abort(), 20000);
     const requestPayload = {...payload};
     const sessionToken = localStorage.getItem(LS_STUDENT_SESSION_TOKEN_KEY);
-    if(requestPayload.action !== 'login' && requestPayload.action !== 'register'){
+    if(requestPayload.action !== 'login' && requestPayload.action !== 'register' && requestPayload.action !== 'register_send_otp'){
       if(sessionToken) requestPayload.sessionToken = sessionToken;
       requestPayload.deviceToken = getDeviceToken();
     }
@@ -2904,6 +2946,147 @@ footer a:hover{ color:#fff; }
     updateDepartmentOptions(this.value);
   });
 
+  // ============================================================
+  // REGISTRATION OTP MODAL
+  // ============================================================
+  const otpModalOverlay = document.getElementById('otpModalOverlay');
+  const otpModalMobile = document.getElementById('otpModalMobile');
+  const otpModalStatus = document.getElementById('otpModalStatus');
+  const otpInput = document.getElementById('otpInput');
+  const otpModalVerifyBtn = document.getElementById('otpModalVerifyBtn');
+  const otpModalCancelBtn = document.getElementById('otpModalCancelBtn');
+  const otpResendBtn = document.getElementById('otpResendBtn');
+
+  const OTP_RESEND_COOLDOWN_SECONDS = 60;
+  let otpResendTimer = null;
+  let currentOtpId = '';
+  let pendingRegistrationPayload = null; // full registration payload minus otpId/otp
+
+  function setOtpModalStatus(message, isError){
+    otpModalStatus.textContent = message || '';
+    otpModalStatus.className = 'form-status' + (message ? (' show ' + (isError ? 'err' : 'ok')) : '');
+  }
+
+  function startOtpResendCountdown(){
+    let secondsLeft = OTP_RESEND_COOLDOWN_SECONDS;
+    otpResendBtn.disabled = true;
+    otpResendBtn.textContent = `আবার পাঠান (${secondsLeft})`;
+    if(otpResendTimer) clearInterval(otpResendTimer);
+    otpResendTimer = setInterval(function(){
+      secondsLeft--;
+      if(secondsLeft <= 0){
+        clearInterval(otpResendTimer);
+        otpResendTimer = null;
+        otpResendBtn.disabled = false;
+        otpResendBtn.textContent = 'আবার পাঠান';
+      } else {
+        otpResendBtn.textContent = `আবার পাঠান (${secondsLeft})`;
+      }
+    }, 1000);
+  }
+
+  function closeOtpModal(){
+    otpModalOverlay.classList.remove('show');
+    if(otpResendTimer){ clearInterval(otpResendTimer); otpResendTimer = null; }
+    otpInput.value = '';
+    setOtpModalStatus('', false);
+    currentOtpId = '';
+    pendingRegistrationPayload = null;
+  }
+
+  function openOtpModal(mobile){
+    otpModalMobile.textContent = mobile;
+    otpInput.value = '';
+    setOtpModalStatus('', false);
+    otpModalOverlay.classList.add('show');
+    startOtpResendCountdown();
+    setTimeout(function(){ otpInput.focus(); }, 150);
+  }
+
+  function requestRegistrationOtp(mobile, email){
+    return callApi({ action: 'register_send_otp', mobile: mobile, email: email || '' });
+  }
+
+  otpResendBtn.addEventListener('click', function(){
+    if(otpResendBtn.disabled || !pendingRegistrationPayload) return;
+    setOtpModalStatus('OTP আবার পাঠানো হচ্ছে...', false);
+    requestRegistrationOtp(pendingRegistrationPayload.mobile, pendingRegistrationPayload.email)
+      .then(function(result){
+        if(result.status === 'ok'){
+          currentOtpId = result.otpId;
+          otpInput.value = '';
+          setOtpModalStatus('✅ নতুন OTP পাঠানো হয়েছে।', false);
+          startOtpResendCountdown();
+        } else {
+          setOtpModalStatus('❌ ' + (result.message || 'OTP পাঠাতে সমস্যা হয়েছে।'), true);
+        }
+      })
+      .catch(function(err){
+        setOtpModalStatus('❌ ' + (err.message || 'একটি সমস্যা হয়েছে।'), true);
+      });
+  });
+
+  otpModalCancelBtn.addEventListener('click', function(){
+    closeOtpModal();
+    regSubmitBtn.disabled = false;
+    regSubmitBtn.textContent = 'রেজিস্ট্রেশন করুন';
+  });
+
+  function completeRegistration(){
+    const otp = otpInput.value.trim();
+    if(!/^[0-9]{6}$/.test(otp)){
+      setOtpModalStatus('❌ সঠিক ৬ সংখ্যার OTP দিন।', true);
+      return;
+    }
+    if(!pendingRegistrationPayload || !currentOtpId){
+      setOtpModalStatus('❌ Session মেয়াদ শেষ। আবার রেজিস্ট্রেশন ফর্ম জমা দিন।', true);
+      return;
+    }
+
+    otpModalVerifyBtn.disabled = true;
+    otpModalVerifyBtn.textContent = 'যাচাই হচ্ছে...';
+
+    const finalPayload = Object.assign({}, pendingRegistrationPayload, {
+      otpId: currentOtpId,
+      otp: otp
+    });
+
+    callApi(finalPayload)
+      .then(function(result){
+        if(result.status === 'ok'){
+          const registeredMobile = pendingRegistrationPayload.mobile;
+          localStorage.setItem(LS_REGISTERED_KEY, '1');
+          closeOtpModal();
+          regForm.reset();
+          showLogin();
+          loginStatus.textContent = '✅ রেজিস্ট্রেশন সফল হয়েছে। এখন লগইন করুন।';
+          loginStatus.className = 'form-status show ok';
+          document.getElementById('login_mobile').value = registeredMobile;
+        } else {
+          setOtpModalStatus('❌ ' + (result.message || 'OTP যাচাই ব্যর্থ হয়েছে।'), true);
+          otpInput.value = '';
+          otpInput.focus();
+        }
+      })
+      .catch(function(err){
+        setOtpModalStatus('❌ ' + (err.message || 'একটি সমস্যা হয়েছে, আবার চেষ্টা করুন।'), true);
+      })
+      .finally(function(){
+        otpModalVerifyBtn.disabled = false;
+        otpModalVerifyBtn.textContent = 'যাচাই করুন';
+        regSubmitBtn.disabled = false;
+        regSubmitBtn.textContent = 'রেজিস্ট্রেশন করুন';
+      });
+  }
+
+  otpModalVerifyBtn.addEventListener('click', completeRegistration);
+  otpInput.addEventListener('keydown', function(e){
+    if(e.key === 'Enter'){ e.preventDefault(); completeRegistration(); }
+  });
+  otpInput.addEventListener('input', function(){
+    this.value = this.value.replace(/[^0-9]/g, '').slice(0, 6);
+  });
+
   regForm.addEventListener('submit', function(e){
     e.preventDefault();
     regStatus.className = 'form-status';
@@ -2932,30 +3115,25 @@ footer a:hover{ color:#fff; }
     };
 
     regSubmitBtn.disabled = true;
-    regSubmitBtn.textContent = 'পাঠানো হচ্ছে...';
-    showLoading(enrollParam ? 'রেজিস্ট্রেশন ও কোর্স তথ্য লোড হচ্ছে...' : 'রেজিস্ট্রেশন সম্পন্ন করে ড্যাশবোর্ড লোড হচ্ছে...');
+    regSubmitBtn.textContent = 'OTP পাঠানো হচ্ছে...';
+    showLoading('আপনার মোবাইলে OTP পাঠানো হচ্ছে...');
 
-    callApi(payload)
+    requestRegistrationOtp(payload.mobile, payload.email)
       .then(function(result){
+        hideLoading();
         if(result.status === 'ok'){
-          localStorage.setItem(LS_REGISTERED_KEY, '1');
-          regForm.reset();
-          hideLoading();
-          showLogin();
-          loginStatus.textContent = '✅ রেজিস্ট্রেশন সফল হয়েছে। এখন লগইন করুন।';
-          loginStatus.className = 'form-status show ok';
-          document.getElementById('login_mobile').value = mobile;
+          pendingRegistrationPayload = payload;
+          currentOtpId = result.otpId;
+          openOtpModal(mobile);
+          regSubmitBtn.textContent = 'রেজিস্ট্রেশন করুন';
         } else {
-          throw new Error(result.message || 'রেজিস্ট্রেশন ব্যর্থ হয়েছে।');
+          throw new Error(result.message || 'OTP পাঠাতে সমস্যা হয়েছে।');
         }
       })
       .catch(function(err){
         hideLoading();
         regStatus.textContent = '❌ ' + (err.message || 'একটি সমস্যা হয়েছে, আবার চেষ্টা করুন।');
         regStatus.className = 'form-status show err';
-      })
-      .finally(function(){
-        hideLoading();
         regSubmitBtn.disabled = false;
         regSubmitBtn.textContent = 'রেজিস্ট্রেশন করুন';
       });
