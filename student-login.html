@@ -785,6 +785,12 @@ header.nav{
 .class-meta{ min-width:0; }
 .class-title{ font-weight:700; font-size:clamp(13px, 3.6vw, 15px); line-height:1.3; }
 .class-chapter{ display:block; margin-top:1px; color:var(--ink-soft); font-size:clamp(11px, 3vw, 13px); line-height:1.3; }
+.class-item.is-locked{ cursor:pointer; opacity:.62; background:#f7f7f8; }
+.class-item.is-locked:hover{ border-color:var(--paper-line); transform:none; box-shadow:none; }
+.class-item.is-locked .class-play{ background:#d9dce2; box-shadow:none; color:#6b7280; }
+.class-item.is-locked:hover .class-play{ transform:none; box-shadow:none; }
+.class-pdf-btn.is-locked{ cursor:not-allowed; opacity:.55; background:#f7f7f8; font-size:15px; }
+.class-pdf-btn.is-locked:hover{ border-color:var(--paper-line); transform:none; box-shadow:none; }
 .learning-empty{
   padding:16px;
   border:1px dashed var(--paper-line);
@@ -2291,7 +2297,11 @@ footer a:hover{ color:#fff; }
       const swParsed = parseSubjectWiseCourseId(courseName);
       const sectorNorm = normalizeLoose(sector);
       const matchedRows = swParsed ? findSubjectWiseClassRows(allRows, swParsed) : allRows.filter(r => {
-        if(normalizeForMatch(r.courseName) !== normalizeForMatch(courseName) || !r.subject || !r.url) return false;
+        // Note: a row can be locked (partial-payment gating) and still have
+        // no url/pdfUrl — the backend blanks those out for locked rows on
+        // purpose, so `!r.url` must NOT disqualify it here anymore.
+        if(normalizeForMatch(r.courseName) !== normalizeForMatch(courseName) || !r.subject) return false;
+        if(!r.locked && !r.url) return false;
         if(sectorNorm){
           const rowLevelWords = normalizeLoose(r.level).split(' ');
           const rowSector = rowLevelWords[rowLevelWords.length - 1];
@@ -2299,7 +2309,7 @@ footer a:hover{ color:#fff; }
         }
         return true;
       });
-      const rows = matchedRows.map(r=>({subject:r.subject,chapter:r.chapter,className:r.className,url:r.url,pdfUrl:r.pdfUrl}));
+      const rows = matchedRows.map(r=>({subject:r.subject,chapter:r.chapter,className:r.className,url:r.url,pdfUrl:r.pdfUrl,locked:!!r.locked}));
       result = rows.length ? {status:'ok',data:rows} : notFound;
     }catch(error){
       console.error('Class data fetch failed:', error);
@@ -2314,9 +2324,22 @@ footer a:hover{ color:#fff; }
 
   function renderClassItems(rows){
     classList.innerHTML = rows.length
-      ? rows.map((item,index)=>`<div class="class-item-row"><button type="button" class="class-item" data-video="${escapeHtml(item.url)}"><span class="class-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span><span class="class-meta"><span class="class-title">${escapeHtml(item.className || `Class ${index+1}`)}</span><span class="class-chapter">${escapeHtml(item.chapter || '')}</span></span></button>${item.pdfUrl ? `<a class="class-pdf-btn" href="${escapeHtml(driveDirectLink(item.pdfUrl))}" target="_blank" rel="noopener" title="Download PDF" onclick="event.stopPropagation()"><svg viewBox="0 0 40 50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><rect x="0" y="0" width="40" height="16" fill="#e21c1c"/><text x="20" y="12" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="9.5" font-weight="800" fill="#ffffff" letter-spacing="0.3">PDF</text><path d="M20 22v14" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/><path d="M14 30l6 6 6-6" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M12 42h16" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/></svg></a>` : ''}</div>`).join('')
+      ? rows.map((item,index)=>{
+          const locked = !!item.locked;
+          const playIcon = locked
+            ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>'
+            : '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+          const pdfHtml = locked
+            ? '<span class="class-pdf-btn is-locked" title="আগে ক্লাসটি unlock করুন">🔒</span>'
+            : (item.pdfUrl ? `<a class="class-pdf-btn" href="${escapeHtml(driveDirectLink(item.pdfUrl))}" target="_blank" rel="noopener" title="Download PDF" onclick="event.stopPropagation()"><svg viewBox="0 0 40 50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><rect x="0" y="0" width="40" height="16" fill="#e21c1c"/><text x="20" y="12" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="9.5" font-weight="800" fill="#ffffff" letter-spacing="0.3">PDF</text><path d="M20 22v14" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/><path d="M14 30l6 6 6-6" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M12 42h16" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/></svg></a>` : '');
+          return `<div class="class-item-row"><button type="button" class="class-item${locked?' is-locked':''}" data-video="${locked?'':escapeHtml(item.url)}" data-locked="${locked?'1':'0'}"><span class="class-play">${playIcon}</span><span class="class-meta"><span class="class-title">${escapeHtml(item.className || `Class ${index+1}`)}</span><span class="class-chapter">${escapeHtml(item.chapter || '')}</span></span></button>${pdfHtml}</div>`;
+        }).join('')
       : '<div class="learning-empty">কোনো ক্লাস খুঁজে পাওয়া যায়নি।</div>';
     classList.querySelectorAll('.class-item').forEach(item=>item.addEventListener('click',()=>{
+      if(item.dataset.locked === '1'){
+        vaShowToast('এই ক্লাসটি এখনো unlock হয়নি — বাকি পেমেন্ট সম্পন্ন করলে unlock হবে।');
+        return;
+      }
       const id=youtubeId(item.dataset.video); if(!id) return;
       playClassVideo(id);
     }));
