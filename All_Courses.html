@@ -234,6 +234,45 @@ header.nav{
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 
+/* BBA-only filter bar: university + year selectors, side by side */
+.bba-filter-bar{
+  display:flex;
+  gap:14px;
+  justify-content:center;
+  align-items:flex-end;
+  margin:0 0 26px;
+}
+.bba-filter-group{
+  display:flex;flex-direction:column;gap:6px;
+  min-width:220px;
+}
+.bba-filter-group label{
+  font-size:12.5px;font-weight:700;color:var(--ink-soft);
+  padding-left:2px;
+}
+.bba-filter-group select{
+  appearance:none;-webkit-appearance:none;-moz-appearance:none;
+  border:1.5px solid var(--paper-line);
+  background:#fff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%234A5772" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>') no-repeat right 12px center/16px 16px;
+  color:var(--ink);
+  border-radius:10px;
+  padding:11px 38px 11px 14px;
+  font-size:14.5px;font-weight:700;font-family:inherit;
+  box-shadow:0 5px 15px rgba(30,42,71,.05);
+  transition:border-color .2s ease, box-shadow .2s ease;
+  cursor:pointer;
+  width:100%;
+}
+.bba-filter-group select:focus{
+  outline:none;border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(232,163,61,.18);
+}
+@media(max-width:480px){
+  .bba-filter-bar{gap:10px}
+  .bba-filter-group{min-width:0;flex:1 1 140px}
+  .bba-filter-group select{padding:10px 32px 10px 12px;font-size:13px}
+}
+
 /* Mobile: cards MUST stack vertically */
 @media(max-width:760px){
   .page-head{padding:28px 0 18px}
@@ -344,6 +383,25 @@ header.nav{
         </button>
               </div>
 
+      <div class="bba-filter-bar" id="bbaFilterBar" style="display:none" aria-label="BBA কোর্স ফিল্টার">
+        <div class="bba-filter-group">
+          <label for="bbaUniversitySelect">বিশ্ববিদ্যালয়</label>
+          <select id="bbaUniversitySelect">
+            <option value="dcu">Dhaka Central University (DCU)</option>
+            <option value="nu">National University (NU)</option>
+          </select>
+        </div>
+        <div class="bba-filter-group">
+          <label for="bbaYearSelect">বর্ষ</label>
+          <select id="bbaYearSelect">
+            <option value="1st Year">১ম বর্ষ</option>
+            <option value="2nd Year">২য় বর্ষ</option>
+            <option value="3rd Year">৩য় বর্ষ</option>
+            <option value="4th Year">৪র্থ বর্ষ</option>
+          </select>
+        </div>
+      </div>
+
       <div class="course-grid" id="courseGrid">
         <div class="status"><div class="spinner"></div>কোর্সের তথ্য লোড হচ্ছে...</div>
       </div>
@@ -385,6 +443,16 @@ function formatPrice(v){
   const x=clean(v);
   if(!x)return '';
   return /[৳$€£]/.test(x)?toBn(x):`৳${toBn(x)}`;
+}
+// Course titles carry the year inline — "Accounting Department 1st Year",
+// "1st yr", "1st-year" etc. Pull the ordinal (1st/2nd/3rd/4th) out of the
+// title text itself instead of relying on a separate data field, since
+// course_name has no dedicated "year" column.
+function extractBbaYear(title){
+  const m=clean(title).match(/\b(1st|2nd|3rd|4th)\b[\s-]*\b(yr|year)s?\b/i);
+  if(!m)return '';
+  const map={'1st':'1st Year','2nd':'2nd Year','3rd':'3rd Year','4th':'4th Year'};
+  return map[m[1].toLowerCase()]||'';
 }
 function isSubjectWiseTag(tag){
   const t=normalize(tag);
@@ -449,7 +517,11 @@ function cardHtml(c,enrolledKeys){
   }else if(isSubjectWiseTag(c.tag)){
     actionHtml='<a href="per-subject.html" class="btn btn-primary">বিস্তারিত</a>';
   }else{
-    actionHtml=`<a href="course-details.html?course=${encodeURIComponent(c.slug)}" data-course-name="${esc(c.name)}" class="btn btn-primary course-details-trigger">বিস্তারিত</a>`;
+    const isBba=normalize(c.category)===normalize('BBA');
+    const bbaParams=isBba
+      ? `&nuDcu=${encodeURIComponent(sector||selectedUniversity)}&year=${encodeURIComponent(extractBbaYear(c.name)||selectedYear)}`
+      : '';
+    actionHtml=`<a href="course-details.html?course=${encodeURIComponent(c.slug)}${bbaParams}" data-course-name="${esc(c.name)}" class="btn btn-primary course-details-trigger">বিস্তারিত</a>`;
   }
 
   return `
@@ -478,17 +550,35 @@ function cardHtml(c,enrolledKeys){
 
 let allCourses=[];
 
+// BBA-only filter state — university narrows which course cards show;
+// year is purely informational, it never filters cards (course_name has
+// no "year" column), it's just carried along in the বিস্তারিত/enroll link.
+let selectedUniversity='dcu'; // matches the first <option> in #bbaUniversitySelect
+let selectedYear='1st Year';  // matches the first <option> in #bbaYearSelect
+
 const VALID_LEVELS=['SSC','HSC','BBA','MBA','BBS','BBA Professional'];
 const requestedLevel=new URLSearchParams(window.location.search).get('level');
 const requestedLevelMatch=VALID_LEVELS.find(x=>normalize(x)===normalize(requestedLevel||''));
 let activeLevel=requestedLevelMatch||'ALL';
 
+function updateBbaFilterVisibility(){
+  const bar=document.getElementById('bbaFilterBar');
+  bar.style.display=(normalize(activeLevel)===normalize('BBA'))?'flex':'none';
+}
+
 function render(){
   const grid=document.getElementById('courseGrid');
   const enrolled=getEnrolledCourseKeys();
-  const list=activeLevel==='ALL'
+  let list=activeLevel==='ALL'
     ? allCourses
     : allCourses.filter(c=>normalize(c.category)===normalize(activeLevel));
+
+  if(normalize(activeLevel)===normalize('BBA')){
+    list=list.filter(c=>
+      normalize(c.tag)===selectedUniversity &&
+      normalize(extractBbaYear(c.name))===normalize(selectedYear)
+    );
+  }
 
   if(!list.length){
     grid.innerHTML='<div class="course-empty"><strong>এই লেভেলে এখন কোনো কোর্স নেই।</strong><br>নতুন কোর্স যোগ করা হলে এখানে automatically দেখা যাবে।</div>';
@@ -514,6 +604,7 @@ window.addEventListener('pageshow',(event)=>{
     x.classList.toggle('active',normalize(x.dataset.level)===normalize(activeLevel));
     x.blur();
   });
+  updateBbaFilterVisibility();
   if(document.activeElement && document.activeElement.blur) document.activeElement.blur();
 
   // event.persisted === true মানে পেজটা bfcache (back/forward cache) থেকে
@@ -534,7 +625,17 @@ document.getElementById('levelBar').addEventListener('click',e=>{
   if(!btn || btn.classList.contains('subject-wise-nav'))return;
   activeLevel=btn.dataset.level;
   document.querySelectorAll('.level-btn').forEach(x=>x.classList.toggle('active',x===btn));
+  updateBbaFilterVisibility();
   render();
+});
+
+document.getElementById('bbaUniversitySelect').addEventListener('change',e=>{
+  selectedUniversity=e.target.value;
+  render();
+});
+document.getElementById('bbaYearSelect').addEventListener('change',e=>{
+  selectedYear=e.target.value;
+  render(); // re-render so link hrefs pick up the newly selected year
 });
 
 document.getElementById('burgerBtn').addEventListener('click',()=>{
@@ -548,6 +649,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.querySelectorAll('.level-btn').forEach(x=>{
     x.classList.toggle('active',normalize(x.dataset.level)===normalize(activeLevel));
   });
+  updateBbaFilterVisibility();
 
   const loginBtn=document.getElementById('navLoginBtn');
   try{
