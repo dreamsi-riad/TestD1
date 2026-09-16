@@ -2763,10 +2763,9 @@ footer a:hover{ color:#fff; }
   // will be locked if payment isn't made in time. Purely informational
   // on the client — the actual lock happens server-side (Worker) once
   // the date has passed, via blocked/b_comment on student_enrolled.
-  // Shown at most once per calendar day per mobile, so it doesn't nag
-  // on every dashboard refresh.
+  // Shown on EVERY page load/refresh while a course is within the due
+  // window (no longer throttled to once per calendar day).
   // ============================================================
-  const LS_PAYMENT_REMINDER_SHOWN_KEY = 'va_payment_reminder_shown_v1';
 
   function startOfToday(){
     const d = new Date();
@@ -2806,27 +2805,10 @@ footer a:hover{ color:#fff; }
     return due;
   }
 
-  function paymentReminderShownToday(mobile){
-    try{
-      const stored = JSON.parse(localStorage.getItem(LS_PAYMENT_REMINDER_SHOWN_KEY) || '{}');
-      const todayKey = startOfToday().toISOString().slice(0,10);
-      return stored[mobile] === todayKey;
-    }catch(e){ return false; }
-  }
-
-  function markPaymentReminderShownToday(mobile){
-    try{
-      const stored = JSON.parse(localStorage.getItem(LS_PAYMENT_REMINDER_SHOWN_KEY) || '{}');
-      stored[mobile] = startOfToday().toISOString().slice(0,10);
-      localStorage.setItem(LS_PAYMENT_REMINDER_SHOWN_KEY, JSON.stringify(stored));
-    }catch(e){}
-  }
-
   function checkPaymentReminders(data){
     if(!data) return;
     const mobile = String(data.mobile || getCurrentUserMobile() || '').trim();
     if(!mobile) return;
-    if(paymentReminderShownToday(mobile)) return;
 
     const dueCourses = getPaymentReminderCourses(data);
     if(!dueCourses.length) return;
@@ -2838,7 +2820,6 @@ footer a:hover{ color:#fff; }
     }).join('<br><br>');
 
     openPaymentReminderModal(lines);
-    markPaymentReminderShownToday(mobile);
   }
 
   const paymentReminderModalOverlay = document.getElementById('paymentReminderModalOverlay');
