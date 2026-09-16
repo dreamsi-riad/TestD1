@@ -234,6 +234,37 @@ header.nav{
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 
+/* ALL-only search box — filters level + year + title together */
+.course-search-bar{
+  position:relative;
+  max-width:520px;
+  margin:0 auto 26px;
+}
+.course-search-bar .search-icon{
+  position:absolute;left:16px;top:50%;transform:translateY(-50%);
+  width:18px;height:18px;color:var(--ink-soft);pointer-events:none;
+}
+.course-search-bar input{
+  width:100%;
+  border:1.5px solid var(--paper-line);
+  background:#fff;
+  border-radius:999px;
+  padding:12px 18px 12px 44px;
+  font-size:14.5px;font-weight:600;font-family:inherit;color:var(--ink);
+  box-shadow:0 5px 15px rgba(30,42,71,.05);
+  transition:border-color .2s ease, box-shadow .2s ease;
+}
+.course-search-bar input::placeholder{color:#9AA1B5;font-weight:500}
+.course-search-bar input:focus{
+  outline:none;border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(232,163,61,.18);
+}
+@media(max-width:480px){
+  .course-search-bar{max-width:100%}
+  .course-search-bar input{font-size:13.5px;padding:11px 16px 11px 40px}
+  .course-search-bar .search-icon{left:14px;width:16px;height:16px}
+}
+
 /* BBA-only filter bar: university + year selectors, side by side */
 .bba-filter-bar{
   display:flex;
@@ -383,6 +414,11 @@ header.nav{
         </button>
               </div>
 
+      <div class="course-search-bar" id="courseSearchBar" style="display:none">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input type="text" id="courseSearchInput" placeholder="কোর্স খুঁজুন — যেমন: Accounting 1st Year NU" autocomplete="off">
+      </div>
+
       <div class="bba-filter-bar" id="bbaFilterBar" style="display:none" aria-label="BBA কোর্স ফিল্টার">
         <div class="bba-filter-group">
           <label for="bbaUniversitySelect">বিশ্ববিদ্যালয়</label>
@@ -454,6 +490,35 @@ function extractBbaYear(title){
   const map={'1st':'1st Year','2nd':'2nd Year','3rd':'3rd Year','4th':'4th Year'};
   return map[m[1].toLowerCase()]||'';
 }
+
+// So a search for "national" or "nu" both find an NU-tagged course, and
+// "central"/"dcu"/"dhaka central university" all find a DCU-tagged one.
+const UNIVERSITY_ALIASES={
+  nu:'nu national university national',
+  dcu:'dcu dhaka central university central'
+};
+
+// One flat, normalized blob per course — level, title and (for BBA) the
+// university aliases and the year parsed out of the title — so a single
+// search box can match all three at once, in any word order.
+function courseSearchText(c){
+  const tagKey=normalize(c.tag);
+  return normalize([
+    c.category,
+    c.name,
+    c.tag,
+    UNIVERSITY_ALIASES[tagKey]||'',
+    extractBbaYear(c.name)
+  ].join(' '));
+}
+
+function matchesSearch(c,query){
+  const q=normalize(query);
+  if(!q)return true;
+  const text=courseSearchText(c);
+  return q.split(' ').filter(Boolean).every(token=>text.includes(token));
+}
+
 function isSubjectWiseTag(tag){
   const t=normalize(tag);
   return t.includes('subject wise')||t.includes('improvement');
@@ -556,6 +621,11 @@ let allCourses=[];
 let selectedUniversity='dcu'; // matches the first <option> in #bbaUniversitySelect
 let selectedYear='1st Year';  // matches the first <option> in #bbaYearSelect
 
+// "সকল কোর্স" search — free text, matched against level + year + title
+// together, order-independent, substring-based (so "acc" matches
+// "Accounting", "national"/"nu" both match an NU-tagged course, etc).
+let searchQuery='';
+
 const VALID_LEVELS=['SSC','HSC','BBA','MBA','BBS','BBA Professional'];
 const requestedLevel=new URLSearchParams(window.location.search).get('level');
 const requestedLevelMatch=VALID_LEVELS.find(x=>normalize(x)===normalize(requestedLevel||''));
@@ -564,6 +634,17 @@ let activeLevel=requestedLevelMatch||'ALL';
 function updateBbaFilterVisibility(){
   const bar=document.getElementById('bbaFilterBar');
   bar.style.display=(normalize(activeLevel)===normalize('BBA'))?'flex':'none';
+}
+
+function updateSearchBarVisibility(){
+  const bar=document.getElementById('courseSearchBar');
+  const isAll=activeLevel==='ALL';
+  bar.style.display=isAll?'block':'none';
+  if(!isAll){
+    searchQuery='';
+    const input=document.getElementById('courseSearchInput');
+    if(input)input.value='';
+  }
 }
 
 function render(){
@@ -578,6 +659,10 @@ function render(){
       normalize(c.tag)===selectedUniversity &&
       normalize(extractBbaYear(c.name))===normalize(selectedYear)
     );
+  }
+
+  if(activeLevel==='ALL' && searchQuery.trim()){
+    list=list.filter(c=>matchesSearch(c,searchQuery));
   }
 
   if(!list.length){
@@ -605,6 +690,7 @@ window.addEventListener('pageshow',(event)=>{
     x.blur();
   });
   updateBbaFilterVisibility();
+  updateSearchBarVisibility();
   if(document.activeElement && document.activeElement.blur) document.activeElement.blur();
 
   // event.persisted === true মানে পেজটা bfcache (back/forward cache) থেকে
@@ -626,6 +712,12 @@ document.getElementById('levelBar').addEventListener('click',e=>{
   activeLevel=btn.dataset.level;
   document.querySelectorAll('.level-btn').forEach(x=>x.classList.toggle('active',x===btn));
   updateBbaFilterVisibility();
+  updateSearchBarVisibility();
+  render();
+});
+
+document.getElementById('courseSearchInput').addEventListener('input',e=>{
+  searchQuery=e.target.value;
   render();
 });
 
@@ -650,6 +742,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     x.classList.toggle('active',normalize(x.dataset.level)===normalize(activeLevel));
   });
   updateBbaFilterVisibility();
+  updateSearchBarVisibility();
 
   const loginBtn=document.getElementById('navLoginBtn');
   try{
