@@ -1091,6 +1091,17 @@ footer a:hover{ color:#fff; }
   </div>
 </div>
 
+<div class="device-modal-overlay" id="paymentReminderModalOverlay" role="dialog" aria-modal="true" aria-labelledby="paymentReminderModalTitle">
+  <div class="device-modal-box">
+    <div class="device-modal-icon">🔔</div>
+    <div class="device-modal-title" id="paymentReminderModalTitle">পেমেন্ট রিমাইন্ডার</div>
+    <div class="device-modal-text" id="paymentReminderModalText"></div>
+    <div class="device-modal-actions">
+      <button type="button" class="device-modal-agree" id="paymentReminderModalOkBtn" style="width:100%;">ঠিক আছে, বুঝেছি</button>
+    </div>
+  </div>
+</div>
+
 
 <header class="nav">
   <div class="nav-inner">
@@ -2730,6 +2741,7 @@ footer a:hover{ color:#fff; }
       renderEnrolledCourses(data);
       refreshDashboardWatchTimeDisplay();
     }
+    checkPaymentReminders(data);
   }
 
   function renderDashboard(data){
@@ -2738,6 +2750,111 @@ footer a:hover{ color:#fff; }
     renderProfileInfo(data);
     renderEnrolledCourses(data);
     renderJoinedDate(data);
+    checkPaymentReminders(data);
+  }
+
+  // ============================================================
+  // PAYMENT REMINDER (next_date) — shows a modal starting 2 days
+  // before a course's "Next Payment" date, warning that the course
+  // will be locked if payment isn't made in time. Purely informational
+  // on the client — the actual lock happens server-side (Worker) once
+  // the date has passed, via blocked/b_comment on student_enrolled.
+  // Shown at most once per calendar day per mobile, so it doesn't nag
+  // on every dashboard refresh.
+  // ============================================================
+  const LS_PAYMENT_REMINDER_SHOWN_KEY = 'va_payment_reminder_shown_v1';
+
+  function startOfToday(){
+    const d = new Date();
+    d.setHours(0,0,0,0);
+    return d;
+  }
+
+  function daysUntil(dateValue){
+    const target = new Date(dateValue);
+    if(Number.isNaN(target.getTime())) return null;
+    target.setHours(0,0,0,0);
+    const diffMs = target.getTime() - startOfToday().getTime();
+    return Math.round(diffMs / 86400000);
+  }
+
+  function getPaymentReminderCourses(data){
+    const courses = Array.isArray(data?.courses) ? data.courses : [];
+    const due = [];
+
+    courses.forEach(course=>{
+      const status = String(course.status || '').trim().toLowerCase();
+      if(status !== 'active') return;
+      if(course.locked) return;
+
+      const nextDateVal = String(course.nextDate || '').trim();
+      if(!nextDateVal) return;
+
+      const remaining = daysUntil(nextDateVal);
+      if(remaining === null) return;
+
+      // 2 days before the due date, up to (and including) the due date itself.
+      if(remaining >= 0 && remaining <= 2){
+        due.push({ course, remaining, nextDateVal });
+      }
+    });
+
+    return due;
+  }
+
+  function paymentReminderShownToday(mobile){
+    try{
+      const stored = JSON.parse(localStorage.getItem(LS_PAYMENT_REMINDER_SHOWN_KEY) || '{}');
+      const todayKey = startOfToday().toISOString().slice(0,10);
+      return stored[mobile] === todayKey;
+    }catch(e){ return false; }
+  }
+
+  function markPaymentReminderShownToday(mobile){
+    try{
+      const stored = JSON.parse(localStorage.getItem(LS_PAYMENT_REMINDER_SHOWN_KEY) || '{}');
+      stored[mobile] = startOfToday().toISOString().slice(0,10);
+      localStorage.setItem(LS_PAYMENT_REMINDER_SHOWN_KEY, JSON.stringify(stored));
+    }catch(e){}
+  }
+
+  function checkPaymentReminders(data){
+    if(!data) return;
+    const mobile = String(data.mobile || getCurrentUserMobile() || '').trim();
+    if(!mobile) return;
+    if(paymentReminderShownToday(mobile)) return;
+
+    const dueCourses = getPaymentReminderCourses(data);
+    if(!dueCourses.length) return;
+
+    const lines = dueCourses.map(({course, remaining, nextDateVal})=>{
+      const name = getSubjectWiseDisplayName(course.name) || course.name || 'কোর্স';
+      const whenText = remaining === 0 ? 'আজই' : `${remaining} দিনের মধ্যে`;
+      return `<strong>${escapeHtml(name)}</strong> কোর্সের পরবর্তী পেমেন্ট তারিখ <strong>${escapeHtml(nextDateVal)}</strong> (${whenText})।`;
+    }).join('<br><br>');
+
+    openPaymentReminderModal(lines);
+    markPaymentReminderShownToday(mobile);
+  }
+
+  const paymentReminderModalOverlay = document.getElementById('paymentReminderModalOverlay');
+  const paymentReminderModalText = document.getElementById('paymentReminderModalText');
+  const paymentReminderModalOkBtn = document.getElementById('paymentReminderModalOkBtn');
+
+  function openPaymentReminderModal(messageHtml){
+    if(!paymentReminderModalOverlay) return;
+    paymentReminderModalText.innerHTML =
+      messageHtml + '<br><br>অনুগ্রহ করে সময়মতো পেমেন্ট করুন, অন্যথায় আপনার কোর্স লক (Locked) হয়ে যাবে।';
+    paymentReminderModalOverlay.classList.add('show');
+  }
+
+  function closePaymentReminderModal(){
+    if(!paymentReminderModalOverlay) return;
+    paymentReminderModalOverlay.classList.remove('show');
+  }
+
+  if(paymentReminderModalOkBtn){
+    paymentReminderModalOkBtn.addEventListener('click', closePaymentReminderModal);
   }
 
   function showAuthUI(){
