@@ -1748,7 +1748,8 @@ footer a:hover{ color:#fff; }
   let dashboardWatchDisplayTimer = null;
   let dashboardData = null;
 
-  const WATCH_FLUSH_THRESHOLD_SEC = 20;
+  const WATCH_FLUSH_THRESHOLD_SEC = 60; // get_wt = Yes হলে server sync-ও এই interval-এ হবে (আগে ছিল 20s)
+  const LOCAL_PERSIST_INTERVAL_SEC = 60; // localStorage-এ save হয় এই interval-এ (আগে ছিল 5s)
   const LS_WATCH_PENDING_KEY = 'va_watch_pending_v1';
 
   function normalizeWatchCourse(value){
@@ -1918,19 +1919,22 @@ footer a:hover{ color:#fff; }
     watchTrackTimer = setInterval(()=>{
       watchPendingSeconds += 1;
 
-      // Keep localStorage updated while the video is playing.
-      if(watchPendingSeconds >= 5){
-        persistCurrentWatchPending();
-      }
-
       // D1 is contacted only after admin has enabled get_wt = Yes.
+      // (flushWatchTime() itself persists to localStorage first, so when
+      // this fires, that counts as this course's localStorage save too.)
       if(currentWatchGetWt && watchPendingSeconds >= WATCH_FLUSH_THRESHOLD_SEC){
         flushWatchTime();
+        return;
+      }
+
+      // Keep localStorage updated while the video is playing (every 1 min).
+      if(watchPendingSeconds >= LOCAL_PERSIST_INTERVAL_SEC){
+        persistCurrentWatchPending();
       }
     }, 1000);
 
     if(!watchPersistTimer){
-      watchPersistTimer = setInterval(persistCurrentWatchPending, 5000);
+      watchPersistTimer = setInterval(persistCurrentWatchPending, LOCAL_PERSIST_INTERVAL_SEC * 1000);
     }
   }
 
