@@ -2676,7 +2676,11 @@ footer a:hover{ color:#fff; }
       if(!course) return;
       const status = String(course.status || '').trim().toLowerCase();
 
-      if(detailTitle) detailTitle.textContent = getSubjectWiseDisplayName(course.name) || course.name || 'কোর্স';
+      if(detailTitle){
+        const baseName = getSubjectWiseDisplayName(course.name) || course.name || 'কোর্স';
+        const sectorTag = String(course.nuDcu || '').trim().toUpperCase();
+        detailTitle.textContent = sectorTag ? `${baseName} (${sectorTag})` : baseName;
+      }
       showCourseDetailView();
 
       if(course.locked){
