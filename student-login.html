@@ -1587,11 +1587,23 @@ footer a:hover{ color:#fff; }
   goLoginLink.addEventListener('click', showLogin);
   goRegisterLink.addEventListener('click', showRegister);
 
+  function parseDateValue(value){
+    if(value instanceof Date) return Number.isNaN(value.getTime()) ? null : value;
+    if(value === null || value === undefined || value === '') return null;
+    const raw=String(value).trim();
+    const ddmmyyyy=/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(raw);
+    if(ddmmyyyy){
+      const d=new Date(Number(ddmmyyyy[3]),Number(ddmmyyyy[2])-1,Number(ddmmyyyy[1]));
+      return d.getFullYear()===Number(ddmmyyyy[3]) && d.getMonth()===Number(ddmmyyyy[2])-1 && d.getDate()===Number(ddmmyyyy[1]) ? d : null;
+    }
+    return null;
+  }
+
   function formatDate(value){
     if(!value) return '—';
-    const d=new Date(value);
-    if(Number.isNaN(d.getTime())) return String(value);
-    return new Intl.DateTimeFormat('en-GB',{day:'2-digit',month:'short',year:'numeric'}).format(d);
+    const d=parseDateValue(value);
+    if(!d) return '—';
+    return String(d.getDate()).padStart(2,'0')+'/'+String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear();
   }
 
   const enrolledCourseSectorMap = new Map();
@@ -2652,7 +2664,7 @@ footer a:hover{ color:#fff; }
         ? `<span class="ecb-billing"><span class="ecb-icon-emoji">✅</span> Paid: <span class="ecb-billing-value">${escapeHtml(paidVal)}</span>${dueVal ? `<span class="ecb-billing-due">Due: <span class="ecb-billing-value">${escapeHtml(dueVal)}</span></span>` : ''}</span>`
         : '';
       const nextDateLine = (nextDateVal && !isFullyPaid)
-        ? `<span class="ecb-billing"><span class="ecb-icon-emoji">🗓️</span> Next Payment: <span class="ecb-billing-value">${escapeHtml(nextDateVal)}</span></span>`
+        ? `<span class="ecb-billing"><span class="ecb-icon-emoji">🗓️</span> Next Payment: <span class="ecb-billing-value">${escapeHtml(formatDate(nextDateVal))}</span></span>`
         : '';
 
       return `<button type="button" class="enrolled-course-btn${i===0?' active':''}${lockedClass}" data-course="${escapeHtml(course.name)}" data-sector="${escapeHtml(course.nuDcu||'')}" data-idx="${i}">
@@ -2801,8 +2813,8 @@ footer a:hover{ color:#fff; }
   }
 
   function daysUntil(dateValue){
-    const target = new Date(dateValue);
-    if(Number.isNaN(target.getTime())) return null;
+    const target = parseDateValue(dateValue);
+    if(!target) return null;
     target.setHours(0,0,0,0);
     const diffMs = target.getTime() - startOfToday().getTime();
     return Math.round(diffMs / 86400000);
@@ -2843,7 +2855,7 @@ footer a:hover{ color:#fff; }
     const lines = dueCourses.map(({course, remaining, nextDateVal})=>{
       const name = getSubjectWiseDisplayName(course.name) || course.name || 'কোর্স';
       const whenText = remaining === 0 ? 'আজই' : `${remaining} দিনের মধ্যে`;
-      return `<strong>${escapeHtml(name)}</strong> কোর্সের পরবর্তী পেমেন্ট তারিখ <strong>${escapeHtml(nextDateVal)}</strong> (${whenText})।`;
+      return `<strong>${escapeHtml(name)}</strong> কোর্সের পরবর্তী পেমেন্ট তারিখ <strong>${escapeHtml(formatDate(nextDateVal))}</strong> (${whenText})।`;
     }).join('<br><br>');
 
     openPaymentReminderModal(lines);
