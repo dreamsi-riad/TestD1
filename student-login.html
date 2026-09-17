@@ -317,13 +317,22 @@ function clearPendingSearch(){
   if(input){input.value='';input.focus();}
   pendingLiveSearch('');
 }
-function fmtDateInput(v){
-  if(!v)return '';
-  const d=new Date(v+'T00:00:00');
-  if(isNaN(d.getTime()))return v;
-  const MO=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  return String(d.getDate()).padStart(2,'0')+' '+MO[d.getMonth()]+' '+d.getFullYear();
+// DATE STANDARD: all course/student date-only values use YYYY-MM-DD.
+function normalizeDateOnly(v){
+  const s=String(v??'').trim();
+  if(!s)return '';
+  if(/^\d{4}-\d{2}-\d{2}$/.test(s))return s;
+  const iso=s.match(/^(\d{4}-\d{2}-\d{2})T/);
+  if(iso)return iso[1];
+  const legacy=s.match(/^(\d{1,2})\s+([A-Za-z]{3})\s+(\d{4})$/);
+  if(legacy){
+    const MO=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const i=MO.findIndex(x=>x.toLowerCase()===legacy[2].toLowerCase());
+    if(i>=0)return `${legacy[3]}-${String(i+1).padStart(2,'0')}-${String(Number(legacy[1])).padStart(2,'0')}`;
+  }
+  return '';
 }
+function fmtDateInput(v){return normalizeDateOnly(v);}
 function approve(id){
   const r=(S.pendingRows||[]).find(x=>Number(x.id)===Number(id));
   apStudent.textContent=r?`${r.name} (${r.mobile})`:'';
@@ -339,7 +348,7 @@ async function submitApprove(){
   const id=Number(approveModal.dataset.id);
   const discount=apDiscount.value.trim();
   const paid=apPaid.value.trim();
-  const nextDate=fmtDateInput(apNextDate.value.trim());
+  const nextDate=normalizeDateOnly(apNextDate.value.trim());
   if(!paid){toast('Paid amount আবশ্যক');apPaid.focus();return}
   try{
     await api('approve_enrollment',{id,adminName:S.user?.name||'Admin',discount,paid,nextDate});
@@ -716,12 +725,10 @@ async function save(e){
     if(x.disabled||x.readOnly)return;
     if(x.dataset.enrollDate){
       if(!x.value){d[x.dataset.c]='';return;}
-      d[x.dataset.c]=x.dataset.c==='next_date'
-        ? fmtDateInput(x.value)
-        : new Date(x.value+'T23:59:59.999Z').toISOString();
+      d[x.dataset.c]=normalizeDateOnly(x.value);
       return;
     }
-    d[x.dataset.c]=x.value;
+    d[x.dataset.c]=x.dataset.enrollDate?normalizeDateOnly(x.value):x.value;
   });
   try{
     await api('admin_save',{table:S.table,rowid:Number(rid.value)||0,data:d});
