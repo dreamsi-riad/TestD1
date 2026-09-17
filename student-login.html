@@ -1601,6 +1601,19 @@ footer a:hover{ color:#fff; }
     return d.toISOString().slice(0,10);
   }
 
+  function parseNextPaymentDate(value){
+    const raw=String(value||'').trim();
+    const match=/^(\d{4})\/(\d{2})\/(\d{2})$/.exec(raw);
+    if(!match) return null;
+    const d=new Date(Number(match[1]),Number(match[2])-1,Number(match[3]));
+    return d.getFullYear()===Number(match[1]) && d.getMonth()===Number(match[2])-1 && d.getDate()===Number(match[3]) ? d : null;
+  }
+
+  function formatNextPaymentDate(value){
+    const raw=String(value||'').trim();
+    return /^(\d{4})\/(\d{2})\/(\d{2})$/.test(raw) ? raw : '—';
+  }
+
   const enrolledCourseSectorMap = new Map();
   function getEnrolledCourses(data){
     const list = Array.isArray(data?.courses) ? data.courses : [];
@@ -2659,7 +2672,7 @@ footer a:hover{ color:#fff; }
         ? `<span class="ecb-billing"><span class="ecb-icon-emoji">✅</span> Paid: <span class="ecb-billing-value">${escapeHtml(paidVal)}</span>${dueVal ? `<span class="ecb-billing-due">Due: <span class="ecb-billing-value">${escapeHtml(dueVal)}</span></span>` : ''}</span>`
         : '';
       const nextDateLine = (nextDateVal && !isFullyPaid)
-        ? `<span class="ecb-billing"><span class="ecb-icon-emoji">🗓️</span> Next Payment: <span class="ecb-billing-value">${escapeHtml(formatDate(nextDateVal))}</span></span>`
+        ? `<span class="ecb-billing"><span class="ecb-icon-emoji">🗓️</span> Next Payment: <span class="ecb-billing-value">${escapeHtml(formatNextPaymentDate(nextDateVal))}</span></span>`
         : '';
 
       return `<button type="button" class="enrolled-course-btn${i===0?' active':''}${lockedClass}" data-course="${escapeHtml(course.name)}" data-sector="${escapeHtml(course.nuDcu||'')}" data-idx="${i}">
@@ -2808,7 +2821,7 @@ footer a:hover{ color:#fff; }
   }
 
   function daysUntil(dateValue){
-    const target = parseDateValue(dateValue);
+    const target = parseNextPaymentDate(dateValue);
     if(!target) return null;
     target.setHours(0,0,0,0);
     const diffMs = target.getTime() - startOfToday().getTime();
@@ -2850,7 +2863,7 @@ footer a:hover{ color:#fff; }
     const lines = dueCourses.map(({course, remaining, nextDateVal})=>{
       const name = getSubjectWiseDisplayName(course.name) || course.name || 'কোর্স';
       const whenText = remaining === 0 ? 'আজই' : `${remaining} দিনের মধ্যে`;
-      return `<strong>${escapeHtml(name)}</strong> কোর্সের পরবর্তী পেমেন্ট তারিখ <strong>${escapeHtml(formatDate(nextDateVal))}</strong> (${whenText})।`;
+      return `<strong>${escapeHtml(name)}</strong> কোর্সের পরবর্তী পেমেন্ট তারিখ <strong>${escapeHtml(formatNextPaymentDate(nextDateVal))}</strong> (${whenText})।`;
     }).join('<br><br>');
 
     openPaymentReminderModal(lines);
