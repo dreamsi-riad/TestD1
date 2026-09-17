@@ -1598,7 +1598,7 @@ footer a:hover{ color:#fff; }
     if(!value) return '—';
     const d=parseDateValue(value);
     if(!d) return String(value);
-    return d.toISOString();
+    return d.toISOString().slice(0,10);
   }
 
   const enrolledCourseSectorMap = new Map();
