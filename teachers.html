@@ -635,12 +635,16 @@ function updateNavProfileButton(){
         hash|=0;
       }
       const grads=[
-        'linear-gradient(135deg, #0ea5e9, #2563eb)',
-        'linear-gradient(135deg, #6366f1, #8b5cf6)',
-        'linear-gradient(135deg, #10b981, #059669)',
-        'linear-gradient(135deg, #f59e0b, #d97706)',
-        'linear-gradient(135deg, #ec4899, #be185d)',
-        'linear-gradient(135deg, #06b6d4, #0284c7)'
+        'linear-gradient(135deg, #0ea5e9, #2563eb)', // Sapphire Blue
+        'linear-gradient(135deg, #6366f1, #8b5cf6)', // Royal Indigo
+        'linear-gradient(135deg, #10b981, #059669)', // Emerald Green
+        'linear-gradient(135deg, #f59e0b, #d97706)', // Warm Amber
+        'linear-gradient(135deg, #ec4899, #be185d)', // Rose Pink
+        'linear-gradient(135deg, #06b6d4, #0284c7)', // Ocean Cyan
+        'linear-gradient(135deg, #8b5cf6, #d946ef)', // Violet Fuchsia
+        'linear-gradient(135deg, #f97316, #ea580c)', // Sunset Coral
+        'linear-gradient(135deg, #14b8a6, #0f766e)', // Teal
+        'linear-gradient(135deg, #ef4444, #b91c1c)'  // Crimson Ruby
       ];
       const grad=grads[Math.abs(hash)%grads.length];
 
