@@ -1013,25 +1013,17 @@ header.nav{
   height: 100%;
   border: 0;
   display: block;
-  pointer-events: none;
+  pointer-events: auto;
 }
 .yt-mount{ position: absolute; inset: 0; }
 .yt-click-catcher{
-  position: absolute;
-  left: 0; right: 0; top: 0; bottom: 48px;
-  z-index: 2;
-  cursor: pointer;
-  background: transparent;
+  display: none !important;
 }
 .custom-controls{
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 16px;
-  background: linear-gradient(transparent, rgba(15, 23, 42, 0.95));
+  display: none !important;
+}
+.cc-settings-panel{
+  display: none !important;
 }
 .cc-btn{
   background: none;
@@ -1467,6 +1459,161 @@ footer a:hover{ color: #38BDF8; }
 /* ল্যাপটপ ও বড় মনিটরে ইউনিফর্ম স্কেল */
 @media(min-width: 1024px){
   body{ zoom: 1.05; }
+}
+
+/* ===== মোবাইল ও ছোট স্ক্রিন রেস্পনসিভ অপ্টিমাইজেশন ===== */
+@media(max-width: 640px){
+  .container{
+    padding: 0 8px;
+  }
+  .auth-wrap{
+    padding: 6px 0 24px;
+  }
+  .auth-box{
+    padding: 16px 12px;
+    border-radius: 18px;
+  }
+  #dashboardSection .auth-box{
+    padding: 16px 12px;
+  }
+  .dash-head-v2{
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 14px;
+  }
+  .profile-panel{
+    width: 76px;
+    padding: 8px 6px;
+    border-radius: 16px;
+    gap: 6px;
+  }
+  .profile-panel-avatar{
+    width: 44px;
+    height: 44px;
+  }
+  .profile-panel-avatar svg{
+    width: 38px;
+    height: 38px;
+  }
+  .profile-panel-label{
+    font-size: 12px;
+  }
+  .profile-main{
+    gap: 8px;
+  }
+  .profile-main-top{
+    gap: 8px;
+  }
+  .dash-welcome h2{
+    font-size: 18px;
+  }
+  .dash-welcome p{
+    font-size: 11.5px;
+  }
+  .logout-link-btn{
+    padding: 5px 10px;
+    font-size: 12px;
+    gap: 4px;
+  }
+  .logout-link-btn svg{
+    width: 13px;
+    height: 13px;
+  }
+  /* BBA, Year, Department - রেস্পনসিভ র‍্যাপিং */
+  .info-pill-row{
+    flex-wrap: wrap;
+    gap: 8px 10px;
+    padding: 8px 10px;
+    justify-content: flex-start;
+  }
+  .info-pill-divider{
+    display: none;
+  }
+  .info-pill{
+    flex: 1 1 calc(50% - 6px);
+    min-width: 95px;
+    gap: 7px;
+  }
+  .info-pill-icon{
+    width: 32px;
+    height: 32px;
+  }
+  .info-pill-icon svg{
+    width: 16px;
+    height: 16px;
+  }
+  .info-pill-text strong{
+    font-size: 13px;
+    white-space: normal;
+    word-break: break-word;
+    line-height: 1.2;
+  }
+  .info-pill-text small{
+    font-size: 10px;
+    white-space: normal;
+    line-height: 1.1;
+  }
+  .contact-row{
+    flex-wrap: wrap;
+    gap: 4px 10px;
+    font-size: 12px;
+  }
+  .contact-divider{
+    display: none;
+  }
+  .contact-item{
+    font-size: 12px;
+  }
+  .filter-row{
+    gap: 8px;
+    margin: 6px 0 10px;
+  }
+  .filter-select{
+    padding: 10px 30px 10px 12px;
+    font-size: 13px;
+    border-radius: 10px;
+  }
+  .filter-select-wrap::after{
+    right: 12px;
+  }
+  .enrolled-course-btn{
+    padding: 10px 14px;
+    gap: 10px;
+  }
+  .ecb-icon{
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    font-size: 18px;
+  }
+}
+
+@media(max-width: 400px){
+  .container{
+    padding: 0 4px;
+  }
+  .auth-box{
+    padding: 14px 10px;
+    border-radius: 16px;
+  }
+  #dashboardSection .auth-box{
+    padding: 14px 10px;
+  }
+  .profile-panel{
+    width: 70px;
+    padding: 6px 4px;
+  }
+  .profile-panel-avatar{
+    width: 40px;
+    height: 40px;
+  }
+  .profile-panel-avatar svg{
+    width: 34px;
+    height: 34px;
+  }
+  .profile-panel-label{
+    font-size: 11px;
+  }
 }
 
 </style>
@@ -2537,12 +2684,19 @@ footer a:hover{ color: #38BDF8; }
     ytPlayer = new YT.Player(ytMount, {
       videoId: id,
       playerVars: {
-        autoplay: 1, controls: 0, disablekb: 1, rel: 0,
-        modestbranding: 1, iv_load_policy: 3, playsinline: 1, fs: 0,
+        autoplay: 1, controls: 1, rel: 0,
+        modestbranding: 1, iv_load_policy: 3, playsinline: 1, fs: 1,
         origin: window.location.origin
       },
       events: {
         onReady: (e)=>{
+          try {
+            const iframe = e.target.getIframe();
+            if(iframe){
+              iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen');
+              iframe.setAttribute('allowfullscreen', '1');
+            }
+          }catch(err){}
           e.target.playVideo();
           updatePlayerTimeUI();
           populateQualityOptions();
