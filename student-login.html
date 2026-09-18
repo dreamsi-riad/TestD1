@@ -1013,17 +1013,34 @@ header.nav{
   height: 100%;
   border: 0;
   display: block;
-  pointer-events: auto;
+  pointer-events: none;
 }
 .yt-mount{ position: absolute; inset: 0; }
 .yt-click-catcher{
-  display: none !important;
+  position: absolute;
+  left: 0; right: 0; top: 0; bottom: 44px;
+  z-index: 2;
+  cursor: pointer;
+  background: transparent;
 }
 .custom-controls{
-  display: none !important;
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: linear-gradient(transparent, rgba(15, 23, 42, 0.95));
 }
-.cc-settings-panel{
-  display: none !important;
+.class-player-wrap:fullscreen,
+.class-player-wrap:-webkit-full-screen{
+  width: 100vw !important;
+  height: 100vh !important;
+  max-width: none !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+  aspect-ratio: auto !important;
 }
 .cc-btn{
   background: none;
@@ -1585,6 +1602,24 @@ footer a:hover{ color: #38BDF8; }
     height: 40px;
     border-radius: 12px;
     font-size: 18px;
+  }
+  .custom-controls{
+    padding: 6px 10px;
+    gap: 6px;
+  }
+  .cc-btn{
+    padding: 3px 5px;
+  }
+  .cc-btn svg{
+    width: 17px;
+    height: 17px;
+  }
+  .cc-time{
+    font-size: 11px;
+    min-width: 68px;
+  }
+  .cc-seek{
+    min-width: 45px;
   }
 }
 
@@ -2684,8 +2719,8 @@ footer a:hover{ color: #38BDF8; }
     ytPlayer = new YT.Player(ytMount, {
       videoId: id,
       playerVars: {
-        autoplay: 1, controls: 1, rel: 0,
-        modestbranding: 1, iv_load_policy: 3, playsinline: 1, fs: 1,
+        autoplay: 1, controls: 0, disablekb: 1, rel: 0,
+        modestbranding: 1, iv_load_policy: 3, playsinline: 1, fs: 0,
         origin: window.location.origin
       },
       events: {
@@ -2758,12 +2793,36 @@ footer a:hover{ color: #38BDF8; }
       ytSeeking = false;
     });
   }
+  const CC_FS_ICONS = {
+    enter: '<svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zM5 10h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>',
+    exit: '<svg viewBox="0 0 24 24"><path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/></svg>'
+  };
+  function updateFsIcon(){
+    const isFull = !!(document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement);
+    if(ccFullscreen) ccFullscreen.innerHTML = isFull ? CC_FS_ICONS.exit : CC_FS_ICONS.enter;
+  }
   if(ccFullscreen){
-    ccFullscreen.addEventListener('click', ()=>{
-      if(classPlayer.requestFullscreen) classPlayer.requestFullscreen();
-      else if(classPlayer.webkitRequestFullscreen) classPlayer.webkitRequestFullscreen();
+    ccFullscreen.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      if(!classPlayer) return;
+      const isFull = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
+      if(isFull){
+        if(document.exitFullscreen) document.exitFullscreen();
+        else if(document.webkitExitFullscreen) document.webkitExitFullscreen();
+        else if(document.mozCancelFullScreen) document.mozCancelFullScreen();
+        else if(document.msExitFullscreen) document.msExitFullscreen();
+      } else {
+        if(classPlayer.requestFullscreen) classPlayer.requestFullscreen();
+        else if(classPlayer.webkitRequestFullscreen) classPlayer.webkitRequestFullscreen();
+        else if(classPlayer.mozRequestFullScreen) classPlayer.mozRequestFullScreen();
+        else if(classPlayer.msRequestFullscreen) classPlayer.msRequestFullscreen();
+      }
     });
   }
+  document.addEventListener('fullscreenchange', updateFsIcon);
+  document.addEventListener('webkitfullscreenchange', updateFsIcon);
+  document.addEventListener('mozfullscreenchange', updateFsIcon);
+  document.addEventListener('MSFullscreenChange', updateFsIcon);
   classPlayer.addEventListener('contextmenu', (e)=> e.preventDefault());
 
   const QUALITY_LABELS = {
