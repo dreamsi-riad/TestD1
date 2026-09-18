@@ -21,8 +21,8 @@
         :root {
             --ink: #1E2A47;
             --ink-soft: #4A5772;
-            --paper: #FAF7F0;
-            --paper-line: #E7DFCB;
+            --paper: #F8FAFC;
+            --paper-line: #E2E8F0;
             --card: #FFFFFF;
             --accent: #E8A33D;
             --accent-dark: #C97F1F;
@@ -55,8 +55,9 @@
             position: sticky;
             top: 0;
             z-index: 50;
-            background: rgba(250,247,240,0.92);
-            backdrop-filter: blur(8px);
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--paper-line);
         }
         
@@ -156,11 +157,12 @@
                 top: 100%;
                 left: 0;
                 right: 0;
-                background: var(--paper);
+                background: #ffffff;
                 flex-direction: column;
                 padding: 18px 28px 26px;
                 gap: 16px;
                 border-bottom: 1px solid var(--paper-line);
+                box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
                 display: none;
             }
             .nav-links.open {
