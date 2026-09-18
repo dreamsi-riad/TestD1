@@ -2,98 +2,125 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-<link rel="preload" as="image" href="assets/logo.png" fetchpriority="high">
+    <link rel="preload" as="image" href="assets/logo.png" fetchpriority="high">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Course Details | VISION Academics</title>
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&family=Baloo+Da+2:wght@500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Anek+Bangla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        /* ===== গ্লোবাল স্টাইল ===== */
-        * {
+        /* ===== আধুনিক ও প্রিমিয়াম ডিজাইন সিস্টেম ===== */
+        *, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
         
         :root {
-            --ink: #1E2A47;
-            --ink-soft: #4A5772;
+            --ink: #0F172A;
+            --ink-soft: #475569;
+            --ink-muted: #64748B;
             --paper: #F8FAFC;
             --paper-line: #E2E8F0;
             --card: #FFFFFF;
-            --accent: #E8A33D;
-            --accent-dark: #C97F1F;
-            --sky: #5B8FBF;
-            --green: #4C8C6B;
-            --shadow: 0 10px 30px rgba(30,42,71,0.08);
-            --radius: 14px;
+            --primary: #2563EB;
+            --primary-dark: #1D4ED8;
+            --primary-light: #EFF6FF;
+            --accent: #F59E0B;
+            --accent-dark: #D97706;
+            --green: #10B981;
+            --green-dark: #059669;
+            --green-light: #ECFDF5;
+            --rose: #EF4444;
+            --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
+            --shadow-md: 0 10px 30px -4px rgba(15, 23, 42, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
+            --shadow-lg: 0 20px 45px -10px rgba(15, 23, 42, 0.12), 0 8px 20px -4px rgba(15, 23, 42, 0.06);
+            --radius-sm: 10px;
+            --radius: 18px;
+            --radius-lg: 24px;
         }
         
         html {
+            scroll-behavior: smooth;
             overflow-x: hidden;
         }
 
         body {
             font-family: 'Anek Bangla', sans-serif;
-            background: var(--paper);
+            background: radial-gradient(circle at 15% 10%, rgba(37, 99, 235, 0.035) 0%, transparent 45%),
+                        radial-gradient(circle at 85% 75%, rgba(245, 158, 11, 0.035) 0%, transparent 45%),
+                        var(--paper);
             color: var(--ink);
             line-height: 1.7;
             margin: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1240px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 clamp(16px, 3vw, 32px);
+            width: 100%;
         }
         
-        /* ===== নেভবার ===== */
+        /* ===== হেডার ও নেভবার (গ্লাস মরফিজম) ===== */
         header.nav {
             position: sticky;
             top: 0;
-            z-index: 50;
+            z-index: 100;
             background: rgba(255, 255, 255, 0.88);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border-bottom: 1px solid var(--paper-line);
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
+            transition: all 0.3s ease;
         }
         
         .nav-inner {
-            max-width: 1200px;
+            max-width: 1240px;
             margin: 0 auto;
-            height: 64px;
-            padding: 0 20px;
+            height: 70px;
+            padding: 0 clamp(16px, 3vw, 32px);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 20px;
+            gap: 24px;
         }
         
         .brand {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             font-family: 'Baloo Da 2', sans-serif;
             font-weight: 800;
             font-size: 22px;
             color: var(--ink);
             text-decoration: none;
+            flex-shrink: 0;
         }
         
         .brand .brand-logo {
-            height: 64px;
+            height: 52px;
             max-height: 100%;
             width: auto;
             aspect-ratio: 3.84/1;
             object-fit: contain;
+            transition: transform 0.25s ease;
+        }
+        
+        .brand:hover .brand-logo {
+            transform: scale(1.02);
         }
         
         .nav-links {
             display: flex;
-            gap: 30px;
+            align-items: center;
+            gap: 32px;
             font-weight: 600;
             font-size: 15.5px;
         }
@@ -101,12 +128,13 @@
         .nav-links a {
             text-decoration: none;
             color: var(--ink-soft);
-            padding: 4px 0;
+            padding: 8px 0;
             position: relative;
+            transition: color 0.2s ease;
         }
         
         .nav-links a:hover {
-            color: var(--ink);
+            color: var(--primary);
         }
         
         .nav-links a::after {
@@ -114,12 +142,13 @@
             position: absolute;
             left: 0;
             right: 0;
-            bottom: -3px;
-            height: 2px;
-            background: var(--accent);
+            bottom: 0;
+            height: 2.5px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
             transform: scaleX(0);
-            transform-origin: left;
-            transition: transform .25s ease;
+            transform-origin: center;
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
         .nav-links a:hover::after {
@@ -127,35 +156,121 @@
         }
         
         .nav-cta {
-            display:inline-flex;align-items:center;justify-content:center;gap:7px;
-            height:38px;padding:0 18px;border-radius:999px;
-            font-family:inherit;font-weight:600;font-size:14px;
-            color:#fff!important;text-decoration:none;white-space:nowrap;
-            background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);
-            border:1px solid rgba(255,255,255,.14);
-            box-shadow:0 2px 8px rgba(15,23,42,.16),inset 0 1px 0 rgba(255,255,255,.12);
-            transition:all .25s cubic-bezier(.16,1,.3,1);
-            box-sizing:border-box;user-select:none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            height: 42px;
+            padding: 0 20px;
+            border-radius: 999px;
+            font-family: inherit;
+            font-weight: 700;
+            font-size: 14.5px;
+            color: #fff !important;
+            text-decoration: none;
+            white-space: nowrap;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            user-select: none;
         }
-        .nav-cta:hover{
-            background:linear-gradient(135deg,#283a63 0%,#131d35 100%);
-            border-color:rgba(255,255,255,.28);
-            box-shadow:0 4px 14px rgba(15,23,42,.24),inset 0 1px 0 rgba(255,255,255,.2);
-            transform:translateY(-1px);
-            color:#fff!important;
+        
+        .nav-cta:hover {
+            background: linear-gradient(135deg, #283a63 0%, #131d35 100%);
+            border-color: rgba(255, 255, 255, 0.28);
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            transform: translateY(-1.5px);
+            color: #fff !important;
         }
-        .nav-cta:active{transform:translateY(0) scale(.98);box-shadow:0 1px 4px rgba(15,23,42,.2)}
-        .nav-cta svg.nav-login-icon{width:16px;height:16px;flex:none}
+        
+        .nav-cta:active {
+            transform: translateY(0) scale(0.98);
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.2);
+        }
+        
+        .nav-cta svg.nav-login-icon {
+            width: 16px;
+            height: 16px;
+            flex: none;
+        }
+        
         /* Logged-in profile badge button */
-        .nav-cta--logged-in{padding:0 13px 0 6px;gap:8px;background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);border:1px solid rgba(255,255,255,.14)}
-        .nav-cta--logged-in:hover{border-color:rgba(56,189,248,.45);box-shadow:0 4px 16px rgba(15,23,42,.28),0 0 12px rgba(56,189,248,.18)}
-        .nav-profile-avatar{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;flex:none;box-shadow:0 1px 3px rgba(0,0,0,.3),0 0 0 1px rgba(255,255,255,.25)}
-        .nav-profile-initial{color:#fff;font-weight:700;font-size:12.5px;line-height:1;text-transform:uppercase}
-        .nav-profile-avatar svg{width:13px;height:13px;fill:currentColor;color:#fff}
-        .nav-profile-badge{position:absolute;bottom:-1px;right:-1px;width:8px;height:8px;border-radius:50%;background:#10b981;border:1.5px solid #0f172a;box-shadow:0 0 4px rgba(16,185,129,.6)}
-        .nav-profile-name{font-size:13.5px;font-weight:600;color:#f1f5f9;letter-spacing:.2px;max-width:95px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1}
-        .nav-profile-chevron{width:10px;height:10px;flex:none;opacity:.6;transition:opacity .2s ease,transform .2s ease}
-        .nav-cta--logged-in:hover .nav-profile-chevron{opacity:1;transform:translateY(1px)}
+        .nav-cta--logged-in {
+            padding: 0 14px 0 6px;
+            gap: 9px;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+        }
+        
+        .nav-cta--logged-in:hover {
+            border-color: rgba(56, 189, 248, 0.45);
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.28), 0 0 12px rgba(56, 189, 248, 0.18);
+        }
+        
+        .nav-profile-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            flex: none;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.25);
+        }
+        
+        .nav-profile-initial {
+            color: #fff;
+            font-weight: 700;
+            font-size: 13px;
+            line-height: 1;
+            text-transform: uppercase;
+        }
+        
+        .nav-profile-avatar svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+            color: #fff;
+        }
+        
+        .nav-profile-badge {
+            position: absolute;
+            bottom: -1px;
+            right: -1px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+            border: 1.5px solid #0f172a;
+            box-shadow: 0 0 4px rgba(16, 185, 129, 0.6);
+        }
+        
+        .nav-profile-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #f1f5f9;
+            letter-spacing: 0.2px;
+            max-width: 100px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 1;
+        }
+        
+        .nav-profile-chevron {
+            width: 10px;
+            height: 10px;
+            flex: none;
+            opacity: 0.7;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        
+        .nav-cta--logged-in:hover .nav-profile-chevron {
+            opacity: 1;
+            transform: translateY(1.5px);
+        }
         
         .burger {
             display: none;
@@ -164,6 +279,7 @@
             font-size: 26px;
             color: var(--ink);
             cursor: pointer;
+            padding: 4px;
         }
         
         @media(max-width: 860px) {
@@ -172,12 +288,13 @@
                 top: 100%;
                 left: 0;
                 right: 0;
-                background: #ffffff;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(20px);
                 flex-direction: column;
-                padding: 18px 28px 26px;
+                padding: 20px 28px 28px;
                 gap: 16px;
                 border-bottom: 1px solid var(--paper-line);
-                box-shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+                box-shadow: 0 16px 36px rgba(15, 23, 42, 0.1);
                 display: none;
             }
             .nav-links.open {
@@ -187,256 +304,357 @@
                 display: block;
             }
         }
-
-        /* ছোট মোবাইল স্ক্রিনে logo + লগইন বাটন + বার্গার মিলে viewport-এর চেয়ে
-           বেশি জায়গা নিয়ে ফেলছিল (logo height:64px ফিক্সড রেখে shrink হচ্ছিল না),
-           ফলে পুরো পেজ horizontally overflow করে "zoom করা"-র মতো দেখাচ্ছিল আর
-           element গুলো একপাশে চাপা পড়ে যাচ্ছিল। ছোট স্ক্রিনে এগুলো ছোট করে
-           viewport-এর ভেতরেই ফিট করানো হলো। */
+        
         @media(max-width: 480px) {
-            .nav-inner{ gap: 8px; padding: 0 12px; }
-            .brand .brand-logo{ height: 42px; }
-            .nav-cta{height:34px;padding:0 12px;font-size:12.5px;gap:5px}
-            .nav-cta svg.nav-login-icon{width:14px;height:14px}
-            .nav-cta--logged-in{padding:0 10px 0 5px;gap:6px}
-            .nav-profile-avatar{width:22px;height:22px}
-            .nav-profile-initial{font-size:11px}
-            .nav-profile-avatar svg{width:11px;height:11px}
-            .nav-profile-badge{width:7px;height:7px}
-            .nav-profile-name{font-size:12px;max-width:70px}
-            .nav-profile-chevron{width:9px;height:9px}
-            .burger{ font-size: 22px; }
+            .nav-inner { gap: 10px; height: 60px; }
+            .brand .brand-logo { height: 40px; }
+            .nav-cta { height: 36px; padding: 0 13px; font-size: 13px; gap: 6px; }
+            .nav-cta svg.nav-login-icon { width: 14px; height: 14px; }
+            .nav-cta--logged-in { padding: 0 10px 0 5px; gap: 6px; }
+            .nav-profile-avatar { width: 24px; height: 24px; }
+            .nav-profile-name { font-size: 12.5px; max-width: 72px; }
+            .burger { font-size: 22px; }
         }
         
         /* ===== কোর্স ডিটেইলস সেকশন ===== */
         .course-detail-section {
-            padding: 60px 0;
-            min-height: 70vh;
+            padding: 36px 0 60px;
+            flex: 1;
         }
         
+        /* ব্যাক বাটন (মডার্ন চিপ) */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #ffffff;
+            border: 1.5px solid var(--paper-line);
+            color: var(--ink-soft);
+            font-weight: 700;
+            font-size: 14.5px;
+            padding: 9px 18px;
+            border-radius: 999px;
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+            text-decoration: none;
+            margin-bottom: 26px;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .back-link:hover {
+            color: var(--primary);
+            border-color: rgba(37, 99, 235, 0.3);
+            background: #f0f7ff;
+            transform: translateX(-3px);
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.1);
+        }
+        
+        .back-link svg {
+            width: 16px;
+            height: 16px;
+            stroke-width: 2.5;
+            transition: transform 0.2s ease;
+        }
+        
+        .back-link:hover svg {
+            transform: translateX(-2px);
+        }
+        
+        /* মেইন কার্ড গ্রিড */
         .course-detail-grid {
             display: grid;
-            /* বাম পাশের image card-এর ratio/index.html-এর course-image-এর ratio-এর সাথে একই থাকবে */
-            grid-template-columns: 1.18fr .82fr;
-            gap: 50px;
+            grid-template-columns: 1.12fr 0.88fr;
+            gap: 44px;
             align-items: start;
             background: var(--card);
-            border-radius: var(--radius);
-            padding: 40px;
-            box-shadow: var(--shadow);
+            border-radius: var(--radius-lg);
+            padding: clamp(24px, 3.5vw, 42px);
+            box-shadow: var(--shadow-md);
             border: 1px solid var(--paper-line);
+            position: relative;
+            overflow: hidden;
         }
         
-        @media(max-width: 768px) {
-            .course-detail-section {
-                padding: 28px 0;
-            }
-
-            .course-detail-section > .container {
-                padding-left: 12px;
-                padding-right: 12px;
-            }
-
-            .course-detail-grid {
-                grid-template-columns: 1fr;
-                padding: 16px;
-                gap: 24px;
-                width: 100%;
-                box-sizing: border-box;
-            }
-
-            .detail-content {
-                min-width: 0;
-            }
-
-            .detail-title {
-                font-size: clamp(26px, 7vw, 34px);
-            }
-
-            .detail-description {
-                font-size: 16px;
-            }
-
-            .detail-actions {
-                gap: 10px;
-            }
-
-            .detail-actions .btn {
-                flex: 1 1 150px;
-                justify-content: center;
-                padding: 13px 18px;
-                white-space: nowrap;
-            }
-        }
-
-        @media(max-width: 480px) {
-            .course-detail-section {
-                padding: 20px 0;
-            }
-
-            .course-detail-section > .container {
-                padding-left: 8px;
-                padding-right: 8px;
-            }
-
-            .course-detail-grid {
-                padding: 12px;
-                gap: 20px;
-                border-radius: 14px;
-            }
-
-            .detail-actions .btn {
-                flex-basis: 100%;
-                width: 100%;
-            }
+        .course-detail-grid::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #2563EB, #06B6D4, #10B981);
         }
         
-        /* ===== বাম পাশ: ছবি ===== */
-        .detail-image {
+        /* ===== বাম পাশ: মিডিয়া ও হাইলাইটস ===== */
+        .detail-media-wrap {
+            position: sticky;
+            top: 94px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        
+        .detail-image-box {
+            position: relative;
             width: 100%;
             aspect-ratio: 16 / 10;
-            height: auto;
-            align-self: start;
             border-radius: var(--radius);
             overflow: hidden;
-            box-shadow: 0 8px 24px rgba(30,42,71,0.12);
-            background: #eee;
+            box-shadow: 0 10px 30px -4px rgba(15, 23, 42, 0.14);
+            background: #0f172a;
+            border: 1px solid rgba(226, 232, 240, 0.8);
         }
-
-        /*
-         * IMPORTANT:
-         * Details page-এর লেখা যত বড়/লম্বা হোক, image কখনো vertically stretch হবে না।
-         * Index page-এর .course-image-এর 16:10 ratio-ই এখানে exact রাখা হয়েছে।
-         */
-        .detail-image img {
+        
+        .detail-image-box img {
             width: 100%;
             height: 100%;
             aspect-ratio: 16 / 10;
             object-fit: cover;
             display: block;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
         
-        /* ===== ডান পাশ: তথ্য ===== */
-        .detail-content {
+        .detail-image-box:hover img {
+            transform: scale(1.025);
+        }
+        
+        .detail-badge-corner {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            z-index: 2;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 5px 14px;
+            border-radius: 999px;
+            font-family: 'Baloo Da 2', sans-serif;
+            font-size: 12.5px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+        }
+        
+        /* ভিশন ট্রাস্ট বার (বই, সাপোর্ট, রেকর্ডেড ক্লাস) */
+        .trust-perks-bar {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            background: #f8fafc;
+            border: 1px solid var(--paper-line);
+            border-radius: 14px;
+            padding: 12px;
+        }
+        
+        .trust-perk {
             display: flex;
             flex-direction: column;
-            gap: 12px;
-        }
-        
-        .detail-category {
-            font-family: 'Baloo Da 2', sans-serif;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: .08em;
-            font-size: 13px;
-            color: var(--accent-dark);
-            display: inline-flex;
             align-items: center;
-            gap: 8px;
+            text-align: center;
+            gap: 4px;
+            padding: 4px 2px;
         }
         
-        .detail-category::before {
-            content: "";
-            width: 18px;
-            height: 2px;
-            background: var(--accent-dark);
-            display: inline-block;
+        .trust-perk-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06);
+            color: var(--primary);
         }
         
-        .detail-title {
-            font-size: clamp(28px, 3vw, 38px);
+        .trust-perk-icon svg {
+            width: 17px;
+            height: 17px;
+            stroke-width: 2.2;
+        }
+        
+        .trust-perk-title {
+            font-family: 'Baloo Da 2', sans-serif;
+            font-size: 13px;
             font-weight: 700;
             color: var(--ink);
             line-height: 1.2;
-            margin: 0;
         }
         
-        .detail-tag {
-            display: inline-block;
+        .trust-perk-sub {
+            font-size: 11.5px;
+            color: var(--ink-muted);
+            line-height: 1.2;
+        }
+        
+        /* ===== ডান পাশ: তথ্য ও এনরোলমেন্ট ===== */
+        .detail-content {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .detail-eyebrow-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .detail-category-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            border: 1px solid rgba(37, 99, 235, 0.2);
+            padding: 4px 14px;
+            border-radius: 999px;
             font-family: 'Baloo Da 2', sans-serif;
             font-size: 13px;
             font-weight: 700;
-            color: var(--green);
-            background: rgba(76,140,107,0.12);
-            padding: 4px 14px;
-            border-radius: 999px;
-            width: fit-content;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
         }
         
-        .detail-price {
+        .detail-category-badge::before {
+            content: "";
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--primary);
+        }
+        
+        .detail-tag {
+            display: inline-flex;
+            align-items: center;
+            font-family: 'Baloo Da 2', sans-serif;
+            font-size: 12.5px;
+            font-weight: 700;
+            color: #7C3AED;
+            background: #F5F3FF;
+            border: 1px solid #DDD6FE;
+            padding: 4px 13px;
+            border-radius: 999px;
+        }
+        
+        .detail-title {
+            font-family: 'Baloo Da 2', 'Anek Bangla', sans-serif;
+            font-size: clamp(26px, 3.2vw, 36px);
+            font-weight: 800;
+            color: var(--ink);
+            line-height: 1.22;
+            letter-spacing: -0.01em;
+            margin: 0;
+        }
+        
+        /* প্রিমিয়াম প্রাইসিং কার্ড */
+        .detail-price-card {
+            background: linear-gradient(145deg, #F8FAFC 0%, #EFF6FF 100%);
+            border: 1.5px solid rgba(37, 99, 235, 0.15);
+            border-radius: var(--radius);
+            padding: 16px 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            position: relative;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.05);
+        }
+        
+        .detail-price-main {
             display: flex;
             align-items: baseline;
-            gap: 15px;
+            gap: 14px;
             flex-wrap: wrap;
-            padding: 10px 0;
-            border-top: 1.5px dashed var(--paper-line);
-            border-bottom: 1.5px dashed var(--paper-line);
         }
         
         .price-now {
             font-family: 'Baloo Da 2', sans-serif;
             font-weight: 800;
-            font-size: 32px;
-            color: #5B4FE9;
+            font-size: clamp(32px, 3.8vw, 40px);
+            color: var(--primary-dark);
+            line-height: 1;
         }
         
         .price-old {
             font-family: 'Anek Bangla', sans-serif;
-            font-weight: 400;
-            font-size: 18px;
-            color: #9AA1B5;
+            font-weight: 500;
+            font-size: 19px;
+            color: #94A3B8;
             text-decoration: line-through;
-            text-decoration-thickness: 1.5px;
+            text-decoration-thickness: 2px;
         }
-        .price-note {
-            width: 100%;
-            font-size: 14px;
-            color: var(--green);
-            font-weight: 600;
-            margin-top: -4px;
-        }
-        .sheet-error {
-            text-align:center;
-            padding:70px 24px;
-            background:var(--card);
-            border-radius:var(--radius);
-            border:1px solid #F0C7C7;
-        }
-        .sheet-error h2 { margin-bottom:8px; }
-        .sheet-error p { color:var(--ink-soft); margin-bottom:20px; }
-
         
-        /* ===== কোর্স ইন্সট্রাক্টর (teachers) ===== */
+        .price-discount-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: var(--green-light);
+            color: var(--green-dark);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            font-family: 'Baloo Da 2', sans-serif;
+            font-size: 12.5px;
+            font-weight: 800;
+            padding: 3px 10px;
+            border-radius: 999px;
+        }
+        
+        .price-note {
+            font-size: 14px;
+            color: var(--green-dark);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .price-note svg {
+            width: 15px;
+            height: 15px;
+            stroke-width: 2.4;
+            flex-shrink: 0;
+        }
+        
+        /* কোর্স ইন্সট্রাক্টর (teachers) */
         .course-teachers-block {
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 8px;
+            margin-top: 2px;
         }
 
         .course-teachers-label {
             font-family: 'Baloo Da 2', sans-serif;
-            font-size: 13px;
+            font-size: 12.5px;
             font-weight: 700;
-            line-height: 1.5;
-            color: var(--ink-soft);
+            color: var(--ink-muted);
             text-transform: uppercase;
-            letter-spacing: .04em;
+            letter-spacing: .06em;
         }
 
         .course-teachers {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 10px;
         }
 
         .course-teacher-chip {
             display: flex;
             align-items: center;
             gap: 10px;
-            background: var(--paper);
-            border: 1px solid var(--paper-line);
+            background: #ffffff;
+            border: 1.5px solid var(--paper-line);
             border-radius: 999px;
-            padding: 6px 16px 6px 6px;
+            padding: 5px 16px 5px 5px;
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+            transition: all 0.2s ease;
+        }
+
+        .course-teacher-chip:hover {
+            border-color: #CBD5E1;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
         }
 
         .course-teacher-chip img,
@@ -447,6 +665,7 @@
             object-fit: cover;
             flex: none;
             background: var(--card);
+            box-shadow: 0 0 0 2px #fff;
         }
 
         .cte-avatar-fallback {
@@ -454,8 +673,8 @@
             align-items: center;
             justify-content: center;
             font-family: 'Baloo Da 2', sans-serif;
-            font-weight: 700;
-            font-size: 15px;
+            font-weight: 800;
+            font-size: 16px;
             color: var(--ink);
             background: linear-gradient(135deg, #ffe6b8, var(--accent) 85%);
         }
@@ -468,110 +687,224 @@
 
         .cte-name {
             font-weight: 700;
-            font-size: 14px;
+            font-size: 14.5px;
             color: var(--ink);
         }
 
         .cte-subject {
-            font-size: 11.5px;
+            font-size: 12px;
             color: var(--ink-soft);
-        }
-
-        .detail-description {
-            font-size: 17px;
-            color: var(--ink-soft);
-            line-height: 1.8;
         }
         
-        .detail-description p {
-            margin-bottom: 12px;
+        /* বিবরণ ব্লক */
+        .detail-description-card {
+            background: #ffffff;
+            border: 1px solid var(--paper-line);
+            border-radius: var(--radius);
+            padding: 18px 22px;
+            font-size: 16.5px;
+            color: var(--ink-soft);
+            line-height: 1.8;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.02);
+        }
+        
+        .detail-description-card p {
+            margin-bottom: 8px;
+        }
+        .detail-description-card p:last-child {
+            margin-bottom: 0;
+        }
+        
+        /* ফিচার তালিকা */
+        .detail-features-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        
+        .detail-features-title {
+            font-family: 'Baloo Da 2', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: 2px;
         }
         
         .detail-features {
             list-style: none;
             padding: 0;
-            margin: 8px 0 0 0;
+            margin: 0;
+            display: grid;
+            gap: 8px;
         }
         
         .detail-features li {
-            padding: 6px 0;
-            padding-left: 28px;
-            position: relative;
-            color: var(--ink-soft);
-            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 14px;
+            border-radius: 10px;
+            background: #f8fafc;
+            border: 1px solid #f1f5f9;
+            color: #334155;
+            font-size: 15.5px;
+            font-weight: 600;
         }
         
-        .detail-features li::before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            color: var(--green);
-            font-weight: 700;
-            font-size: 18px;
+        .detail-feature-check {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--green-light);
+            color: var(--green-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
         }
         
+        .detail-feature-check svg {
+            width: 13px;
+            height: 13px;
+            stroke-width: 3;
+        }
+        
+        /* অ্যাকশন বাটনস (কল টু অ্যাকশন) */
         .detail-actions {
             display: flex;
-            gap: 15px;
+            gap: 14px;
             flex-wrap: wrap;
             margin-top: 10px;
+            padding-top: 20px;
+            border-top: 1.5px dashed var(--paper-line);
         }
         
         .btn {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 14px 30px;
+            justify-content: center;
+            gap: 9px;
+            padding: 14px 34px;
             border-radius: 999px;
             font-family: 'Anek Bangla', sans-serif;
             font-weight: 700;
             font-size: 16px;
             border: none;
             text-decoration: none;
-            transition: transform .18s ease, box-shadow .18s ease;
+            transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
             cursor: pointer;
+            box-sizing: border-box;
+            user-select: none;
         }
         
-        .btn-primary {
-            background: var(--accent);
-            color: var(--ink);
-            box-shadow: 0 8px 20px rgba(232,163,61,0.4);
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 26px rgba(232,163,61,0.5);
-        }
-
-        /* Enroll Now — একই height রেখে শুধু width একটু বাড়ানো (horizontal padding বেশি)
-           আর সবুজ রঙ (var(--green)) */
         .btn-primary.enroll-btn {
-            background: var(--green);
-            color: #fff;
-            padding: 14px 46px;
-            box-shadow: 0 8px 20px rgba(76,140,107,0.35);
+            background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+            color: #ffffff;
+            padding: 15px 44px;
+            box-shadow: 0 8px 22px rgba(37, 99, 235, 0.35);
         }
-
+        
         .btn-primary.enroll-btn:hover {
-            box-shadow: 0 12px 26px rgba(76,140,107,0.45);
+            transform: translateY(-2.5px);
+            box-shadow: 0 14px 30px rgba(37, 99, 235, 0.45);
+            background: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%);
         }
         
-        .btn-outline {
-            background: transparent;
-            color: var(--ink);
-            border: 1.5px solid var(--ink);
+        .btn-primary.enroll-btn:active {
+            transform: translateY(0);
         }
         
-        .btn-outline:hover {
-            background: var(--ink);
-            color: #fff;
+        /* অলরেডি এনরোল্ড বাটন (উজ্জ্বল সবুজ গ্রেডিয়েন্ট) */
+        .course-enrolled-trigger {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+            color: #ffffff !important;
+            border: 1px solid rgba(255, 255, 255, 0.25) !important;
+            box-shadow: 0 8px 22px rgba(16, 185, 129, 0.38) !important;
+            padding: 15px 44px !important;
+            font-weight: 700;
+            font-size: 16px;
+        }
+        
+        .course-enrolled-trigger:hover {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+            transform: translateY(-2.5px);
+            box-shadow: 0 14px 30px rgba(16, 185, 129, 0.5) !important;
+            color: #ffffff !important;
+        }
+        
+        .course-enrolled-trigger:active {
+            transform: translateY(0);
         }
 
-        /* "কোর্সটি যেভাবে কিনবেন" — একই height রেখে শুধু horizontal padding চেপে
-           ছোট করা হয়েছে, আর টেক্সট যাতে ২ লাইনে না যায় তাই nowrap */
+        /* "কোর্সটি যেভাবে কিনবেন" ভিডিও বাটন */
         #howToBuyBtn {
-            padding: 14px 20px;
+            background: #ffffff;
+            color: var(--ink);
+            border: 1.5px solid var(--paper-line);
+            padding: 15px 26px;
             white-space: nowrap;
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+        }
+        
+        #howToBuyBtn:hover {
+            background: #0f172a;
+            color: #ffffff;
+            border-color: #0f172a;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.16);
+        }
+        
+        #howToBuyBtn:active {
+            transform: translateY(0);
+        }
+        
+        #howToBuyBtn svg {
+            width: 18px;
+            height: 18px;
+            stroke-width: 2.2;
+        }
+        
+        /* রেস্পনসিভ ব্রেকপয়েন্টস */
+        @media(max-width: 880px) {
+            .course-detail-section {
+                padding: 24px 0 40px;
+            }
+            .course-detail-grid {
+                grid-template-columns: 1fr;
+                gap: 28px;
+                padding: 22px;
+            }
+            .detail-media-wrap {
+                position: static;
+            }
+            .detail-actions .btn {
+                flex: 1 1 180px;
+                padding: 14px 20px;
+            }
+        }
+        
+        @media(max-width: 480px) {
+            .course-detail-grid {
+                padding: 16px;
+                border-radius: 18px;
+            }
+            .detail-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .detail-actions .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            .trust-perks-bar {
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 6px;
+                padding: 8px 6px;
+            }
+            .trust-perk-title { font-size: 11.5px; }
+            .trust-perk-sub { font-size: 10px; }
+            .trust-perk-icon { width: 26px; height: 26px; }
+            .trust-perk-icon svg { width: 14px; height: 14px; }
         }
 
         /* ===== "কোর্সটি যেভাবে কিনবেন" ভিডিও মোডাল ===== */
@@ -579,26 +912,36 @@
             display: none;
             position: fixed;
             inset: 0;
-            z-index: 200;
-            background: rgba(15,20,35,.72);
-            backdrop-filter: blur(3px);
+            z-index: 1000;
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             padding: 20px;
             align-items: center;
             justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .video-modal-overlay.open {
             display: flex;
+            opacity: 1;
         }
 
         .video-modal-box {
             position: relative;
             width: 100%;
-            max-width: 780px;
-            background: #000;
-            border-radius: 14px;
+            max-width: 820px;
+            background: #0b1120;
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0,0,0,.5);
+            box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.12);
+            transform: scale(0.95);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .video-modal-overlay.open .video-modal-box {
+            transform: scale(1);
         }
 
         .video-modal-frame-wrap {
@@ -619,118 +962,189 @@
 
         .video-modal-close {
             position: absolute;
-            top: -14px;
-            right: -14px;
-            width: 34px;
-            height: 34px;
+            top: 14px;
+            right: 14px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            border: none;
-            background: var(--accent);
-            color: var(--ink);
-            font-size: 18px;
-            font-weight: 800;
-            line-height: 1;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(8px);
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 700;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,.35);
-            z-index: 1;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+            z-index: 10;
+            transition: all 0.2s ease;
         }
 
         .video-modal-close:hover {
-            transform: scale(1.06);
-        }
-
-        @media(max-width: 480px) {
-            .video-modal-close {
-                top: 8px;
-                right: 8px;
-            }
+            background: var(--rose);
+            border-color: var(--rose);
+            transform: scale(1.08) rotate(90deg);
         }
         
-        /* ===== লোডিং স্টেট ===== */
+        /* ===== লোডিং স্টেট (শিমার ও স্পিনার) ===== */
         .loading-state {
             text-align: center;
-            padding: 80px 20px;
-            font-size: 18px;
-            color: var(--ink-soft);
+            padding: 90px 20px;
+            background: var(--card);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--paper-line);
+            box-shadow: var(--shadow-sm);
         }
         
         .loading-state .spinner {
             display: inline-block;
-            width: 40px;
-            height: 40px;
-            border: 4px solid var(--paper-line);
-            border-top-color: var(--accent);
+            width: 44px;
+            height: 44px;
+            border: 3.5px solid rgba(37, 99, 235, 0.15);
+            border-top-color: var(--primary);
             border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin-bottom: 16px;
+            animation: spin 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite;
+            margin-bottom: 18px;
+        }
+        
+        .loading-state p {
+            font-family: 'Baloo Da 2', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--ink-soft);
         }
         
         @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
+            to { transform: rotate(360deg); }
         }
         
-        /* ===== নট ফাউন্ড ===== */
-        .not-found {
+        /* ===== নট ফাউন্ড ও এরর স্টেট ===== */
+        .not-found, .sheet-error {
             text-align: center;
-            padding: 80px 20px;
+            padding: 80px 24px;
             background: var(--card);
-            border-radius: var(--radius);
+            border-radius: var(--radius-lg);
             border: 1px solid var(--paper-line);
+            box-shadow: var(--shadow-sm);
+            max-width: 600px;
+            margin: 20px auto;
         }
         
-        .not-found h2 {
-            font-size: 32px;
+        .not-found h2, .sheet-error h2 {
+            font-family: 'Baloo Da 2', sans-serif;
+            font-size: 28px;
+            font-weight: 800;
             color: var(--ink);
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
         
-        .not-found p {
+        .not-found p, .sheet-error p {
             color: var(--ink-soft);
-            margin-bottom: 20px;
+            font-size: 16px;
+            margin-bottom: 24px;
         }
         
-        /* ===== ফুটার ===== */
+        /* ===== ফুটার (মডার্ন ডার্ক স্লেট) ===== */
         footer {
-            padding: 40px 0 30px;
-            color: var(--ink-soft);
+            background: #0f172a;
+            color: #94a3b8;
+            padding: 56px 0 28px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            margin-top: auto;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 1fr 1.2fr;
+            gap: 40px;
+            padding-bottom: 36px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .footer-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .footer-logo {
+            height: 48px;
+            width: auto;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+            opacity: 0.95;
+        }
+        
+        .footer-desc {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #cbd5e1;
+            max-width: 38ch;
+        }
+        
+        .footer-heading {
+            font-family: 'Baloo Da 2', sans-serif;
+            color: #ffffff;
+            font-size: 17px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: 0.02em;
+        }
+        
+        .footer-links {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .footer-links a {
+            color: #cbd5e1;
+            text-decoration: none;
             font-size: 14.5px;
-            border-top: 1px solid var(--paper-line);
-            margin-top: 40px;
+            transition: all 0.2s ease;
+            display: inline-block;
+        }
+        
+        .footer-links a:hover {
+            color: #38bdf8;
+            transform: translateX(4px);
+        }
+        
+        .footer-contact-item {
+            color: #cbd5e1;
+            font-size: 14.5px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .footer-bottom {
+            padding-top: 24px;
+            text-align: center;
         }
         
         .copyright {
-            text-align: center;
-            margin-top: 10px;
-            font-size: 13px;
+            font-size: 13.5px;
+            color: #64748b;
         }
         
-        /* ===== ব্যাক বাটন ===== */
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            color: var(--ink-soft);
-            text-decoration: none;
-            font-weight: 600;
-            margin-bottom: 24px;
-            transition: color .2s ease;
+        @media(max-width: 768px) {
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
         }
         
-        .back-link:hover {
-            color: var(--ink);
-        }
-
-        /* ---------- ল্যাপটপ ও তার বড় স্ক্রিন: সবকিছু uniformly ১০% বড় ----------
-           ফোনে (max-width breakpoint গুলোতে) সাইজ ইতিমধ্যে perfect, তাই ওগুলো অপরিবর্তিত।
-           zoom আসল লে-আউট রি-ফ্লো করে (শুধু ভিজ্যুয়াল স্কেল না), তাই card, button, গ্যাপ,
-           আইকন, টেক্সট — সবকিছুই একই অনুপাতে বড় হয়, ল্যাপটপ (~900px) থেকে বড় মনিটর পর্যন্ত। */
-        @media(min-width: 901px) {
-            body { zoom:1.10; }
+        /* ডেস্কটপ ও বড় মনিটরে সামান্য স্কেলিং */
+        @media(min-width: 1024px) {
+            body { zoom: 1.05; }
         }
     </style>
 </head>
@@ -739,7 +1153,7 @@
     <!-- ===== নেভবার ===== -->
     <header class="nav">
         <div class="nav-inner">
-            <a href="index.html" class="brand">
+            <a href="index.html" class="brand" aria-label="VISION Academics Home">
                 <img src="assets/logo.png" alt="VISION Academics" class="brand-logo" fetchpriority="high" decoding="async">
             </a>
             <nav class="nav-links" id="navLinks">
@@ -749,16 +1163,26 @@
                 <a href="shop.html">শপ</a>
                 <a href="index.html#why">কেন আমরা</a>
             </nav>
-            <a href="student-login.html" class="nav-cta" id="navLoginBtn"><svg class="nav-login-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><span>লগইন</span></a>
-            <button class="burger" id="burgerBtn">☰</button>
+            <a href="student-login.html" class="nav-cta" id="navLoginBtn">
+                <svg class="nav-login-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>
+                </svg>
+                <span>লগইন</span>
+            </a>
+            <button class="burger" id="burgerBtn" aria-label="মেনু খুলুন">☰</button>
         </div>
     </header>
 
-    <!-- ===== কোর্স ডিটেইলস ===== -->
-    <section class="course-detail-section">
+    <!-- ===== কোর্স ডিটেইলস সেকশন ===== -->
+    <main class="course-detail-section">
         <div class="container">
             <!-- ব্যাক বাটন -->
-            <a href="All_Courses.html" class="back-link">← সব কোর্স দেখুন</a>
+            <a href="All_Courses.html" class="back-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M19 12H5M12 19l-7-7 7-7"/>
+                </svg>
+                <span>সব কোর্স দেখুন</span>
+            </a>
             
             <div id="courseDetailContainer">
                 <!-- লোডিং স্টেট -->
@@ -771,10 +1195,10 @@
                 <div id="courseContent" style="display: none;"></div>
             </div>
         </div>
-    </section>
+    </main>
 
     <!-- ===== "কোর্সটি যেভাবে কিনবেন" ভিডিও মোডাল ===== -->
-    <div class="video-modal-overlay" id="videoModalOverlay">
+    <div class="video-modal-overlay" id="videoModalOverlay" role="dialog" aria-modal="true" aria-label="কোর্সটি যেভাবে কিনবেন ভিডিও">
         <div class="video-modal-box">
             <button type="button" class="video-modal-close" id="videoModalClose" aria-label="বন্ধ করুন">✕</button>
             <div class="video-modal-frame-wrap" id="videoModalFrameWrap"></div>
@@ -784,299 +1208,537 @@
     <!-- ===== ফুটার ===== -->
     <footer>
         <div class="container">
-            <p class="copyright">© ২০২৬ VISION Academics — সর্বস্বত্ব সংরক্ষিত।</p>
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-brand">
+                        <img src="assets/logo.png" alt="VISION Academics" class="footer-logo">
+                    </div>
+                    <p class="footer-desc">ব্যতিক্রমী শিক্ষা পদ্ধতি, আধুনিক প্রযুক্তি ও অভিজ্ঞ শিক্ষকদের নিয়ে বাংলাদেশের বিশ্বস্ত এডুকেশন প্ল্যাটফর্ম।</p>
+                </div>
+                <div>
+                    <h4 class="footer-heading">কোর্স ক্যাটাগরি</h4>
+                    <ul class="footer-links">
+                        <li><a href="All_Courses.html?level=BBA">BBA প্রফেশনাল</a></li>
+                        <li><a href="All_Courses.html?level=HSC">HSC একাডেমিক</a></li>
+                        <li><a href="All_Courses.html?level=MBA">MBA প্রোগ্রাম</a></li>
+                        <li><a href="per-subject.html">বিষয়ভিত্তিক কোর্স</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-heading">যোগাযোগ ও সাপোর্ট</h4>
+                    <p class="footer-contact-item">📞 01764-859503</p>
+                    <p class="footer-contact-item">✉️ bbavission@gmail.com</p>
+                    <p class="footer-contact-item">📍 ঢাকা, বাংলাদেশ</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="copyright">© ২০২৬ VISION Academics — সর্বস্বত্ব সংরক্ষিত।</p>
+            </div>
         </div>
     </footer>
 
     <script>
         // ============================================================
-        // Course details loader — আগে gviz দিয়ে Google Sheet থেকে, এখন
-        // Cloudflare Worker + D1 থেকে (action=get_courses)
+        // Course details loader — Cloudflare Worker + D1 (action=get_courses)
         // ============================================================
         const VISION_API = "https://late-forest-4748.dreamsicreation.workers.dev";
-        const bnDigits='০১২৩৪৫৬৭৮৯', enDigits='0123456789';
-        const clean=v=>String(v??'').trim();
-        const escapeHtml=v=>clean(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-        const normalizeTextForMatch=v=>clean(v).toLowerCase().replace(/[^a-z0-9\u0980-\u09ff]+/g,' ').replace(/\s+/g,' ').trim();
-        const toBn=v=>String(v??'').replace(/[0-9]/g,d=>bnDigits[enDigits.indexOf(d)]);
-        const normalizeImageUrl=v=>{const x=clean(v),f=x.match(/drive\.google\.com\/file\/d\/([^/]+)/i),i=x.match(/[?&]id=([^&]+)/i);if(f)return `https://drive.google.com/thumbnail?id=${f[1]}&sz=w1000`;if(x.includes('drive.google.com')&&i)return `https://drive.google.com/thumbnail?id=${i[1]}&sz=w1000`;return x};
-        const slugify=v=>clean(v).toLowerCase().replace(/&/g,' and ').replace(/[^a-z0-9\u0980-\u09ff]+/g,'-').replace(/^-+|-+$/g,'')||'course';
-        function uniqueSlug(name,cat,used){const base=slugify(name),cp=slugify(cat);let slug=base;if(used.has(slug))slug=`${cp}-${base}`;let n=2;while(used.has(slug))slug=`${cp}-${base}-${n++}`;used.add(slug);return slug}
-        const parseFeatures=v=>clean(v).split(/[,،]/).map(clean).filter(Boolean);
-        const formatPrice=v=>{const x=clean(v);if(!x)return '';return /[৳$€£]/.test(x)?toBn(x):`৳${toBn(x)}`};
-        function getCourseSlug(){return new URLSearchParams(window.location.search).get('course');}
-        function getSwId(){return new URLSearchParams(window.location.search).get('sw');}
-        // per-subject.html-এর subject-wise কোর্ডের জন্য একই আইডি এনকোডিং —
-        // "SW::{level}::{department}::{year}::{sector}::{subject}" — এখানে হুবহু কপি রাখা হয়েছে
-        // যাতে per-subject.html থেকে পাঠানো ?sw=... আইডির সাথে ঠিকমতো ম্যাচ হয়।
-        const SW_COURSE_PREFIX='SW::';
-        function buildSubjectWiseCourseId(row){
-            const sector=String(row.nuDcu||'').trim().toUpperCase();
+        const bnDigits = '০১২৩৪৫৬৭৮৯', enDigits = '0123456789';
+        const clean = v => String(v ?? '').trim();
+        const escapeHtml = v => clean(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        const normalizeTextForMatch = v => clean(v).toLowerCase().replace(/[^a-z0-9\u0980-\u09ff]+/g, ' ').replace(/\s+/g, ' ').trim();
+        const toBn = v => String(v ?? '').replace(/[0-9]/g, d => bnDigits[enDigits.indexOf(d)]);
+        const normalizeImageUrl = v => {
+            const x = clean(v), f = x.match(/drive\.google\.com\/file\/d\/([^/]+)/i), i = x.match(/[?&]id=([^&]+)/i);
+            if(f) return `https://drive.google.com/thumbnail?id=${f[1]}&sz=w1000`;
+            if(x.includes('drive.google.com') && i) return `https://drive.google.com/thumbnail?id=${i[1]}&sz=w1000`;
+            return x;
+        };
+        const slugify = v => clean(v).toLowerCase().replace(/&/g, ' and ').replace(/[^a-z0-9\u0980-\u09ff]+/g, '-').replace(/^-+|-+$/g, '') || 'course';
+        function uniqueSlug(name, cat, used) {
+            const base = slugify(name), cp = slugify(cat);
+            let slug = base;
+            if(used.has(slug)) slug = `${cp}-${base}`;
+            let n = 2;
+            while(used.has(slug)) slug = `${cp}-${base}-${n++}`;
+            used.add(slug);
+            return slug;
+        }
+        const parseFeatures = v => clean(v).split(/[,،]/).map(clean).filter(Boolean);
+        const formatPrice = v => {
+            const x = clean(v);
+            if(!x) return '';
+            return /[৳$€£]/.test(x) ? toBn(x) : `৳${toBn(x)}`;
+        };
+        function getCourseSlug() { return new URLSearchParams(window.location.search).get('course'); }
+        function getSwId() { return new URLSearchParams(window.location.search).get('sw'); }
+
+        // localStorage-এ ক্যাশ করা student data থেকে enrolled কোর্সের সেট বের করা
+        function getEnrolledCourseNames() {
+            try {
+                const raw = localStorage.getItem('va_user');
+                if(!raw) return new Set();
+                const user = JSON.parse(raw);
+                const courses = Array.isArray(user?.courses) ? user.courses : [];
+                return new Set(courses.map(c => `${normalizeTextForMatch(c?.name)}::${normalizeTextForMatch(c?.nuDcu)}`).filter(Boolean));
+            } catch(e) {
+                return new Set();
+            }
+        }
+
+        const SW_COURSE_PREFIX = 'SW::';
+        function buildSubjectWiseCourseId(row) {
+            const sector = String(row.nuDcu || '').trim().toUpperCase();
             return sector
-                ? `${SW_COURSE_PREFIX}${row.level}::${row.department||''}::${row.year||''}::${sector}::${row.subject}`
-                : `${SW_COURSE_PREFIX}${row.level}::${row.department||''}::${row.year||''}::${row.subject}`;
+                ? `${SW_COURSE_PREFIX}${row.level}::${row.department || ''}::${row.year || ''}::${sector}::${row.subject}`
+                : `${SW_COURSE_PREFIX}${row.level}::${row.department || ''}::${row.year || ''}::${row.subject}`;
         }
-        async function getAllSubjectWiseRows(){
-            const response=await fetch(VISION_API,{
-                method:'POST',
-                headers:{'Content-Type':'text/plain;charset=utf-8'},
-                body:JSON.stringify({action:'get_subjectwise_courses'}),
-                cache:'no-store'
+
+        async function getAllSubjectWiseRows() {
+            const response = await fetch(VISION_API, {
+                method: 'POST',
+                headers: {'Content-Type': 'text/plain;charset=utf-8'},
+                body: JSON.stringify({action: 'get_subjectwise_courses'}),
+                cache: 'no-store'
             });
-            if(!response.ok)throw Error(`Subjectwise Course Name: HTTP ${response.status}`);
-            const json=await response.json();
-            if(json.status==='error') throw Error(json.message||'Subjectwise Course Name API error');
-            return (json.data||[]).map(row=>({
-                level:clean(row.level),
-                year:clean(row.year),
-                department:clean(row.department),
-                subject:clean(row.subjectName ?? row.subject_name),
-                description:clean(row.description),
-                newPrice:clean(row.newPrice ?? row.new_price),
-                oldPrice:clean(row.oldPrice ?? row.old_price),
-                image:normalizeImageUrl(row.imageUrl ?? row.image_url),
-                nuDcu:clean(row.nuDcu ?? row.nu_dcu).toUpperCase()
-            })).filter(row=>row.level && row.subject);
+            if(!response.ok) throw Error(`Subjectwise Course Name: HTTP ${response.status}`);
+            const json = await response.json();
+            if(json.status === 'error') throw Error(json.message || 'Subjectwise Course Name API error');
+            return (json.data || []).map(row => ({
+                level: clean(row.level),
+                year: clean(row.year),
+                department: clean(row.department),
+                subject: clean(row.subjectName ?? row.subject_name),
+                description: clean(row.description),
+                newPrice: clean(row.newPrice ?? row.new_price),
+                oldPrice: clean(row.oldPrice ?? row.old_price),
+                image: normalizeImageUrl(row.imageUrl ?? row.image_url),
+                nuDcu: clean(row.nuDcu ?? row.nu_dcu).toUpperCase()
+            })).filter(row => row.level && row.subject);
         }
-        async function getAllTeachers(){
-            const response=await fetch(VISION_API,{
-                method:'POST',
-                headers:{'Content-Type':'text/plain;charset=utf-8'},
-                body:JSON.stringify({action:'get_teachers'}),
-                cache:'no-store'
+
+        async function getAllTeachers() {
+            const response = await fetch(VISION_API, {
+                method: 'POST',
+                headers: {'Content-Type': 'text/plain;charset=utf-8'},
+                body: JSON.stringify({action: 'get_teachers'}),
+                cache: 'no-store'
             });
-            if(!response.ok)throw Error(`Teachers: HTTP ${response.status}`);
-            const json=await response.json();
-            if(json.status==='error') throw Error(json.message||'Teachers API error');
-            return (json.data||[]).map(row=>{
-                const name=clean(row.name);
+            if(!response.ok) throw Error(`Teachers: HTTP ${response.status}`);
+            const json = await response.json();
+            if(json.status === 'error') throw Error(json.message || 'Teachers API error');
+            return (json.data || []).map(row => {
+                const name = clean(row.name);
                 if(!name) return null;
-                return {name, photo:normalizeImageUrl(row.photo), subject:clean(row.subject), designation:clean(row.designation)};
+                return {name, photo: normalizeImageUrl(row.photo), subject: clean(row.subject), designation: clean(row.designation)};
             }).filter(Boolean);
         }
-        async function getAllCourses(){
-            const response=await fetch(VISION_API,{
-                method:'POST',
-                headers:{'Content-Type':'text/plain;charset=utf-8'},
-                body:JSON.stringify({action:'get_courses'}),
-                cache:'no-store'
+
+        async function getAllCourses() {
+            const response = await fetch(VISION_API, {
+                method: 'POST',
+                headers: {'Content-Type': 'text/plain;charset=utf-8'},
+                body: JSON.stringify({action: 'get_courses'}),
+                cache: 'no-store'
             });
-            if(!response.ok)throw Error(`Course Name: HTTP ${response.status}`);
-            const json=await response.json();
-            if(json.status==='error') throw Error(json.message||'Course Name API error');
-            const used=new Set();
-            return (json.data||[]).map(row=>{
-                const level=clean(row.level), name=clean(row.name);
-                if(!level||!name) return null;
+            if(!response.ok) throw Error(`Course Name: HTTP ${response.status}`);
+            const json = await response.json();
+            if(json.status === 'error') throw Error(json.message || 'Course Name API error');
+            const used = new Set();
+            return (json.data || []).map(row => {
+                const level = clean(row.level), name = clean(row.name);
+                if(!level || !name) return null;
                 return {
                     name,
-                    tag:clean(row.tag),
-                    image:normalizeImageUrl(row.image),
-                    shortDescription:clean(row.shortDescription),
-                    longDescription:clean(row.longDescription),
-                    price:formatPrice(row.price),
-                    oldPrice:formatPrice(row.oldPrice),
-                    priceNote:clean(row.priceNote),
-                    features:parseFeatures(row.featureText),
-                    teacherNames:parseFeatures(row.teachers),
-                    category:level,
-                    slug:''
+                    tag: clean(row.tag),
+                    image: normalizeImageUrl(row.image),
+                    shortDescription: clean(row.shortDescription),
+                    longDescription: clean(row.longDescription),
+                    price: formatPrice(row.price),
+                    oldPrice: formatPrice(row.oldPrice),
+                    priceNote: clean(row.priceNote),
+                    features: parseFeatures(row.featureText),
+                    teacherNames: parseFeatures(row.teachers),
+                    category: level,
+                    slug: ''
                 };
-            }).filter(Boolean).map(c=>({...c,slug:uniqueSlug(c.name,c.category,used)}));
+            }).filter(Boolean).map(c => ({...c, slug: uniqueSlug(c.name, c.category, used)}));
         }
 
-        function renderCourse(course, teachers){
-            const loadingState=document.getElementById('loadingState');
-            const content=document.getElementById('courseContent');
-            loadingState.style.display='none';
-            if(!course){
-                content.innerHTML=`<div class="not-found"><h2>😕 কোর্সটি খুঁজে পাওয়া যায়নি</h2><p>আপনি যে কোর্সটি খুঁজছেন, সেটি খুঁজে পাওয়া যায়নি।</p><a href="All_Courses.html" class="btn btn-primary">সব কোর্স দেখুন</a></div>`;
-                content.style.display='block';
+        function renderCourse(course, teachers) {
+            const loadingState = document.getElementById('loadingState');
+            const content = document.getElementById('courseContent');
+            loadingState.style.display = 'none';
+            if(!course) {
+                content.innerHTML = `
+                    <div class="not-found">
+                        <h2>😕 কোর্সটি খুঁজে পাওয়া যায়নি</h2>
+                        <p>আপনি যে কোর্সটি খুঁজছেন, সেটি খুঁজে পাওয়া যায়নি বা সরানো হয়েছে।</p>
+                        <a href="All_Courses.html" class="btn btn-primary enroll-btn">সব কোর্স দেখুন</a>
+                    </div>`;
+                content.style.display = 'block';
                 return;
             }
-            document.title=`${course.name} | VISION Academics`;
-            const description=course.longDescription || course.shortDescription || 'এই কোর্সের বিস্তারিত তথ্য শীঘ্রই আপডেট করা হবে।';
-            const featuresHtml=course.features.length?`<ul class="detail-features">${course.features.map(f=>`<li>${escapeHtml(f)}</li>`).join('')}</ul>`:'';
-            const image=course.image||'';
+            document.title = `${course.name} | VISION Academics`;
+            const description = course.longDescription || course.shortDescription || 'এই কোর্সের বিস্তারিত তথ্য শীঘ্রই আপডেট করা হবে।';
+            
+            // ফিচার আইটেমগুলোর মডার্ন রেন্ডার
+            const featuresHtml = course.features.length ? `
+                <div class="detail-features-wrap">
+                    <span class="detail-features-title">কোর্সের বিশেষ সুবিধা:</span>
+                    <ul class="detail-features">
+                        ${course.features.map(f => `
+                            <li>
+                                <span class="detail-feature-check">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="20 6 9 17 4 12"></polyline>
+                                    </svg>
+                                </span>
+                                <span>${escapeHtml(f)}</span>
+                            </li>`).join('')}
+                    </ul>
+                </div>` : '';
+            
+            const image = course.image || '';
 
-            // "teachers" কলামে কমা দিয়ে দেওয়া নামগুলোর সাথে teachers টেবিলের নাম
-            // মিলিয়ে (normalize করে) সেই শিক্ষকের ছবি/সাবজেক্ট বের করা হচ্ছে।
-            const matchedTeachers=(course.teacherNames||[]).map(n=>{
-                const key=normalizeTextForMatch(n);
-                return teachers.find(t=>normalizeTextForMatch(t.name)===key) || {name:n, photo:'', subject:''};
+            // কোর্স ইন্সট্রাক্টর ম্যাচিং
+            const matchedTeachers = (course.teacherNames || []).map(n => {
+                const key = normalizeTextForMatch(n);
+                return teachers.find(t => normalizeTextForMatch(t.name) === key) || {name: n, photo: '', subject: ''};
             });
-            const initials=name=>escapeHtml(clean(name).slice(0,1).toUpperCase()||'?');
-            const teachersHtml=matchedTeachers.length?`
+            const initials = name => escapeHtml(clean(name).slice(0, 1).toUpperCase() || '?');
+            const teachersHtml = matchedTeachers.length ? `
                 <div class="course-teachers-block">
                     <div class="course-teachers-label">কোর্স ইন্সট্রাক্টর</div>
-                    <div class="course-teachers">${matchedTeachers.map(t=>`
+                    <div class="course-teachers">${matchedTeachers.map(t => `
                         <div class="course-teacher-chip">
-                            ${t.photo?`<img src="${escapeHtml(t.photo)}" alt="${escapeHtml(t.name)}" loading="lazy">`:`<span class="cte-avatar-fallback">${initials(t.name)}</span>`}
+                            ${t.photo ? `<img src="${escapeHtml(t.photo)}" alt="${escapeHtml(t.name)}" loading="lazy">` : `<span class="cte-avatar-fallback">${initials(t.name)}</span>`}
                             <span class="cte-info">
                                 <span class="cte-name">${escapeHtml(t.name)}</span>
-                                ${t.subject?`<span class="cte-subject">${escapeHtml(t.subject)}</span>`:''}
+                                ${t.subject ? `<span class="cte-subject">${escapeHtml(t.subject)}</span>` : ''}
                             </span>
                         </div>`).join('')}</div>
-                </div>`:'';
+                </div>` : '';
 
-            content.innerHTML=`
+            // ইউজার কি অলরেডি ভর্তি?
+            const enrolledSet = getEnrolledCourseNames();
+            const cSector = (normalizeTextForMatch(course.category) === 'bba' && ['nu', 'dcu'].includes(normalizeTextForMatch(course.tag))) ? normalizeTextForMatch(course.tag) : '';
+            const isEnrolled = enrolledSet.has(`${normalizeTextForMatch(course.name)}::${cSector}`);
+
+            let enrollButtonHtml = '';
+            if(isEnrolled) {
+                enrollButtonHtml = `
+                    <a href="student-login.html" class="btn course-enrolled-trigger">
+                        <svg viewBox="0 0 20 20" fill="currentColor" style="width:19px;height:19px;">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                        ভর্তি হয়েছেন ✓
+                    </a>`;
+            } else {
+                enrollButtonHtml = `
+                    <a href="student-login.html?enroll=${encodeURIComponent(course.name)}${course.tag && /^(nu|dcu)$/i.test(course.tag.trim()) ? `&sector=${encodeURIComponent(course.tag.trim().toUpperCase())}` : ''}" class="btn btn-primary enroll-btn">
+                        Enroll Now
+                        <svg viewBox="0 0 20 20" fill="currentColor" style="width:18px;height:18px;">
+                            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                    </a>`;
+            }
+
+            content.innerHTML = `
                 <div class="course-detail-grid">
-                    <div class="detail-image">${image?`<img src="${escapeHtml(image)}" alt="${escapeHtml(course.name)}">`:'<div style="aspect-ratio:16/10;background:#eee;display:flex;align-items:center;justify-content:center;color:#777">Course Image</div>'}</div>
-                    <div class="detail-content">
-                        <span class="detail-category">${escapeHtml(course.category)}</span>
-                        <h1 class="detail-title">${escapeHtml(course.name)}</h1>
-                        ${course.tag?`<span class="detail-tag">${escapeHtml(course.tag)}</span>`:''}
-                        <div class="detail-price">
-                            ${course.price?`<span class="price-now">${escapeHtml(course.price)}</span>`:''}
-                            ${course.oldPrice?`<span class="price-old">${escapeHtml(course.oldPrice)}</span>`:''}
-                            ${course.priceNote?`<span class="price-note">${escapeHtml(course.priceNote)}</span>`:''}
+                    <!-- বাম পাশ: মিডিয়া ও হাইলাইটস -->
+                    <div class="detail-media-wrap">
+                        <div class="detail-image-box">
+                            <span class="detail-badge-corner">${escapeHtml(course.category)}</span>
+                            ${image ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(course.name)}">` : '<div style="aspect-ratio:16/10;background:#1e293b;display:flex;align-items:center;justify-content:center;color:#94a3b8">Course Image</div>'}
                         </div>
+                        <div class="trust-perks-bar">
+                            <div class="trust-perk">
+                                <div class="trust-perk-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                </div>
+                                <span class="trust-perk-title">লাইভ ও রেকর্ড</span>
+                                <span class="trust-perk-sub">সম্পূর্ণ অ্যাক্সেস</span>
+                            </div>
+                            <div class="trust-perk">
+                                <div class="trust-perk-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                                </div>
+                                <span class="trust-perk-title">লেকচার শিট</span>
+                                <span class="trust-perk-sub">প্রিমিয়াম PDF</span>
+                            </div>
+                            <div class="trust-perk">
+                                <div class="trust-perk-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                                </div>
+                                <span class="trust-perk-title">পরীক্ষা প্রস্তুতি</span>
+                                <span class="trust-perk-sub">১০০% সমাধান</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ডান পাশ: বিস্তারিত তথ্য ও এনরোলমেন্ট -->
+                    <div class="detail-content">
+                        <div class="detail-eyebrow-row">
+                            <span class="detail-category-badge">${escapeHtml(course.category)}</span>
+                            ${course.tag ? `<span class="detail-tag">${escapeHtml(course.tag)}</span>` : ''}
+                        </div>
+                        
+                        <h1 class="detail-title">${escapeHtml(course.name)}</h1>
+                        
+                        <div class="detail-price-card">
+                            <div class="detail-price-main">
+                                ${course.price ? `<span class="price-now">${escapeHtml(course.price)}</span>` : ''}
+                                ${course.oldPrice ? `<span class="price-old">${escapeHtml(course.oldPrice)}</span>` : ''}
+                                ${course.oldPrice ? `<span class="price-discount-tag">অফার প্রাইস</span>` : ''}
+                            </div>
+                            ${course.priceNote ? `
+                                <div class="price-note">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                    <span>${escapeHtml(course.priceNote)}</span>
+                                </div>` : ''}
+                        </div>
+                        
                         ${teachersHtml}
-                        <div class="detail-description">${escapeHtml(description).replace(/\n/g,'<br>')}</div>
+                        
+                        <div class="detail-description-card">${escapeHtml(description).replace(/\n/g, '<br>')}</div>
+                        
                         ${featuresHtml}
+                        
                         <div class="detail-actions">
-                            <a href="student-login.html?enroll=${encodeURIComponent(course.name)}${course.tag && /^(nu|dcu)$/i.test(course.tag.trim()) ? `&sector=${encodeURIComponent(course.tag.trim().toUpperCase())}` : ''}" class="btn btn-primary enroll-btn">Enroll Now</a>
-                            <button type="button" class="btn btn-outline" id="howToBuyBtn">কোর্সটি যেভাবে কিনবেন</button>
+                            ${enrollButtonHtml}
+                            <button type="button" class="btn btn-outline" id="howToBuyBtn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <polygon points="10 8 16 12 10 16 10 8" fill="currentColor"/>
+                                </svg>
+                                <span>কোর্সটি যেভাবে কিনবেন</span>
+                            </button>
                         </div>
                     </div>
                 </div>`;
-            content.style.display='block';
+            content.style.display = 'block';
         }
 
-        // subject-wise (per-subject.html) কোর্সের জন্য আলাদা রেন্ডার ফাংশন —
-        // এখানে শিক্ষক/ফিচার তালিকা নেই, তার বদলে level/department/year মেটা
-        // হিসেবে দেখানো হয় এবং nuDcu থাকলে সেটা tag হিসেবে দেখায়।
-        function renderSubjectWiseCourse(row){
-            const loadingState=document.getElementById('loadingState');
-            const content=document.getElementById('courseContent');
-            loadingState.style.display='none';
-            if(!row){
-                content.innerHTML=`<div class="not-found"><h2>😕 সাবজেক্টটি খুঁজে পাওয়া যায়নি</h2><p>আপনি যেটি খুঁজছেন, সেটি খুঁজে পাওয়া যায়নি।</p><a href="per-subject.html" class="btn btn-primary">সব সাবজেক্ট দেখুন</a></div>`;
-                content.style.display='block';
+        // subject-wise (per-subject.html) কোর্সের জন্য রেন্ডার ফাংশন
+        function renderSubjectWiseCourse(row) {
+            const loadingState = document.getElementById('loadingState');
+            const content = document.getElementById('courseContent');
+            loadingState.style.display = 'none';
+            if(!row) {
+                content.innerHTML = `
+                    <div class="not-found">
+                        <h2>😕 সাবজেক্টটি খুঁজে পাওয়া যায়নি</h2>
+                        <p>আপনি যেটি খুঁজছেন, সেটি খুঁজে পাওয়া যায়নি।</p>
+                        <a href="per-subject.html" class="btn btn-primary enroll-btn">সব সাবজেক্ট দেখুন</a>
+                    </div>`;
+                content.style.display = 'block';
                 return;
             }
-            document.title=`${row.subject} | VISION Academics`;
-            const description=row.description || 'এই সাবজেক্টের বিস্তারিত তথ্য শীঘ্রই আপডেট করা হবে।';
-            const image=row.image||'';
-            const courseId=buildSubjectWiseCourseId(row);
-            const metaBits=[row.department,row.year].filter(Boolean).map(escapeHtml).join(' • ');
+            document.title = `${row.subject} | VISION Academics`;
+            const description = row.description || 'এই সাবজেক্টের বিস্তারিত তথ্য শীঘ্রই আপডেট করা হবে।';
+            const image = row.image || '';
+            const courseId = buildSubjectWiseCourseId(row);
+            const metaBits = [row.department, row.year].filter(Boolean).map(escapeHtml).join(' • ');
 
-            content.innerHTML=`
+            // ইউজার কি অলরেডি ভর্তি?
+            const enrolledSet = getEnrolledCourseNames();
+            const swSector = normalizeTextForMatch(row.nuDcu);
+            const isEnrolled = enrolledSet.has(`${normalizeTextForMatch(row.subject)}::${swSector}`) || enrolledSet.has(`${normalizeTextForMatch(courseId)}::${swSector}`);
+
+            let enrollButtonHtml = '';
+            if(isEnrolled) {
+                enrollButtonHtml = `
+                    <a href="student-login.html" class="btn course-enrolled-trigger">
+                        <svg viewBox="0 0 20 20" fill="currentColor" style="width:19px;height:19px;">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                        </svg>
+                        ভর্তি হয়েছেন ✓
+                    </a>`;
+            } else {
+                enrollButtonHtml = `
+                    <a href="student-login.html?enroll=${encodeURIComponent(courseId)}" class="btn btn-primary enroll-btn">
+                        Enroll Now
+                        <svg viewBox="0 0 20 20" fill="currentColor" style="width:18px;height:18px;">
+                            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                    </a>`;
+            }
+
+            content.innerHTML = `
                 <div class="course-detail-grid">
-                    <div class="detail-image">${image?`<img src="${escapeHtml(image)}" alt="${escapeHtml(row.subject)}">`:'<div style="aspect-ratio:16/10;background:#eee;display:flex;align-items:center;justify-content:center;color:#777">Course Image</div>'}</div>
-                    <div class="detail-content">
-                        <span class="detail-category">${escapeHtml(row.level)}${metaBits?` • ${metaBits}`:''}</span>
-                        <h1 class="detail-title">${escapeHtml(row.subject)}</h1>
-                        ${row.nuDcu?`<span class="detail-tag">${escapeHtml(row.nuDcu)}</span>`:''}
-                        <div class="detail-price">
-                            ${row.newPrice?`<span class="price-now">${escapeHtml(formatPrice(row.newPrice))}</span>`:''}
-                            ${row.oldPrice?`<span class="price-old">${escapeHtml(formatPrice(row.oldPrice))}</span>`:''}
+                    <div class="detail-media-wrap">
+                        <div class="detail-image-box">
+                            <span class="detail-badge-corner">${escapeHtml(row.level)}</span>
+                            ${image ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(row.subject)}">` : '<div style="aspect-ratio:16/10;background:#1e293b;display:flex;align-items:center;justify-content:center;color:#94a3b8">Subject Image</div>'}
                         </div>
-                        <div class="detail-description">${escapeHtml(description).replace(/\n/g,'<br>')}</div>
+                        <div class="trust-perks-bar">
+                            <div class="trust-perk">
+                                <div class="trust-perk-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                                </div>
+                                <span class="trust-perk-title">লাইভ ক্লাস</span>
+                                <span class="trust-perk-sub">সম্পূর্ণ কোর্স</span>
+                            </div>
+                            <div class="trust-perk">
+                                <div class="trust-perk-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                                </div>
+                                <span class="trust-perk-title">লেকচার শিট</span>
+                                <span class="trust-perk-sub">PDF ফাইল</span>
+                            </div>
+                            <div class="trust-perk">
+                                <div class="trust-perk-icon">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                                </div>
+                                <span class="trust-perk-title">সাজেশন</span>
+                                <span class="trust-perk-sub">পরীক্ষা প্রস্তুতি</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="detail-content">
+                        <div class="detail-eyebrow-row">
+                            <span class="detail-category-badge">${escapeHtml(row.level)}${metaBits ? ` • ${metaBits}` : ''}</span>
+                            ${row.nuDcu ? `<span class="detail-tag">${escapeHtml(row.nuDcu)}</span>` : ''}
+                        </div>
+                        
+                        <h1 class="detail-title">${escapeHtml(row.subject)}</h1>
+                        
+                        <div class="detail-price-card">
+                            <div class="detail-price-main">
+                                ${row.newPrice ? `<span class="price-now">${escapeHtml(formatPrice(row.newPrice))}</span>` : ''}
+                                ${row.oldPrice ? `<span class="price-old">${escapeHtml(formatPrice(row.oldPrice))}</span>` : ''}
+                                ${row.oldPrice ? `<span class="price-discount-tag">অফার প্রাইস</span>` : ''}
+                            </div>
+                        </div>
+                        
+                        <div class="detail-description-card">${escapeHtml(description).replace(/\n/g, '<br>')}</div>
+                        
                         <div class="detail-actions">
-                            <a href="student-login.html?enroll=${encodeURIComponent(courseId)}" class="btn btn-primary enroll-btn">Enroll Now</a>
-                            <button type="button" class="btn btn-outline" id="howToBuyBtn">কোর্সটি যেভাবে কিনবেন</button>
+                            ${enrollButtonHtml}
+                            <button type="button" class="btn btn-outline" id="howToBuyBtn">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <polygon points="10 8 16 12 10 16 10 8" fill="currentColor"/>
+                                </svg>
+                                <span>কোর্সটি যেভাবে কিনবেন</span>
+                            </button>
                         </div>
                     </div>
                 </div>`;
-            content.style.display='block';
+            content.style.display = 'block';
         }
 
-        async function loadCourseDetails(){
-            const content=document.getElementById('courseContent');
-            const slug=getCourseSlug();
-            const swId=getSwId();
-            try{
-                if(swId){
-                    const rows=await getAllSubjectWiseRows();
-                    const row=rows.find(r=>buildSubjectWiseCourseId(r)===swId);
+        async function loadCourseDetails() {
+            const content = document.getElementById('courseContent');
+            const slug = getCourseSlug();
+            const swId = getSwId();
+            try {
+                if(swId) {
+                    const rows = await getAllSubjectWiseRows();
+                    const row = rows.find(r => buildSubjectWiseCourseId(r) === swId);
                     renderSubjectWiseCourse(row);
                     return;
                 }
-                const [courses, teachers]=await Promise.all([getAllCourses(), getAllTeachers().catch(()=>[])]);
-                const course=courses.find(c=>c.slug===slug);
+                const [courses, teachers] = await Promise.all([getAllCourses(), getAllTeachers().catch(() => [])]);
+                const course = courses.find(c => c.slug === slug);
                 renderCourse(course, teachers);
-            }catch(error){
-                console.error('Course details loading failed:',error);
-                document.getElementById('loadingState').style.display='none';
-                content.innerHTML=`<div class="sheet-error"><h2>কোর্সের তথ্য লোড করা যায়নি</h2><p>ইন্টারনেট কানেকশন চেক করে আবার চেষ্টা করুন।</p><button class="btn btn-primary" onclick="location.reload()">আবার চেষ্টা করুন</button></div>`;
-                content.style.display='block';
+            } catch(error) {
+                console.error('Course details loading failed:', error);
+                document.getElementById('loadingState').style.display = 'none';
+                content.innerHTML = `
+                    <div class="sheet-error">
+                        <h2>কোর্সের তথ্য লোড করা যায়নি</h2>
+                        <p>ইন্টারনেট কানেকশন চেক করে আবার চেষ্টা করুন।</p>
+                        <button class="btn btn-primary enroll-btn" onclick="location.reload()">আবার চেষ্টা করুন</button>
+                    </div>`;
+                content.style.display = 'block';
             }
         }
 
-        document.addEventListener('DOMContentLoaded',()=>{
-            const burger=document.getElementById('burgerBtn');
-            const nav=document.getElementById('navLinks');
-            if(burger&&nav) burger.addEventListener('click',()=>nav.classList.toggle('open'));
-            if(nav) nav.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>nav.classList.remove('open')));
+        document.addEventListener('DOMContentLoaded', () => {
+            const burger = document.getElementById('burgerBtn');
+            const nav = document.getElementById('navLinks');
+            if(burger && nav) burger.addEventListener('click', () => nav.classList.toggle('open'));
+            if(nav) nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => nav.classList.remove('open')));
             loadCourseDetails();
 
             // নেভবারের "লগইন" বাটনটা প্রিমিয়াম প্রোফাইল বাটনে আপগ্রেড
-            function updateNavProfileButton(){
-              const loginBtn=document.getElementById('navLoginBtn');
-              if(!loginBtn) return;
-              try{
-                const raw=localStorage.getItem('va_user');
-                if(raw){
-                  const user=JSON.parse(raw);
-                  const fullName=String(user?.name||'').trim();
-                  let displayName='প্রোফাইল',initial='',hasName=false;
-                  if(fullName){
-                    hasName=true;
-                    const titleRx=/^(md\.?|mohammad|muhammad|mst\.?|most\.?|sk\.?|sheikh|মোছাঃ|মোঃ|মুহাম্মদ|শেখ)$/i;
-                    const rawParts=fullName.split(/\s+/).filter(Boolean);
-                    const clean=rawParts.filter(p=>!titleRx.test(p));
-                    const primary=clean.length>0?clean[0]:(rawParts[0]||fullName);
-                    displayName=primary.length>10?primary.slice(0,9)+'…':primary;
-                    initial=primary.charAt(0).toUpperCase();
-                  }
-                  let hash=0;
-                  for(let i=0;i<fullName.length;i++){hash=(hash<<5)-hash+fullName.charCodeAt(i);hash|=0;}
-                  const grads=['linear-gradient(135deg,#0ea5e9,#2563eb)','linear-gradient(135deg,#6366f1,#8b5cf6)','linear-gradient(135deg,#10b981,#059669)','linear-gradient(135deg,#f59e0b,#d97706)','linear-gradient(135deg,#ec4899,#be185d)','linear-gradient(135deg,#06b6d4,#0284c7)','linear-gradient(135deg,#8b5cf6,#d946ef)','linear-gradient(135deg,#f97316,#ea580c)','linear-gradient(135deg,#14b8a6,#0f766e)','linear-gradient(135deg,#ef4444,#b91c1c)'];
-                  const grad=grads[Math.abs(hash)%grads.length];
-                  loginBtn.classList.add('nav-cta--logged-in');
-                  loginBtn.title=fullName?fullName+' (প্রোফাইল)':'আমার প্রোফাইল';
-                  const avatarContent=hasName&&initial?`<span class="nav-profile-initial">${initial}</span>`:`<svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>`;
-                  loginBtn.innerHTML=`<div class="nav-profile-avatar" style="background:${grad}">${avatarContent}<span class="nav-profile-badge" aria-hidden="true"></span></div><span class="nav-profile-name">${displayName}</span><svg class="nav-profile-chevron" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 4.5L6 8l3.5-3.5"/></svg>`;
-                }else{
-                  loginBtn.classList.remove('nav-cta--logged-in');
-                  loginBtn.title='লগইন করুন';
-                  loginBtn.innerHTML=`<svg class="nav-login-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><span>লগইন</span>`;
-                }
-              }catch(e){}
+            function updateNavProfileButton() {
+                const loginBtn = document.getElementById('navLoginBtn');
+                if(!loginBtn) return;
+                try {
+                    const raw = localStorage.getItem('va_user');
+                    if(raw) {
+                        const user = JSON.parse(raw);
+                        const fullName = String(user?.name || '').trim();
+                        let displayName = 'প্রোফাইল', initial = '', hasName = false;
+                        if(fullName) {
+                            hasName = true;
+                            const titleRx = /^(md\.?|mohammad|muhammad|mst\.?|most\.?|sk\.?|sheikh|মোছাঃ|মোঃ|মুহাম্মদ|শেখ)$/i;
+                            const rawParts = fullName.split(/\s+/).filter(Boolean);
+                            const cleanParts = rawParts.filter(p => !titleRx.test(p));
+                            const primary = cleanParts.length > 0 ? cleanParts[0] : (rawParts[0] || fullName);
+                            displayName = primary.length > 10 ? primary.slice(0, 9) + '…' : primary;
+                            initial = primary.charAt(0).toUpperCase();
+                        }
+                        let hash = 0;
+                        for(let i = 0; i < fullName.length; i++) { hash = (hash << 5) - hash + fullName.charCodeAt(i); hash |= 0; }
+                        const grads = [
+                            'linear-gradient(135deg,#0ea5e9,#2563eb)',
+                            'linear-gradient(135deg,#6366f1,#8b5cf6)',
+                            'linear-gradient(135deg,#10b981,#059669)',
+                            'linear-gradient(135deg,#f59e0b,#d97706)',
+                            'linear-gradient(135deg,#ec4899,#be185d)'
+                        ];
+                        const grad = grads[Math.abs(hash) % grads.length];
+                        loginBtn.classList.add('nav-cta--logged-in');
+                        loginBtn.title = fullName ? fullName + ' (প্রোফাইল)' : 'আমার প্রোফাইল';
+                        const avatarContent = hasName && initial
+                            ? `<span class="nav-profile-initial">${initial}</span>`
+                            : `<svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>`;
+                        loginBtn.innerHTML = `
+                            <div class="nav-profile-avatar" style="background:${grad}">${avatarContent}<span class="nav-profile-badge" aria-hidden="true"></span></div>
+                            <span class="nav-profile-name">${displayName}</span>
+                            <svg class="nav-profile-chevron" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 4.5L6 8l3.5-3.5"/></svg>`;
+                    } else {
+                        loginBtn.classList.remove('nav-cta--logged-in');
+                        loginBtn.title = 'লগইন করুন';
+                        loginBtn.innerHTML = `
+                            <svg class="nav-login-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
+                            <span>লগইন</span>`;
+                    }
+                } catch(e) {}
             }
             updateNavProfileButton();
-            window.addEventListener('storage',updateNavProfileButton);
+            window.addEventListener('storage', updateNavProfileButton);
 
             // ===== "কোর্সটি যেভাবে কিনবেন" ভিডিও মোডাল =====
-            // ভিডিও: https://www.youtube.com/watch?v=e9n3pCPTl8I
             const HOW_TO_BUY_VIDEO_ID = 'e9n3pCPTl8I';
             const videoModalOverlay = document.getElementById('videoModalOverlay');
             const videoModalFrameWrap = document.getElementById('videoModalFrameWrap');
             const videoModalClose = document.getElementById('videoModalClose');
 
-            function openVideoModal(){
+            function openVideoModal() {
                 videoModalFrameWrap.innerHTML = `<iframe src="https://www.youtube.com/embed/${HOW_TO_BUY_VIDEO_ID}?autoplay=1&rel=0" title="কোর্সটি যেভাবে কিনবেন" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
                 videoModalOverlay.classList.add('open');
                 document.body.style.overflow = 'hidden';
             }
 
-            function closeVideoModal(){
+            function closeVideoModal() {
                 videoModalOverlay.classList.remove('open');
-                videoModalFrameWrap.innerHTML = ''; // iframe সরিয়ে দিলে ভিডিও বন্ধ হয়ে যায়
+                videoModalFrameWrap.innerHTML = '';
                 document.body.style.overflow = '';
             }
 
-            // #howToBuyBtn প্রতিবার renderCourse() কল হলে নতুন করে তৈরি হয়,
-            // তাই সরাসরি না ধরে document-এ event delegation ব্যবহার করা হয়েছে।
-            document.addEventListener('click', (e)=>{
+            document.addEventListener('click', (e) => {
                 if(e.target.closest('#howToBuyBtn')) openVideoModal();
             });
             if(videoModalClose) videoModalClose.addEventListener('click', closeVideoModal);
-            if(videoModalOverlay) videoModalOverlay.addEventListener('click', (e)=>{
+            if(videoModalOverlay) videoModalOverlay.addEventListener('click', (e) => {
                 if(e.target === videoModalOverlay) closeVideoModal();
             });
-            document.addEventListener('keydown', (e)=>{
+            document.addEventListener('keydown', (e) => {
                 if(e.key === 'Escape' && videoModalOverlay.classList.contains('open')) closeVideoModal();
             });
         });
