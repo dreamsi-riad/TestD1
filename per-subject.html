@@ -12,286 +12,435 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&family=Baloo+Da+2:wght@500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Anek+Bangla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
 <style>
 :root{
-  --ink:#1E2A47;
-  --ink-soft:#4A5772;
-  --paper:#F8FAFC;
-  --paper-line:#E2E8F0;
-  --card:#FFFFFF;
-  --accent:#E8A33D;
-  --accent-dark:#C97F1F;
-  --margin:#C84B4B;
-  --sky:#5B8FBF;
-  --green:#4C8C6B;
-  --shadow:0 10px 30px rgba(30,42,71,0.08);
-  --radius:14px;
+  --ink: #0F172A;
+  --ink-soft: #475569;
+  --ink-muted: #64748B;
+  --paper: #F8FAFC;
+  --paper-line: #E2E8F0;
+  --card: #FFFFFF;
+  --primary: #2563EB;
+  --primary-dark: #1D4ED8;
+  --primary-light: #EFF6FF;
+  --accent: #F59E0B;
+  --accent-dark: #D97706;
+  --margin: #EF4444;
+  --sky: #0EA5E9;
+  --green: #10B981;
+  --green-dark: #059669;
+  --green-light: #ECFDF5;
+  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
+  --shadow: 0 10px 30px -4px rgba(15, 23, 42, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
+  --shadow-lg: 0 20px 45px -10px rgba(15, 23, 42, 0.12), 0 8px 20px -4px rgba(15, 23, 42, 0.06);
+  --radius-sm: 10px;
+  --radius: 18px;
+  --radius-lg: 24px;
 }
-*{box-sizing:border-box;}
-html{scroll-behavior:smooth; overflow-x:hidden;}
+*, *::before, *::after{ box-sizing: border-box; }
+html{ scroll-behavior: smooth; overflow-x: hidden; }
 body{
-  margin:0;
-  background:var(--paper);
-  color:var(--ink);
-  font-family:'Anek Bangla', sans-serif;
+  margin: 0;
+  background: radial-gradient(circle at 12% 10%, rgba(37, 99, 235, 0.035) 0%, transparent 45%),
+              radial-gradient(circle at 88% 85%, rgba(245, 158, 11, 0.035) 0%, transparent 45%),
+              var(--paper);
+  color: var(--ink);
+  font-family: 'Anek Bangla', sans-serif;
+  line-height: 1.65;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
-.container{ max-width:1180px; margin:0 auto; padding:0 clamp(14px, 3vw, 40px); }
+a{ text-decoration: none; color: inherit; }
+button{ font-family: inherit; cursor: pointer; }
+.container{ max-width: 1240px; margin: 0 auto; padding: 0 clamp(16px, 3vw, 36px); width: 100%; }
 
-/* ===== নেভবার (index.html / course-details.html এর সাথে সঙ্গতিপূর্ণ) ===== */
+/* ===== নেভবার (গ্লাস মরফিজম) ===== */
 header.nav{
-  position:sticky; top:0; z-index:50;
-  background:rgba(255,255,255,0.88);
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--paper-line);
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--paper-line);
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
 }
 .nav-inner{
-  max-width:min(2300px, 100%);
-  margin:0 auto;
-  height:64px;
-  padding:0 clamp(12px, 2.6vw, 64px);
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:20px;
+  max-width: 1240px; margin: 0 auto; height: 70px;
+  padding: 0 clamp(16px, 3vw, 36px);
+  display: flex; align-items: center; justify-content: space-between; gap: 24px;
 }
-.brand{ display:flex; align-items:center; gap:10px; }
-.brand .brand-logo{ height:64px; max-height:100%; width:auto; aspect-ratio:3.84/1; object-fit:contain; flex:none; }
-.nav-links{ display:flex; gap:30px; font-weight:600; font-size:15.5px; }
-.nav-links a{ position:relative; color:var(--ink-soft); padding:4px 0; text-decoration:none; }
-.nav-links a:hover{ color:var(--ink); }
+.brand{ display: flex; align-items: center; gap: 12px; }
+.brand .brand-logo{
+  height: 52px; max-height: 100%; width: auto; aspect-ratio: 3.84/1;
+  object-fit: contain; flex: none; display: block;
+  transition: transform 0.2s ease;
+}
+.brand:hover .brand-logo{ transform: scale(1.02); }
+.nav-links{ display: flex; gap: 32px; font-weight: 600; font-size: 15.5px; align-items: center; }
+.nav-links a{ position: relative; color: var(--ink-soft); padding: 8px 0; transition: color 0.2s ease; }
+.nav-links a:hover{ color: var(--primary); }
+.nav-links a::after{
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2.5px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  transform: scaleX(0); transform-origin: center;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.nav-links a:hover::after{ transform: scaleX(1); }
+
 .nav-cta{
-  display:inline-flex;align-items:center;justify-content:center;gap:7px;
-  height:38px;padding:0 18px;border-radius:999px;
-  font-family:inherit;font-weight:600;font-size:14px;
-  color:#fff!important;text-decoration:none;white-space:nowrap;
-  background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);
-  border:1px solid rgba(255,255,255,.14);
-  box-shadow:0 2px 8px rgba(15,23,42,.16),inset 0 1px 0 rgba(255,255,255,.12);
-  transition:all .25s cubic-bezier(.16,1,.3,1);
-  box-sizing:border-box;user-select:none;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  height: 42px; padding: 0 20px; border-radius: 999px;
+  font-family: inherit; font-weight: 700; font-size: 14.5px;
+  color: #fff !important; text-decoration: none; white-space: nowrap;
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
 }
 .nav-cta:hover{
-  background:linear-gradient(135deg,#283a63 0%,#131d35 100%);
-  border-color:rgba(255,255,255,.28);
-  box-shadow:0 4px 14px rgba(15,23,42,.24),inset 0 1px 0 rgba(255,255,255,.2);
-  transform:translateY(-1px);
-  color:#fff!important;
+  background: linear-gradient(135deg, #283a63 0%, #131d35 100%);
+  border-color: rgba(255, 255, 255, 0.28);
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transform: translateY(-1.5px);
+  color: #fff !important;
 }
-.nav-cta:active{transform:translateY(0) scale(.98);box-shadow:0 1px 4px rgba(15,23,42,.2)}
-.nav-cta svg.nav-login-icon{width:16px;height:16px;flex:none}
+.nav-cta:active{ transform: translateY(0) scale(0.98); box-shadow: 0 2px 6px rgba(15, 23, 42, 0.2); }
+.nav-cta svg.nav-login-icon{ width: 16px; height: 16px; flex: none; }
+
 /* Logged-in profile badge button */
-.nav-cta--logged-in{padding:0 13px 0 6px;gap:8px;background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);border:1px solid rgba(255,255,255,.14)}
-.nav-cta--logged-in:hover{border-color:rgba(56,189,248,.45);box-shadow:0 4px 16px rgba(15,23,42,.28),0 0 12px rgba(56,189,248,.18)}
-.nav-profile-avatar{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;flex:none;box-shadow:0 1px 3px rgba(0,0,0,.3),0 0 0 1px rgba(255,255,255,.25)}
-.nav-profile-initial{color:#fff;font-weight:700;font-size:12.5px;line-height:1;text-transform:uppercase}
-.nav-profile-avatar svg{width:13px;height:13px;fill:currentColor;color:#fff}
-.nav-profile-badge{position:absolute;bottom:-1px;right:-1px;width:8px;height:8px;border-radius:50%;background:#10b981;border:1.5px solid #0f172a;box-shadow:0 0 4px rgba(16,185,129,.6)}
-.nav-profile-name{font-size:13.5px;font-weight:600;color:#f1f5f9;letter-spacing:.2px;max-width:95px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1}
-.nav-profile-chevron{width:10px;height:10px;flex:none;opacity:.6;transition:opacity .2s ease,transform .2s ease}
-.nav-cta--logged-in:hover .nav-profile-chevron{opacity:1;transform:translateY(1px)}
-.burger{ display:none; background:none; border:none; font-size:26px; color:var(--ink); }
-@media(max-width:860px){
+.nav-cta--logged-in{
+  padding: 0 14px 0 6px; gap: 9px;
+  background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+.nav-cta--logged-in:hover{
+  border-color: rgba(56, 189, 248, 0.45);
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.28), 0 0 12px rgba(56, 189, 248, 0.18);
+}
+.nav-profile-avatar{
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; flex: none;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.25);
+}
+.nav-profile-initial{ color: #fff; font-weight: 700; font-size: 13px; line-height: 1; text-transform: uppercase; }
+.nav-profile-avatar svg{ width: 14px; height: 14px; fill: currentColor; color: #fff; }
+.nav-profile-badge{
+  position: absolute; bottom: -1px; right: -1px; width: 8px; height: 8px;
+  border-radius: 50%; background: #10b981; border: 1.5px solid #0f172a;
+  box-shadow: 0 0 4px rgba(16, 185, 129, 0.6);
+}
+.nav-profile-name{
+  font-size: 14px; font-weight: 600; color: #f1f5f9; letter-spacing: 0.2px;
+  max-width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1;
+}
+.nav-profile-chevron{ width: 10px; height: 10px; flex: none; opacity: 0.7; transition: opacity 0.2s ease, transform 0.2s ease; }
+.nav-cta--logged-in:hover .nav-profile-chevron{ opacity: 1; transform: translateY(1.5px); }
+
+.burger{ display: none; background: none; border: 0; font-size: 26px; color: var(--ink); padding: 4px; }
+@media(max-width: 860px){
   .nav-links{
-    position:absolute; top:100%; left:0; right:0;
-    background:#ffffff; flex-direction:column;
-    padding:18px 28px 26px; gap:16px;
-    border-bottom:1px solid var(--paper-line);
-    box-shadow:0 12px 30px rgba(15,23,42,.08); display:none;
+    position: absolute; top: 100%; left: 0; right: 0;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px);
+    flex-direction: column; padding: 20px 28px 28px; gap: 16px;
+    border-bottom: 1px solid var(--paper-line);
+    box-shadow: 0 16px 36px rgba(15, 23, 42, 0.1);
+    display: none;
   }
-  .nav-links.open{ display:flex; }
-  .burger{ display:block; }
+  .nav-links.open{ display: flex; }
+  .burger{ display: block; }
 }
-/* ছোট মোবাইল স্ক্রিনে logo + লগইন বাটন + বার্গার একসাথে মূল viewport-এর
-   চেয়ে বেশি জায়গা নিয়ে ফেলছিল (logo height:64px ফিক্সড রেখে shrink হচ্ছিল না),
-   যার ফলে পুরো পেজ horizontally overflow করে "zoom করা"-র মতো দেখাচ্ছিল আর
-   সব element ডানে/বামে চাপা পড়ে যাচ্ছিল। তাই ছোট স্ক্রিনে এগুলো ছোট করে
-   viewport-এর ভেতরেই ফিট করানো হলো। */
-@media(max-width:480px){
-  .nav-inner{ gap:8px; padding:0 12px; }
-  .brand .brand-logo{ height:42px; }
-  .nav-cta{ padding:8px 12px; font-size:12.5px; gap:5px; }
-  .nav-cta svg{ width:14px; height:14px; }
-  .burger{ font-size:22px; }
+@media(max-width: 480px){
+  .nav-inner{ gap: 10px; height: 60px; padding: 0 14px; }
+  .brand .brand-logo{ height: 40px; }
+  .nav-cta{ height: 36px; padding: 0 13px; font-size: 13px; gap: 6px; }
+  .nav-cta svg.nav-login-icon{ width: 14px; height: 14px; }
+  .nav-cta--logged-in{ padding: 0 10px 0 5px; gap: 6px; }
+  .nav-profile-avatar{ width: 24px; height: 24px; }
+  .nav-profile-name{ font-size: 12.5px; max-width: 72px; }
+  .burger{ font-size: 22px; }
 }
 
-/* ===== হেডার / ব্যাক লিংক ===== */
-.ps-hero{ padding:34px 0 10px; }
+/* ===== হিরো সেকশন ===== */
+.ps-hero{ padding: clamp(28px, 4.5vw, 42px) 0 12px; }
 .back-link{
-  display:inline-flex; align-items:center; gap:6px;
-  color:var(--ink-soft); font-weight:600; font-size:14.5px;
-  text-decoration:none; margin-bottom:14px;
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #ffffff; border: 1.5px solid var(--paper-line);
+  color: var(--ink-soft); font-weight: 700; font-size: 14px;
+  padding: 8px 16px; border-radius: 999px;
+  box-shadow: var(--shadow-sm); text-decoration: none; margin-bottom: 16px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.back-link:hover{ color:var(--ink); }
-.ps-hero h1{
-  font-family:'Anek Bangla', sans-serif;
-  font-size:clamp(24px, 4vw, 32px);
-  margin:0 0 6px;
+.back-link:hover{
+  color: var(--primary); border-color: rgba(37, 99, 235, 0.3);
+  background: #f0f7ff; transform: translateX(-3px);
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.1);
 }
-.ps-hero p{ color:var(--ink-soft); margin:0; font-size:15px; }
+.back-link svg{ width: 15px; height: 15px; stroke-width: 2.5; transition: transform 0.2s ease; }
+.back-link:hover svg{ transform: translateX(-2px); }
 
-/* ===== ফিল্টার প্যানেল ===== */
-.ps-filters{
-  background:var(--card);
-  border:1px solid var(--paper-line);
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
-  padding:20px;
-  margin:22px 0 26px;
+.page-eyebrow{
+  display: inline-flex; align-items: center; gap: 6px;
+  background: #EFF6FF; color: #1D4ED8;
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  padding: 4px 14px; border-radius: 999px;
+  font-family: 'Baloo Da 2', sans-serif;
+  font-size: 13px; font-weight: 700; letter-spacing: 0.04em;
+  margin-bottom: 10px;
 }
-.ps-row{ display:flex; flex-wrap:wrap; gap:14px; }
-.ps-field{ flex:1 1 220px; display:flex; flex-direction:column; gap:6px; }
+.page-eyebrow::before{
+  content: ""; width: 7px; height: 7px; border-radius: 50%; background: #2563EB;
+}
+.ps-hero h1{
+  font-family: 'Baloo Da 2', sans-serif;
+  font-size: clamp(28px, 4vw, 38px);
+  font-weight: 800; line-height: 1.25; margin: 0 0 8px; color: var(--ink);
+}
+.ps-hero p{ color: var(--ink-soft); margin: 0; font-size: 16px; max-width: 65ch; }
+
+/* ===== ফিল্টার প্যানেল (মডার্ন কার্ড) ===== */
+.ps-filters{
+  background: var(--card);
+  border: 1px solid var(--paper-line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: clamp(20px, 3vw, 28px);
+  margin: 20px 0 32px;
+  position: relative; overflow: hidden;
+}
+.ps-filters::before{
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3.5px;
+  background: linear-gradient(90deg, #2563EB, #6366F1, #10B981);
+}
+.ps-row{ display: flex; flex-wrap: wrap; gap: 16px; }
+.ps-field{ flex: 1 1 240px; display: flex; flex-direction: column; gap: 7px; }
 .ps-field label{
-  font-family:'Anek Bangla', sans-serif;
-  font-weight:700; font-size:13.5px; color:var(--ink-soft);
+  font-family: 'Baloo Da 2', sans-serif;
+  font-weight: 700; font-size: 14px; color: var(--ink);
+  display: flex; align-items: center; gap: 6px;
 }
 .ps-field select, .ps-field input[type="text"]{
-  width:100%;
-  padding:12px 14px;
-  border-radius:10px;
-  border:1.5px solid var(--paper-line);
-  background:#fff;
-  font-family:'Anek Bangla', sans-serif;
-  font-size:15px;
-  color:var(--ink);
-  outline:none;
-  transition:border-color .2s ease;
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1.5px solid var(--paper-line);
+  background: #F8FAFC;
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 15px; color: var(--ink);
+  outline: none; transition: all 0.2s ease;
 }
-.ps-field select:focus, .ps-field input[type="text"]:focus{ border-color:var(--sky); }
-.ps-dept-year{ display:none; gap:14px; flex-wrap:wrap; margin-top:14px; }
-.ps-dept-year.show{ display:flex; }
-.ps-search-wrap{ margin-top:14px; display:none; }
-.ps-search-wrap.show{ display:block; }
+.ps-field select{
+  appearance: none; -webkit-appearance: none; -moz-appearance: none;
+  background: #F8FAFC url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%23475569" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>') no-repeat right 14px center/16px 16px;
+  padding-right: 42px; cursor: pointer;
+}
+.ps-field select:hover, .ps-field input[type="text"]:hover{
+  border-color: #CBD5E1; background: #ffffff;
+}
+.ps-field select:focus, .ps-field input[type="text"]:focus{
+  border-color: var(--primary); background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+}
+
+.ps-dept-year{ display: none; gap: 16px; flex-wrap: wrap; margin-top: 16px; }
+.ps-dept-year.show{ display: flex; animation: fadeIn 0.25s ease both; }
+.ps-search-wrap{ margin-top: 16px; display: none; }
+.ps-search-wrap.show{ display: block; animation: fadeIn 0.25s ease both; }
+@keyframes fadeIn{
+  from{ opacity: 0; transform: translateY(6px); }
+  to{ opacity: 1; transform: translateY(0); }
+}
 
 /* ===== স্ট্যাটাস / প্রম্পট মেসেজ ===== */
 .ps-status{
-  text-align:center;
-  padding:50px 20px;
-  color:var(--ink-soft);
-  font-size:16px;
+  text-align: center;
+  padding: 60px 24px;
+  color: var(--ink-soft);
+  font-size: 16px;
+  background: #ffffff;
+  border: 1.5px dashed var(--paper-line);
+  border-radius: var(--radius-lg);
 }
-.ps-status strong{ display:block; color:var(--ink); margin-bottom:6px; font-size:18px; font-family:'Anek Bangla', sans-serif; }
+.ps-status strong{
+  display: block; color: var(--ink); margin-bottom: 8px;
+  font-size: 20px; font-family: 'Baloo Da 2', sans-serif; font-weight: 800;
+}
 
 /* ===== কার্ড গ্রিড ===== */
-.ps-count{ color:var(--ink-soft); font-size:14.5px; margin:0 0 14px; }
+.ps-count{
+  color: var(--ink-muted); font-size: 15px; font-weight: 700;
+  margin: 0 0 16px; display: flex; align-items: center; gap: 6px;
+}
+.ps-count::before{
+  content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--primary);
+}
 .ps-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));
-  gap:14px;
-  padding-bottom:60px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 22px;
+  padding-bottom: 70px;
 }
 .ps-card{
-  background:var(--card);
-  border:1px solid var(--paper-line);
-  border-radius:10px;
-  box-shadow:var(--shadow);
-  overflow:hidden;
-  display:flex;
-  flex-direction:column;
+  background: var(--card);
+  border: 1px solid var(--paper-line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.ps-card:hover{
+  transform: translateY(-6px);
+  box-shadow: 0 20px 38px -8px rgba(15, 23, 42, 0.12), 0 0 20px 2px rgba(37, 99, 235, 0.08);
 }
 .ps-card-img{
-  width:100%;
-  aspect-ratio:3000/500;
-  object-fit:cover;
-  background:#eee;
-  display:block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: #0f172a;
+  display: block;
+  transition: transform 0.35s ease;
 }
-.ps-card-body{ padding:8px 10px; display:flex; flex-direction:column; gap:3px; }
-.ps-card-top{ display:flex; align-items:flex-start; justify-content:space-between; gap:8px; }
-.ps-desc{ margin:2px 0 0; color:var(--ink-soft); font-size:12px; line-height:1.4; }
-.ps-level-pill{
-  font-family:'Anek Bangla', sans-serif;
-  font-size:10.5px; font-weight:700;
-  color:var(--sky);
-  background:rgba(91,143,191,.12);
-  padding:2px 8px; border-radius:999px;
-  white-space:nowrap;
+.ps-card:hover .ps-card-img{ transform: scale(1.03); }
+
+.ps-card-body{
+  padding: 14px 16px 16px; display: flex; flex-direction: column; gap: 8px; flex: 1;
 }
-.ps-pill-group{ display:flex; flex-direction:column; align-items:flex-end; gap:4px; flex-shrink:0; }
-.ps-sector-pill{
-  font-family:'Anek Bangla', sans-serif;
-  font-size:10px; font-weight:700;
-  color:#C9337A;
-  background:rgba(201,51,122,.12);
-  padding:2px 8px; border-radius:999px;
-  white-space:nowrap;
-}
+.ps-card-top{ display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
 .ps-card h3{
-  margin:0;
-  font-size:14.5px;
-  line-height:1.3;
-  font-family:'Anek Bangla', sans-serif;
+  margin: 0;
+  font-size: 16.5px;
+  font-weight: 800;
+  line-height: 1.35;
+  font-family: 'Baloo Da 2', 'Anek Bangla', sans-serif;
+  color: var(--ink);
 }
-.ps-meta{ display:flex; flex-wrap:wrap; gap:5px; }
+.ps-pill-group{ display: flex; flex-direction: column; align-items: flex-end; gap: 4px; flex-shrink: 0; }
+.ps-level-pill{
+  font-family: 'Baloo Da 2', sans-serif;
+  font-size: 11px; font-weight: 800;
+  color: var(--primary-dark);
+  background: var(--primary-light);
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  padding: 2px 9px; border-radius: 999px;
+  white-space: nowrap;
+}
+.ps-sector-pill{
+  font-family: 'Baloo Da 2', sans-serif;
+  font-size: 10.5px; font-weight: 800;
+  color: #7C3AED;
+  background: #F5F3FF;
+  border: 1px solid #DDD6FE;
+  padding: 2px 8px; border-radius: 999px;
+  white-space: nowrap;
+}
+.ps-meta{ display: flex; flex-wrap: wrap; gap: 6px; }
 .ps-meta span{
-  font-size:11px;
-  color:var(--ink-soft);
-  background:var(--paper);
-  border:1px solid var(--paper-line);
-  padding:2px 7px;
-  border-radius:999px;
+  font-size: 11.5px; font-weight: 600;
+  color: var(--ink-soft);
+  background: #F8FAFC;
+  border: 1px solid var(--paper-line);
+  padding: 2px 9px;
+  border-radius: 999px;
 }
 .ps-price-row{
-  margin-top:2px;
-  display:flex;
-  align-items:baseline;
-  gap:8px;
+  margin-top: 2px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
 }
 .ps-price{
-  font-family:'Anek Bangla', sans-serif;
-  font-weight:800;
-  font-size:15.5px;
-  color:var(--accent-dark);
+  font-family: 'Baloo Da 2', sans-serif;
+  font-weight: 800;
+  font-size: 19px;
+  color: var(--primary-dark);
 }
 .ps-price-old{
-  font-size:12px;
-  color:var(--ink-soft);
-  text-decoration:line-through;
+  font-size: 13px;
+  color: var(--ink-muted);
+  text-decoration: line-through;
 }
+.ps-desc{ margin: 2px 0 0; color: var(--ink-soft); font-size: 13px; line-height: 1.5; }
 
-/* ===== এনরোল বাটন ===== */
+/* ===== এনরোল বাটনস ===== */
 .ps-enroll-btn{
-  margin-top:6px;
-  width:100%;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:6px;
-  padding:4px 12px;
-  border:none;
-  border-radius:6px;
-  background:linear-gradient(135deg, var(--accent), var(--accent-dark));
-  color:#fff;
-  font-family:'Anek Bangla', sans-serif;
-  font-weight:700;
-  font-size:12px;
-  line-height:1.6;
-  cursor:pointer;
-  transition:filter .15s ease, transform .1s ease;
+  margin-top: auto;
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+  color: #fff;
+  font-family: 'Anek Bangla', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.28);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
 }
-.ps-enroll-btn:hover{ filter:brightness(1.05); }
-.ps-enroll-btn:active{ transform:scale(0.98); }
+.ps-enroll-btn:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.4);
+  background: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%);
+}
+.ps-enroll-btn:active{ transform: translateY(0); }
+
 .ps-enroll-btn.ps-enrolled{
-  background:#e9f8ef;
-  color:#1f8a4c;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35) !important;
 }
-.ps-enroll-btn.ps-enrolled:hover{ filter:none; background:#dcf3e5; }
-
-/* ===== ফুটার ===== */
-footer{ border-top:1px solid var(--paper-line); padding:22px 0; margin-top:20px; }
-.copyright{ margin:0; text-align:center; color:var(--ink-soft); font-size:13.5px; }
-
-@media(max-width:600px){
-  .ps-filters{ padding:16px; }
+.ps-enroll-btn.ps-enrolled:hover{
+  background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+  box-shadow: 0 8px 18px rgba(16, 185, 129, 0.45) !important;
 }
 
-/* ---------- ল্যাপটপ ও তার বড় স্ক্রিন: সবকিছু uniformly ১০% বড় ----------
-   ফোনে (max-width breakpoint গুলোতে) সাইজ ইতিমধ্যে perfect, তাই ওগুলো অপরিবর্তিত।
-   zoom আসল লে-আউট রি-ফ্লো করে (শুধু ভিজ্যুয়াল স্কেল না), তাই card, button, গ্যাপ,
-   আইকন, টেক্সট — সবকিছুই একই অনুপাতে বড় হয়, ল্যাপটপ (~900px) থেকে বড় মনিটর পর্যন্ত। */
-@media(min-width:901px){
-  body{ zoom:1.10; }
+/* ===== ফুটার (ডার্ক স্লেট) ===== */
+footer{
+  background: #0F172A; color: #94A3B8; padding: 56px 0 28px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08); margin-top: auto;
+}
+.footer-grid{
+  display: grid; grid-template-columns: 1.4fr 1fr 1.2fr; gap: 40px;
+  padding-bottom: 36px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.footer-brand{ display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.footer-logo{
+  height: 48px; width: auto; object-fit: contain; filter: brightness(0) invert(1); opacity: 0.95;
+}
+.footer-desc{ font-size: 15px; line-height: 1.7; color: #CBD5E1; max-width: 38ch; }
+.footer-heading{
+  font-family: 'Baloo Da 2', sans-serif; color: #ffffff; font-size: 17px;
+  font-weight: 700; margin-bottom: 16px; letter-spacing: 0.02em;
+}
+.footer-links{ list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.footer-links a{ color: #CBD5E1; text-decoration: none; font-size: 14.5px; transition: all 0.2s ease; display: inline-block; }
+.footer-links a:hover{ color: #38BDF8; transform: translateX(4px); }
+.footer-contact-item{ color: #CBD5E1; font-size: 14.5px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.footer-bottom{ padding-top: 24px; text-align: center; }
+.copyright{ font-size: 13.5px; color: #64748B; margin: 0; }
+
+@media(max-width: 768px){
+  .footer-grid{ grid-template-columns: 1fr; gap: 28px; }
+  .ps-grid{ grid-template-columns: 1fr; gap: 16px; }
+}
+@media(max-width: 600px){
+  .ps-filters{ padding: 18px 16px; }
+}
+
+@media(min-width: 1024px){
+  body{ zoom: 1.05; }
 }
 </style>
 </head>
@@ -300,7 +449,7 @@ footer{ border-top:1px solid var(--paper-line); padding:22px 0; margin-top:20px;
 <!-- ===== নেভবার ===== -->
 <header class="nav">
   <div class="nav-inner">
-    <a href="index.html" class="brand">
+    <a href="index.html" class="brand" aria-label="VISION Academics Home">
       <img src="assets/logo.png" alt="VISION Academics" class="brand-logo" fetchpriority="high" decoding="async">
     </a>
     <nav class="nav-links" id="navLinks">
@@ -310,64 +459,115 @@ footer{ border-top:1px solid var(--paper-line); padding:22px 0; margin-top:20px;
       <a href="shop.html">শপ</a>
       <a href="index.html#why">কেন আমরা</a>
     </nav>
-    <a href="student-login.html" class="nav-cta" id="navLoginBtn"><svg class="nav-login-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><span>লগইন</span></a>
-    <button class="burger" id="burgerBtn">☰</button>
+    <a href="student-login.html" class="nav-cta" id="navLoginBtn">
+      <svg class="nav-login-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>
+      </svg>
+      <span>লগইন</span>
+    </a>
+    <button class="burger" id="burgerBtn" aria-label="মেনু">☰</button>
   </div>
 </header>
 
-<section class="ps-hero">
-  <div class="container">
-    <a href="All_Courses.html" class="back-link">← সব কোর্স দেখুন</a>
-    <h1>সাবজেক্ট ভিত্তিক কোর্স</h1>
-    <p>লেভেল বেছে নিন, এরপর প্রয়োজনে ডিপার্টমেন্ট ও ইয়ার সিলেক্ট করে আপনার পছন্দের সাবজেক্টের কোর্স খুঁজুন।</p>
-  </div>
-</section>
+<main>
+  <section class="ps-hero">
+    <div class="container">
+      <a href="All_Courses.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        <span>সব কোর্স দেখুন</span>
+      </a>
+      <div class="page-eyebrow">কোর্স বাই সাবজেক্ট</div>
+      <h1>সাবজেক্ট ভিত্তিক কোর্স</h1>
+      <p>লেভেল বেছে নিন, এরপর প্রয়োজনে ডিপার্টমেন্ট ও ইয়ার সিলেক্ট করে আপনার পছন্দের সাবজেক্টের কোর্স খুঁজুন।</p>
+    </div>
+  </section>
 
-<section class="container">
-  <div class="ps-filters">
-    <div class="ps-row">
-      <div class="ps-field">
-        <label for="levelSelect">লেভেল</label>
-        <select id="levelSelect">
-          <option value="">লেভেল নির্বাচন করুন</option>
-        </select>
+  <section class="container">
+    <div class="ps-filters">
+      <div class="ps-row">
+        <div class="ps-field">
+          <label for="levelSelect">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            লেভেল
+          </label>
+          <select id="levelSelect">
+            <option value="">লেভেল নির্বাচন করুন</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="ps-dept-year" id="deptYearRow">
+        <div class="ps-field">
+          <label for="deptSelect">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+            ডিপার্টমেন্ট
+          </label>
+          <select id="deptSelect">
+            <option value="">ডিপার্টমেন্ট নির্বাচন করুন</option>
+          </select>
+        </div>
+        <div class="ps-field">
+          <label for="yearSelect">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            ইয়ার
+          </label>
+          <select id="yearSelect">
+            <option value="">ইয়ার নির্বাচন করুন</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="ps-search-wrap" id="searchWrap">
+        <div class="ps-field">
+          <label for="subjectSearch">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            সাবজেক্টের নাম দিয়ে খুঁজুন
+          </label>
+          <input type="text" id="subjectSearch" placeholder="যেমন: Principle of Management">
+        </div>
       </div>
     </div>
 
-    <div class="ps-dept-year" id="deptYearRow">
-      <div class="ps-field">
-        <label for="deptSelect">ডিপার্টমেন্ট</label>
-        <select id="deptSelect">
-          <option value="">ডিপার্টমেন্ট নির্বাচন করুন</option>
-        </select>
-      </div>
-      <div class="ps-field">
-        <label for="yearSelect">ইয়ার</label>
-        <select id="yearSelect">
-          <option value="">ইয়ার নির্বাচন করুন</option>
-        </select>
+    <div id="resultsArea">
+      <div class="ps-status" id="promptState">
+        <strong>শুরু করতে উপরে লেভেল সিলেক্ট করুন</strong>
+        কোর্স দেখতে প্রথমে একটি লেভেল বেছে নিন।
       </div>
     </div>
+  </section>
+</main>
 
-    <div class="ps-search-wrap" id="searchWrap">
-      <div class="ps-field">
-        <label for="subjectSearch">সাবজেক্টের নাম দিয়ে খুঁজুন</label>
-        <input type="text" id="subjectSearch" placeholder="যেমন: Principle of Management">
-      </div>
-    </div>
-  </div>
-
-  <div id="resultsArea">
-    <div class="ps-status" id="promptState">
-      <strong>শুরু করতে উপরে লেভেল সিলেক্ট করুন</strong>
-      কোর্স দেখতে প্রথমে একটি লেভেল বেছে নিন।
-    </div>
-  </div>
-</section>
-
+<!-- ===== ফুটার ===== -->
 <footer>
   <div class="container">
-    <p class="copyright">© ২০২৬ VISION Academics — সর্বস্বত্ব সংরক্ষিত।</p>
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <img src="assets/logo.png" alt="VISION Academics" class="footer-logo">
+        </div>
+        <p class="footer-desc">ব্যতিক্রমী শিক্ষা পদ্ধতি, আধুনিক প্রযুক্তি ও অভিজ্ঞ শিক্ষকদের নিয়ে বাংলাদেশের বিশ্বস্ত এডুকেশন প্ল্যাটফর্ম।</p>
+      </div>
+      <div>
+        <h4 class="footer-heading">কোর্স ক্যাটাগরি</h4>
+        <ul class="footer-links">
+          <li><a href="All_Courses.html?level=BBA">BBA প্রফেশনাল</a></li>
+          <li><a href="All_Courses.html?level=HSC">HSC একাডেমিক</a></li>
+          <li><a href="All_Courses.html?level=MBA">MBA প্রোগ্রাম</a></li>
+          <li><a href="per-subject.html">বিষয়ভিত্তিক কোর্স</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="footer-heading">যোগাযোগ ও সাপোর্ট</h4>
+        <p class="footer-contact-item">📞 01764-859503</p>
+        <p class="footer-contact-item">✉️ bbavission@gmail.com</p>
+        <p class="footer-contact-item">📍 ঢাকা, বাংলাদেশ</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="copyright">© ২০২৬ VISION Academics — সর্বস্বত্ব সংরক্ষিত।</p>
+    </div>
   </div>
 </footer>
 
@@ -380,16 +580,11 @@ const bnDigits = '০১২৩৪৫৬৭৮৯', enDigits = '0123456789';
 const toBn = v => String(v ?? '').replace(/[0-9]/g, d => bnDigits[enDigits.indexOf(d)]);
 const priceDisplay = v => { const x = clean(v); if(!x) return ''; return /[৳$€£]/.test(x) ? toBn(x) : `৳${toBn(x)}`; };
 
-// লেভেল অনুযায়ী কোন কোনটাতে Department+Year প্রযোজ্য (BBA-ধরনের), আর কোনটাতে শুধু লেভেল দিয়েই সব কার্ড দেখানো হবে (SSC/HSC)।
 const ALL_LEVELS = ['SSC','HSC','BBA','MBA','BBS','BBA Professional'];
 const DEPT_YEAR_LEVELS = ['BBA','MBA','BBS','BBA Professional'];
 const DEPARTMENTS = ['Accounting','Management','Marketing','Finance'];
 const YEARS = ['1st Year','2nd Year','3rd Year','4th Year'];
 
-// student-login.html-এর dashboard-এ subject-wise enrolled কোর্স চেনার জন্য একই
-// এনকোডিং কনভেনশন এখানেও ব্যবহার হচ্ছে — "SW::{level}::{department}::{year}::{subject}"
-// (student-login.html এই আইডেন্টিফায়ার parse করে dashboard-এ শুধু subject-এর নাম
-// দেখায় এবং course_data টেবিল থেকে সঠিক ক্লাসগুলো খুঁজে বের করে)।
 const SW_COURSE_PREFIX = 'SW::';
 function buildSubjectWiseCourseId(row){
   const sector = String(row.nuDcu || '').trim().toUpperCase();
@@ -398,14 +593,8 @@ function buildSubjectWiseCourseId(row){
     : `${SW_COURSE_PREFIX}${row.level}::${row.department || ''}::${row.year || ''}::${row.subject}`;
 }
 
-let allSubjectRows = []; // { level, year, department, subject, description, newPrice, oldPrice, image }
+let allSubjectRows = [];
 
-// index.html-এ যেভাবে localStorage-এ ক্যাশ করা student data (student-login.html থেকে
-// লগইন করলে সেট হয়) থেকে enrolled কোর্সের নাম বের করে "ভর্তি হয়েছেন ✓" দেখানো হয়,
-// এখানে subject-wise কোর্সের জন্য একই প্যাটার্ন — কোর্সের নাম এখানে
-// buildSubjectWiseCourseId() দিয়ে বানানো "SW::{level}::{department}::{year}::{subject}"
-// আইডেন্টিফায়ার (student_enrolled.course কলামে এভাবেই সেভ থাকে)। কেউ লগইন না করে
-// থাকলে খালি Set রিটার্ন হবে, তখন কার্ড আগের মতোই স্বাভাবিক "এনরোল করুন" দেখাবে।
 function getEnrolledSubjectWiseIds(){
   try{
     const raw = localStorage.getItem('va_user');
@@ -417,10 +606,6 @@ function getEnrolledSubjectWiseIds(){
 }
 const enrolledSubjectWiseIds = getEnrolledSubjectWiseIds();
 
-// ডেটা এখন সরাসরি subjectwise_course_name টেবিল (action=get_subjectwise_courses)
-// থেকে আসে — level/department/year/price সব আলাদা কলামে স্পষ্টভাবে দেওয়া থাকে,
-// তাই আর কোনো text-parsing লাগে না। camelCase (worker.js এর response shape) এবং
-// snake_case দুটোই সাপোর্ট করা হচ্ছে, যাতে backend version mismatch এ ডেটা মিস না হয়।
 async function fetchSubjectWiseRows(){
   const r = await fetch(VISION_API, {
     method:'POST',
@@ -431,7 +616,6 @@ async function fetchSubjectWiseRows(){
   if(!r.ok) throw new Error(`Subjectwise Course Name: HTTP ${r.status}`);
   const j = await r.json();
   if(j.status === 'error') throw new Error(j.message || 'Subjectwise Course Name API error');
-  console.log('[per-subject] raw API response:', j);
   const rows = (j.data || [])
     .map(row => ({
       level: clean(row.level),
@@ -445,7 +629,6 @@ async function fetchSubjectWiseRows(){
       nuDcu: clean(row.nuDcu ?? row.nu_dcu).toUpperCase()
     }))
     .filter(row => row.level && row.subject);
-  console.log('[per-subject] parsed rows:', rows);
   return rows;
 }
 
@@ -473,8 +656,15 @@ function cardHtml(row){
   const courseId = buildSubjectWiseCourseId(row);
   const isEnrolled = enrolledSubjectWiseIds.has(normalizeForMatch(courseId));
   const actionHtml = isEnrolled
-    ? `<a href="student-login.html" class="ps-enroll-btn ps-enrolled">ভর্তি হয়েছেন ✓</a>`
-    : `<button type="button" class="ps-enroll-btn" data-course-id="${esc(courseId)}">এনরোল করুন</button>`;
+    ? `<a href="student-login.html" class="ps-enroll-btn ps-enrolled">
+        <svg viewBox="0 0 20 20" fill="currentColor" style="width:16px;height:16px;"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+        ভর্তি হয়েছেন ✓
+      </a>`
+    : `<button type="button" class="ps-enroll-btn" data-course-id="${esc(courseId)}">
+        এনরোল ও বিস্তারিত
+        <svg viewBox="0 0 20 20" fill="currentColor" style="width:15px;height:15px;"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
+      </button>`;
+
   return `<article class="ps-card">
     ${row.image ? `<img class="ps-card-img" src="${esc(row.image)}" alt="${esc(row.subject)}" loading="lazy">` : ''}
     <div class="ps-card-body">
@@ -498,14 +688,14 @@ function cardHtml(row){
 
 function currentFilteredRows(){
   const level = document.getElementById('levelSelect').value;
-  if(!level) return null; // এখনো লেভেল সিলেক্ট হয়নি
+  if(!level) return null;
 
   let rows = allSubjectRows.filter(r => r.level === level);
 
   if(DEPT_YEAR_LEVELS.includes(level)){
     const dept = document.getElementById('deptSelect').value;
     const year = document.getElementById('yearSelect').value;
-    if(!dept || !year) return []; // দুটোই সিলেক্ট না হওয়া পর্যন্ত কিছু দেখাবে না
+    if(!dept || !year) return [];
     rows = rows.filter(r => normalizeForMatch(r.department) === normalizeForMatch(dept) && normalizeForMatch(r.year) === normalizeForMatch(year));
   }
 
@@ -555,7 +745,7 @@ function render(){
     return;
   }
 
-  resultsArea.innerHTML = `<p class="ps-count">মোট ${toBn(rows.length)}টি কোর্স</p><div class="ps-grid">${rows.map(cardHtml).join('')}</div>`;
+  resultsArea.innerHTML = `<p class="ps-count">মোট ${toBn(rows.length)}টি কোর্স পাওয়া গেছে</p><div class="ps-grid">${rows.map(cardHtml).join('')}</div>`;
 }
 
 document.getElementById('resultsArea').addEventListener('click', (e) => {
@@ -563,9 +753,6 @@ document.getElementById('resultsArea').addEventListener('click', (e) => {
   if(!btn) return;
   const courseId = btn.dataset.courseId;
   if(!courseId) return;
-  // index.html-এর course card-এর মতোই — সরাসরি এনরোল না করিয়ে আগে
-  // course-details.html-এ (sw=... প্যারামিটার দিয়ে) বিস্তারিত পেজে নিয়ে যাওয়া হয়,
-  // সেখান থেকে "Enroll Now" চাপলে তবেই student-login.html?enroll=... এ যাবে।
   window.location.href = `course-details.html?sw=${encodeURIComponent(courseId)}`;
 });
 
@@ -585,7 +772,7 @@ async function init(){
   try{
     allSubjectRows = await fetchSubjectWiseRows();
     if(!allSubjectRows.length){
-      document.getElementById('resultsArea').innerHTML = `<div class="ps-status"><strong>এখনো কোনো সাবজেক্ট যোগ করা হয়নি</strong>subjectwise_course_name টেবিলে ডেটা যোগ করুন, তাহলে এখানে দেখাবে।</div>`;
+      document.getElementById('resultsArea').innerHTML = `<div class="ps-status"><strong>এখনো কোনো সাবজেক্ট যোগ করা হয়নি</strong>শীঘ্রই নতুন সাবজেক্ট যোগ করা হবে।</div>`;
       return;
     }
     populateLevelSelect();
@@ -614,14 +801,14 @@ document.addEventListener('DOMContentLoaded', () => {
           hasName=true;
           const titleRx=/^(md\.?|mohammad|muhammad|mst\.?|most\.?|sk\.?|sheikh|মোছাঃ|মোঃ|মুহাম্মদ|শেখ)$/i;
           const rawParts=fullName.split(/\s+/).filter(Boolean);
-          const clean=rawParts.filter(p=>!titleRx.test(p));
-          const primary=clean.length>0?clean[0]:(rawParts[0]||fullName);
+          const cleanParts=rawParts.filter(p=>!titleRx.test(p));
+          const primary=cleanParts.length>0?cleanParts[0]:(rawParts[0]||fullName);
           displayName=primary.length>10?primary.slice(0,9)+'…':primary;
           initial=primary.charAt(0).toUpperCase();
         }
         let hash=0;
         for(let i=0;i<fullName.length;i++){hash=(hash<<5)-hash+fullName.charCodeAt(i);hash|=0;}
-        const grads=['linear-gradient(135deg,#0ea5e9,#2563eb)','linear-gradient(135deg,#6366f1,#8b5cf6)','linear-gradient(135deg,#10b981,#059669)','linear-gradient(135deg,#f59e0b,#d97706)','linear-gradient(135deg,#ec4899,#be185d)','linear-gradient(135deg,#06b6d4,#0284c7)','linear-gradient(135deg,#8b5cf6,#d946ef)','linear-gradient(135deg,#f97316,#ea580c)','linear-gradient(135deg,#14b8a6,#0f766e)','linear-gradient(135deg,#ef4444,#b91c1c)'];
+        const grads=['linear-gradient(135deg,#0ea5e9,#2563eb)','linear-gradient(135deg,#6366f1,#8b5cf6)','linear-gradient(135deg,#10b981,#059669)','linear-gradient(135deg,#f59e0b,#d97706)','linear-gradient(135deg,#ec4899,#be185d)'];
         const grad=grads[Math.abs(hash)%grads.length];
         loginBtn.classList.add('nav-cta--logged-in');
         loginBtn.title=fullName?fullName+' (প্রোফাইল)':'আমার প্রোফাইল';
