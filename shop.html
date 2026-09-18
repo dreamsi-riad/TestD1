@@ -64,12 +64,35 @@
         }
         .nav-links a:hover::after, .nav-links a.active::after { transform: scaleX(1); }
         .nav-cta {
-            display: inline-flex; align-items: center; gap: 7px;
-            background: linear-gradient(135deg, #263a63, var(--ink) 60%); color: #fff !important; padding: 10px 20px; border-radius: 999px;
-            font-weight: 700; font-size: 14.5px; white-space: nowrap; text-decoration: none;
-            box-shadow: 0 3px 10px rgba(30,42,71,.25), inset 0 1px 1px rgba(255,255,255,.12);
+            display:inline-flex;align-items:center;justify-content:center;gap:7px;
+            height:38px;padding:0 18px;border-radius:999px;
+            font-family:inherit;font-weight:600;font-size:14px;
+            color:#fff!important;text-decoration:none;white-space:nowrap;
+            background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);
+            border:1px solid rgba(255,255,255,.14);
+            box-shadow:0 2px 8px rgba(15,23,42,.16),inset 0 1px 0 rgba(255,255,255,.12);
+            transition:all .25s cubic-bezier(.16,1,.3,1);
+            box-sizing:border-box;user-select:none;
         }
-        .nav-cta svg{ flex:none; width:16px; height:16px; }
+        .nav-cta:hover{
+            background:linear-gradient(135deg,#283a63 0%,#131d35 100%);
+            border-color:rgba(255,255,255,.28);
+            box-shadow:0 4px 14px rgba(15,23,42,.24),inset 0 1px 0 rgba(255,255,255,.2);
+            transform:translateY(-1px);
+            color:#fff!important;
+        }
+        .nav-cta:active{transform:translateY(0) scale(.98);box-shadow:0 1px 4px rgba(15,23,42,.2)}
+        .nav-cta svg.nav-login-icon{width:16px;height:16px;flex:none}
+        /* Logged-in profile badge button */
+        .nav-cta--logged-in{padding:0 13px 0 6px;gap:8px;background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);border:1px solid rgba(255,255,255,.14)}
+        .nav-cta--logged-in:hover{border-color:rgba(56,189,248,.45);box-shadow:0 4px 16px rgba(15,23,42,.28),0 0 12px rgba(56,189,248,.18)}
+        .nav-profile-avatar{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;flex:none;box-shadow:0 1px 3px rgba(0,0,0,.3),0 0 0 1px rgba(255,255,255,.25)}
+        .nav-profile-initial{color:#fff;font-weight:700;font-size:12.5px;line-height:1;text-transform:uppercase}
+        .nav-profile-avatar svg{width:13px;height:13px;fill:currentColor;color:#fff}
+        .nav-profile-badge{position:absolute;bottom:-1px;right:-1px;width:8px;height:8px;border-radius:50%;background:#10b981;border:1.5px solid #0f172a;box-shadow:0 0 4px rgba(16,185,129,.6)}
+        .nav-profile-name{font-size:13.5px;font-weight:600;color:#f1f5f9;letter-spacing:.2px;max-width:95px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1}
+        .nav-profile-chevron{width:10px;height:10px;flex:none;opacity:.6;transition:opacity .2s ease,transform .2s ease}
+        .nav-cta--logged-in:hover .nav-profile-chevron{opacity:1;transform:translateY(1px)}
         .burger { display: none; background: none; border: none; font-size: 26px; color: var(--ink); cursor: pointer; }
         @media(max-width: 860px) {
             .nav-links {
@@ -81,15 +104,21 @@
             .nav-links.open { display: flex; }
             .burger { display: block; }
         }
-
         /* ছোট মোবাইল স্ক্রিনে logo + লগইন বাটন + বার্গার মিলে viewport-এর চেয়ে
            বেশি জায়গা নিয়ে ফেলছিল (logo height:64px ফিক্সড রেখে shrink হচ্ছিল না),
            ফলে পুরো পেজ horizontally overflow করে "zoom করা"-র মতো দেখাচ্ছিল। */
         @media(max-width: 480px) {
             .nav-inner{ gap: 8px; padding: 0 12px; }
             .brand .brand-logo{ height: 42px; }
-            .nav-cta{ padding: 8px 12px; font-size: 12.5px; gap: 5px; }
-            .nav-cta svg{ width: 14px; height: 14px; }
+            .nav-cta{height:34px;padding:0 12px;font-size:12.5px;gap:5px}
+            .nav-cta svg.nav-login-icon{width:14px;height:14px}
+            .nav-cta--logged-in{padding:0 10px 0 5px;gap:6px}
+            .nav-profile-avatar{width:22px;height:22px}
+            .nav-profile-initial{font-size:11px}
+            .nav-profile-avatar svg{width:11px;height:11px}
+            .nav-profile-badge{width:7px;height:7px}
+            .nav-profile-name{font-size:12px;max-width:70px}
+            .nav-profile-chevron{width:9px;height:9px}
             .burger{ font-size: 22px; }
         }
 
@@ -253,7 +282,7 @@
                 <a href="shop.html" class="active">শপ</a>
                 <a href="index.html#why">কেন আমরা</a>
             </nav>
-            <a href="student-login.html" class="nav-cta" id="navLoginBtn">লগইন</a>
+            <a href="student-login.html" class="nav-cta" id="navLoginBtn"><svg class="nav-login-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><span>লগইন</span></a>
             <button class="burger" id="burgerBtn">☰</button>
         </div>
     </header>
@@ -344,17 +373,42 @@
             navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
         }
 
-        // index.html-এর মতোই — লগইন করা থাকলে (localStorage-এ va_user থাকলে)
-        // নেভবারের "লগইন" বাটনটা "প্রোফাইল" দেখাবে
-        (function(){
-            const loginBtn = document.getElementById('navLoginBtn');
-            if (!loginBtn) return;
-            try {
-                const loggedIn = !!localStorage.getItem('va_user');
-                const icon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>';
-                loginBtn.innerHTML = icon + '<span>' + (loggedIn ? 'প্রোফাইল' : 'লগইন') + '</span>';
-            } catch(e) {}
-        })();
+        // নেভবারের "লগইন" বাটনটা প্রিমিয়াম প্রোফাইল বাটনে আপগ্রেড করুন
+        function updateNavProfileButton(){
+          const loginBtn=document.getElementById('navLoginBtn');
+          if(!loginBtn) return;
+          try{
+            const raw=localStorage.getItem('va_user');
+            if(raw){
+              const user=JSON.parse(raw);
+              const fullName=String(user?.name||'').trim();
+              let displayName='প্রোফাইল',initial='',hasName=false;
+              if(fullName){
+                hasName=true;
+                const titleRx=/^(md\.?|mohammad|muhammad|mst\.?|most\.?|sk\.?|sheikh|মোছাঃ|মোঃ|মুহাম্মদ|শেখ)$/i;
+                const rawParts=fullName.split(/\s+/).filter(Boolean);
+                const clean=rawParts.filter(p=>!titleRx.test(p));
+                const primary=clean.length>0?clean[0]:(rawParts[0]||fullName);
+                displayName=primary.length>10?primary.slice(0,9)+'…':primary;
+                initial=primary.charAt(0).toUpperCase();
+              }
+              let hash=0;
+              for(let i=0;i<fullName.length;i++){hash=(hash<<5)-hash+fullName.charCodeAt(i);hash|=0;}
+              const grads=['linear-gradient(135deg,#0ea5e9,#2563eb)','linear-gradient(135deg,#6366f1,#8b5cf6)','linear-gradient(135deg,#10b981,#059669)','linear-gradient(135deg,#f59e0b,#d97706)','linear-gradient(135deg,#ec4899,#be185d)','linear-gradient(135deg,#06b6d4,#0284c7)','linear-gradient(135deg,#8b5cf6,#d946ef)','linear-gradient(135deg,#f97316,#ea580c)','linear-gradient(135deg,#14b8a6,#0f766e)','linear-gradient(135deg,#ef4444,#b91c1c)'];
+              const grad=grads[Math.abs(hash)%grads.length];
+              loginBtn.classList.add('nav-cta--logged-in');
+              loginBtn.title=fullName?fullName+' (প্রোফাইল)':'আমার প্রোফাইল';
+              const avatarContent=hasName&&initial?`<span class="nav-profile-initial">${initial}</span>`:`<svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>`;
+              loginBtn.innerHTML=`<div class="nav-profile-avatar" style="background:${grad}">${avatarContent}<span class="nav-profile-badge" aria-hidden="true"></span></div><span class="nav-profile-name">${displayName}</span><svg class="nav-profile-chevron" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 4.5L6 8l3.5-3.5"/></svg>`;
+            }else{
+              loginBtn.classList.remove('nav-cta--logged-in');
+              loginBtn.title='লগইন করুন';
+              loginBtn.innerHTML=`<svg class="nav-login-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><span>লগইন</span>`;
+            }
+          }catch(e){}
+        }
+        updateNavProfileButton();
+        window.addEventListener('storage',updateNavProfileButton);
 
         // ============================================================
         // একটাই "VISION DATA" consolidated Apps Script — Student, Shop,
