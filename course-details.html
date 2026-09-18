@@ -927,24 +927,46 @@
             .detail-media-wrap {
                 position: static;
             }
+            .detail-actions {
+                flex-direction: column;
+                gap: 12px;
+            }
             .detail-actions .btn {
-                flex: 1 1 180px;
-                padding: 14px 20px;
+                flex: none;
+                width: 100%;
+                min-height: 52px;
+                height: 52px;
+                padding: 0 24px !important;
+                border-radius: 999px;
+                justify-content: center;
             }
         }
         
         @media(max-width: 480px) {
+            .container {
+                padding: 0 10px;
+            }
+            .course-detail-section {
+                padding: 16px 0 32px;
+            }
             .course-detail-grid {
-                padding: 16px;
+                padding: 16px 14px;
                 border-radius: 18px;
+                gap: 20px;
             }
             .detail-actions {
                 flex-direction: column;
                 gap: 10px;
             }
             .detail-actions .btn {
+                flex: none;
                 width: 100%;
+                min-height: 50px;
+                height: 50px;
+                padding: 0 20px !important;
+                border-radius: 999px;
                 justify-content: center;
+                font-size: 15.5px;
             }
             .trust-perks-bar {
                 grid-template-columns: 1fr 1fr 1fr;
