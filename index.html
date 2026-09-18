@@ -56,8 +56,8 @@
 :root{
   --ink:#1E2A47;
   --ink-soft:#4A5772;
-  --paper:#FAF7F0;
-  --paper-line:#E7DFCB;
+  --paper:#F8FAFC;
+  --paper-line:#E2E8F0;
   --card:#FFFFFF;
   --accent:#E8A33D;
   --accent-dark:#C97F1F;
@@ -244,8 +244,9 @@ button{ font-family:inherit; cursor:pointer; }
 /* ---------- Navbar ---------- */
 header.nav{
   position:sticky; top:0; z-index:50;
-  background:rgba(250,247,240,0.92);
-  backdrop-filter:blur(8px);
+  background:rgba(255,255,255,0.88);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
   border-bottom:1px solid var(--paper-line);
 }
 .nav-inner{
@@ -321,11 +322,12 @@ header.nav{
 @media(max-width:860px){
   .nav-links{
     position:absolute; top:100%; left:0; right:0;
-    background:var(--paper);
+    background:#ffffff;
     flex-direction:column;
     padding:18px 28px 26px;
     gap:16px;
     border-bottom:1px solid var(--paper-line);
+    box-shadow:0 12px 30px rgba(15,23,42,.08);
     display:none;
   }
   .nav-links.open{ display:flex; }
@@ -1080,9 +1082,9 @@ section{ padding:30px 0; }
   position:relative;
   overflow:hidden;
 }
-.cat-card-skel .skel-icon{ width:48px; height:48px; border-radius:12px; background:#ece4cf; flex-shrink:0; }
+.cat-card-skel .skel-icon{ width:48px; height:48px; border-radius:12px; background:#EDF2F7; flex-shrink:0; }
 .cat-card-skel .skel-lines{ display:flex; flex-direction:column; gap:7px; flex:1; }
-.cat-card-skel .skel-line{ border-radius:6px; background:#ece4cf; }
+.cat-card-skel .skel-line{ border-radius:6px; background:#EDF2F7; }
 .cat-card-skel .skel-line.big{ width:55%; height:18px; }
 .cat-card-skel .skel-line.small{ width:70%; height:12px; }
 .course-card-skel{
@@ -1094,17 +1096,17 @@ section{ padding:30px 0; }
   flex-direction:column;
   position:relative;
 }
-.course-card-skel .skel-img{ width:100%; aspect-ratio:16/10; background:#ece4cf; }
+.course-card-skel .skel-img{ width:100%; aspect-ratio:16/10; background:#EDF2F7; }
 .course-card-skel .skel-top{ padding:12px 20px 8px; display:flex; justify-content:space-between; border-bottom:1.5px dashed var(--paper-line); }
-.course-card-skel .skel-pill{ height:18px; width:70px; border-radius:999px; background:#ece4cf; }
+.course-card-skel .skel-pill{ height:18px; width:70px; border-radius:999px; background:#EDF2F7; }
 .course-card-skel .skel-body{ padding:12px 20px 16px; flex:1; display:flex; flex-direction:column; gap:9px; }
-.course-card-skel .skel-line{ border-radius:6px; background:#ece4cf; }
+.course-card-skel .skel-line{ border-radius:6px; background:#EDF2F7; }
 .course-card-skel .skel-line.title{ width:70%; height:17px; }
 .course-card-skel .skel-line.desc1{ width:95%; height:11px; }
 .course-card-skel .skel-line.desc2{ width:78%; height:11px; }
 .course-card-skel .skel-foot{ margin-top:auto; padding-top:14px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
-.course-card-skel .skel-price{ width:74px; height:22px; border-radius:6px; background:#ece4cf; }
-.course-card-skel .skel-btn{ width:92px; height:36px; border-radius:8px; background:#ece4cf; }
+.course-card-skel .skel-price{ width:74px; height:22px; border-radius:6px; background:#EDF2F7; }
+.course-card-skel .skel-btn{ width:92px; height:36px; border-radius:8px; background:#EDF2F7; }
 .cat-card-skel::after,
 .course-card-skel::after{
   content:'';
@@ -1403,7 +1405,7 @@ section{ padding:30px 0; }
   padding:12px 14px;
   border-radius:10px;
   border:1.5px solid var(--paper-line);
-  background:var(--paper);
+  background:#ffffff;
   color:var(--ink);
   outline:none;
   transition:border-color .15s ease;
