@@ -5,7 +5,7 @@
 <link rel="preload" as="image" href="assets/logo.png" fetchpriority="high">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>শিক্ষকবৃন্দ | VISION Academics</title>
-<meta name="description" content="VISION Academics-এর অভিজ্ঞ শিক্ষকবৃন্দ — যেকোনো শিক্ষকের ছবিতে ক্লিক করে তাঁর পড়ানো কোর্সসমূহ দেখুন।">
+<meta name="description" content="VISION Academics-এর অভিজ্ঞ ও নিবেদিতপ্রাণ শিক্ষকবৃন্দ — যেকোনো শিক্ষকের প্রোফাইলে ক্লিক করে তাঁর পরিচালিত কোর্সসমূহ দেখুন।">
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
 <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -14,346 +14,536 @@
 
 <style>
 :root{
-  --ink:#1E2A47;
-  --ink-soft:#4A5772;
-  --paper:#F8FAFC;
-  --paper-line:#E2E8F0;
-  --card:#FFFFFF;
-  --accent:#E8A33D;
-  --accent-dark:#C97F1F;
-  --sky:#5B8FBF;
-  --green:#4C8C6B;
-  --margin:#C84B4B;
-  --shadow:0 10px 30px rgba(30,42,71,.08);
-  --radius:14px;
+  --primary: #2563EB;
+  --primary-dark: #1D4ED8;
+  --primary-glow: rgba(37, 99, 235, 0.22);
+  --accent: #F59E0B;
+  --accent-glow: rgba(245, 158, 11, 0.25);
+  --emerald: #10B981;
+  --emerald-glow: rgba(16, 185, 129, 0.2);
+  --ink: #0F172A;
+  --ink-soft: #475569;
+  --ink-muted: #64748B;
+  --paper: #F8FAFC;
+  --paper-card: #FFFFFF;
+  --paper-line: #E2E8F0;
+  --paper-line-soft: rgba(226, 232, 240, 0.8);
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 26px;
+  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 10px 25px -4px rgba(15, 23, 42, 0.07), 0 4px 10px -2px rgba(15, 23, 42, 0.04);
+  --shadow-xl: 0 24px 48px -12px rgba(15, 23, 42, 0.16);
+  --shadow-hover: 0 20px 40px -8px rgba(37, 99, 235, 0.18), 0 8px 16px -4px rgba(15, 23, 42, 0.08);
 }
-*{box-sizing:border-box}
-html{scroll-behavior:smooth;overflow-x:hidden}
-body{
-  margin:0;
-  background:var(--paper);
-  color:var(--ink);
-  font-family:'Anek Bangla',sans-serif;
-  line-height:1.65;
-}
-a{text-decoration:none;color:inherit}
-button{font-family:inherit;cursor:pointer}
-.container{max-width:1180px;margin:0 auto;padding:0 clamp(14px,3vw,40px)}
 
-/* Navbar — same as All_Courses.html */
+*{ box-sizing: border-box; margin: 0; padding: 0; }
+html{ scroll-behavior: smooth; overflow-x: hidden; }
+body{
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Anek Bangla', sans-serif;
+  line-height: 1.65;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+a{ text-decoration: none; color: inherit; }
+button{ font-family: inherit; cursor: pointer; border: none; background: none; }
+.container{ max-width: 1240px; margin: 0 auto; padding: 0 clamp(16px, 3.5vw, 40px); }
+
+/* ===== নেভবার (Glassmorphism & Unified UX) ===== */
 header.nav{
-  position:sticky;top:0;z-index:50;
-  background:rgba(255,255,255,.88);
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-  border-bottom:1px solid var(--paper-line);
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.03);
 }
 .nav-inner{
-  max-width:2300px;margin:0 auto;height:64px;
-  padding:0 clamp(12px,2.6vw,64px);
-  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  max-width: 1300px; margin: 0 auto; height: 68px;
+  padding: 0 clamp(14px, 3vw, 48px);
+  display: flex; align-items: center; justify-content: space-between; gap: 20px;
 }
-.brand{display:flex;align-items:center;gap:10px}
+.brand{ display: flex; align-items: center; gap: 10px; }
 .brand-logo{
-  height:64px;max-height:100%;width:auto;aspect-ratio:3.84/1;
-  object-fit:contain;display:block;
+  height: 46px; max-height: 100%; width: auto; aspect-ratio: 3.84/1;
+  object-fit: contain; display: block;
 }
-.nav-links{display:flex;gap:30px;font-weight:600;font-size:15.5px}
-.nav-links a{position:relative;color:var(--ink-soft);padding:4px 0}
-.nav-links a:hover,.nav-links a.active{color:var(--ink)}
+.nav-links{ display: flex; gap: 32px; font-weight: 600; font-size: 15.5px; }
+.nav-links a{ position: relative; color: var(--ink-soft); padding: 6px 0; transition: color 0.2s ease; }
+.nav-links a:hover, .nav-links a.active{ color: var(--primary); }
 .nav-links a::after{
-  content:"";position:absolute;left:0;right:0;bottom:-3px;height:2px;
-  background:var(--accent);transform:scaleX(0);transform-origin:left;
-  transition:transform .25s ease;
+  content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 2.5px;
+  background: linear-gradient(90deg, var(--primary), #60A5FA);
+  border-radius: 99px; transform: scaleX(0); transform-origin: left;
+  transition: transform .25s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.nav-links a:hover::after,.nav-links a.active::after{transform:scaleX(1)}
+.nav-links a:hover::after, .nav-links a.active::after{ transform: scaleX(1); }
+
 .nav-cta{
-  display:inline-flex;align-items:center;justify-content:center;gap:7px;
-  height:38px;padding:0 18px;border-radius:999px;
-  font-family:inherit;font-weight:600;font-size:14px;
-  color:#fff!important;text-decoration:none;white-space:nowrap;
-  background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);
-  border:1px solid rgba(255,255,255,.14);
-  box-shadow:0 2px 8px rgba(15,23,42,.16),inset 0 1px 0 rgba(255,255,255,.12);
-  transition:all .25s cubic-bezier(.16,1,.3,1);
-  box-sizing:border-box;user-select:none;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  height: 40px; padding: 0 20px; border-radius: 999px;
+  font-family: inherit; font-weight: 700; font-size: 14.5px;
+  color: #fff !important; text-decoration: none; white-space: nowrap;
+  background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  transition: all .25s cubic-bezier(.16, 1, .3, 1);
+  box-sizing: border-box; user-select: none;
 }
 .nav-cta:hover{
-  background:linear-gradient(135deg,#283a63 0%,#131d35 100%);
-  border-color:rgba(255,255,255,.28);
-  box-shadow:0 4px 14px rgba(15,23,42,.24),inset 0 1px 0 rgba(255,255,255,.2);
-  transform:translateY(-1px);
-  color:#fff!important;
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
 }
-.nav-cta:active{transform:translateY(0) scale(.98);box-shadow:0 1px 4px rgba(15,23,42,.2)}
-.nav-cta svg.nav-login-icon{width:16px;height:16px;flex:none}
+.nav-cta:active{ transform: translateY(0) scale(0.98); }
+.nav-cta svg.nav-login-icon{ width: 17px; height: 17px; flex: none; }
 
-/* Logged-in profile badge button */
+/* Logged-in profile badge */
 .nav-cta--logged-in{
-  padding:0 13px 0 6px;gap:8px;
-  background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);
-  border:1px solid rgba(255,255,255,.14);
+  padding: 0 14px 0 6px; gap: 8px;
+  background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
 }
 .nav-cta--logged-in:hover{
-  border-color:rgba(56,189,248,.45);
-  box-shadow:0 4px 16px rgba(15,23,42,.28),0 0 12px rgba(56,189,248,.18);
+  border-color: rgba(56, 189, 248, 0.5);
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.28), 0 0 14px rgba(56, 189, 248, 0.22);
 }
 .nav-profile-avatar{
-  width:26px;height:26px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  position:relative;flex:none;
-  box-shadow:0 1px 3px rgba(0,0,0,.3),0 0 0 1px rgba(255,255,255,.25);
+  width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  position: relative; flex: none;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 0 1.5px rgba(255, 255, 255, 0.3);
 }
-.nav-profile-initial{
-  color:#fff;font-weight:700;font-size:12.5px;
-  line-height:1;text-transform:uppercase;
-}
-.nav-profile-avatar svg{width:13px;height:13px;fill:currentColor;color:#fff}
+.nav-profile-initial{ color: #fff; font-weight: 700; font-size: 13px; line-height: 1; text-transform: uppercase; }
+.nav-profile-avatar svg{ width: 14px; height: 14px; fill: currentColor; color: #fff; }
 .nav-profile-badge{
-  position:absolute;bottom:-1px;right:-1px;
-  width:8px;height:8px;border-radius:50%;
-  background:#10b981;border:1.5px solid #0f172a;
-  box-shadow:0 0 4px rgba(16,185,129,.6);
+  position: absolute; bottom: -1px; right: -1px;
+  width: 9px; height: 9px; border-radius: 50%;
+  background: #10B981; border: 1.5px solid #0F172A;
+  box-shadow: 0 0 5px rgba(16, 185, 129, 0.7);
 }
 .nav-profile-name{
-  font-size:13.5px;font-weight:600;color:#f1f5f9;
-  letter-spacing:.2px;max-width:95px;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-  line-height:1;
+  font-size: 14px; font-weight: 700; color: #F8FAFC;
+  letter-spacing: .2px; max-width: 100px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1;
 }
-.nav-profile-chevron{
-  width:10px;height:10px;flex:none;opacity:.6;
-  transition:opacity .2s ease,transform .2s ease;
-}
-.nav-cta--logged-in:hover .nav-profile-chevron{opacity:1;transform:translateY(1px)}
+.nav-profile-chevron{ width: 11px; height: 11px; flex: none; opacity: .7; transition: opacity .2s ease, transform .2s ease; }
+.nav-cta--logged-in:hover .nav-profile-chevron{ opacity: 1; transform: translateY(1.5px); }
 
-.burger{display:none;background:none;border:0;font-size:26px;color:var(--ink)}
-@media(max-width:860px){
+.burger{ display: none; font-size: 26px; color: var(--ink); }
+
+@media(max-width: 860px){
   .nav-links{
-    position:absolute;top:100%;left:0;right:0;background:#ffffff;
-    flex-direction:column;padding:18px 28px 26px;gap:16px;
-    border-bottom:1px solid var(--paper-line);
-    box-shadow:0 12px 30px rgba(15,23,42,.08);display:none;
+    position: absolute; top: 100%; left: 0; right: 0; background: #ffffff;
+    flex-direction: column; padding: 20px 30px 28px; gap: 16px;
+    border-bottom: 1px solid var(--paper-line);
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.1); display: none;
   }
-  .nav-links.open{display:flex}
-  .burger{display:block}
+  .nav-links.open{ display: flex; }
+  .burger{ display: block; }
 }
-@media(max-width:480px){
-  .nav-inner{gap:8px;padding:0 12px}
-  .brand-logo{height:42px}
-  .nav-cta{height:34px;padding:0 12px;font-size:12.5px;gap:5px}
-  .nav-cta svg.nav-login-icon{width:14px;height:14px}
-  .nav-cta--logged-in{padding:0 10px 0 5px;gap:6px}
-  .nav-profile-avatar{width:22px;height:22px}
-  .nav-profile-initial{font-size:11px}
-  .nav-profile-avatar svg{width:11px;height:11px}
-  .nav-profile-badge{width:7px;height:7px}
-  .nav-profile-name{font-size:12px;max-width:70px}
-  .nav-profile-chevron{width:9px;height:9px}
-  .burger{font-size:22px}
+@media(max-width: 480px){
+  .nav-inner{ gap: 10px; padding: 0 14px; height: 60px; }
+  .brand-logo{ height: 38px; }
+  .nav-cta{ height: 36px; padding: 0 13px; font-size: 13px; gap: 5px; }
+  .nav-cta svg.nav-login-icon{ width: 15px; height: 15px; }
+  .nav-profile-name{ max-width: 75px; font-size: 12.5px; }
 }
 
-/* Page heading */
-.page-head{text-align:center;padding:38px 0 22px}
-.page-head .eyebrow{
-  display:inline-block;font-weight:700;font-size:13.5px;letter-spacing:.04em;
-  color:var(--accent-dark);background:rgba(232,163,61,.14);padding:6px 16px;
-  border-radius:999px;margin-bottom:12px;
+/* ===== হিরো সেকশন / পেজ হেড ===== */
+.hero-section{
+  position: relative;
+  padding: 56px 0 36px;
+  background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(37, 99, 235, 0.08) 0%, rgba(248, 250, 252, 0) 100%);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+  text-align: center;
 }
-.page-head h1{
-  font-family:'Baloo Da 2',sans-serif;
-  font-weight:800;font-size:clamp(28px,4vw,40px);
-  line-height:1.2;margin:0 0 8px;
+.eyebrow{
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 18px; border-radius: 999px;
+  background: rgba(37, 99, 235, 0.08);
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  color: var(--primary); font-size: 13.5px; font-weight: 700;
+  letter-spacing: .02em; margin-bottom: 16px;
 }
-.page-head p{margin:0 auto;color:var(--ink-soft);font-size:15.5px}
+.eyebrow svg{ width: 16px; height: 16px; }
+.hero-title{
+  font-family: 'Baloo Da 2', sans-serif;
+  font-weight: 800; font-size: clamp(30px, 4.5vw, 46px);
+  color: var(--ink); line-height: 1.2; margin-bottom: 14px;
+}
+.hero-title span{
+  background: linear-gradient(135deg, #1E293B 20%, var(--primary) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero-subtitle{
+  font-size: clamp(15px, 1.8vw, 17.5px);
+  color: var(--ink-soft); max-width: 650px; margin: 0 auto 28px;
+  line-height: 1.7;
+}
 
-/* ---------- Teacher cards — same visual language as .teacher-card
-   (index.html) but sized like .course-card (All_Courses.html) i.e.
-   bigger, laid out in a grid instead of a horizontal-scroll strip ---------- */
+/* ট্রাস্ট ফিচার বার */
+.trust-badges{
+  display: flex; justify-content: center; flex-wrap: wrap; gap: 16px;
+  margin-bottom: 24px;
+}
+.trust-chip{
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #FFFFFF; padding: 7px 16px; border-radius: 999px;
+  border: 1px solid var(--paper-line);
+  font-size: 13.5px; font-weight: 600; color: var(--ink-soft);
+  box-shadow: var(--shadow-sm);
+}
+.trust-chip svg{ width: 16px; height: 16px; color: var(--primary); flex: none; }
+
+/* ফিল্টার ও সার্চ বার */
+.search-control-bar{
+  max-width: 580px; margin: 0 auto;
+  position: relative;
+  display: flex; align-items: center;
+}
+.search-input-wrap{
+  position: relative; width: 100%;
+}
+.search-input-wrap svg{
+  position: absolute; left: 18px; top: 50%; transform: translateY(-50%);
+  width: 20px; height: 20px; color: var(--ink-muted); pointer-events: none;
+}
+.search-input{
+  width: 100%; height: 50px;
+  padding: 0 20px 0 50px;
+  border-radius: 999px;
+  border: 1.5px solid var(--paper-line);
+  background: #FFFFFF;
+  font-family: inherit; font-size: 15px; color: var(--ink);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.25s ease;
+}
+.search-input:focus{
+  outline: none; border-color: var(--primary);
+  box-shadow: 0 0 0 4px var(--primary-glow);
+}
+
+/* কাউন্ট ইনফো */
+.filter-meta-bar{
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 24px 0 16px;
+  color: var(--ink-soft); font-size: 15px; font-weight: 600;
+}
+.teacher-count-badge{
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(37, 99, 235, 0.08); color: var(--primary);
+  padding: 4px 12px; border-radius: 999px; font-size: 13.5px; font-weight: 700;
+}
+
+/* ===== শিক্ষক কার্ড গ্রিড ===== */
 .teacher-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(270px,1fr));
-  gap:24px;
-  padding-bottom:60px;
-  justify-items:center;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 28px;
+  padding-bottom: 70px;
 }
+
 .teacher-card{
-  position:relative;
-  width:80%;
-  border-radius:var(--radius);
-  overflow:hidden;
-  border:1px solid var(--paper-line);
-  background:var(--card);
-  box-shadow:var(--shadow),0 0 0 0 rgba(79,143,255,0);
-  cursor:pointer;
-  transition:transform .38s cubic-bezier(.22,1,.36,1),box-shadow .38s cubic-bezier(.22,1,.36,1),border-color .38s ease;
+  position: relative;
+  background: #FFFFFF;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--paper-line);
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  transition: all .35s cubic-bezier(.22, 1, .36, 1);
 }
 .teacher-card:hover{
-  transform:translateY(-9px) scale(1.015);
-  border-color:#C9B3FF;
-  box-shadow:0 26px 46px rgba(30,42,71,.20),0 0 34px 6px rgba(79,143,255,.45);
+  transform: translateY(-8px);
+  border-color: rgba(37, 99, 235, 0.35);
+  box-shadow: var(--shadow-hover);
+}
+
+.teacher-photo-wrap{
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1.08;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
 }
 .teacher-photo{
-  width:100%;
-  aspect-ratio:0.85;
-  object-fit:cover;
-  object-position:top center;
-  display:block;
-  background:#eee;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+  transition: transform .5s cubic-bezier(.22, 1, .36, 1);
 }
-.teacher-info{
-  position:absolute;
-  left:0;right:0;bottom:0;
-  padding:16px 20px 18px;
-  background:linear-gradient(to top, rgba(12,14,26,.90) 0%, rgba(12,14,26,.60) 48%, rgba(12,14,26,0) 100%);
-  color:#fff;
+.teacher-card:hover .teacher-photo{
+  transform: scale(1.06);
 }
-.teacher-info .name{
-  font-family:'Baloo Da 2', sans-serif;
-  font-weight:700;
-  font-size:20px;
-  padding-right:26px;
+
+/* সাবজেক্ট ব্যাজ অন ফটো */
+.subject-pill{
+  position: absolute; top: 14px; right: 14px;
+  padding: 5px 14px; border-radius: 999px;
+  background: rgba(15, 23, 42, 0.75);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #F8FAFC; font-size: 12.5px; font-weight: 700;
+  display: inline-flex; align-items: center; gap: 5px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  z-index: 2;
 }
-.teacher-info .designation{
-  font-size:13.5px;
-  font-weight:600;
-  opacity:.9;
-  margin-top:2px;
+.subject-pill svg{ width: 13px; height: 13px; color: #F59E0B; }
+
+/* বটম ইনফো বক্স */
+.teacher-card-body{
+  padding: 20px 22px 22px;
+  display: flex; flex-direction: column;
+  flex: 1; justify-content: space-between;
+  background: #FFFFFF;
+  position: relative;
 }
-.teacher-info .subject{
-  color:var(--accent);
-  font-size:13.5px;
-  font-weight:700;
-  margin-top:4px;
+.teacher-name{
+  font-family: 'Baloo Da 2', sans-serif;
+  font-weight: 700; font-size: 20.5px;
+  color: var(--ink); line-height: 1.3;
+  margin-bottom: 4px;
 }
-.teacher-arrow{
-  position:absolute;
-  right:18px;
-  bottom:20px;
-  width:19px;
-  height:19px;
-  color:rgba(255,255,255,.9);
+.teacher-designation{
+  font-size: 14px; font-weight: 600;
+  color: var(--ink-soft); line-height: 1.4;
+  margin-bottom: 16px;
 }
+.teacher-action-row{
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 14px;
+  border-top: 1px solid var(--paper-line-soft);
+  margin-top: auto;
+}
+.teacher-cta-text{
+  font-size: 14px; font-weight: 700;
+  color: var(--primary); display: inline-flex; align-items: center; gap: 6px;
+  transition: gap 0.2s ease;
+}
+.teacher-card:hover .teacher-cta-text{
+  gap: 9px;
+}
+.teacher-action-icon{
+  width: 32px; height: 32px; border-radius: 50%;
+  background: rgba(37, 99, 235, 0.08); color: var(--primary);
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.25s ease;
+}
+.teacher-card:hover .teacher-action-icon{
+  background: var(--primary); color: #ffffff;
+  transform: translateX(2px);
+}
+.teacher-action-icon svg{ width: 16px; height: 16px; }
+
+/* লোডিং স্টেট ও এম্পটি স্টেট */
 .teacher-data-state{
-  grid-column:1/-1;
-  text-align:center;
-  padding:45px 20px;
-  color:var(--ink-soft);
-  background:#fff;
-  border:1px solid var(--paper-line);
-  border-radius:var(--radius);
-  box-shadow:var(--shadow);
+  grid-column: 1/-1;
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--ink-soft);
+  background: #FFFFFF;
+  border: 1.5px dashed var(--paper-line);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
 }
 .spinner{
-  width:26px;height:26px;border-radius:50%;
-  border:3px solid var(--paper-line);border-top-color:var(--accent);
-  animation:spin .8s linear infinite;margin:0 auto 10px;
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 3.5px solid rgba(37, 99, 235, 0.15); border-top-color: var(--primary);
+  animation: spin .8s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite; margin: 0 auto 14px;
 }
-@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes spin{ to{ transform: rotate(360deg); } }
 
-@media(max-width:760px){
-  .page-head{padding:28px 0 18px}
-  .teacher-grid{grid-template-columns:1fr 1fr;gap:14px;padding-bottom:45px}
-  .teacher-card:hover{transform:none}
-  .teacher-info{padding:12px 14px 14px}
-  .teacher-info .name{font-size:16px;padding-right:22px}
-  .teacher-info .designation{font-size:11.5px}
-  .teacher-info .subject{font-size:11.5px}
-  .teacher-arrow{width:15px;height:15px;right:13px;bottom:15px}
-}
-@media(max-width:420px){
-  .teacher-grid{grid-template-columns:1fr}
-}
-
-/* ---------- Teacher modal (shows the courses this teacher takes) ---------- */
+/* ===== শিক্ষক বিস্তারিত ও কোর্স মডাল ===== */
 .teacher-modal-overlay{
-  position:fixed;inset:0;z-index:200;
-  background:rgba(15,18,32,.58);
-  display:none;
-  align-items:flex-start;justify-content:center;
-  padding:5vh 16px;
-  overflow-y:auto;
-  -webkit-overflow-scrolling:touch;
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(15, 23, 42, 0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: none;
+  align-items: center; justify-content: center;
+  padding: 20px;
+  overflow-y: auto;
 }
-.teacher-modal-overlay.open{display:flex}
+.teacher-modal-overlay.open{ display: flex; }
 .teacher-modal{
-  background:var(--card);
-  border-radius:20px;
-  width:100%;max-width:620px;
-  box-shadow:0 30px 70px rgba(15,18,32,.35);
-  overflow:hidden;
-  animation:tmPop .28s cubic-bezier(.22,1,.36,1);
+  background: #FFFFFF;
+  border-radius: var(--radius-xl);
+  width: 100%; max-width: 640px;
+  box-shadow: 0 30px 80px rgba(15, 23, 42, 0.4);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  animation: modalEnter .3s cubic-bezier(.22, 1, .36, 1);
 }
-@keyframes tmPop{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes modalEnter{
+  from{ opacity: 0; transform: translateY(20px) scale(0.97); }
+  to{ opacity: 1; transform: translateY(0) scale(1); }
+}
+
 .teacher-modal-close{
-  position:absolute;top:14px;right:14px;
-  width:34px;height:34px;border-radius:50%;
-  background:rgba(255,255,255,.9);
-  border:1px solid var(--paper-line);
-  font-size:17px;line-height:1;color:var(--ink);
-  display:flex;align-items:center;justify-content:center;
-  z-index:2;
+  position: absolute; top: 16px; right: 16px;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #FFFFFF; font-size: 18px; line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 10; transition: all 0.2s ease;
 }
-.teacher-modal-close:hover{background:#fff}
-.tm-head{
-  position:relative;
-  display:flex;align-items:center;gap:16px;
-  padding:26px 26px 20px;
-  background:linear-gradient(135deg,#263a63,var(--ink) 65%);
-  color:#fff;
+.teacher-modal-close:hover{
+  background: #FFFFFF; color: var(--ink); transform: scale(1.08);
 }
-.tm-head img{
-  width:76px;height:76px;border-radius:16px;object-fit:cover;
-  flex:none;background:#eee;border:2px solid rgba(255,255,255,.35);
+
+.tm-header{
+  position: relative;
+  padding: 32px 30px 26px;
+  background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+  color: #FFFFFF;
+  display: flex; align-items: center; gap: 20px;
 }
-.tm-head-info h2{
-  font-family:'Baloo Da 2',sans-serif;
-  font-size:21px;margin:0 0 3px;line-height:1.3;
+.tm-avatar-box{
+  position: relative; flex: none;
 }
-.tm-head-info .designation{font-size:13px;opacity:.85;font-weight:600}
-.tm-head-info .subject{font-size:13.5px;color:var(--accent);font-weight:700;margin-top:3px}
-.tm-body{padding:20px 26px 28px;max-height:60vh;overflow-y:auto}
+.tm-avatar{
+  width: 86px; height: 86px; border-radius: 20px;
+  object-fit: cover; object-position: top center;
+  background: #334155;
+  border: 2.5px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+.tm-header-info h2{
+  font-family: 'Baloo Da 2', sans-serif;
+  font-size: 23px; font-weight: 800; line-height: 1.25; margin-bottom: 4px;
+}
+.tm-header-info .designation{
+  font-size: 14.5px; opacity: 0.85; font-weight: 600;
+}
+.tm-header-info .subject{
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(245, 158, 11, 0.18);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  color: #FBBF24; font-size: 13px; font-weight: 700;
+  padding: 3px 12px; border-radius: 999px; margin-top: 8px;
+}
+
+.tm-body{
+  padding: 24px 30px 32px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
 .tm-courses-label{
-  font-family:'Baloo Da 2',sans-serif;
-  font-size:14px;font-weight:700;color:var(--ink-soft);
-  text-transform:uppercase;letter-spacing:.04em;
-  margin-bottom:14px;
+  display: flex; align-items: center; justify-content: space-between;
+  font-family: 'Baloo Da 2', sans-serif;
+  font-size: 16px; font-weight: 800; color: var(--ink);
+  margin-bottom: 16px;
 }
-.tm-course-list{display:flex;flex-direction:column;gap:10px}
+.tm-courses-count{
+  font-size: 13px; font-weight: 700; color: var(--primary);
+  background: rgba(37, 99, 235, 0.08); padding: 2px 10px; border-radius: 999px;
+}
+.tm-course-list{ display: flex; flex-direction: column; gap: 12px; }
 .tm-course-row{
-  display:flex;align-items:center;gap:14px;
-  padding:10px;border:1px solid var(--paper-line);border-radius:14px;
-  background:var(--paper);
-  transition:border-color .2s ease,transform .2s ease;
+  display: flex; align-items: center; gap: 16px;
+  padding: 12px 14px; border: 1px solid var(--paper-line);
+  border-radius: var(--radius-md); background: #FFFFFF;
+  transition: all .25s ease; text-decoration: none;
 }
-.tm-course-row:hover{border-color:var(--accent);transform:translateY(-2px)}
+.tm-course-row:hover{
+  border-color: var(--primary);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.09);
+  background: #F8FAFC;
+}
 .tm-course-thumb{
-  width:64px;height:64px;border-radius:10px;object-fit:cover;
-  flex:none;background:#eee;
+  width: 72px; height: 50px; border-radius: 10px;
+  object-fit: cover; flex: none; background: #E2E8F0;
 }
-.tm-course-meta{flex:1;min-width:0}
-.tm-course-name{font-weight:700;font-size:15px;line-height:1.3}
-.tm-course-cat{color:var(--ink-soft);font-size:12.5px;margin-top:2px}
+.tm-course-meta{ flex: 1; min-width: 0; }
+.tm-course-name{
+  font-weight: 700; font-size: 15.5px; line-height: 1.35;
+  color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.tm-course-cat{
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 13px; color: var(--ink-soft); margin-top: 3px;
+}
 .tm-course-price{
-  font-family:'Baloo Da 2',sans-serif;font-weight:800;font-size:15px;
-  color:#5B4FE9;white-space:nowrap;
+  font-family: 'Baloo Da 2', sans-serif; font-weight: 800;
+  font-size: 17px; color: var(--emerald); white-space: nowrap;
+}
+.tm-course-arrow{
+  width: 18px; height: 18px; color: var(--ink-muted); flex: none;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+.tm-course-row:hover .tm-course-arrow{
+  transform: translateX(3px); color: var(--primary);
 }
 .tm-empty{
-  text-align:center;color:var(--ink-soft);padding:30px 10px;
-  font-size:14.5px;
+  text-align: center; color: var(--ink-soft); padding: 40px 16px;
+  font-size: 15px; background: #F8FAFC; border-radius: var(--radius-md);
+  border: 1px dashed var(--paper-line);
 }
 
-/* ---------- ল্যাপটপ ও তার বড় স্ক্রিন: uniformly ১০% বড় ---------- */
-@media(min-width:901px){
-  body{ zoom:1.10; }
+/* ===== ডার্ক স্লেট ফুটার ===== */
+footer{
+  background: #0F172A; color: #94A3B8; padding: 56px 0 28px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08); margin-top: auto;
+}
+.footer-grid{
+  display: grid; grid-template-columns: 1.4fr 1fr 1.2fr; gap: 40px;
+  padding-bottom: 36px; border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.footer-brand{ display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.footer-logo{
+  height: 48px; width: auto; object-fit: contain; filter: brightness(0) invert(1); opacity: 0.95;
+}
+.footer-desc{ font-size: 15px; line-height: 1.7; color: #CBD5E1; max-width: 38ch; }
+.footer-heading{
+  font-family: 'Baloo Da 2', sans-serif; color: #ffffff; font-size: 17px;
+  font-weight: 700; margin-bottom: 16px; letter-spacing: 0.02em;
+}
+.footer-links{ list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+.footer-links a{ color: #CBD5E1; text-decoration: none; font-size: 14.5px; transition: all 0.2s ease; display: inline-block; }
+.footer-links a:hover{ color: #38BDF8; transform: translateX(4px); }
+.footer-contact-item{ color: #CBD5E1; font-size: 14.5px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+.footer-bottom{ padding-top: 24px; text-align: center; }
+.copyright{ font-size: 13.5px; color: #64748B; margin: 0; }
+
+@media(max-width: 768px){
+  .hero-section{ padding: 36px 0 24px; }
+  .trust-badges{ gap: 8px; }
+  .trust-chip{ font-size: 12px; padding: 5px 12px; }
+  .teacher-grid{ grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; }
+  .footer-grid{ grid-template-columns: 1fr; gap: 28px; }
+  .tm-header{ padding: 24px 20px; flex-direction: column; text-align: center; }
+  .tm-body{ padding: 20px 18px 24px; }
+}
+
+@media(min-width: 1024px){
+  body{ zoom: 1.05; }
 }
 </style>
 </head>
 
 <body>
+
+<!-- নেভবার -->
 <header class="nav">
   <div class="nav-inner">
-    <a href="index.html" class="brand" aria-label="VISION Academics">
+    <a href="index.html" class="brand" aria-label="VISION Academics Home">
       <img src="assets/logo.png" alt="VISION Academics" class="brand-logo" fetchpriority="high" decoding="async">
     </a>
     <nav class="nav-links" id="navLinks">
@@ -363,43 +553,128 @@ header.nav{
       <a href="shop.html">শপ</a>
       <a href="index.html#why">কেন আমরা</a>
     </nav>
-    <a href="student-login.html" class="nav-cta" id="navLoginBtn"><svg class="nav-login-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><span>লগইন</span></a>
+    <a href="student-login.html" class="nav-cta" id="navLoginBtn">
+      <svg class="nav-login-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>
+      </svg>
+      <span>লগইন</span>
+    </a>
     <button class="burger" id="burgerBtn" aria-label="মেনু">☰</button>
   </div>
 </header>
 
 <main>
+  <!-- হিরো সেকশন -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="eyebrow">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+        </svg>
+        আমাদের নিবেদিতপ্রাণ শিক্ষকমণ্ডলী
+      </div>
+      <h1 class="hero-title">অভিজ্ঞ ও দূরদর্শী <span>শিক্ষকবৃন্দ</span></h1>
+      <p class="hero-subtitle">বিশ্ববিদ্যালয় ও কলেজ পর্যায়ের স্বনামধন্য শিক্ষকদের নিবিড় দিকনির্দেশনা ও তত্ত্বাবধানে প্রতিটি বিষয়ে সেরা প্রস্তুতির নিশ্চয়তা।</p>
+
+      <div class="trust-badges">
+        <div class="trust-chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+          শীর্ষ বিশ্ববিদ্যালয়ের ফ্যাকাল্টি
+        </div>
+        <div class="trust-chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+          কনসেপ্ট-ক্লিয়ার পাঠদান পদ্ধতি
+        </div>
+        <div class="trust-chip">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          ২৪/৭ প্রশ্ন সমাধান ও মেন্টরশিপ
+        </div>
+      </div>
+
+      <div class="search-control-bar">
+        <div class="search-input-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+          </svg>
+          <input type="text" id="teacherSearchInput" class="search-input" placeholder="শিক্ষকের নাম অথবা বিষয় দিয়ে খুঁজুন..." autocomplete="off">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- শিক্ষক গ্রিড সেকশন -->
   <section>
     <div class="container">
-      <div class="page-head">
-        <h1>শিক্ষকবৃন্দ</h1>
+      <div class="filter-meta-bar">
+        <div>উপলব্ধ মেন্টরদের তালিকা</div>
+        <div class="teacher-count-badge" id="teacherCountBadge">লোড হচ্ছে...</div>
       </div>
 
       <div class="teacher-grid" id="teacherGrid">
-        <div class="teacher-data-state"><div class="spinner"></div>শিক্ষকবৃন্দের তথ্য লোড হচ্ছে...</div>
+        <div class="teacher-data-state">
+          <div class="spinner"></div>
+          শিক্ষকবৃন্দের তথ্য লোড হচ্ছে...
+        </div>
       </div>
     </div>
   </section>
 </main>
 
-<!-- Teacher → courses modal -->
+<!-- টিচার → কোর্স মডাল -->
 <div class="teacher-modal-overlay" id="teacherModalOverlay">
   <div class="teacher-modal" role="dialog" aria-modal="true" aria-labelledby="tmName">
     <button class="teacher-modal-close" id="teacherModalClose" aria-label="বন্ধ করুন">✕</button>
-    <div class="tm-head">
-      <img id="tmPhoto" src="" alt="">
-      <div class="tm-head-info">
+    <div class="tm-header">
+      <div class="tm-avatar-box">
+        <img id="tmPhoto" class="tm-avatar" src="" alt="">
+      </div>
+      <div class="tm-header-info">
         <h2 id="tmName"></h2>
         <div class="designation" id="tmDesignation"></div>
         <div class="subject" id="tmSubject"></div>
       </div>
     </div>
     <div class="tm-body">
-      <div class="tm-courses-label">এই শিক্ষকের কোর্সসমূহ</div>
+      <div class="tm-courses-label">
+        <span>এই শিক্ষকের পরিচালিত কোর্সসমূহ</span>
+        <span class="tm-courses-count" id="tmCourseCount">০টি কোর্স</span>
+      </div>
       <div class="tm-course-list" id="tmCourseList"></div>
     </div>
   </div>
 </div>
+
+<!-- ফুটার -->
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <img src="assets/logo.png" alt="VISION Academics" class="footer-logo">
+        </div>
+        <p class="footer-desc">ব্যতিক্রমী শিক্ষা পদ্ধতি, আধুনিক প্রযুক্তি ও অভিজ্ঞ শিক্ষকদের নিয়ে বাংলাদেশের বিশ্বস্ত এডুকেশন প্ল্যাটফর্ম।</p>
+      </div>
+      <div>
+        <h4 class="footer-heading">কোর্স ক্যাটাগরি</h4>
+        <ul class="footer-links">
+          <li><a href="All_Courses.html?level=BBA">BBA প্রফেশনাল</a></li>
+          <li><a href="All_Courses.html?level=HSC">HSC একাডেমিক</a></li>
+          <li><a href="All_Courses.html?level=MBA">MBA প্রোগ্রাম</a></li>
+          <li><a href="per-subject.html">বিষয়ভিত্তিক কোর্স</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="footer-heading">যোগাযোগ ও সাপোর্ট</h4>
+        <p class="footer-contact-item">📞 01764-859503</p>
+        <p class="footer-contact-item">✉️ bbavission@gmail.com</p>
+        <p class="footer-contact-item">📍 ঢাকা, বাংলাদেশ</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="copyright">© ২০২৬ VISION Academics — সর্বস্বত্ব সংরক্ষিত।</p>
+    </div>
+  </div>
+</footer>
 
 <script>
 const VISION_API="https://late-forest-4748.dreamsicreation.workers.dev";
@@ -462,8 +737,6 @@ async function fetchTeachers(){
   }).filter(Boolean);
 }
 
-// একই ভাবে (course-details.html-এর মতো) course_name টেবিলের "teachers"
-// কলাম কমা দিয়ে ভাঙা হচ্ছে, যাতে প্রতিটি কোর্সের সাথে কারা কারা যুক্ত তা জানা যায়।
 async function fetchCourses(){
   const r=await fetch(VISION_API,{
     method:'POST',
@@ -499,45 +772,94 @@ let allCourses=[];
 function teacherCardHtml(t){
   return `
   <article class="teacher-card" data-teacher="${esc(t.name)}" tabindex="0" role="button" aria-label="${esc(t.name)}-এর কোর্স দেখুন">
-    ${t.photo?`<img class="teacher-photo" src="${esc(t.photo)}" alt="${esc(t.name)}" loading="lazy">`
-      :`<div class="teacher-photo" style="display:flex;align-items:center;justify-content:center;font-family:'Baloo Da 2',sans-serif;font-weight:700;font-size:34px;color:#7B4FE0;background:#F1ECFF">${initials(t.name)}</div>`}
-    <div class="teacher-info">
-      <div class="name">${esc(t.name)}</div>
-      ${t.designation?`<div class="designation">${esc(t.designation)}</div>`:''}
-      ${t.subject?`<div class="subject">${esc(t.subject)}</div>`:''}
+    <div class="teacher-photo-wrap">
+      ${t.photo ? `<img class="teacher-photo" src="${esc(t.photo)}" alt="${esc(t.name)}" loading="lazy">`
+        : `<div class="teacher-photo" style="display:flex;align-items:center;justify-content:center;font-family:'Baloo Da 2',sans-serif;font-weight:700;font-size:48px;color:#93C5FD;background:linear-gradient(135deg,#1E293B,#0F172A)">${initials(t.name)}</div>`}
+      ${t.subject ? `
+      <div class="subject-pill">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+        </svg>
+        ${esc(t.subject)}
+      </div>` : ''}
     </div>
-    <svg class="teacher-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+    <div class="teacher-card-body">
+      <div>
+        <h3 class="teacher-name">${esc(t.name)}</h3>
+        <p class="teacher-designation">${esc(t.designation || 'ফ্যাকাল্টি মেম্বার')}</p>
+      </div>
+      <div class="teacher-action-row">
+        <span class="teacher-cta-text">কোর্সসমূহ দেখুন</span>
+        <span class="teacher-action-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>
+          </svg>
+        </span>
+      </div>
+    </div>
   </article>`;
 }
 
-function renderTeachers(){
+function renderTeachers(list = allTeachers){
   const grid=document.getElementById('teacherGrid');
-  if(!allTeachers.length){
-    grid.innerHTML='<div class="teacher-data-state">এখনো কোনো শিক্ষক তথ্য পাওয়া যায়নি।</div>';
+  const badge=document.getElementById('teacherCountBadge');
+  
+  if(badge){
+    badge.textContent = `মোট ${toBn(list.length)} জন শিক্ষক`;
+  }
+
+  if(!list.length){
+    grid.innerHTML=`
+      <div class="teacher-data-state">
+        <svg style="width:48px;height:48px;color:#94A3B8;margin-bottom:12px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+        </svg>
+        <p style="font-size:17px;font-weight:700;color:var(--ink);margin-bottom:4px;">কোনো শিক্ষক পাওয়া যায়নি</p>
+        <p style="font-size:14px;color:var(--ink-muted);">অন্য কোনো নাম বা বিষয় দিয়ে সার্চ করার চেষ্টা করুন।</p>
+      </div>`;
     return;
   }
-  grid.innerHTML=allTeachers.map(teacherCardHtml).join('');
+  grid.innerHTML=list.map(teacherCardHtml).join('');
 }
 
 async function loadAll(){
   const grid=document.getElementById('teacherGrid');
   try{
     [allTeachers,allCourses]=await Promise.all([fetchTeachers(),fetchCourses().catch(()=>[])]);
-    renderTeachers();
+    renderTeachers(allTeachers);
   }catch(e){
     console.error(e);
-    grid.innerHTML='<div class="teacher-data-state">শিক্ষকদের তথ্য লোড করা যায়নি। ইন্টারনেট কানেকশন চেক করুন।</div>';
+    grid.innerHTML='<div class="teacher-data-state">শিক্ষকদের তথ্য লোড করা যায়নি। ইন্টারনেট কানেকশন চেক করে রিলোড দিন।</div>';
   }
 }
 
-// ---------- Modal: দেখানো টিচারের নামের সাথে course.teacherNames মিলিয়ে
-// তার কোর্সগুলো বের করা হচ্ছে (normalize করে, যেমন course-details.html-এ) ----------
+// সার্চ ফিল্টার লজিক
+const searchInput = document.getElementById('teacherSearchInput');
+if(searchInput){
+  searchInput.addEventListener('input', e=>{
+    const q = normalize(e.target.value);
+    if(!q){
+      renderTeachers(allTeachers);
+      return;
+    }
+    const filtered = allTeachers.filter(t => {
+      const name = normalize(t.name);
+      const subj = normalize(t.subject);
+      const des = normalize(t.designation);
+      return name.includes(q) || subj.includes(q) || des.includes(q);
+    });
+    renderTeachers(filtered);
+  });
+}
+
+// টিচার মডাল
 const overlay=document.getElementById('teacherModalOverlay');
 const tmPhoto=document.getElementById('tmPhoto');
 const tmName=document.getElementById('tmName');
 const tmDesignation=document.getElementById('tmDesignation');
 const tmSubject=document.getElementById('tmSubject');
 const tmCourseList=document.getElementById('tmCourseList');
+const tmCourseCount=document.getElementById('tmCourseCount');
 
 function courseRowHtml(c){
   const priceHtml=c.price?`<span class="tm-course-price">${esc(c.price)}</span>`:'';
@@ -549,6 +871,9 @@ function courseRowHtml(c){
       <div class="tm-course-cat">${esc(c.category)}${c.tag?` • ${esc(c.tag)}`:''}</div>
     </div>
     ${priceHtml}
+    <svg class="tm-course-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m9 18 6-6-6-6"/>
+    </svg>
   </a>`;
 }
 
@@ -556,21 +881,33 @@ function openTeacherModal(name){
   const teacher=allTeachers.find(t=>t.name===name);
   if(!teacher)return;
 
-  tmPhoto.src=teacher.photo||'';
+  if(teacher.photo){
+    tmPhoto.src=teacher.photo;
+    tmPhoto.style.display='';
+  } else {
+    tmPhoto.style.display='none';
+  }
   tmPhoto.alt=teacher.name;
-  tmPhoto.style.display=teacher.photo?'':'none';
   tmName.textContent=teacher.name;
-  tmDesignation.textContent=teacher.designation||'';
-  tmDesignation.style.display=teacher.designation?'':'none';
-  tmSubject.textContent=teacher.subject||'';
-  tmSubject.style.display=teacher.subject?'':'none';
+  tmDesignation.textContent=teacher.designation||'ফ্যাকাল্টি মেম্বার';
+  
+  if(teacher.subject){
+    tmSubject.innerHTML=`<svg style="width:13px;height:13px;" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>${esc(teacher.subject)}`;
+    tmSubject.style.display='';
+  } else {
+    tmSubject.style.display='none';
+  }
 
   const key=normalize(teacher.name);
   const matched=allCourses.filter(c=>(c.teacherNames||[]).some(n=>normalize(n)===key));
 
+  if(tmCourseCount){
+    tmCourseCount.textContent = `${toBn(matched.length)}টি কোর্স`;
+  }
+
   tmCourseList.innerHTML=matched.length
     ? matched.map(courseRowHtml).join('')
-    : '<div class="tm-empty">এই শিক্ষকের জন্য এখনো কোনো কোর্স যোগ করা হয়নি।</div>';
+    : '<div class="tm-empty">এই শিক্ষকের জন্য এখনো কোনো কোর্স তালিকাভুক্ত করা হয়নি।</div>';
 
   overlay.classList.add('open');
   document.body.style.overflow='hidden';
@@ -597,6 +934,7 @@ document.getElementById('teacherModalClose').addEventListener('click',closeTeach
 overlay.addEventListener('click',e=>{ if(e.target===overlay) closeTeacherModal(); });
 document.addEventListener('keydown',e=>{ if(e.key==='Escape' && overlay.classList.contains('open')) closeTeacherModal(); });
 
+// মোবাইল নেভবার
 document.getElementById('burgerBtn').addEventListener('click',()=>{
   document.getElementById('navLinks').classList.toggle('open');
 });
@@ -604,6 +942,7 @@ document.querySelectorAll('#navLinks a').forEach(a=>{
   a.addEventListener('click',()=>document.getElementById('navLinks').classList.remove('open'));
 });
 
+// প্রোফাইল বাটন স্ট্যাটাস
 function updateNavProfileButton(){
   const loginBtn=document.getElementById('navLoginBtn');
   if(!loginBtn) return;
@@ -635,16 +974,16 @@ function updateNavProfileButton(){
         hash|=0;
       }
       const grads=[
-        'linear-gradient(135deg, #0ea5e9, #2563eb)', // Sapphire Blue
-        'linear-gradient(135deg, #6366f1, #8b5cf6)', // Royal Indigo
-        'linear-gradient(135deg, #10b981, #059669)', // Emerald Green
-        'linear-gradient(135deg, #f59e0b, #d97706)', // Warm Amber
-        'linear-gradient(135deg, #ec4899, #be185d)', // Rose Pink
-        'linear-gradient(135deg, #06b6d4, #0284c7)', // Ocean Cyan
-        'linear-gradient(135deg, #8b5cf6, #d946ef)', // Violet Fuchsia
-        'linear-gradient(135deg, #f97316, #ea580c)', // Sunset Coral
-        'linear-gradient(135deg, #14b8a6, #0f766e)', // Teal
-        'linear-gradient(135deg, #ef4444, #b91c1c)'  // Crimson Ruby
+        'linear-gradient(135deg, #0ea5e9, #2563eb)',
+        'linear-gradient(135deg, #6366f1, #8b5cf6)',
+        'linear-gradient(135deg, #10b981, #059669)',
+        'linear-gradient(135deg, #f59e0b, #d97706)',
+        'linear-gradient(135deg, #ec4899, #be185d)',
+        'linear-gradient(135deg, #06b6d4, #0284c7)',
+        'linear-gradient(135deg, #8b5cf6, #d946ef)',
+        'linear-gradient(135deg, #f97316, #ea580c)',
+        'linear-gradient(135deg, #14b8a6, #0f766e)',
+        'linear-gradient(135deg, #ef4444, #b91c1c)'
       ];
       const grad=grads[Math.abs(hash)%grads.length];
 
