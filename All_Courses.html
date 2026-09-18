@@ -16,8 +16,8 @@
 :root{
   --ink:#1E2A47;
   --ink-soft:#4A5772;
-  --paper:#FAF7F0;
-  --paper-line:#E7DFCB;
+  --paper:#F8FAFC;
+  --paper-line:#E2E8F0;
   --card:#FFFFFF;
   --accent:#E8A33D;
   --accent-dark:#C97F1F;
@@ -43,8 +43,9 @@ button{font-family:inherit;cursor:pointer}
 /* Navbar — kept compact because this page intentionally contains only courses */
 header.nav{
   position:sticky;top:0;z-index:50;
-  background:rgba(250,247,240,.94);
-  backdrop-filter:blur(8px);
+  background:rgba(255,255,255,.88);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
   border-bottom:1px solid var(--paper-line);
 }
 .nav-inner{
@@ -77,9 +78,10 @@ header.nav{
 .burger{display:none;background:none;border:0;font-size:26px;color:var(--ink)}
 @media(max-width:860px){
   .nav-links{
-    position:absolute;top:100%;left:0;right:0;background:var(--paper);
+    position:absolute;top:100%;left:0;right:0;background:#ffffff;
     flex-direction:column;padding:18px 28px 26px;gap:16px;
-    border-bottom:1px solid var(--paper-line);display:none;
+    border-bottom:1px solid var(--paper-line);
+    box-shadow:0 12px 30px rgba(15,23,42,.08);display:none;
   }
   .nav-links.open{display:flex}
   .burger{display:block}
@@ -96,7 +98,7 @@ header.nav{
 .page-head{text-align:center;padding:38px 0 22px}
 .page-head .eyebrow{
   display:inline-block;font-weight:700;font-size:13.5px;letter-spacing:.04em;
-  color:var(--accent-dark);background:#FBEFDA;padding:6px 16px;
+  color:var(--accent-dark);background:rgba(232,163,61,.14);padding:6px 16px;
   border-radius:999px;margin-bottom:12px;
 }
 .page-head h1{
