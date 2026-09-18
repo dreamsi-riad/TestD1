@@ -18,8 +18,8 @@
 :root{
   --ink:#1E2A47;
   --ink-soft:#4A5772;
-  --paper:#FAF7F0;
-  --paper-line:#E7DFCB;
+  --paper:#F8FAFC;
+  --paper-line:#E2E8F0;
   --card:#FFFFFF;
   --accent:#E8A33D;
   --accent-dark:#C97F1F;
@@ -58,8 +58,9 @@ button{ font-family:inherit; cursor:pointer; }
 
 header.nav{
   position:sticky; top:0; z-index:50;
-  background:rgba(250,247,240,0.92);
-  backdrop-filter:blur(8px);
+  background:rgba(255,255,255,0.88);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
   border-bottom:1px solid var(--paper-line);
 }
 .nav-inner{
@@ -501,7 +502,7 @@ header.nav{
 .ecb-billing-due{
   margin-left:10px;
   padding-left:10px;
-  border-left:1px solid var(--paper-line, #e4d9bd);
+  border-left:1px solid var(--paper-line, #E2E8F0);
   color:#c0392b;
   font-weight:600;
 }
@@ -913,8 +914,9 @@ footer a:hover{ color:#fff; }
   display:none;
   align-items:center;
   justify-content:center;
-  background:rgba(250,247,240,.94);
-  backdrop-filter:blur(6px);
+  background:rgba(255,255,255,0.88);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
 }
 .loading-overlay.show{display:flex;}
 .loading-box{
