@@ -436,56 +436,106 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.25);
         }
         
-        /* ভিশন ট্রাস্ট বার (বই, সাপোর্ট, রেকর্ডেড ক্লাস) */
-        .trust-perks-bar {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            background: #f8fafc;
-            border: 1px solid var(--paper-line);
-            border-radius: 14px;
-            padding: 12px;
-        }
-        
-        .trust-perk {
+        /* কোর্স ইন্সট্রাক্টর কার্ড (কোর্স ছবির নিচে) */
+        .course-instructors-box {
+            background: #FFFFFF;
+            border: 1.5px solid var(--paper-line);
+            border-radius: var(--radius);
+            padding: 16px 18px;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
             display: flex;
             flex-direction: column;
-            align-items: center;
-            text-align: center;
-            gap: 4px;
-            padding: 4px 2px;
+            gap: 12px;
         }
-        
-        .trust-perk-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
+        .instructors-box-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--paper-line);
+            padding-bottom: 8px;
+        }
+        .instructors-box-title {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-family: 'Baloo Da 2', sans-serif;
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: .04em;
+        }
+        .instructors-box-title svg {
+            width: 17px;
+            height: 17px;
+        }
+        .instructors-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .instructor-card-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        .instructor-card-avatar {
+            width: 54px;
+            height: 54px;
+            border-radius: 14px;
+            object-fit: cover;
+            object-position: top center;
+            background: #E2E8F0;
+            border: 2px solid #FFFFFF;
+            box-shadow: 0 3px 10px rgba(15, 23, 42, 0.08);
+            flex-shrink: 0;
+        }
+        .instructor-card-initials {
+            width: 54px;
+            height: 54px;
+            border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #fff;
-            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06);
-            color: var(--primary);
-        }
-        
-        .trust-perk-icon svg {
-            width: 17px;
-            height: 17px;
-            stroke-width: 2.2;
-        }
-        
-        .trust-perk-title {
             font-family: 'Baloo Da 2', sans-serif;
-            font-size: 13px;
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--primary);
+            background: rgba(37, 99, 235, 0.1);
+            border: 2px solid #FFFFFF;
+            box-shadow: 0 3px 10px rgba(15, 23, 42, 0.08);
+            flex-shrink: 0;
+        }
+        .instructor-card-info {
+            flex: 1;
+            min-width: 0;
+        }
+        .instructor-card-name {
+            font-family: 'Baloo Da 2', sans-serif;
+            font-size: 17.5px;
             font-weight: 700;
             color: var(--ink);
-            line-height: 1.2;
+            line-height: 1.25;
+            margin-bottom: 2px;
         }
-        
-        .trust-perk-sub {
+        .instructor-card-desig {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--ink-soft);
+            line-height: 1.3;
+        }
+        .instructor-card-subject {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 4px;
+            padding: 2px 10px;
+            border-radius: 999px;
             font-size: 11.5px;
-            color: var(--ink-muted);
-            line-height: 1.2;
+            font-weight: 700;
+            background: rgba(245, 158, 11, 0.12);
+            color: #B45309;
+            border: 1px solid rgba(245, 158, 11, 0.25);
         }
         
         /* ===== ডান পাশ: তথ্য ও এনরোলমেন্ট ===== */
@@ -1400,24 +1450,62 @@
             
             const image = course.image || '';
 
-            // কোর্স ইন্সট্রাক্টর ম্যাচিং
+            // কোর্স ইন্সট্রাক্টর ম্যাচিং (কোর্স প্রিভিউ ছবির নিচে প্রদর্শনের জন্য)
             const matchedTeachers = (course.teacherNames || []).map(n => {
                 const key = normalizeTextForMatch(n);
-                return teachers.find(t => normalizeTextForMatch(t.name) === key) || {name: n, photo: '', subject: ''};
+                return teachers.find(t => normalizeTextForMatch(t.name) === key) || {name: n, photo: '', subject: '', designation: ''};
             });
             const initials = name => escapeHtml(clean(name).slice(0, 1).toUpperCase() || '?');
-            const teachersHtml = matchedTeachers.length ? `
-                <div class="course-teachers-block">
-                    <div class="course-teachers-label">কোর্স ইন্সট্রাক্টর</div>
-                    <div class="course-teachers">${matchedTeachers.map(t => `
-                        <div class="course-teacher-chip">
-                            ${t.photo ? `<img src="${escapeHtml(t.photo)}" alt="${escapeHtml(t.name)}" loading="lazy">` : `<span class="cte-avatar-fallback">${initials(t.name)}</span>`}
-                            <span class="cte-info">
-                                <span class="cte-name">${escapeHtml(t.name)}</span>
-                                ${t.subject ? `<span class="cte-subject">${escapeHtml(t.subject)}</span>` : ''}
+
+            let courseInstructorsHtml = '';
+            if(matchedTeachers.length) {
+                courseInstructorsHtml = `
+                    <div class="course-instructors-box">
+                        <div class="instructors-box-header">
+                            <span class="instructors-box-title">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                                </svg>
+                                কোর্স ইন্সট্রাক্টর
                             </span>
-                        </div>`).join('')}</div>
-                </div>` : '';
+                        </div>
+                        <div class="instructors-list">
+                            ${matchedTeachers.map(t => `
+                                <div class="instructor-card-item">
+                                    ${t.photo
+                                        ? `<img src="${escapeHtml(t.photo)}" alt="${escapeHtml(t.name)}" class="instructor-card-avatar" loading="lazy">`
+                                        : `<div class="instructor-card-initials">${initials(t.name)}</div>`
+                                    }
+                                    <div class="instructor-card-info">
+                                        <h4 class="instructor-card-name">${escapeHtml(t.name)}</h4>
+                                        <p class="instructor-card-desig">${escapeHtml(t.designation || 'ফ্যাকাল্টি মেম্বার')}</p>
+                                        ${t.subject ? `<span class="instructor-card-subject">${escapeHtml(t.subject)}</span>` : ''}
+                                    </div>
+                                </div>`).join('')}
+                        </div>
+                    </div>`;
+            } else {
+                courseInstructorsHtml = `
+                    <div class="course-instructors-box">
+                        <div class="instructors-box-header">
+                            <span class="instructors-box-title">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                                </svg>
+                                কোর্স ইন্সট্রাক্টর
+                            </span>
+                        </div>
+                        <div class="instructors-list">
+                            <div class="instructor-card-item">
+                                <div class="instructor-card-initials" style="background:linear-gradient(135deg,#1E293B,#0F172A);color:#93C5FD">VA</div>
+                                <div class="instructor-card-info">
+                                    <h4 class="instructor-card-name">VISION Academics</h4>
+                                    <p class="instructor-card-desig">অভিজ্ঞ ও নিবেদিতপ্রাণ শিক্ষক প্যানেল</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+            }
 
             // ইউজার কি অলরেডি ভর্তি?
             const enrolledSet = getEnrolledCourseNames();
@@ -1445,35 +1533,13 @@
 
             content.innerHTML = `
                 <div class="course-detail-grid">
-                    <!-- বাম পাশ: মিডিয়া ও হাইলাইটস -->
+                    <!-- বাম পাশ: মিডিয়া ও ইন্সট্রাক্টর -->
                     <div class="detail-media-wrap">
                         <div class="detail-image-box">
                             <span class="detail-badge-corner">${escapeHtml(course.category)}</span>
                             ${image ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(course.name)}">` : '<div style="aspect-ratio:16/10;background:#1e293b;display:flex;align-items:center;justify-content:center;color:#94a3b8">Course Image</div>'}
                         </div>
-                        <div class="trust-perks-bar">
-                            <div class="trust-perk">
-                                <div class="trust-perk-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                                </div>
-                                <span class="trust-perk-title">লাইভ ও রেকর্ড</span>
-                                <span class="trust-perk-sub">সম্পূর্ণ অ্যাক্সেস</span>
-                            </div>
-                            <div class="trust-perk">
-                                <div class="trust-perk-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                                </div>
-                                <span class="trust-perk-title">লেকচার শিট</span>
-                                <span class="trust-perk-sub">প্রিমিয়াম PDF</span>
-                            </div>
-                            <div class="trust-perk">
-                                <div class="trust-perk-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                                </div>
-                                <span class="trust-perk-title">পরীক্ষা প্রস্তুতি</span>
-                                <span class="trust-perk-sub">১০০% সমাধান</span>
-                            </div>
-                        </div>
+                        ${courseInstructorsHtml}
                     </div>
 
                     <!-- ডান পাশ: বিস্তারিত তথ্য ও এনরোলমেন্ট -->
@@ -1498,8 +1564,6 @@
                                 </div>` : ''}
                         </div>
                         
-                        ${teachersHtml}
-                        
                         <div class="detail-description-card">${escapeHtml(description).replace(/\n/g, '<br>')}</div>
                         
                         ${featuresHtml}
@@ -1520,7 +1584,7 @@
         }
 
         // subject-wise (per-subject.html) কোর্সের জন্য রেন্ডার ফাংশন
-        function renderSubjectWiseCourse(row) {
+        function renderSubjectWiseCourse(row, teachers = []) {
             const loadingState = document.getElementById('loadingState');
             const content = document.getElementById('courseContent');
             loadingState.style.display = 'none';
@@ -1539,6 +1603,64 @@
             const image = row.image || '';
             const courseId = buildSubjectWiseCourseId(row);
             const metaBits = [row.department, row.year].filter(Boolean).map(escapeHtml).join(' • ');
+
+            // ইন্সট্রাক্টর তথ্য
+            const initials = name => escapeHtml(clean(name).slice(0, 1).toUpperCase() || '?');
+            const subKey = normalizeTextForMatch(row.subject);
+            const matchedTeacher = (teachers || []).find(t => {
+                const ts = normalizeTextForMatch(t.subject);
+                const tn = normalizeTextForMatch(t.name);
+                return (ts && (ts.includes(subKey) || subKey.includes(ts))) || (tn && tn.includes(subKey));
+            });
+
+            let swInstructorsHtml = '';
+            if(matchedTeacher) {
+                swInstructorsHtml = `
+                    <div class="course-instructors-box">
+                        <div class="instructors-box-header">
+                            <span class="instructors-box-title">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                                </svg>
+                                কোর্স ইন্সট্রাক্টর
+                            </span>
+                        </div>
+                        <div class="instructors-list">
+                            <div class="instructor-card-item">
+                                ${matchedTeacher.photo
+                                    ? `<img src="${escapeHtml(matchedTeacher.photo)}" alt="${escapeHtml(matchedTeacher.name)}" class="instructor-card-avatar" loading="lazy">`
+                                    : `<div class="instructor-card-initials">${initials(matchedTeacher.name)}</div>`
+                                }
+                                <div class="instructor-card-info">
+                                    <h4 class="instructor-card-name">${escapeHtml(matchedTeacher.name)}</h4>
+                                    <p class="instructor-card-desig">${escapeHtml(matchedTeacher.designation || 'ফ্যাকাল্টি মেম্বার')}</p>
+                                    ${matchedTeacher.subject ? `<span class="instructor-card-subject">${escapeHtml(matchedTeacher.subject)}</span>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+            } else {
+                swInstructorsHtml = `
+                    <div class="course-instructors-box">
+                        <div class="instructors-box-header">
+                            <span class="instructors-box-title">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                                </svg>
+                                কোর্স ইন্সট্রাক্টর
+                            </span>
+                        </div>
+                        <div class="instructors-list">
+                            <div class="instructor-card-item">
+                                <div class="instructor-card-initials" style="background:linear-gradient(135deg,#1E293B,#0F172A);color:#93C5FD">VA</div>
+                                <div class="instructor-card-info">
+                                    <h4 class="instructor-card-name">VISION Academics</h4>
+                                    <p class="instructor-card-desig">অভিজ্ঞ ও নিবেদিতপ্রাণ শিক্ষক প্যানেল</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+            }
 
             // ইউজার কি অলরেডি ভর্তি?
             const enrolledSet = getEnrolledCourseNames();
@@ -1571,29 +1693,7 @@
                             <span class="detail-badge-corner">${escapeHtml(row.level)}</span>
                             ${image ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(row.subject)}">` : '<div style="aspect-ratio:16/10;background:#1e293b;display:flex;align-items:center;justify-content:center;color:#94a3b8">Subject Image</div>'}
                         </div>
-                        <div class="trust-perks-bar">
-                            <div class="trust-perk">
-                                <div class="trust-perk-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                                </div>
-                                <span class="trust-perk-title">লাইভ ক্লাস</span>
-                                <span class="trust-perk-sub">সম্পূর্ণ কোর্স</span>
-                            </div>
-                            <div class="trust-perk">
-                                <div class="trust-perk-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                                </div>
-                                <span class="trust-perk-title">লেকচার শিট</span>
-                                <span class="trust-perk-sub">PDF ফাইল</span>
-                            </div>
-                            <div class="trust-perk">
-                                <div class="trust-perk-icon">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                                </div>
-                                <span class="trust-perk-title">সাজেশন</span>
-                                <span class="trust-perk-sub">পরীক্ষা প্রস্তুতি</span>
-                            </div>
-                        </div>
+                        ${swInstructorsHtml}
                     </div>
 
                     <div class="detail-content">
@@ -1635,9 +1735,9 @@
             const swId = getSwId();
             try {
                 if(swId) {
-                    const rows = await getAllSubjectWiseRows();
+                    const [rows, teachers] = await Promise.all([getAllSubjectWiseRows(), getAllTeachers().catch(() => [])]);
                     const row = rows.find(r => buildSubjectWiseCourseId(r) === swId);
-                    renderSubjectWiseCourse(row);
+                    renderSubjectWiseCourse(row, teachers);
                     return;
                 }
                 const [courses, teachers] = await Promise.all([getAllCourses(), getAllTeachers().catch(() => [])]);
