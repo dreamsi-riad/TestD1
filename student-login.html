@@ -2522,7 +2522,6 @@ footer a:hover{ color: #38BDF8; }
         try{
           const result = await callApi({
             action:'track_watch',
-            mobile: normalizeMobileForMatch(mobile),
             course: courseName,
             nuDcu: sector,
             seconds: snapshotSeconds
@@ -3614,9 +3613,7 @@ footer a:hover{ color: #38BDF8; }
     };
     try{
       const result = await callApi({
-        action:'get_student',
-        mobile: normalizeMobileForMatch(mobile),
-        deviceToken: getDeviceToken()
+        action: 'get_student'
       });
       if(!isStillCurrentUser()) return;
       if(result.status === 'ok' && result.data){
@@ -3624,11 +3621,15 @@ footer a:hover{ color: #38BDF8; }
         localStorage.setItem(LS_USER_KEY, JSON.stringify(result.data));
         syncAndRenderDashboard(result.data);
       } else {
-        if(String(result?.message || '').toLowerCase().includes('session')){
+        const errMsg = String(result?.message || '').toLowerCase();
+        if(result?.sessionExpired || result?.deviceBlocked || errMsg.includes('session') || errMsg.includes('blocked')){
           localStorage.removeItem(LS_STUDENT_SESSION_TOKEN_KEY);
           localStorage.removeItem(LS_USER_KEY);
           showAuthUI();
           showLogin();
+          if(result?.deviceBlocked || errMsg.includes('blocked')){
+            alert('❌ ' + (result?.message || 'এই ডিভাইসটি ব্লক করা হয়েছে।'));
+          }
           return;
         }
         vaShowToast('📶 নেটওয়ার্ক সমস্যা হচ্ছে, একটু পর আবার চেষ্টা করুন।');
