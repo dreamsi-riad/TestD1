@@ -2,6 +2,21 @@
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
+<script>
+(function(){
+  try{
+    var theme = localStorage.getItem('va_theme');
+    if(theme === 'dark' || (!theme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)){
+      document.documentElement.setAttribute('data-theme', 'dark');
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+      document.documentElement.classList.remove('dark');
+    }
+  }catch(e){}
+})();
+</script>
+<meta name="theme-color" content="#ffffff" id="metaThemeColor">
 <link rel="preload" as="image" href="assets/logo.png" fetchpriority="high">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>সাবজেক্ট ভিত্তিক কোর্স | VISION Academics</title>
@@ -442,6 +457,179 @@ footer{
 @media(min-width: 1024px){
   body{ zoom: 1.05; }
 }
+
+/* =========================================================
+   THEME TOGGLE BUTTON & NAVBAR ACTION GROUP
+   ========================================================= */
+.nav-actions{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  flex-shrink:0;
+}
+.theme-toggle-btn{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background:#F1F5F9;
+  border:1.5px solid #CBD5E1;
+  color:#1E293B;
+  cursor:pointer;
+  position:relative;
+  transition:all .25s cubic-bezier(.16,1,.3,1);
+  box-shadow:0 2px 6px rgba(15,23,42,0.06);
+  flex-shrink:0;
+  outline:none;
+  padding:0;
+}
+.theme-toggle-btn:hover{
+  background:#E2E8F0;
+  border-color:#94A3B8;
+  transform:translateY(-1px) rotate(15deg);
+  box-shadow:0 4px 14px rgba(15,23,42,0.12);
+  color:#0F172A;
+}
+.theme-toggle-btn:active{ transform:scale(.92); }
+.theme-toggle-btn .theme-icon{
+  width:19px;
+  height:19px;
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1), opacity .25s ease;
+}
+.theme-toggle-btn .theme-icon--sun{ display:none; }
+.theme-toggle-btn .theme-icon--moon{ display:block; }
+
+@media(max-width:480px){
+  .nav-actions{ gap:6px; }
+  .theme-toggle-btn{ width:34px; height:34px; }
+  .theme-toggle-btn .theme-icon{ width:16px; height:16px; }
+}
+
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after{
+  transition:background-color .32s ease, border-color .32s ease, color .32s ease, box-shadow .32s ease !important;
+  transition-delay:0s !important;
+}
+
+/* =========================================================
+   NIGHT MODE (Dark Theme)
+   ========================================================= */
+[data-theme="dark"], html.dark{
+  --ink:#F8FAFC;
+  --ink-soft:#94A3B8;
+  --ink-muted:#64748B;
+  --paper:#090D16;
+  --paper-line:rgba(255,255,255,0.08);
+  --card:#111827;
+  --primary-light:rgba(37,99,235,0.15);
+  --shadow:0 14px 36px rgba(0,0,0,0.45);
+}
+
+[data-theme="dark"] body{
+  background-color:#090D16;
+  color:#CBD5E1;
+  background-image:
+    radial-gradient(circle at 12% 10%, rgba(56,189,248,0.06) 0%, transparent 45%),
+    radial-gradient(circle at 88% 85%, rgba(129,140,248,0.06) 0%, transparent 45%);
+}
+
+[data-theme="dark"] .theme-toggle-btn{
+  background:rgba(255,255,255,0.08);
+  border-color:rgba(255,255,255,0.16);
+  color:#F59E0B;
+  box-shadow:0 2px 10px rgba(0,0,0,0.35), 0 0 12px rgba(245,158,11,0.15);
+}
+[data-theme="dark"] .theme-toggle-btn:hover{
+  background:rgba(255,255,255,0.14);
+  border-color:rgba(245,158,11,0.5);
+  color:#FBBF24;
+  transform:translateY(-1px) rotate(-15deg);
+  box-shadow:0 4px 16px rgba(0,0,0,0.5), 0 0 18px rgba(245,158,11,0.35);
+}
+[data-theme="dark"] .theme-toggle-btn .theme-icon--moon{ display:none; }
+[data-theme="dark"] .theme-toggle-btn .theme-icon--sun{ display:block; }
+
+[data-theme="dark"] header.nav{
+  background:rgba(9,13,22,0.88);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  box-shadow:0 4px 24px rgba(0,0,0,0.45);
+}
+[data-theme="dark"] .brand-logo{
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,0.5)) drop-shadow(0 0 1px rgba(255,255,255,0.4));
+}
+[data-theme="dark"] .nav-links a{ color:#94A3B8; }
+[data-theme="dark"] .nav-links a:hover{ color:#F8FAFC; }
+[data-theme="dark"] .burger{ color:#F8FAFC; }
+@media(max-width:860px){
+  [data-theme="dark"] .nav-links{
+    background:#0D1424;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+    box-shadow:0 16px 36px rgba(0,0,0,0.65);
+  }
+}
+
+[data-theme="dark"] .nav-cta{
+  background:linear-gradient(135deg,#2563EB 0%,#1D4ED8 100%);
+  border-color:rgba(255,255,255,0.22);
+  box-shadow:0 4px 16px rgba(37,99,235,0.4), inset 0 1px 0 rgba(255,255,255,0.25);
+  color:#FFFFFF !important;
+}
+[data-theme="dark"] .nav-cta:hover{
+  background:linear-gradient(135deg,#3B82F6 0%,#2563EB 100%);
+  box-shadow:0 6px 20px rgba(37,99,235,0.55);
+}
+
+[data-theme="dark"] .back-link{ color:#94A3B8; }
+[data-theme="dark"] .back-link:hover{ color:#F8FAFC; }
+
+[data-theme="dark"] .ps-hero h1{ color:#F8FAFC; }
+[data-theme="dark"] .ps-hero p{ color:#94A3B8; }
+
+[data-theme="dark"] .ps-filters{
+  background:#111827;
+  border-color:rgba(255,255,255,0.08);
+  box-shadow:0 8px 24px rgba(0,0,0,0.35);
+}
+[data-theme="dark"] .filter-select,
+[data-theme="dark"] .search-input{
+  background:#162035;
+  border-color:rgba(255,255,255,0.1);
+  color:#F8FAFC;
+}
+[data-theme="dark"] .search-input:focus,
+[data-theme="dark"] .filter-select:focus{
+  border-color:#38BDF8;
+}
+
+[data-theme="dark"] .ps-card{
+  background:#111827;
+  border-color:rgba(255,255,255,0.08);
+  box-shadow:0 8px 24px rgba(0,0,0,0.35);
+}
+[data-theme="dark"] .ps-card:hover{
+  border-color:#38BDF8;
+  box-shadow:0 22px 42px -8px rgba(0,0,0,0.6), 0 0 24px rgba(56,189,248,0.25);
+}
+[data-theme="dark"] .ps-card-header{
+  border-bottom-color:rgba(255,255,255,0.08);
+}
+[data-theme="dark"] .ps-card-title{ color:#F8FAFC; }
+[data-theme="dark"] .ps-card-desc{ color:#94A3B8; }
+[data-theme="dark"] .subject-item{
+  background:#162035;
+  border-color:rgba(255,255,255,0.06);
+  color:#CBD5E1;
+}
+[data-theme="dark"] .subject-price{ color:#60A5FA; }
+
+[data-theme="dark"] footer{
+  background:linear-gradient(180deg,#070B14 0%,#04060B 100%);
+  border-top:1px solid rgba(255,255,255,0.06);
+}
 </style>
 </head>
 <body>
@@ -459,13 +647,31 @@ footer{
       <a href="shop.html">শপ</a>
       <a href="index.html#why">কেন আমরা</a>
     </nav>
-    <a href="student-login.html" class="nav-cta" id="navLoginBtn">
-      <svg class="nav-login-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>
-      </svg>
-      <span>লগইন</span>
-    </a>
-    <button class="burger" id="burgerBtn" aria-label="মেনু">☰</button>
+    <div class="nav-actions">
+      <button type="button" class="theme-toggle-btn" id="themeToggleBtn" aria-label="নাইট মোড চালু করুন" title="নাইট মোড চালু করুন (Night Mode)">
+        <svg class="theme-icon theme-icon--moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <svg class="theme-icon theme-icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      </button>
+      <a href="student-login.html" class="nav-cta" id="navLoginBtn">
+        <svg class="nav-login-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>
+        </svg>
+        <span>লগইন</span>
+      </a>
+      <button class="burger" id="burgerBtn" aria-label="মেনু">☰</button>
+    </div>
   </div>
 </header>
 
@@ -826,6 +1032,62 @@ document.addEventListener('DOMContentLoaded', () => {
 
   init();
 });
+</script>
+
+<script>
+// ============================================================
+// Night Mode / Day Mode (Dark/Light Theme) Toggle Controller
+// ============================================================
+(function(){
+  const toggleBtn = document.getElementById('themeToggleBtn');
+  const metaTheme = document.getElementById('metaThemeColor');
+  if(!toggleBtn) return;
+
+  function applyTheme(theme, animate){
+    const isDark = theme === 'dark';
+    if(animate){
+      document.documentElement.classList.add('theme-transition');
+      setTimeout(function(){
+        document.documentElement.classList.remove('theme-transition');
+      }, 350);
+    }
+    if(isDark){
+      document.documentElement.setAttribute('data-theme', 'dark');
+      document.documentElement.classList.add('dark');
+      toggleBtn.setAttribute('aria-label', 'ডে মোড চালু করুন (Day Mode)');
+      toggleBtn.setAttribute('title', 'ডে মোড চালু করুন (Day Mode)');
+      if(metaTheme) metaTheme.setAttribute('content', '#090D16');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+      document.documentElement.classList.remove('dark');
+      toggleBtn.setAttribute('aria-label', 'নাইট মোড চালু করুন (Night Mode)');
+      toggleBtn.setAttribute('title', 'নাইট মোড চালু করুন (Night Mode)');
+      if(metaTheme) metaTheme.setAttribute('content', '#ffffff');
+    }
+  }
+
+  const initialTheme = document.documentElement.getAttribute('data-theme') || 'light';
+  applyTheme(initialTheme, false);
+
+  toggleBtn.addEventListener('click', function(){
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    try {
+      localStorage.setItem('va_theme', nextTheme);
+    } catch(e){}
+    applyTheme(nextTheme, true);
+  });
+
+  try {
+    if(window.matchMedia){
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e){
+        if(!localStorage.getItem('va_theme')){
+          applyTheme(e.matches ? 'dark' : 'light', true);
+        }
+      });
+    }
+  } catch(e){}
+})();
 </script>
 </body>
 </html>
