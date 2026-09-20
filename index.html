@@ -2253,6 +2253,31 @@ html.theme-transition *::after{
   border:1px solid rgba(255,255,255,0.12);
   box-shadow:0 10px 24px rgba(0,0,0,0.5);
 }
+
+/* Message box in Dark Mode */
+[data-theme="dark"] .message-box{
+  background:#111827;
+  border-color:rgba(255,255,255,0.08);
+  box-shadow:0 14px 36px rgba(0,0,0,0.45);
+}
+[data-theme="dark"] .message-box .form-row label{
+  color:#CBD5E1;
+}
+[data-theme="dark"] .message-box .form-row input,
+[data-theme="dark"] .message-box .form-row textarea{
+  background:#162035;
+  border-color:rgba(255,255,255,0.1);
+  color:#F8FAFC;
+}
+[data-theme="dark"] .message-box .form-row input:focus,
+[data-theme="dark"] .message-box .form-row textarea:focus{
+  border-color:#38BDF8;
+  box-shadow:0 0 0 3px rgba(56,189,248,0.2);
+}
+[data-theme="dark"] .message-box .form-row input::placeholder,
+[data-theme="dark"] .message-box .form-row textarea::placeholder{
+  color:#64748B;
+}
 </style>
 </head>
 <body>
