@@ -686,16 +686,55 @@ html.theme-transition *::after{
 [data-theme="dark"] .modal-box{
     background:#111827;
     border:1px solid rgba(255,255,255,0.12);
+    box-shadow:0 30px 80px rgba(0,0,0,0.6);
 }
-[data-theme="dark"] .modal-header h3{ color:#F8FAFC; }
-[data-theme="dark"] .form-group label{ color:#CBD5E1; }
-[data-theme="dark"] .form-input{
-    background:#162035;
-    border-color:rgba(255,255,255,0.1);
+[data-theme="dark"] .modal-close{
+    background:#1E293B;
+    border-color:rgba(255,255,255,0.12);
+    color:#CBD5E1;
+}
+[data-theme="dark"] .modal-close:hover{
+    background:#334155;
     color:#F8FAFC;
 }
-[data-theme="dark"] .form-input:focus{
+[data-theme="dark"] .modal-product-summary{
+    background:#162035;
+    border-color:rgba(255,255,255,0.08);
+}
+[data-theme="dark"] .modal-product-name{
+    color:#F8FAFC;
+}
+[data-theme="dark"] .modal-product-price{
+    color:#34D399;
+}
+[data-theme="dark"] .form-row label{
+    color:#CBD5E1;
+}
+[data-theme="dark"] .form-row input,
+[data-theme="dark"] .form-row select,
+[data-theme="dark"] .form-row textarea{
+    background:#162035;
+    border-color:rgba(255,255,255,0.12);
+    color:#F8FAFC;
+}
+[data-theme="dark"] .form-row input::placeholder,
+[data-theme="dark"] .form-row textarea::placeholder{
+    color:#64748B;
+}
+[data-theme="dark"] .form-row input:focus,
+[data-theme="dark"] .form-row select:focus,
+[data-theme="dark"] .form-row textarea:focus{
     border-color:#38BDF8;
+    box-shadow:0 0 0 3.5px rgba(56,189,248,0.2);
+}
+[data-theme="dark"] .form-row select option{
+    background:#111827;
+    color:#F8FAFC;
+}
+[data-theme="dark"] .shop-status-msg{
+    background:#111827;
+    border-color:rgba(255,255,255,0.08);
+    color:#94A3B8;
 }
 
 [data-theme="dark"] footer{
