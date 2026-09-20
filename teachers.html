@@ -179,15 +179,6 @@ header.nav{
   border-bottom: 1px solid rgba(226, 232, 240, 0.6);
   text-align: center;
 }
-.eyebrow{
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 6px 18px; border-radius: 999px;
-  background: rgba(37, 99, 235, 0.08);
-  border: 1px solid rgba(37, 99, 235, 0.2);
-  color: var(--primary); font-size: 13.5px; font-weight: 700;
-  letter-spacing: .02em; margin-bottom: 16px;
-}
-.eyebrow svg{ width: 16px; height: 16px; }
 .hero-title{
   font-family: 'Baloo Da 2', sans-serif;
   font-weight: 800; font-size: clamp(30px, 4.5vw, 46px);
@@ -520,8 +511,6 @@ footer{
 
 @media(max-width: 768px){
   .hero-section{ padding: 36px 0 24px; }
-  .trust-badges{ gap: 8px; }
-  .trust-chip{ font-size: 12px; padding: 5px 12px; }
   .teacher-grid{ grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; }
   .footer-grid{ grid-template-columns: 1fr; gap: 28px; }
   .tm-header{ padding: 24px 20px; flex-direction: column; text-align: center; }
@@ -657,12 +646,12 @@ html.theme-transition *::after{
   box-shadow:0 6px 20px rgba(37,99,235,0.55);
 }
 
-[data-theme="dark"] .hero-section h1{ color:#F8FAFC; }
-[data-theme="dark"] .hero-subtitle{ color:#94A3B8; }
-[data-theme="dark"] .trust-chip{
-  background:#111827;
-  border-color:rgba(255,255,255,0.08);
-  color:#CBD5E1;
+[data-theme="dark"] .hero-title{ color:#F8FAFC; }
+[data-theme="dark"] .hero-title span{
+  background: linear-gradient(135deg, #60A5FA 0%, #38BDF8 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 [data-theme="dark"] .search-input{
