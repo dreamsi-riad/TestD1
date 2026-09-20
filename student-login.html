@@ -4024,6 +4024,8 @@ html.theme-transition *::after{
   // which only returns a flat list of course names — no subject/url/pdf.
   async function courseMaterialsExist(courseName){
     try{
+      const sw = parseSubjectWiseCourseId(courseName);
+      if(sw) return true;
       const response = await fetch(FORM_ENDPOINT, {
         method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'},
         body: JSON.stringify({ action:'get_course_availability' }),
