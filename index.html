@@ -2842,6 +2842,7 @@ document.querySelectorAll('#navLinks a').forEach(link => {
 (function(){
   const galleryWrap = document.getElementById('galleryWrap');
   const galleryTrack = document.getElementById('galleryTrack');
+  const gallerySection = document.getElementById('gallery');
   const feedbackWrap = document.getElementById('feedbackWrap');
   const feedbackTrack = document.getElementById('feedbackTrack');
   const feedbackSection = document.getElementById('student-feedback');
@@ -2875,43 +2876,46 @@ document.querySelectorAll('#navLinks a').forEach(link => {
     document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeImageModal(); });
   }
 
-  function renderGalleryImages(images){
-    if(!galleryTrack || !galleryWrap) return;
-    if(!images.length){
-      galleryWrap.style.display = 'none';
+  // ---------- সিমলেস ইনফিনিট মার্কি রেন্ডারার ----------
+  // গ্যালারিতে ৫টি এবং ফিডব্যাকে ১০টি বা যেকোনো কম-বেশি ছবি থাকলেও যেন
+  // কোনো ফাঁকা বা স্ক্রিনের বাইরে জাম্প ছাড়া দুটোই সম্পূর্ণ স্বাধীনভাবে মসৃণ চলে
+  function setupInfiniteTrack(trackEl, wrapEl, sectionEl, items, altText){
+    if(!trackEl || !wrapEl) return;
+    if(!items || !items.length){
+      wrapEl.style.display = 'none';
+      if(sectionEl) sectionEl.style.display = 'none';
       return;
     }
-    // seamless loop: ছবির লিস্টটা ২ বার বসিয়ে ৫০% পর্যন্ত scroll করে আবার শুরুতে ফিরে যায়
-    const imagesHtml = images.map(url => `<img src="${esc(url)}" alt="Gallery" loading="lazy">`).join('');
-    galleryTrack.innerHTML = imagesHtml + imagesHtml;
 
-    // যত বেশি ছবি, তত বেশি সময় লাগবে এক চক্র শেষ করতে — যাতে স্পিড সবসময় একরকম আস্তে থাকে
-    const duration = Math.max(24, images.length * 5);
-    galleryTrack.style.animationDuration = duration + 's';
+    wrapEl.style.display = '';
+    if(sectionEl) sectionEl.style.display = '';
 
-    galleryTrack.querySelectorAll('img').forEach(img=>{
+    // স্ক্রিনের চওড়া অনুপাত পূরণের জন্য অন্তত ৮টি ছবির একটি সেট নিশ্চিত করা
+    let baseSet = [...items];
+    while(baseSet.length < 8){
+      baseSet = baseSet.concat(items);
+    }
+
+    // CSS -50% লুপের জন্য সেটটি ঠিক ২ বার বসানো
+    const setHtml = baseSet.map(url => `<img src="${esc(url)}" alt="${esc(altText)}" loading="lazy" onerror="this.remove()">`).join('');
+    trackEl.innerHTML = setHtml + setHtml;
+
+    // ছবির সংখ্যা অনুপাতে গতি নির্ধারণ (যাতে খুব দ্রুত বা ধীর না হয়)
+    const duration = Math.max(20, baseSet.length * 4.5);
+    trackEl.style.animationDuration = duration + 's';
+
+    trackEl.querySelectorAll('img').forEach(img=>{
       img.style.cursor = 'zoom-in';
-      img.addEventListener('click', ()=> openImageModal(img.src, galleryTrack));
+      img.addEventListener('click', ()=> openImageModal(img.src, trackEl));
     });
   }
 
+  function renderGalleryImages(images){
+    setupInfiniteTrack(galleryTrack, galleryWrap, gallerySection, images, 'Gallery');
+  }
+
   function renderFeedbackImages(images){
-    if(!feedbackTrack || !feedbackWrap) return;
-    if(!images.length){
-      feedbackWrap.style.display = 'none';
-      if(feedbackSection) feedbackSection.style.display = 'none';
-      return;
-    }
-    const imagesHtml = images.map(url => `<img src="${esc(url)}" alt="শিক্ষার্থীর মতামত" loading="lazy">`).join('');
-    feedbackTrack.innerHTML = imagesHtml + imagesHtml;
-
-    // গ্যালারির মতোই স্পিড হিসাব — একই নিয়ম, শুধু keyframes উল্টো দিকে যায়
-    const duration = Math.max(24, images.length * 5);
-    feedbackTrack.style.animationDuration = duration + 's';
-
-    feedbackTrack.querySelectorAll('img').forEach(img=>{
-      img.addEventListener('click', ()=> openImageModal(img.src, feedbackTrack));
-    });
+    setupInfiniteTrack(feedbackTrack, feedbackWrap, feedbackSection, images, 'শিক্ষার্থীর মতামত');
   }
 
   async function loadGallery(){
@@ -2921,8 +2925,7 @@ document.querySelectorAll('#navLinks a').forEach(link => {
       const j = await r.json();
       if(j.status === 'error') throw Error(j.message || 'Gallery API error');
 
-      // ব্যাকওয়ার্ড-কম্প্যাটিবিলিটি: পুরনো response শুধু array of urls হতে পারে,
-      // নতুন response { images: [...], feedbackImages: [...] } — দুটোই সামলানো হয়েছে
+      // ব্যাকওয়ার্ড ও আনইভেন ডাটা সাপোর্ট: images এবং feedbackImages সম্পূর্ণ আলাদা অ্যারে হিসেবে লোড হয়
       const data = j.data;
       const images = Array.isArray(data) ? data.filter(Boolean) : (Array.isArray(data?.images) ? data.images.filter(Boolean) : []);
       const feedbackImages = Array.isArray(data?.feedbackImages) ? data.feedbackImages.filter(Boolean) : [];
@@ -2932,6 +2935,7 @@ document.querySelectorAll('#navLinks a').forEach(link => {
     }catch(e){
       console.error('Gallery load failed:', e);
       if(galleryWrap) galleryWrap.style.display = 'none';
+      if(gallerySection) gallerySection.style.display = 'none';
       if(feedbackWrap) feedbackWrap.style.display = 'none';
       if(feedbackSection) feedbackSection.style.display = 'none';
     }
