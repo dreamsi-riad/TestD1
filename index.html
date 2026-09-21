@@ -15,7 +15,6 @@
     }
   }catch(e){}
 })();
-
 </script>
 <meta name="theme-color" content="#ffffff" id="metaThemeColor">
 <link rel="preload" as="image" href="assets/logo.png" fetchpriority="high">
@@ -2279,105 +2278,6 @@ html.theme-transition *::after{
 [data-theme="dark"] .message-box .form-row textarea::placeholder{
   color:#64748B;
 }
-/* =========================================================
-   HOME PAGE POLISH — modern visual layer & calm motion
-   ========================================================= */
-:root{
-  --surface-glass:rgba(255,255,255,.74);
-  --surface-border:rgba(148,163,184,.22);
-  --ease-premium:cubic-bezier(.16,1,.3,1);
-}
-body{
-  background:
-    radial-gradient(circle at 5% 8%, rgba(91,143,191,.13), transparent 25rem),
-    radial-gradient(circle at 96% 20%, rgba(232,163,61,.14), transparent 24rem),
-    var(--paper);
-}
-header.nav{
-  background:rgba(255,255,255,.76);
-  border-bottom-color:rgba(226,232,240,.76);
-  box-shadow:0 1px 0 rgba(255,255,255,.8),0 8px 28px rgba(15,23,42,.045);
-}
-.nav-inner{ height:70px; }
-.brand .brand-logo{ transition:transform .35s var(--ease-premium),filter .35s ease; }
-.brand:hover .brand-logo{ transform:translateY(-1px) scale(1.025); filter:drop-shadow(0 5px 8px rgba(30,42,71,.13)); }
-.nav-links a{ transition:color .25s ease,transform .25s var(--ease-premium); }
-.nav-links a:hover{ transform:translateY(-1px); }
-.nav-cta,.all-courses-btn{ position:relative; overflow:hidden; isolation:isolate; }
-.nav-cta::before,.all-courses-btn::before{
-  content:""; position:absolute; inset:0; z-index:-1; opacity:0;
-  background:linear-gradient(115deg,transparent 22%,rgba(255,255,255,.26) 45%,transparent 67%);
-  transform:translateX(-115%); transition:transform .65s var(--ease-premium),opacity .2s ease;
-}
-.nav-cta:hover::before,.all-courses-btn:hover::before{ opacity:1; transform:translateX(115%); }
-.hero{ position:relative; padding:46px 0 34px; }
-.hero::before,.hero::after{
-  content:""; position:absolute; pointer-events:none; border-radius:50%; filter:blur(2px); z-index:-1;
-}
-.hero::before{ width:320px; height:320px; right:-130px; top:-110px; background:radial-gradient(circle,rgba(91,143,191,.16),transparent 68%); animation:ambientFloat 10s ease-in-out infinite; }
-.hero::after{ width:240px; height:240px; left:-120px; bottom:-100px; background:radial-gradient(circle,rgba(232,163,61,.15),transparent 68%); animation:ambientFloat 13s ease-in-out -4s infinite reverse; }
-.hero-content-area{ animation:introUp .75s var(--ease-premium) both; }
-.hero-photo-area{ animation:introUp .9s .08s var(--ease-premium) both; }
-.hero-badge{
-  border-color:rgba(91,143,191,.2); box-shadow:0 8px 22px rgba(30,42,71,.07);
-  backdrop-filter:blur(8px);
-}
-.hero h1{ letter-spacing:-.025em; text-wrap:balance; }
-.gradient-text{ background-size:180% auto; animation:gradientShift 5s ease infinite; }
-.all-courses-btn{ box-shadow:0 12px 24px rgba(30,42,71,.18); transition:transform .28s var(--ease-premium),box-shadow .28s ease; }
-.all-courses-btn:hover{ transform:translateY(-3px); box-shadow:0 18px 32px rgba(30,42,71,.25); }
-.hero-ghost-btn{ transition:transform .28s var(--ease-premium),background .28s ease,box-shadow .28s ease; }
-.hero-ghost-btn:hover{ transform:translateY(-3px); box-shadow:0 12px 22px rgba(30,42,71,.1); }
-.pinboard{ box-shadow:0 24px 55px rgba(30,42,71,.13); }
-.pin-card{ transition:transform .45s var(--ease-premium),filter .45s ease; }
-.pin-card:hover{ transform:scale(1.025); filter:saturate(1.08); }
-.stat-card{
-  border:1px solid rgba(255,255,255,.85); box-shadow:0 12px 26px rgba(30,42,71,.07);
-  transition:transform .35s var(--ease-premium),box-shadow .35s ease;
-}
-.stat-card:hover{ transform:translateY(-5px); box-shadow:0 20px 34px rgba(30,42,71,.13); }
-section{ position:relative; }
-.section-head{ position:relative; }
-.section-head .eyebrow{ letter-spacing:.1em; }
-.section-head .eyebrow::after{ content:""; width:34px; height:1px; background:currentColor; opacity:.38; margin-left:4px; }
-.cat-card,.course-card,.why-card,.teacher-card,.video-card{
-  border:1px solid var(--surface-border);
-  box-shadow:0 10px 26px rgba(30,42,71,.06);
-  transition:transform .38s var(--ease-premium),box-shadow .38s ease,border-color .38s ease;
-}
-.cat-card:hover,.course-card:hover,.why-card:hover,.teacher-card:hover,.video-card:hover{
-  transform:translateY(-8px); border-color:rgba(91,143,191,.32); box-shadow:0 23px 40px rgba(30,42,71,.14);
-}
-.course-image{ transition:transform .7s var(--ease-premium); }
-.course-card:hover .course-image{ transform:scale(1.06); }
-.why-card{ overflow:hidden; }
-.why-card::before{ content:""; position:absolute; width:140px; height:140px; right:-60px; bottom:-70px; border-radius:50%; background:var(--why-tint); opacity:.55; transition:transform .5s var(--ease-premium); }
-.why-card:hover::before{ transform:scale(1.4); }
-.cta-band{ box-shadow:0 24px 60px rgba(15,23,42,.2); position:relative; overflow:hidden; }
-.cta-band::before{ content:""; position:absolute; width:420px; height:420px; top:-280px; right:-80px; border-radius:50%; background:rgba(255,255,255,.07); pointer-events:none; }
-.gallery-marquee-wrap,.feedback-marquee-wrap{ mask-image:linear-gradient(to right,transparent,black 7%,black 93%,transparent); }
-/* Elements added dynamically after the first paint also receive the reveal treatment. */
-.motion-reveal{ opacity:0; transform:translateY(22px); transition:opacity .7s var(--ease-premium),transform .7s var(--ease-premium); }
-.motion-reveal.is-visible{ opacity:1; transform:none; }
-@keyframes introUp{ from{ opacity:0; transform:translateY(20px); } to{ opacity:1; transform:none; } }
-@keyframes ambientFloat{ 0%,100%{ transform:translate3d(0,0,0) scale(1); } 50%{ transform:translate3d(18px,16px,0) scale(1.06); } }
-@keyframes gradientShift{ 0%,100%{ background-position:0% 50%; } 50%{ background-position:100% 50%; } }
-[data-theme="dark"] body{ background:radial-gradient(circle at 8% 5%,rgba(91,143,191,.16),transparent 27rem),radial-gradient(circle at 96% 20%,rgba(232,163,61,.1),transparent 24rem),var(--paper); }
-[data-theme="dark"] header.nav{ background:rgba(15,23,42,.78); border-bottom-color:rgba(148,163,184,.16); }
-[data-theme="dark"] .cat-card,[data-theme="dark"] .course-card,[data-theme="dark"] .why-card,[data-theme="dark"] .teacher-card,[data-theme="dark"] .video-card{ border-color:rgba(148,163,184,.16); box-shadow:0 12px 30px rgba(0,0,0,.18); }
-[data-theme="dark"] .hero-badge{ border-color:rgba(148,163,184,.18); }
-@media (max-width:720px){
-  .nav-inner{ height:62px; }
-  .hero{ padding-top:24px; }
-  .hero h1{ letter-spacing:-.018em; }
-  .section-head .eyebrow::after{ width:22px; }
-  .cat-card:hover,.course-card:hover,.why-card:hover,.teacher-card:hover,.video-card:hover{ transform:translateY(-4px); }
-}
-@media (prefers-reduced-motion:reduce){
-  .hero::before,.hero::after,.gradient-text{ animation:none!important; }
-  .hero-content-area,.hero-photo-area{ animation:none!important; }
-  .motion-reveal{ opacity:1; transform:none; transition:none; }
-}
 </style>
 </head>
 <body>
@@ -3610,33 +3510,6 @@ window.addEventListener('storage',updateNavProfileButton);
       });
     }
   } catch(e){}
-})();
-
-// Subtle viewport reveal for both static and API-rendered cards.
-// Kept separate from data-loading logic so it cannot affect course/video rendering.
-(function(){
-  if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  const selector = '.section-head, .why-card, .cat-card, .course-card, .teacher-card, .video-card, .cta-band, .gallery-marquee-wrap, .feedback-marquee-wrap';
-  const observer = new IntersectionObserver(function(entries){
-    entries.forEach(function(entry){
-      if(entry.isIntersecting){
-        entry.target.classList.add('is-visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold:.08, rootMargin:'0px 0px -24px' });
-  function watch(root){
-    (root.matches && root.matches(selector) ? [root] : []).concat(Array.from(root.querySelectorAll ? root.querySelectorAll(selector) : [])).forEach(function(el){
-      if(!el.classList.contains('motion-reveal') && !el.classList.contains('is-visible')){
-        el.classList.add('motion-reveal');
-        observer.observe(el);
-      }
-    });
-  }
-  watch(document);
-  new MutationObserver(function(records){
-    records.forEach(function(record){ record.addedNodes.forEach(function(node){ if(node.nodeType === 1) watch(node); }); });
-  }).observe(document.body, { childList:true, subtree:true });
 })();
 </script>
 
