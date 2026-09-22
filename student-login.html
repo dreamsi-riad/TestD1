@@ -2453,7 +2453,8 @@ html.theme-transition *::after{
     // তাই মেলানোর আগে level + sector জোড়া লাগিয়ে সঠিক টেবিলের row বেছে নেওয়া হচ্ছে।
     const effectiveLevel = parsed.nuDcu ? `${parsed.level} ${parsed.nuDcu}` : parsed.level;
     return allRows.filter(r=>{
-      if(!r.subject || !r.url) return false;
+      if(!r.subject) return false;
+      if(!r.locked && !r.url) return false;
       if(normalizeLoose(r.level) !== normalizeLoose(effectiveLevel)) return false;
       if(normalizeForMatch(r.subject) !== normalizeForMatch(parsed.subject)) return false;
       if(parsed.department && parsed.year){
@@ -2702,21 +2703,21 @@ html.theme-transition *::after{
   }
 
   function youtubeId(url){
-    const value=String(url || '').trim();
+    const value = String(url || '').trim();
     if(!value) return '';
-    try{
-      const u=new URL(value);
-      if(u.hostname.includes('youtu.be')) return u.pathname.split('/').filter(Boolean)[0] || '';
-      if(u.hostname.includes('youtube.com')){
-        if(u.searchParams.get('v')) return u.searchParams.get('v');
-        const parts=u.pathname.split('/').filter(Boolean);
-        const i=parts.indexOf('embed'); if(i>=0) return parts[i+1] || '';
-        const ss=parts.indexOf('shorts'); if(ss>=0) return parts[ss+1] || '';
-        const l=parts.indexOf('live'); if(l>=0) return parts[l+1] || '';
-      }
-    }catch(e){}
-    const m=value.match(/[?&]v=([^&]+)/i);
-    return m ? m[1] : '';
+    const patterns = [
+      /[?&]v=([A-Za-z0-9_-]{11})/i,
+      /youtu\.be\/([A-Za-z0-9_-]{11})/i,
+      /youtube(?:-nocookie)?\.com\/embed\/([A-Za-z0-9_-]{11})/i,
+      /youtube(?:-nocookie)?\.com\/shorts\/([A-Za-z0-9_-]{11})/i,
+      /youtube(?:-nocookie)?\.com\/live\/([A-Za-z0-9_-]{11})/i
+    ];
+    for(const re of patterns){
+      const m = value.match(re);
+      if(m) return m[1];
+    }
+    // যদি সরাসরি 11-অক্ষরের YouTube ID দেওয়া হয়, সেটাও গ্রহণ করবে
+    return /^[A-Za-z0-9_-]{11}$/.test(value) ? value : '';
   }
 
   let ytPlayer = null;
@@ -3666,7 +3667,7 @@ html.theme-transition *::after{
         ? `<span class="ecb-billing"><span class="ecb-icon-emoji">🗓️</span> Next Payment: <span class="ecb-billing-value">${escapeHtml(formatNextPaymentDate(nextDateVal))}</span></span>`
         : '';
 
-      return `<button type="button" class="enrolled-course-btn${i===0?' active':''}${lockedClass}" data-course="${escapeHtml(course.name)}" data-sector="${escapeHtml(course.nuDcu||'')}" data-idx="${i}">
+      return `<button type="button" class="enrolled-course-btn${lockedClass}" data-course="${escapeHtml(course.name)}" data-sector="${escapeHtml(course.nuDcu||'')}" data-idx="${i}">
         <span class="ecb-corner-badge">${cornerLabel}</span>
         ${course.nuDcu ? `<span class="ecb-sector-badge">${escapeHtml(course.nuDcu)}</span>` : ''}
         <span class="ecb-icon">${iconEmoji}</span>
@@ -3682,10 +3683,36 @@ html.theme-transition *::after{
       </button>`;
     }).join('');
     const selectCourse=idx=>{
-      enrolledCourseList.querySelectorAll('.enrolled-course-btn').forEach(btn=>btn.classList.toggle('active', Number(btn.dataset.idx)===idx));
       const course = courses[idx];
       if(!course) return;
       const status = String(course.status || '').trim().toLowerCase();
+
+      // কোর্স লকড থাকলে পরবর্তী পেজে যাবে না এবং কোনো ক্লাস লোড হবে না
+      if(course.locked){
+        const reason = String(course.lockComment || '').trim();
+        vaShowToast(reason ? `🔒 কোর্সটি লক করা হয়েছে: ${reason}` : '🔒 এই কোর্সটি বর্তমানে লক করা আছে। কর্তৃপক্ষের সাথে যোগাযোগ করুন।');
+        return;
+      }
+
+      // মেয়াদ শেষ হয়ে থাকলে পরবর্তী পেজে যাবে না
+      if(status === 'expired'){
+        vaShowToast('⚠️ এই কোর্সের অ্যাক্সেসের মেয়াদ শেষ হয়ে গেছে।');
+        return;
+      }
+
+      // ডিভাইস ব্লক থাকলে পরবর্তী পেজে যাবে না
+      if(isDeviceBlocked){
+        vaShowToast('🔒 একাধিক ডিভাইসে লগইন সনাক্ত হওয়ায় কোর্স অ্যাক্সেস সাময়িক স্থগিত রয়েছে।');
+        return;
+      }
+
+      // অনুমোদন অপেক্ষমান থাকলে পরবর্তী পেজে যাবে না
+      if(status === 'pending'){
+        vaShowToast('⏳ আপনার কোর্সটি এখনো অনুমোদনের অপেক্ষায় রয়েছে।');
+        return;
+      }
+
+      enrolledCourseList.querySelectorAll('.enrolled-course-btn').forEach(btn=>btn.classList.toggle('active', Number(btn.dataset.idx)===idx));
 
       if(detailTitle){
         const baseName = getSubjectWiseDisplayName(course.name) || course.name || 'কোর্স';
@@ -3693,18 +3720,7 @@ html.theme-transition *::after{
         detailTitle.textContent = sectorTag ? `${baseName} (${sectorTag})` : baseName;
       }
       showCourseDetailView();
-
-      if(course.locked){
-        showCourseLockedNotice(course);
-      } else if(isDeviceBlocked){
-        showDeviceBlockedNotice();
-      } else if(status === 'expired'){
-        showExpiredNotice(course);
-      } else if(status === 'pending'){
-        showPendingNotice(course);
-      } else {
-        loadCourseClasses(course.name, course.nuDcu);
-      }
+      loadCourseClasses(course.name, course.nuDcu);
     };
     enrolledCourseList.querySelectorAll('.enrolled-course-btn').forEach(btn=>btn.addEventListener('click',()=>selectCourse(Number(btn.dataset.idx))));
   }
