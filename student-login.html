@@ -2284,7 +2284,7 @@ html.theme-transition *::after{
               <h3>আমার কোর্স</h3>
             </div>
             <div class="device-blocked-banner" id="deviceBlockedBanner" style="display:none;">
-              ⚠️ <strong>একাধিক ডিভাইসে লগইন সনাক্ত হয়েছে</strong> — আপনার কোর্স লক করা হয়েছে। আনলক করতে আমাদের সাথে যোগাযোগ করুন।
+              ⚠️ <strong>একাধিক ডিভাইসে লগইন সনাক্ত হয়েছে</strong> — আপনার সব কোর্স লক করা হয়েছে। আনলক করতে অ্যাডমিনের সাথে যোগাযোগ করুন।
             </div>
             <div class="enrolled-course-list" id="enrolledCourseList"></div>
             <div class="learning-empty" id="learningEmpty">এখনো কোনো course enrolled নেই।</div>
@@ -3600,7 +3600,13 @@ html.theme-transition *::after{
     dashboardData = data || null;
     startDashboardWatchTimeDisplay();
     const courses=getEnrolledCourses(data);
-    const isDeviceBlocked = !!data.deviceBlocked;
+    const hasMultipleDeviceLock = Array.isArray(data?.courses) && data.courses.some(c =>
+      c.locked && (
+        String(c.lockComment || '').toLowerCase().includes('multiple device') ||
+        String(c.lockComment || '').includes('একাধিক ডিভাইস')
+      )
+    );
+    const isDeviceBlocked = !!data.deviceBlocked || hasMultipleDeviceLock;
     const deviceBlockedBanner = document.getElementById('deviceBlockedBanner');
     if(deviceBlockedBanner) deviceBlockedBanner.style.display = isDeviceBlocked ? 'flex' : 'none';
     enrolledCourseList.innerHTML=''; classLearningReset();
@@ -3690,7 +3696,11 @@ html.theme-transition *::after{
       // কোর্স লকড থাকলে পরবর্তী পেজে যাবে না এবং কোনো ক্লাস লোড হবে না
       if(course.locked){
         const reason = String(course.lockComment || '').trim();
-        vaShowToast(reason ? `🔒 কোর্সটি লক করা হয়েছে: ${reason}` : '🔒 এই কোর্সটি বর্তমানে লক করা আছে। কর্তৃপক্ষের সাথে যোগাযোগ করুন।');
+        if(reason){
+          vaShowToast(reason.startsWith('⚠️') || reason.startsWith('🔒') ? reason : `🔒 কোর্সটি লক করা হয়েছে: ${reason}`);
+        } else {
+          vaShowToast('🔒 এই কোর্সটি বর্তমানে লক করা আছে। কর্তৃপক্ষের সাথে যোগাযোগ করুন।');
+        }
         return;
       }
 
@@ -3702,7 +3712,7 @@ html.theme-transition *::after{
 
       // ডিভাইস ব্লক থাকলে পরবর্তী পেজে যাবে না
       if(isDeviceBlocked){
-        vaShowToast('🔒 একাধিক ডিভাইসে লগইন সনাক্ত হওয়ায় কোর্স অ্যাক্সেস সাময়িক স্থগিত রয়েছে।');
+        vaShowToast('🔒 একাধিক ডিভাইসে লগইন সনাক্ত হওয়ায় কোর্স অ্যাক্সেস স্থগিত করা হয়েছে। আনলক করতে কর্তৃপক্ষের সাথে যোগাযোগ করুন।');
         return;
       }
 
@@ -3989,14 +3999,11 @@ html.theme-transition *::after{
         syncAndRenderDashboard(result.data);
       } else {
         const errMsg = String(result?.message || '').toLowerCase();
-        if(result?.sessionExpired || result?.deviceBlocked || errMsg.includes('session') || errMsg.includes('blocked')){
+        if(result?.sessionExpired || errMsg.includes('session expired') || errMsg.includes('not bound to this device')){
           localStorage.removeItem(LS_STUDENT_SESSION_TOKEN_KEY);
           localStorage.removeItem(LS_USER_KEY);
           showAuthUI();
           showLogin();
-          if(result?.deviceBlocked || errMsg.includes('blocked')){
-            alert('❌ ' + (result?.message || 'এই ডিভাইসটি ব্লক করা হয়েছে।'));
-          }
           return;
         }
         vaShowToast('📶 নেটওয়ার্ক সমস্যা হচ্ছে, একটু পর আবার চেষ্টা করুন।');
