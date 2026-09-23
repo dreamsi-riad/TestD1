@@ -886,19 +886,37 @@ function getEnrolledCourseKeys(){
   }catch(e){return new Set()}
 }
 
+const VA_CACHE_TTL_MS = 5 * 60 * 1000;
+function vaGetCache(key){
+  try{
+    const raw = sessionStorage.getItem(key);
+    if(!raw) return null;
+    const p = JSON.parse(raw);
+    if(Date.now() - (p.t || 0) < VA_CACHE_TTL_MS) return p.v;
+  }catch(e){}
+  return null;
+}
+function vaSetCache(key, value){
+  try{
+    sessionStorage.setItem(key, JSON.stringify({ t: Date.now(), v: value }));
+  }catch(e){}
+}
+
 async function fetchCourses(){
+  const cached = vaGetCache('va_all_course_rows');
+  if(cached && cached.length) return cached;
+
   const r=await fetch(VISION_API,{
     method:'POST',
     headers:{'Content-Type':'text/plain;charset=utf-8'},
-    body:JSON.stringify({action:'get_courses'}),
-    cache:'no-store'
+    body:JSON.stringify({action:'get_courses'})
   });
   if(!r.ok)throw Error(`Course Name: HTTP ${r.status}`);
   const j=await r.json();
   if(j.status==='error')throw Error(j.message||'Course Name API error');
 
   const used=new Set();
-  return (j.data||[]).map(row=>{
+  const list = (j.data||[]).map(row=>{
     const category=clean(row.level),name=clean(row.name);
     if(!category||!name)return null;
     return {
@@ -915,6 +933,8 @@ async function fetchCourses(){
       slug:uniqueSlug(name,category,used)
     };
   }).filter(Boolean);
+  vaSetCache('va_all_course_rows', list);
+  return list;
 }
 
 function cardHtml(c,enrolledKeys){
@@ -1145,39 +1165,28 @@ function vaShowToast(message){
 
 (function(){
   const availabilityCache = new Map();
-  let courseDataRowsPromise = null;
-
-  function loadCourseDataRows(){
-    if(!courseDataRowsPromise){
-      courseDataRowsPromise = (async ()=>{
-        const controller = new AbortController();
-        const timeout = setTimeout(()=>controller.abort(), 15000);
-        try{
-          const r = await fetch(VISION_API, {
-            method:'POST',
-            headers:{'Content-Type':'text/plain;charset=utf-8'},
-            body: JSON.stringify({ action:'get_course_availability' }),
-            cache:'no-store',
-            signal:controller.signal
-          });
-          if(!r.ok) throw Error(`Course Availability: HTTP ${r.status}`);
-          const json = await r.json();
-          if(json.status === 'error') throw Error(json.message || 'Course Availability API returned an error.');
-          return (json.data || []).map(name => ({ courseName: clean(name) }));
-        } finally {
-          clearTimeout(timeout);
-        }
-      })().catch(err=>{ courseDataRowsPromise = null; throw err; });
-    }
-    return courseDataRowsPromise;
-  }
 
   async function courseHasClassData(courseName){
+    if(!courseName) return false;
     if(availabilityCache.has(courseName)) return availabilityCache.get(courseName);
     let available = false;
     try{
-      const rows = await loadCourseDataRows();
-      available = rows.some(r => normalize(r.courseName) === normalize(courseName));
+      const controller = new AbortController();
+      const timeout = setTimeout(()=>controller.abort(), 12000);
+      try{
+        const r = await fetch(VISION_API, {
+          method:'POST',
+          headers:{'Content-Type':'text/plain;charset=utf-8'},
+          body: JSON.stringify({ action:'get_course_availability', courseName }),
+          signal:controller.signal
+        });
+        if(r.ok){
+          const json = await r.json();
+          available = json.status === 'ok' && json.available === true;
+        }
+      } finally {
+        clearTimeout(timeout);
+      }
     }catch(e){
       console.error('Class availability check failed:', e);
     }
