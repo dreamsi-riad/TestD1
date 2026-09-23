@@ -1013,6 +1013,186 @@ header.nav{
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 
+/* ===== লাইভ ক্লাস কার্ড ও জুম প্লেয়ার ===== */
+.live-class-card{
+  margin: 8px 0 20px;
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.06) 0%, rgba(37, 99, 235, 0.08) 100%);
+  border: 1.5px solid rgba(239, 68, 68, 0.25);
+  border-radius: 16px;
+  padding: 16px 20px;
+  box-shadow: 0 8px 24px rgba(239, 68, 68, 0.08);
+  transition: all 0.3s ease;
+}
+.live-class-head{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.live-pulse-badge{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #FEF2F2;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #DC2626;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  padding: 4px 12px;
+  border-radius: 999px;
+  position: relative;
+}
+.live-pulse-ring{
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #EF4444;
+  position: relative;
+}
+.live-pulse-ring::after{
+  content: "";
+  position: absolute;
+  inset: -3px;
+  border-radius: 50%;
+  background: rgba(239, 68, 68, 0.4);
+  animation: livePing 1.6s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+@keyframes livePing{
+  75%, 100%{ transform: scale(2.2); opacity: 0; }
+}
+.live-tag-online{
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  font-weight: 600;
+}
+.live-class-title{
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.live-class-desc{
+  font-size: 13.5px;
+  color: var(--ink-soft);
+  margin-bottom: 14px;
+}
+.live-class-actions{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+.btn-join-live{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 14.5px;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
+  transition: all 0.2s ease;
+}
+.btn-join-live:hover{
+  transform: translateY(-1.5px);
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.45);
+}
+.btn-join-zoom-app{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  background: #FFFFFF;
+  color: #2563EB;
+  border: 1.5px solid rgba(37, 99, 235, 0.25);
+  font-family: inherit;
+  font-size: 13.5px;
+  font-weight: 600;
+  padding: 9px 16px;
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+.btn-join-zoom-app:hover{
+  background: #EFF6FF;
+  border-color: #2563EB;
+}
+
+/* জুম এমবেডেড কন্টেইনার */
+.zoom-embed-container{
+  margin: 10px 0 24px;
+  background: #0B1120;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+  box-shadow: 0 16px 44px rgba(15, 23, 42, 0.35);
+}
+.zoom-embed-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: rgba(15, 23, 42, 0.95);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+.zeh-left{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+}
+.live-pulse-dot{
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #EF4444;
+  box-shadow: 0 0 10px #EF4444;
+}
+.btn-leave-zoom{
+  background: rgba(239, 68, 68, 0.2);
+  color: #FCA5A5;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.btn-leave-zoom:hover{
+  background: #EF4444;
+  color: #FFFFFF;
+}
+.zoom-meeting-mount{
+  width: 100%;
+  min-height: 480px;
+  height: 70vh;
+  max-height: 780px;
+  position: relative;
+  background: #0F172A;
+}
+@media(max-width: 640px){
+  .zoom-meeting-mount{
+    min-height: 380px;
+    height: 60vh;
+  }
+  .live-class-card{
+    padding: 14px 14px;
+  }
+  .btn-join-live, .btn-join-zoom-app{
+    width: 100%;
+  }
+}
+
 /* ভিডিও প্লেয়ার র‍্যাপার */
 .class-player-wrap{
   position: relative;
@@ -1980,9 +2160,24 @@ html.theme-transition *::after{
   color:#F8FAFC;
 }
 
-[data-theme="dark"] footer{
-  background:linear-gradient(180deg,#070B14 0%,#04060B 100%);
-  border-top:1px solid rgba(255,255,255,0.06);
+[data-theme="dark"] .live-class-card{
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.12) 0%, rgba(37, 99, 235, 0.14) 100%);
+  border-color: rgba(239, 68, 68, 0.35);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+[data-theme="dark"] .live-pulse-badge{
+  background: rgba(239, 68, 68, 0.2);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #FCA5A5;
+}
+[data-theme="dark"] .btn-join-zoom-app{
+  background: #1E293B;
+  color: #60A5FA;
+  border-color: rgba(96, 165, 250, 0.3);
+}
+[data-theme="dark"] .btn-join-zoom-app:hover{
+  background: #273549;
+  border-color: #60A5FA;
 }
 </style>
 </head>
@@ -2299,6 +2494,51 @@ html.theme-transition *::after{
               <h3 class="detail-title" id="detailTitle">—</h3>
             </div>
             <div id="courseLearningPanel" style="display:none;">
+              <!-- Live Zoom Class Section -->
+              <div class="live-class-card" id="liveClassCard" style="display:none;">
+                <div class="live-class-head">
+                  <div class="live-pulse-badge">
+                    <span class="live-pulse-ring"></span>
+                    <span>LIVE CLASS</span>
+                  </div>
+                  <span class="live-tag-online">জুম লাইভ সেশন</span>
+                </div>
+                <div class="live-class-body">
+                  <h4 class="live-class-title" id="liveClassTitle">আজকের লাইভ ক্লাস শুরু হয়েছে</h4>
+                  <p class="live-class-desc">ওয়েবসাইটের ভেতর সরাসরি যুক্ত হতে নিচের বাটনে ক্লিক করুন।</p>
+                  <div class="live-class-actions">
+                    <button type="button" class="btn-join-live" id="btnJoinLiveWeb">
+                      <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                        <path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11l-4 4z"/>
+                      </svg>
+                      <span>Join Live on Website</span>
+                    </button>
+                    <a href="#" target="_blank" rel="noopener noreferrer" class="btn-join-zoom-app" id="btnJoinZoomApp">
+                      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                        <polyline points="15 3 21 3 21 9"></polyline>
+                        <line x1="10" y1="14" x2="21" y2="3"></line>
+                      </svg>
+                      <span>Open in Zoom App</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Zoom Web Meeting Embed Area -->
+              <div class="zoom-embed-container" id="zoomEmbedContainer" style="display:none;">
+                <div class="zoom-embed-header">
+                  <div class="zeh-left">
+                    <span class="live-pulse-dot"></span>
+                    <strong id="zoomEmbedHeading">লাইভ ক্লাস চলছে</strong>
+                  </div>
+                  <button type="button" class="btn-leave-zoom" id="btnLeaveZoom">
+                    ✕ মিটিং থেকে বের হন
+                  </button>
+                </div>
+                <div id="zoomMeetingRoot" class="zoom-meeting-mount"></div>
+              </div>
+
               <div class="filter-row" id="filterRow" style="display:none;">
                 <div class="filter-select-wrap">
                   <select id="subjectSelect" class="filter-select" aria-label="Subject"></select>
@@ -3383,9 +3623,193 @@ html.theme-transition *::after{
     return subjectRows;
   }
 
+  // ============================================================
+  // ZOOM LIVE CLASS MANAGER (Web SDK Component View)
+  // ============================================================
+
+  let activeZoomClient = null;
+  let currentZoomConfig = null;
+  let zoomSdkLoading = false;
+
+  function hideLiveClassBanner() {
+    const liveCard = document.getElementById('liveClassCard');
+    if (liveCard) liveCard.style.display = 'none';
+  }
+
+  function loadScriptAsync(src) {
+    return new Promise((resolve, reject) => {
+      if (document.querySelector(`script[src="${src}"]`)) return resolve();
+      const s = document.createElement('script');
+      s.src = src;
+      s.async = true;
+      s.onload = () => resolve();
+      s.onerror = () => reject(new Error('Failed to load: ' + src));
+      document.head.appendChild(s);
+    });
+  }
+
+  function loadStyleAsync(href) {
+    if (document.querySelector(`link[href="${href}"]`)) return;
+    const l = document.createElement('link');
+    l.rel = 'stylesheet';
+    l.href = href;
+    document.head.appendChild(l);
+  }
+
+  async function ensureZoomSdkLoaded() {
+    if (window.ZoomMtgEmbedded) return true;
+    if (zoomSdkLoading) {
+      while (zoomSdkLoading) {
+        await new Promise(r => setTimeout(r, 200));
+      }
+      return !!window.ZoomMtgEmbedded;
+    }
+    zoomSdkLoading = true;
+    try {
+      loadStyleAsync('https://source.zoom.us/3.8.5/css/bootstrap.css');
+      loadStyleAsync('https://source.zoom.us/3.8.5/css/react-select.css');
+      await loadScriptAsync('https://source.zoom.us/3.8.5/lib/vendor/react.min.js');
+      await loadScriptAsync('https://source.zoom.us/3.8.5/lib/vendor/react-dom.min.js');
+      await loadScriptAsync('https://source.zoom.us/3.8.5/lib/vendor/redux.min.js');
+      await loadScriptAsync('https://source.zoom.us/3.8.5/lib/vendor/redux-thunk.min.js');
+      await loadScriptAsync('https://source.zoom.us/3.8.5/lib/vendor/lodash.min.js');
+      await loadScriptAsync('https://source.zoom.us/zoom-meeting-embedded-3.8.5.min.js');
+      return !!window.ZoomMtgEmbedded;
+    } catch (err) {
+      console.error('Error loading Zoom Web SDK:', err);
+      return false;
+    } finally {
+      zoomSdkLoading = false;
+    }
+  }
+
+  async function checkAndShowLiveClass(courseName, sector) {
+    hideLiveClassBanner();
+    currentZoomConfig = null;
+    if (!courseName) return;
+
+    try {
+      const res = await callApi({
+        action: 'get_zoom_signature',
+        courseName: courseName,
+        nuDcu: sector || ''
+      });
+
+      if (res && res.status === 'ok' && res.meetingNumber) {
+        currentZoomConfig = res;
+        const liveCard = document.getElementById('liveClassCard');
+        const titleEl = document.getElementById('liveClassTitle');
+        const btnApp = document.getElementById('btnJoinZoomApp');
+
+        if (titleEl) {
+          titleEl.textContent = `আজকের লাইভ ক্লাস (${escapeHtml(courseName)})`;
+        }
+
+        if (btnApp) {
+          const passParam = res.passcode ? `&pwd=${encodeURIComponent(res.passcode)}` : '';
+          btnApp.href = `https://zoom.us/j/${encodeURIComponent(res.meetingNumber)}?${passParam.replace(/^&/, '')}`;
+        }
+
+        if (liveCard) {
+          liveCard.style.display = 'block';
+        }
+      }
+    } catch (err) {
+      // Quietly ignore if live class is not configured
+    }
+  }
+
+  async function joinLiveMeetingOnWeb() {
+    if (!currentZoomConfig) {
+      alert('লাইভ ক্লাসের তথ্য পাওয়া যায়নি।');
+      return;
+    }
+
+    const joinBtn = document.getElementById('btnJoinLiveWeb');
+    const origHtml = joinBtn ? joinBtn.innerHTML : '';
+    if (joinBtn) {
+      joinBtn.disabled = true;
+      joinBtn.innerHTML = '<span>⏳ জুম লোড হচ্ছে...</span>';
+    }
+
+    // Stop recorded video player if running
+    stopClassPlayer();
+
+    const embedContainer = document.getElementById('zoomEmbedContainer');
+    const meetingRoot = document.getElementById('zoomMeetingRoot');
+
+    try {
+      const loaded = await ensureZoomSdkLoaded();
+      if (!loaded || !window.ZoomMtgEmbedded) {
+        throw new Error('জুম প্লেয়ার লোড হতে পারেনি। অনুগ্রহ করে "Open in Zoom App" বাটন দিয়ে জুম অ্যাপে যুক্ত হন।');
+      }
+
+      if (embedContainer) embedContainer.style.display = 'block';
+      embedContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      if (!activeZoomClient) {
+        activeZoomClient = window.ZoomMtgEmbedded.createClient();
+        await activeZoomClient.init({
+          zoomAppRoot: meetingRoot,
+          language: 'en-US',
+          customize: {
+            meetingInfo: ['topic', 'host'],
+            toolbar: {
+              buttons: [
+                { name: 'share-screen', dir: 'left' }
+              ]
+            }
+          }
+        });
+      }
+
+      await activeZoomClient.join({
+        signature: currentZoomConfig.signature,
+        sdkKey: currentZoomConfig.sdkKey,
+        meetingNumber: currentZoomConfig.meetingNumber,
+        password: currentZoomConfig.passcode || '',
+        userName: currentZoomConfig.userName || 'Student',
+        userEmail: currentZoomConfig.userEmail || ''
+      });
+
+    } catch (err) {
+      console.error('Zoom join error:', err);
+      alert('জুমে যুক্ত হতে সমস্যা: ' + (err.message || 'দয়া করে "Open in Zoom App" দিয়ে সরাসরি জুম অ্যাপে যুক্ত হন।'));
+    } finally {
+      if (joinBtn) {
+        joinBtn.disabled = false;
+        joinBtn.innerHTML = origHtml;
+      }
+    }
+  }
+
+  async function leaveLiveMeeting() {
+    if (activeZoomClient) {
+      try {
+        await activeZoomClient.leaveMeeting();
+      } catch (e) {}
+    }
+    activeZoomClient = null;
+    const embedContainer = document.getElementById('zoomEmbedContainer');
+    if (embedContainer) embedContainer.style.display = 'none';
+    const meetingRoot = document.getElementById('zoomMeetingRoot');
+    if (meetingRoot) meetingRoot.innerHTML = '';
+  }
+
+  const btnJoinLiveWeb = document.getElementById('btnJoinLiveWeb');
+  if (btnJoinLiveWeb) {
+    btnJoinLiveWeb.addEventListener('click', joinLiveMeetingOnWeb);
+  }
+
+  const btnLeaveZoom = document.getElementById('btnLeaveZoom');
+  if (btnLeaveZoom) {
+    btnLeaveZoom.addEventListener('click', leaveLiveMeeting);
+  }
+
   async function loadCourseClasses(courseName, sector){
     classLearningReset();
     if(!courseName) return;
+    checkAndShowLiveClass(courseName, sector);
     courseLearningPanel.style.display='block';
     filterRow.style.display='flex';
     subjectSelect.disabled = true;
@@ -3475,6 +3899,8 @@ html.theme-transition *::after{
   }
 
   function classLearningReset(){
+    leaveLiveMeeting();
+    hideLiveClassBanner();
     if(!courseLearningPanel) return;
     courseLearningPanel.style.display='none';
     filterRow.style.display='none';
