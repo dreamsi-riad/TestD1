@@ -921,17 +921,35 @@ function initials(name){
   return esc(clean(name).slice(0,1).toUpperCase()||'?');
 }
 
+const VA_CACHE_TTL_MS = 5 * 60 * 1000;
+function vaGetCache(key){
+  try{
+    const raw = sessionStorage.getItem(key);
+    if(!raw) return null;
+    const p = JSON.parse(raw);
+    if(Date.now() - (p.t || 0) < VA_CACHE_TTL_MS) return p.v;
+  }catch(e){}
+  return null;
+}
+function vaSetCache(key, value){
+  try{
+    sessionStorage.setItem(key, JSON.stringify({ t: Date.now(), v: value }));
+  }catch(e){}
+}
+
 async function fetchTeachers(){
+  const cached = vaGetCache('va_teachers_list');
+  if(cached && cached.length) return cached;
+
   const r=await fetch(VISION_API,{
     method:'POST',
     headers:{'Content-Type':'text/plain;charset=utf-8'},
-    body:JSON.stringify({action:'get_teachers'}),
-    cache:'no-store'
+    body:JSON.stringify({action:'get_teachers'})
   });
   if(!r.ok)throw Error(`Teachers: HTTP ${r.status}`);
   const j=await r.json();
   if(j.status==='error')throw Error(j.message||'Teachers API error');
-  return (j.data||[]).map(row=>{
+  const list = (j.data||[]).map(row=>{
     const name=clean(row.name);
     if(!name)return null;
     return{
@@ -941,21 +959,25 @@ async function fetchTeachers(){
       designation:clean(row.designation)
     };
   }).filter(Boolean);
+  vaSetCache('va_teachers_list', list);
+  return list;
 }
 
 async function fetchCourses(){
+  const cached = vaGetCache('va_all_course_rows');
+  if(cached && cached.length) return cached;
+
   const r=await fetch(VISION_API,{
     method:'POST',
     headers:{'Content-Type':'text/plain;charset=utf-8'},
-    body:JSON.stringify({action:'get_courses'}),
-    cache:'no-store'
+    body:JSON.stringify({action:'get_courses'})
   });
   if(!r.ok)throw Error(`Course Name: HTTP ${r.status}`);
   const j=await r.json();
   if(j.status==='error')throw Error(j.message||'Course Name API error');
 
   const used=new Set();
-  return (j.data||[]).map(row=>{
+  const list = (j.data||[]).map(row=>{
     const category=clean(row.level),name=clean(row.name);
     if(!category||!name)return null;
     return{
@@ -970,6 +992,8 @@ async function fetchCourses(){
       slug:''
     };
   }).filter(Boolean).map(c=>({...c,slug:uniqueSlug(c.name,c.category,used)}));
+  vaSetCache('va_all_course_rows', list);
+  return list;
 }
 
 let allTeachers=[];
