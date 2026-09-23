@@ -1665,17 +1665,36 @@
                 : `${SW_COURSE_PREFIX}${row.level}::${row.department || ''}::${row.year || ''}::${row.subject}`;
         }
 
+        // ৫ মিনিটের লাইটওয়েট সেশন ক্যাশিং (পেজ রিলোড ও নেভিগেশনে বারবার D1 ডাটাবেজ হিট বন্ধ করতে)
+        const VA_CACHE_TTL_MS = 5 * 60 * 1000;
+        function vaGetCache(key){
+            try{
+                const raw = sessionStorage.getItem(key);
+                if(!raw) return null;
+                const p = JSON.parse(raw);
+                if(Date.now() - (p.t || 0) < VA_CACHE_TTL_MS) return p.v;
+            }catch(e){}
+            return null;
+        }
+        function vaSetCache(key, value){
+            try{
+                sessionStorage.setItem(key, JSON.stringify({ t: Date.now(), v: value }));
+            }catch(e){}
+        }
+
         async function getAllSubjectWiseRows() {
+            const cached = vaGetCache('va_sw_courses');
+            if(cached && cached.length) return cached;
+
             const response = await fetch(VISION_API, {
                 method: 'POST',
                 headers: {'Content-Type': 'text/plain;charset=utf-8'},
-                body: JSON.stringify({action: 'get_subjectwise_courses'}),
-                cache: 'no-store'
+                body: JSON.stringify({action: 'get_subjectwise_courses'})
             });
             if(!response.ok) throw Error(`Subjectwise Course Name: HTTP ${response.status}`);
             const json = await response.json();
             if(json.status === 'error') throw Error(json.message || 'Subjectwise Course Name API error');
-            return (json.data || []).map(row => ({
+            const data = (json.data || []).map(row => ({
                 level: clean(row.level),
                 year: clean(row.year),
                 department: clean(row.department),
@@ -1686,37 +1705,45 @@
                 image: normalizeImageUrl(row.imageUrl ?? row.image_url),
                 nuDcu: clean(row.nuDcu ?? row.nu_dcu).toUpperCase()
             })).filter(row => row.level && row.subject);
+            vaSetCache('va_sw_courses', data);
+            return data;
         }
 
         async function getAllTeachers() {
+            const cached = vaGetCache('va_teachers_list');
+            if(cached && cached.length) return cached;
+
             const response = await fetch(VISION_API, {
                 method: 'POST',
                 headers: {'Content-Type': 'text/plain;charset=utf-8'},
-                body: JSON.stringify({action: 'get_teachers'}),
-                cache: 'no-store'
+                body: JSON.stringify({action: 'get_teachers'})
             });
             if(!response.ok) throw Error(`Teachers: HTTP ${response.status}`);
             const json = await response.json();
             if(json.status === 'error') throw Error(json.message || 'Teachers API error');
-            return (json.data || []).map(row => {
+            const data = (json.data || []).map(row => {
                 const name = clean(row.name);
                 if(!name) return null;
                 return {name, photo: normalizeImageUrl(row.photo), subject: clean(row.subject), designation: clean(row.designation)};
             }).filter(Boolean);
+            vaSetCache('va_teachers_list', data);
+            return data;
         }
 
         async function getAllCourses() {
+            const cached = vaGetCache('va_all_course_details');
+            if(cached && cached.length) return cached;
+
             const response = await fetch(VISION_API, {
                 method: 'POST',
                 headers: {'Content-Type': 'text/plain;charset=utf-8'},
-                body: JSON.stringify({action: 'get_courses'}),
-                cache: 'no-store'
+                body: JSON.stringify({action: 'get_courses'})
             });
             if(!response.ok) throw Error(`Course Name: HTTP ${response.status}`);
             const json = await response.json();
             if(json.status === 'error') throw Error(json.message || 'Course Name API error');
             const used = new Set();
-            return (json.data || []).map(row => {
+            const data = (json.data || []).map(row => {
                 const level = clean(row.level), name = clean(row.name);
                 if(!level || !name) return null;
                 return {
@@ -1734,6 +1761,8 @@
                     slug: ''
                 };
             }).filter(Boolean).map(c => ({...c, slug: uniqueSlug(c.name, c.category, used)}));
+            vaSetCache('va_all_course_details', data);
+            return data;
         }
 
         function renderCourse(course, teachers) {
