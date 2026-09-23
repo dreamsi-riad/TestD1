@@ -2694,6 +2694,23 @@ const VISION_API = "https://late-forest-4748.dreamsicreation.workers.dev";
 // punctuation (dot, comma, hyphen ইত্যাদি) বাদ দিয়ে শুধু মূল শব্দ দিয়ে তুলনা করে।
 const normalizeForMatch = v => String(v ?? '').trim().toLowerCase().replace(/[^a-z0-9\u0980-\u09ff]+/g, ' ').replace(/\s+/g, ' ').trim();
 
+// ৫ মিনিটের লাইটওয়েট সেশন ক্যাশিং (পেজ রিলোড ও নেভিগেশনে বারবার D1 ডাটাবেজ হিট বন্ধ করতে)
+const VA_CACHE_TTL_MS = 5 * 60 * 1000;
+function vaGetCache(key){
+  try{
+    const raw = sessionStorage.getItem(key);
+    if(!raw) return null;
+    const p = JSON.parse(raw);
+    if(Date.now() - (p.t || 0) < VA_CACHE_TTL_MS) return p.v;
+  }catch(e){}
+  return null;
+}
+function vaSetCache(key, value){
+  try{
+    sessionStorage.setItem(key, JSON.stringify({ t: Date.now(), v: value }));
+  }catch(e){}
+}
+
 // মোবাইল নেভবার মেনু খোলা/বন্ধ করা
 document.getElementById('burgerBtn').addEventListener('click', () => {
   document.getElementById('navLinks').classList.toggle('open');
@@ -2797,10 +2814,32 @@ document.querySelectorAll('#navLinks a').forEach(link => {
     if(x.includes('drive.google.com')&&i) return `https://drive.google.com/thumbnail?id=${i[1]}&sz=w1000`;
     return x;
   }
+  function renderTeachersList(teachers){
+    if(!teachers || !teachers.length){
+      teacherGrid.innerHTML='<div class="teacher-data-state">এখনো কোনো শিক্ষক তথ্য পাওয়া যায়নি।</div>';
+      return;
+    }
+    teacherGrid.innerHTML=teachers.map(t=>`
+      <a class="teacher-card" href="teachers.html">
+        <img class="teacher-photo" src="${esc(t.photo)}" alt="${esc(t.name)}" loading="lazy">
+        <div class="teacher-info">
+          <div class="name">${esc(t.name)}</div>
+          <div class="subject">${esc(t.subject)}</div>
+        </div>
+        <svg class="teacher-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+      </a>
+    `).join('');
+  }
+
   async function loadTeachers(){
+    const cached = vaGetCache('va_teachers_list');
+    if(cached && cached.length){
+      renderTeachersList(cached);
+      return;
+    }
     teacherGrid.innerHTML='<div class="teacher-data-state">শিক্ষকবৃন্দের তথ্য লোড হচ্ছে...</div>';
     try{
-      const r=await fetch(VISION_API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'get_teachers'}),cache:'no-store'});
+      const r=await fetch(VISION_API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'get_teachers'})});
       if(!r.ok) throw Error(`Teachers: HTTP ${r.status}`);
       const j=await r.json();
       if(j.status==='error') throw Error(j.message||'Teachers API error');
@@ -2810,21 +2849,8 @@ document.querySelectorAll('#navLinks a').forEach(link => {
         return {name, photo:imageUrl(row.photo), subject:clean(row.subject)};
       }).filter(Boolean);
 
-      if(!teachers.length){
-        teacherGrid.innerHTML='<div class="teacher-data-state">এখনো কোনো শিক্ষক তথ্য পাওয়া যায়নি।</div>';
-        return;
-      }
-
-      teacherGrid.innerHTML=teachers.map(t=>`
-        <a class="teacher-card" href="teachers.html">
-          <img class="teacher-photo" src="${esc(t.photo)}" alt="${esc(t.name)}" loading="lazy">
-          <div class="teacher-info">
-            <div class="name">${esc(t.name)}</div>
-            <div class="subject">${esc(t.subject)}</div>
-          </div>
-          <svg class="teacher-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
-        </a>
-      `).join('');
+      vaSetCache('va_teachers_list', teachers);
+      renderTeachersList(teachers);
     }catch(e){
       console.error(e);
       teacherGrid.innerHTML='<div class="teacher-data-state">শিক্ষকদের তথ্য লোড করা যায়নি। ইন্টারনেট কানেকশন চেক করুন।</div>';
@@ -2919,8 +2945,14 @@ document.querySelectorAll('#navLinks a').forEach(link => {
   }
 
   async function loadGallery(){
+    const cached = vaGetCache('va_gallery_data');
+    if(cached){
+      renderGalleryImages(cached.images || []);
+      renderFeedbackImages(cached.feedbackImages || []);
+      return;
+    }
     try{
-      const r = await fetch(VISION_API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'get_gallery'}),cache:'no-store'});
+      const r = await fetch(VISION_API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'get_gallery'})});
       if(!r.ok) throw Error(`Gallery: HTTP ${r.status}`);
       const j = await r.json();
       if(j.status === 'error') throw Error(j.message || 'Gallery API error');
@@ -2930,6 +2962,7 @@ document.querySelectorAll('#navLinks a').forEach(link => {
       const images = Array.isArray(data) ? data.filter(Boolean) : (Array.isArray(data?.images) ? data.images.filter(Boolean) : []);
       const feedbackImages = Array.isArray(data?.feedbackImages) ? data.feedbackImages.filter(Boolean) : [];
 
+      vaSetCache('va_gallery_data', { images, feedbackImages });
       renderGalleryImages(images);
       renderFeedbackImages(feedbackImages);
     }catch(e){
@@ -3002,11 +3035,14 @@ function vaShowToast(message){
   }
   const enrolledCourseNames = getEnrolledCourseNames();
   async function fetchAllCourseRows(){
-    const r=await fetch(VISION_API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'get_courses'}),cache:'no-store'});
+    const cached = vaGetCache('va_all_course_rows');
+    if(cached && cached.length) return cached;
+
+    const r=await fetch(VISION_API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'get_courses'})});
     if(!r.ok)throw Error(`Course Name: HTTP ${r.status}`);
     const j=await r.json();
     if(j.status==='error') throw Error(j.message||'Course Name API error');
-    return (j.data||[]).map(row=>{
+    const courses = (j.data||[]).map(row=>{
       const level=clean(row.level), name=clean(row.name);
       if(!level||!name) return null;
       return {
@@ -3026,6 +3062,8 @@ function vaShowToast(message){
         topThis: ['yes','true','1'].includes(String(row.topThis ?? '').trim().toLowerCase()) || row.topThis === true
       };
     }).filter(Boolean);
+    vaSetCache('va_all_course_rows', courses);
+    return courses;
   }
   function categoryHtml(cat,count){const m=CATEGORY_META[cat]||{color:'#5B8FBF',bg:'#EEF4F8',icon:'<circle cx="12" cy="12" r="8"/>'};return `<a href="All_Courses.html?level=${encodeURIComponent(cat)}" class="cat-card" data-cat="${esc(cat)}" style="--cat-color:${m.color}"><span class="cat-icon" style="background:${m.bg}"><svg viewBox="0 0 24 24" fill="none" stroke="${m.color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${m.icon}</svg></span><span class="cat-text"><b>${esc(cat)}</b><span>${toBn(count)}টি কোর্স</span></span></a>`}
   // tag ঘরে "Subject Wise" বা "Improvement" লেখা থাকলে এই কার্ড normal course-details.html
@@ -3175,47 +3213,29 @@ function vaShowToast(message){
 (function(){
   const clean = v => String(v ?? '').trim();
   const availabilityCache = new Map();
-  let courseDataRowsPromise = null;
 
-  // পুরো "course_data" টেবিল একবারই fetch করে cache রাখা হয় (প্রতিটা কোর্সের জন্য
-  // আলাদা করে fetch করার দরকার নেই, কারণ এখন সব কোর্সের class data একই টেবিলে)।
-  function loadCourseDataRows(){
-    if(!courseDataRowsPromise){
-      courseDataRowsPromise = (async ()=>{
-        const controller = new AbortController();
-        const timeout = setTimeout(()=>controller.abort(), 15000);
-        try{
-          // NOTE: get_course_data is now session-protected (student login
-          // required) and also returns full subject/chapter/url/pdfUrl for
-          // every course. The homepage only needs a yes/no "does this course
-          // have materials yet" answer, so it uses the lightweight, public,
-          // un-authenticated get_course_availability action instead, which
-          // returns nothing but a flat list of course names.
-          const r = await fetch(VISION_API, {
-            method:'POST',
-            headers:{'Content-Type':'text/plain;charset=utf-8'},
-            body: JSON.stringify({ action:'get_course_availability' }),
-            cache:'no-store',
-            signal:controller.signal
-          });
-          if(!r.ok) throw Error(`Course Availability: HTTP ${r.status}`);
-          const json = await r.json();
-          if(json.status === 'error') throw Error(json.message || 'Course Availability API returned an error.');
-          return (json.data || []).map(name => ({ courseName: clean(name) }));
-        } finally {
-          clearTimeout(timeout);
-        }
-      })().catch(err=>{ courseDataRowsPromise = null; throw err; });
-    }
-    return courseDataRowsPromise;
-  }
-
+  // ৭টি টেবিল স্ক্যান না করে সরাসরি কাঙ্ক্ষিত ১টি কোর্সের নাম পাঠিয়ে যাচাই করা
   async function courseHasClassData(courseName){
+    if(!courseName) return false;
     if(availabilityCache.has(courseName)) return availabilityCache.get(courseName);
     let available = false;
     try{
-      const rows = await loadCourseDataRows();
-      available = rows.some(r => normalizeForMatch(r.courseName) === normalizeForMatch(courseName));
+      const controller = new AbortController();
+      const timeout = setTimeout(()=>controller.abort(), 12000);
+      try{
+        const r = await fetch(VISION_API, {
+          method:'POST',
+          headers:{'Content-Type':'text/plain;charset=utf-8'},
+          body: JSON.stringify({ action:'get_course_availability', courseName }),
+          signal:controller.signal
+        });
+        if(r.ok){
+          const json = await r.json();
+          available = json.status === 'ok' && json.available === true;
+        }
+      } finally {
+        clearTimeout(timeout);
+      }
     }catch(e){
       console.error('Class availability check failed:', e);
     }
@@ -3301,16 +3321,18 @@ function vaShowToast(message){
   }
 
   async function fetchVideos(){
+    const cached = vaGetCache('va_free_videos');
+    if(cached && cached.length) return cached;
+
     const r = await fetch(VISION_API, {
       method:'POST',
       headers:{'Content-Type':'text/plain;charset=utf-8'},
-      body: JSON.stringify({ action:'get_free_classes' }),
-      cache:'no-store'
+      body: JSON.stringify({ action:'get_free_classes' })
     });
     if(!r.ok) throw Error(`Free Class: HTTP ${r.status}`);
     const j = await r.json();
     if(j.status === 'error') throw Error(j.message || 'Free Class API error');
-    return (j.data || []).map(row => {
+    const list = (j.data || []).map(row => {
       const category = clean(row.category);
       const title = clean(row.title);
       const url = clean(row.url);
@@ -3318,6 +3340,8 @@ function vaShowToast(message){
       if(!category || !title || !id) return null;
       return {category, title, url, id};
     }).filter(Boolean);
+    vaSetCache('va_free_videos', list);
+    return list;
   }
 
   function renderPills(){
