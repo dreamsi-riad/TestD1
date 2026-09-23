@@ -1105,26 +1105,6 @@ header.nav{
   transform: translateY(-1.5px);
   box-shadow: 0 6px 20px rgba(239, 68, 68, 0.45);
 }
-.btn-join-zoom-app{
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  background: #FFFFFF;
-  color: #2563EB;
-  border: 1.5px solid rgba(37, 99, 235, 0.25);
-  font-family: inherit;
-  font-size: 13.5px;
-  font-weight: 600;
-  padding: 9px 16px;
-  border-radius: 12px;
-  text-decoration: none;
-  transition: all 0.2s ease;
-}
-.btn-join-zoom-app:hover{
-  background: #EFF6FF;
-  border-color: #2563EB;
-}
 
 /* জুম এমবেডেড কন্টেইনার */
 .zoom-embed-container{
@@ -1188,7 +1168,7 @@ header.nav{
   .live-class-card{
     padding: 14px 14px;
   }
-  .btn-join-live, .btn-join-zoom-app{
+  .btn-join-live{
     width: 100%;
   }
 }
@@ -2170,15 +2150,6 @@ html.theme-transition *::after{
   border-color: rgba(239, 68, 68, 0.4);
   color: #FCA5A5;
 }
-[data-theme="dark"] .btn-join-zoom-app{
-  background: #1E293B;
-  color: #60A5FA;
-  border-color: rgba(96, 165, 250, 0.3);
-}
-[data-theme="dark"] .btn-join-zoom-app:hover{
-  background: #273549;
-  border-color: #60A5FA;
-}
 </style>
 </head>
 <body>
@@ -2513,14 +2484,6 @@ html.theme-transition *::after{
                       </svg>
                       <span>Join Live on Website</span>
                     </button>
-                    <a href="#" target="_blank" rel="noopener noreferrer" class="btn-join-zoom-app" id="btnJoinZoomApp">
-                      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                        <polyline points="15 3 21 3 21 9"></polyline>
-                        <line x1="10" y1="14" x2="21" y2="3"></line>
-                      </svg>
-                      <span>Open in Zoom App</span>
-                    </a>
                   </div>
                 </div>
               </div>
@@ -3695,27 +3658,25 @@ html.theme-transition *::after{
         nuDcu: sector || ''
       });
 
+      console.log('[Live Class Check Result]:', { course: courseName, sector: sector, response: res });
+
       if (res && res.status === 'ok' && res.meetingNumber) {
         currentZoomConfig = res;
         const liveCard = document.getElementById('liveClassCard');
         const titleEl = document.getElementById('liveClassTitle');
-        const btnApp = document.getElementById('btnJoinZoomApp');
 
         if (titleEl) {
           titleEl.textContent = `আজকের লাইভ ক্লাস (${escapeHtml(courseName)})`;
         }
 
-        if (btnApp) {
-          const passParam = res.passcode ? `&pwd=${encodeURIComponent(res.passcode)}` : '';
-          btnApp.href = `https://zoom.us/j/${encodeURIComponent(res.meetingNumber)}?${passParam.replace(/^&/, '')}`;
-        }
-
         if (liveCard) {
           liveCard.style.display = 'block';
         }
+      } else if (res && res.status === 'error') {
+        console.warn('[Live Class Notice]:', res.message || 'লাইভ ক্লাস কনফিগার করা নেই।');
       }
     } catch (err) {
-      // Quietly ignore if live class is not configured
+      console.warn('[Live Class Error]:', err);
     }
   }
 
