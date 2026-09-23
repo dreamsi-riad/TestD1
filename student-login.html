@@ -4051,13 +4051,11 @@ html.theme-transition *::after{
       if(sw) return true;
       const response = await fetch(FORM_ENDPOINT, {
         method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'},
-        body: JSON.stringify({ action:'get_course_availability' }),
-        cache:'no-store'
+        body: JSON.stringify({ action:'get_course_availability', courseName })
       });
       if(!response.ok) return false;
       const json = await response.json();
-      if(json.status !== 'ok' || !Array.isArray(json.data)) return false;
-      return json.data.some(name => normalizeForMatch(name) === normalizeForMatch(courseName));
+      return json.status === 'ok' && json.available === true;
     }catch(err){
       console.error('Course availability check failed:', err);
       return false;
