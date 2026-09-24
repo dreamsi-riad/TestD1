@@ -4249,8 +4249,10 @@ html.theme-transition *::after{
 
     const currentUserForSync = getCurrentUserMobile();
     if(currentUserForSync && currentWatchGetWt){
-      const currentData = JSON.parse(localStorage.getItem(LS_USER_KEY) || 'null');
-      if(currentData) syncPendingWatchTime(currentData);
+      try {
+        const currentData = JSON.parse(localStorage.getItem(LS_USER_KEY) || 'null');
+        if(currentData) syncPendingWatchTime(currentData);
+      } catch(e){}
     }
 
     const subjectSelectWrap = subjectSelect.closest('.filter-select-wrap');
