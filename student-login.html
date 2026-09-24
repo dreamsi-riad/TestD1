@@ -791,6 +791,148 @@ header.nav{
   letter-spacing: 0.3px;
 }
 
+/* Routine Button on Enrolled Course Card */
+.ecb-routine-btn{
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 11px;
+  border-radius: 999px;
+  font-family: 'Baloo Da 2', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+  color: #1D4ED8;
+  border: 1px solid #BFDBFE;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.12);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  -webkit-user-select: none;
+}
+.ecb-routine-btn:hover{
+  background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
+  color: #ffffff;
+  border-color: #1D4ED8;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.28);
+  transform: translateY(-1.5px) scale(1.03);
+}
+.ecb-routine-btn:active{
+  transform: scale(0.96);
+}
+.ecb-routine-btn svg{
+  flex-shrink: 0;
+}
+@media(max-width: 480px){
+  .ecb-routine-btn{
+    right: 8px;
+    bottom: 8px;
+    padding: 3px 8px;
+    font-size: 11px;
+  }
+}
+
+/* ---------- রুটিন ভিউয়ার মোডাল (Zoomable Routine Image) ---------- */
+.routine-modal-overlay{
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  background: rgba(8, 12, 22, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
+  touch-action: none;
+}
+.routine-modal-overlay.show{
+  display: flex;
+  opacity: 1;
+  visibility: visible;
+}
+.routine-modal-close{
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  z-index: 100010;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  padding: 0;
+  outline: none;
+}
+.routine-modal-close:hover{
+  background: #DC2626;
+  border-color: #EF4444;
+  transform: scale(1.08) rotate(90deg);
+}
+.routine-modal-viewport{
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: zoom-in;
+}
+.routine-modal-viewport.is-zoomed{
+  cursor: grab;
+}
+.routine-modal-viewport.is-dragging{
+  cursor: grabbing;
+}
+.routine-modal-viewport img{
+  max-width: min(92vw, 1150px);
+  max-height: 88vh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 25px 65px rgba(0, 0, 0, 0.6);
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: auto;
+}
+.routine-zoom-hint{
+  position: absolute;
+  bottom: 22px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(6px);
+  color: #F8FAFC;
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-family: 'Baloo Da 2', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  white-space: nowrap;
+}
+
 .ecb-icon{
   flex: none;
   width: clamp(40px, 9vw, 48px);
@@ -819,6 +961,10 @@ header.nav{
   flex-direction: column;
   gap: 3px;
   min-width: 0;
+  padding-right: 82px;
+}
+@media(max-width: 480px){
+  .ecb-body{ padding-right: 68px; }
 }
 .ecb-name{
   color: var(--ink);
@@ -2080,6 +2226,18 @@ html.theme-transition *::after{
 [data-theme="dark"] .ecb-wt-value{ color:#38BDF8; }
 [data-theme="dark"] .ecb-billing-due{ border-left-color:rgba(255,255,255,0.1); }
 [data-theme="dark"] .ecb-billing-due .ecb-billing-value{ color:#F87171; }
+[data-theme="dark"] .ecb-routine-btn{
+  background: rgba(37, 99, 235, 0.2);
+  color: #60A5FA;
+  border-color: rgba(96, 165, 250, 0.35);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+[data-theme="dark"] .ecb-routine-btn:hover{
+  background: #2563EB;
+  color: #ffffff;
+  border-color: #3B82F6;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.5);
+}
 
 [data-theme="dark"] .detail-back-btn{
   background:#1E293B;
@@ -2558,6 +2716,23 @@ html.theme-transition *::after{
   </section>
 
 </main>
+
+<!-- ============================================================
+     রুটিন ভিউয়ার মোডাল (Zoomable Routine Image)
+     কোর্স কার্ডের Routine বাটনে ক্লিক করলে ওপেন হবে
+     ============================================================ -->
+<div class="routine-modal-overlay" id="routineModalOverlay" aria-hidden="true" role="dialog" aria-modal="true">
+  <button type="button" class="routine-modal-close" id="routineModalClose" aria-label="বন্ধ করুন" title="বন্ধ করুন">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+  </button>
+  <div class="routine-modal-viewport" id="routineModalViewport">
+    <img id="routineModalImage" src="" alt="কোর্স রুটিন" draggable="false">
+    <div class="routine-zoom-hint" id="routineZoomHint">ক্লিক / পিঞ্চ করে জুম করুন</div>
+  </div>
+</div>
 
 <footer>
   <div class="container">
@@ -4066,6 +4241,15 @@ html.theme-transition *::after{
       return `<button type="button" class="enrolled-course-btn${lockedClass}" data-course="${escapeHtml(course.name)}" data-sector="${escapeHtml(course.nuDcu||'')}" data-idx="${i}">
         <span class="ecb-corner-badge">${cornerLabel}</span>
         ${course.nuDcu ? `<span class="ecb-sector-badge">${escapeHtml(course.nuDcu)}</span>` : ''}
+        <span class="ecb-routine-btn" role="button" tabindex="0" title="কোর্সের রুটিন দেখুন" data-routine="${escapeHtml(course.routine || '')}" data-course-name="${escapeHtml(course.name)}">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          <span>Routine</span>
+        </span>
         <span class="ecb-icon">${iconEmoji}</span>
         <span class="ecb-body">
           <span class="ecb-name">${escapeHtml(displayName)}</span>
@@ -4122,7 +4306,247 @@ html.theme-transition *::after{
       showCourseDetailView();
       loadCourseClasses(course.name, course.nuDcu);
     };
-    enrolledCourseList.querySelectorAll('.enrolled-course-btn').forEach(btn=>btn.addEventListener('click',()=>selectCourse(Number(btn.dataset.idx))));
+    enrolledCourseList.querySelectorAll('.enrolled-course-btn').forEach(btn=>{
+      btn.addEventListener('click',(e)=>{
+        // Routine বাটনে ক্লিক করলে কোর্স ডিটেইল ভিউ খুলবে না
+        if(e.target.closest('.ecb-routine-btn')) return;
+        selectCourse(Number(btn.dataset.idx));
+      });
+    });
+
+    // Routine বাটনে ক্লিক হ্যান্ডলার
+    enrolledCourseList.querySelectorAll('.ecb-routine-btn').forEach(rBtn=>{
+      const triggerRoutine = e =>{
+        e.preventDefault();
+        e.stopPropagation();
+        const routineUrl = rBtn.dataset.routine || '';
+        const courseName = rBtn.dataset.courseName || '';
+        handleRoutineClick(routineUrl, courseName);
+      };
+      rBtn.addEventListener('click', triggerRoutine);
+      rBtn.addEventListener('keydown', e =>{
+        if(e.key === 'Enter' || e.key === ' '){
+          triggerRoutine(e);
+        }
+      });
+    });
+  }
+
+  // ============================================================
+  // ROUTINE VIEWER MODAL (Zoom & Pan support)
+  // ============================================================
+  function formatRoutineImageUrl(v){
+    const x = String(v ?? '').trim();
+    if(!x) return '';
+    const f = x.match(/drive\.google\.com\/file\/d\/([^/]+)/i);
+    const i = x.match(/[?&]id=([^&]+)/i);
+    if(f) return `https://drive.google.com/thumbnail?id=${f[1]}&sz=w2500`;
+    if(x.includes('drive.google.com') && i) return `https://drive.google.com/thumbnail?id=${i[1]}&sz=w2500`;
+    return x;
+  }
+
+  const routineModal = document.getElementById('routineModalOverlay');
+  const routineImg = document.getElementById('routineModalImage');
+  const routineClose = document.getElementById('routineModalClose');
+  const routineViewport = document.getElementById('routineModalViewport');
+  const routineHint = document.getElementById('routineZoomHint');
+
+  let rScale = 1;
+  let rTranslateX = 0;
+  let rTranslateY = 0;
+  let rIsDragging = false;
+  let rStartX = 0;
+  let rStartY = 0;
+  let rInitialDist = 0;
+  let rInitialScale = 1;
+  let rHintTimer = null;
+
+  function updateRoutineTransform(animate = true){
+    if(!routineImg) return;
+    routineImg.style.transition = animate ? 'transform 0.22s cubic-bezier(0.16, 1, 0.3, 1)' : 'none';
+    routineImg.style.transform = `translate(${rTranslateX}px, ${rTranslateY}px) scale(${rScale})`;
+    if(routineViewport){
+      routineViewport.classList.toggle('is-zoomed', rScale > 1);
+      routineViewport.classList.toggle('is-dragging', rIsDragging);
+    }
+  }
+
+  function resetRoutineZoom(){
+    rScale = 1;
+    rTranslateX = 0;
+    rTranslateY = 0;
+    rIsDragging = false;
+    updateRoutineTransform(false);
+  }
+
+  function openRoutineModal(url, courseName){
+    if(!routineModal || !routineImg) return;
+    const finalUrl = formatRoutineImageUrl(url);
+    routineImg.src = finalUrl;
+    routineImg.alt = `${courseName || 'কোর্স'} রুটিন`;
+    resetRoutineZoom();
+
+    routineModal.style.display = 'flex';
+    void routineModal.offsetWidth;
+    routineModal.classList.add('show');
+    routineModal.setAttribute('aria-hidden', 'false');
+
+    if(routineHint){
+      clearTimeout(rHintTimer);
+      routineHint.style.opacity = '1';
+      rHintTimer = setTimeout(()=>{ if(routineHint) routineHint.style.opacity = '0'; }, 2400);
+    }
+  }
+
+  function closeRoutineModal(){
+    if(!routineModal) return;
+    routineModal.classList.remove('show');
+    routineModal.setAttribute('aria-hidden', 'true');
+    setTimeout(()=>{
+      if(!routineModal.classList.contains('show')){
+        routineModal.style.display = 'none';
+        if(routineImg) routineImg.src = '';
+        resetRoutineZoom();
+      }
+    }, 280);
+  }
+
+  async function handleRoutineClick(routineVal, courseName){
+    let url = String(routineVal || '').trim();
+
+    // Fallback: If routine is not on the course object, fetch from get_courses once
+    if(!url && courseName){
+      vaShowToast('🔍 রুটিন খোঁজা হচ্ছে...');
+      try {
+        const res = await callApi({ action: 'get_courses' });
+        if(res && res.status === 'ok' && Array.isArray(res.data)){
+          const match = res.data.find(c => normalizeForMatch(c.name) === normalizeForMatch(courseName));
+          if(match && match.routine){
+            url = String(match.routine).trim();
+            const btn = enrolledCourseList.querySelector(`.ecb-routine-btn[data-course-name="${escapeHtml(courseName)}"]`);
+            if(btn) btn.dataset.routine = url;
+          }
+        }
+      } catch(err){
+        console.error('Failed to fetch course routine fallback:', err);
+      }
+    }
+
+    if(!url){
+      vaShowToast('📋 এই কোর্সের রুটিন এখনো আপলোড করা হয়নি।');
+      return;
+    }
+
+    openRoutineModal(url, courseName);
+  }
+
+  if(routineModal){
+    routineClose?.addEventListener('click', closeRoutineModal);
+    routineModal.addEventListener('click', (e)=>{
+      if(e.target === routineModal || e.target === routineViewport){
+        closeRoutineModal();
+      }
+    });
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape' && routineModal.classList.contains('show')){
+        closeRoutineModal();
+      }
+    });
+
+    // Desktop Click toggles zoom
+    routineImg?.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      if(rScale === 1){
+        rScale = 2.4;
+        const rect = routineImg.getBoundingClientRect();
+        const offsetX = e.clientX - (rect.left + rect.width / 2);
+        const offsetY = e.clientY - (rect.top + rect.height / 2);
+        rTranslateX = -offsetX * 1.2;
+        rTranslateY = -offsetY * 1.2;
+      } else {
+        resetRoutineZoom();
+      }
+      updateRoutineTransform(true);
+    });
+
+    // Mouse wheel zoom
+    routineViewport?.addEventListener('wheel', (e)=>{
+      e.preventDefault();
+      const delta = e.deltaY < 0 ? 0.3 : -0.3;
+      const nextScale = Math.min(4.5, Math.max(1, rScale + delta));
+      if(nextScale <= 1){
+        resetRoutineZoom();
+      } else {
+        rScale = nextScale;
+        updateRoutineTransform(true);
+      }
+    }, { passive: false });
+
+    // Mouse drag to pan when zoomed
+    routineViewport?.addEventListener('mousedown', (e)=>{
+      if(rScale <= 1 || e.target === routineClose) return;
+      rIsDragging = true;
+      rStartX = e.clientX - rTranslateX;
+      rStartY = e.clientY - rTranslateY;
+      routineViewport.classList.add('is-dragging');
+    });
+
+    window.addEventListener('mousemove', (e)=>{
+      if(!rIsDragging || rScale <= 1) return;
+      rTranslateX = e.clientX - rStartX;
+      rTranslateY = e.clientY - rStartY;
+      updateRoutineTransform(false);
+    });
+
+    window.addEventListener('mouseup', ()=>{
+      if(rIsDragging){
+        rIsDragging = false;
+        if(routineViewport) routineViewport.classList.remove('is-dragging');
+        updateRoutineTransform(true);
+      }
+    });
+
+    // Touch pinch-to-zoom & pan for mobile devices
+    routineViewport?.addEventListener('touchstart', (e)=>{
+      if(e.touches.length === 2){
+        rInitialDist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        rInitialScale = rScale;
+      } else if(e.touches.length === 1 && rScale > 1){
+        rIsDragging = true;
+        rStartX = e.touches[0].clientX - rTranslateX;
+        rStartY = e.touches[0].clientY - rTranslateY;
+      }
+    }, { passive: true });
+
+    routineViewport?.addEventListener('touchmove', (e)=>{
+      if(e.touches.length === 2 && rInitialDist > 0){
+        e.preventDefault();
+        const dist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        const factor = dist / rInitialDist;
+        rScale = Math.min(4.5, Math.max(1, rInitialScale * factor));
+        updateRoutineTransform(false);
+      } else if(e.touches.length === 1 && rIsDragging && rScale > 1){
+        e.preventDefault();
+        rTranslateX = e.touches[0].clientX - rStartX;
+        rTranslateY = e.touches[0].clientY - rStartY;
+        updateRoutineTransform(false);
+      }
+    }, { passive: false });
+
+    routineViewport?.addEventListener('touchend', (e)=>{
+      if(e.touches.length < 2) rInitialDist = 0;
+      if(e.touches.length === 0){
+        rIsDragging = false;
+        if(rScale < 1.05) resetRoutineZoom();
+        else updateRoutineTransform(true);
+      }
+    });
   }
 
   function renderProfileInfo(data){
