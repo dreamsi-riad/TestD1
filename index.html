@@ -1117,14 +1117,24 @@ section{ padding:45px 0; }
   width:48px;
   height:48px;
   border-radius:14px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 4px 10px rgba(0,0,0,0.04);
+  display:grid;
+  place-items:center;
+  position:relative;
+  box-shadow:0 6px 14px -3px var(--cat-shadow, rgba(0,0,0,.08)), inset 0 1px 1.5px rgba(255,255,255,0.85);
+  border:1px solid var(--cat-border, rgba(0,0,0,.06));
+  transition:transform .32s cubic-bezier(.34,1.56,.64,1), box-shadow .32s ease;
+  overflow:visible;
+}
+.cat-card:hover .cat-icon{
+  transform:scale(1.1) rotate(-3deg);
+  box-shadow:0 10px 20px -4px var(--cat-shadow, rgba(0,0,0,.16)), inset 0 1px 1.5px rgba(255,255,255,0.95);
 }
 .cat-icon svg{
-  width:24px;
-  height:24px;
+  width:32px;
+  height:32px;
+  display:block;
+  transition:transform .32s cubic-bezier(.34,1.56,.64,1);
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,0.06));
 }
 .cat-text{
   display:flex;
@@ -1156,7 +1166,7 @@ section{ padding:45px 0; }
     height:clamp(36px,9.5vw,46px);
     border-radius:12px;
   }
-  .cat-icon svg{ width:52%; height:52%; }
+  .cat-icon svg{ width:66%; height:66%; }
   .cat-text b{
     font-size:clamp(15px,4.2vw,20px);
     line-height:1.1;
@@ -2222,8 +2232,9 @@ html.theme-transition *::after{
   box-shadow:0 14px 28px -6px rgba(0,0,0,0.6), 0 0 24px rgba(56,189,248,0.3);
 }
 [data-theme="dark"] .cat-icon{
-  background:rgba(255,255,255,0.08) !important;
-  box-shadow:0 4px 14px rgba(0,0,0,0.4);
+  background:rgba(255,255,255,0.07) !important;
+  border-color:rgba(255,255,255,0.12) !important;
+  box-shadow:0 6px 16px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.15) !important;
 }
 [data-theme="dark"] .cat-text b{
   color:#F8FAFC;
@@ -3171,12 +3182,147 @@ function vaShowToast(message){
   const SHEET_TABS = ['SSC','HSC','BBA','MBA','BBS','BBA Professional'];
   const catGrid=document.getElementById('catGrid'), courseGrid=document.getElementById('courseGrid'), toolbar=document.getElementById('courseDataToolbar'), resultCount=document.getElementById('courseResultCount'), errorBox=document.getElementById('courseDataError'), retryBtn=document.getElementById('courseRetryBtn');
   const CATEGORY_META={
-    'SSC':{color:'#2F6FE4',bg:'#EAF1FE',icon:'<path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12.5V17c0 1.5 2.5 3 6 3s6-1.5 6-3v-4.5"/><path d="M22 10v6"/>'},
-    'HSC':{color:'#2FA86C',bg:'#E9F8EF',icon:'<path d="M3 21h18"/><path d="M5 21V9l7-5 7 5v12"/><path d="M9 21v-6h6v6"/><path d="M9 9h.01"/><path d="M15 9h.01"/>'},
-    'BBA':{color:'#C9337A',bg:'#FBEAF3',icon:'<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>'},
-    'MBA':{color:'#7B4FE0',bg:'#F1ECFC',icon:'<path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12.5V17c0 1.5 2.5 3 6 3s6-1.5 6-3v-4.5"/><path d="M22 10v6"/>'},
-    'BBS':{color:'#DD7A1F',bg:'#FDF1E4',icon:'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/>'},
-    'BBA Professional':{color:'#E0466B',bg:'#FCEAF0',icon:'<rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>'}
+    'SSC':{
+      color:'#2563eb',
+      bg:'linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%)',
+      border:'#bfdbfe',
+      shadow:'rgba(37,99,235,0.22)',
+      svg3d:`<svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="sscCapTop" x1="12" y1="12" x2="52" y2="34" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#60a5fa"/><stop offset="45%" stop-color="#2563eb"/><stop offset="100%" stop-color="#1d4ed8"/></linearGradient>
+    <linearGradient id="sscCapSide" x1="20" y1="26" x2="44" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#1e40af"/><stop offset="100%" stop-color="#0f172a"/></linearGradient>
+    <linearGradient id="sscTassel" x1="32" y1="18" x2="52" y2="42" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#fef08a"/><stop offset="50%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#b45309"/></linearGradient>
+    <filter id="sscDrop" x="0" y="0" width="64" height="64" filterUnits="userSpaceOnUse"><feDropShadow dx="0" dy="3.5" stdDeviation="3.5" flood-color="#1d4ed8" flood-opacity="0.32"/></filter>
+  </defs>
+  <ellipse cx="32" cy="56" rx="20" ry="3.5" fill="#1e3a8a" fill-opacity="0.22"/>
+  <path d="M20 28 C20 40 44 40 44 28 L44 36 C44 46 20 46 20 36 Z" fill="url(#sscCapSide)"/>
+  <path d="M32 10 L56 23 L32 35 L8 23 Z" fill="url(#sscCapTop)" filter="url(#sscDrop)"/>
+  <path d="M32 10 L56 23 L32 25 L8 23 Z" fill="#ffffff" fill-opacity="0.25"/>
+  <ellipse cx="32" cy="22.5" rx="3.5" ry="2" fill="#fbbf24"/>
+  <path d="M32 22.5 Q42 22 47 28 T50 43" stroke="url(#sscTassel)" stroke-width="2.5" stroke-linecap="round"/>
+  <ellipse cx="50" cy="44" rx="3" ry="4.5" fill="#f59e0b"/>
+  <rect x="47.5" y="42" width="5" height="1.8" rx="0.9" fill="#fef08a"/>
+</svg>`
+    },
+    'HSC':{
+      color:'#059669',
+      bg:'linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%)',
+      border:'#a7f3d0',
+      shadow:'rgba(16,185,129,0.22)',
+      svg3d:`<svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="hscRoof" x1="12" y1="12" x2="52" y2="28" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#34d399"/><stop offset="50%" stop-color="#10b981"/><stop offset="100%" stop-color="#059669"/></linearGradient>
+    <linearGradient id="hscPillar" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#a7f3d0"/><stop offset="40%" stop-color="#ffffff"/><stop offset="100%" stop-color="#6ee7b7"/></linearGradient>
+    <linearGradient id="hscBase" x1="10" y1="46" x2="54" y2="58" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#059669"/><stop offset="100%" stop-color="#047857"/></linearGradient>
+    <filter id="hscDrop" x="0" y="0" width="64" height="64" filterUnits="userSpaceOnUse"><feDropShadow dx="0" dy="3.5" stdDeviation="3.5" flood-color="#059669" flood-opacity="0.32"/></filter>
+  </defs>
+  <ellipse cx="32" cy="58" rx="22" ry="3.5" fill="#064e3b" fill-opacity="0.22"/>
+  <path d="M10 50 L54 50 L52 56 L12 56 Z" fill="url(#hscBase)"/>
+  <rect x="8" y="54" width="48" height="3.5" rx="1.5" fill="#047857"/>
+  <path d="M32 10 L56 24 L8 24 Z" fill="url(#hscRoof)" filter="url(#hscDrop)"/>
+  <path d="M32 10 L56 24 L32 22 L8 24 Z" fill="#ffffff" fill-opacity="0.3"/>
+  <ellipse cx="32" cy="18" rx="3.5" ry="3.5" fill="#fef08a"/>
+  <path d="M27 50 V37 C27 34 37 34 37 37 V50 Z" fill="#064e3b"/>
+  <rect x="13" y="24" width="5" height="26" rx="1.5" fill="url(#hscPillar)"/>
+  <rect x="22" y="24" width="4.5" height="26" rx="1.5" fill="url(#hscPillar)"/>
+  <rect x="37.5" y="24" width="4.5" height="26" rx="1.5" fill="url(#hscPillar)"/>
+  <rect x="46" y="24" width="5" height="26" rx="1.5" fill="url(#hscPillar)"/>
+</svg>`
+    },
+    'BBA':{
+      color:'#e11d48',
+      bg:'linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%)',
+      border:'#fecdd3',
+      shadow:'rgba(225,29,72,0.22)',
+      svg3d:`<svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bbaCover" x1="8" y1="20" x2="56" y2="54" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#fb7185"/><stop offset="40%" stop-color="#e11d48"/><stop offset="100%" stop-color="#9f1239"/></linearGradient>
+    <linearGradient id="bbaPageL" x1="12" y1="20" x2="31" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#ffffff"/><stop offset="85%" stop-color="#fff1f2"/><stop offset="100%" stop-color="#fecdd3"/></linearGradient>
+    <linearGradient id="bbaPageR" x1="52" y1="20" x2="33" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#ffffff"/><stop offset="85%" stop-color="#fff1f2"/><stop offset="100%" stop-color="#fecdd3"/></linearGradient>
+    <linearGradient id="bbaRibbon" x1="32" y1="18" x2="36" y2="56" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#fef08a"/><stop offset="60%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#d97706"/></linearGradient>
+    <filter id="bbaDrop" x="0" y="0" width="64" height="64" filterUnits="userSpaceOnUse"><feDropShadow dx="0" dy="3.5" stdDeviation="3.5" flood-color="#be123c" flood-opacity="0.32"/></filter>
+  </defs>
+  <ellipse cx="32" cy="57" rx="22" ry="3.5" fill="#881337" fill-opacity="0.22"/>
+  <path d="M8 43 C18 40 28 44 32 46 C36 44 46 40 56 43 L54 48 C44 45 35 48 32 50 C29 48 20 45 10 48 Z" fill="url(#bbaCover)" filter="url(#bbaDrop)"/>
+  <path d="M10 20 C20 18 29 22 32 25 L32 44 C29 41 20 37 10 39 Z" fill="url(#bbaPageL)"/>
+  <path d="M15 26 H27 M15 30 H25 M15 34 H23" stroke="#f43f5e" stroke-width="1.2" stroke-linecap="round" stroke-opacity="0.45"/>
+  <path d="M54 20 C44 18 35 22 32 25 L32 44 C35 41 44 37 54 39 Z" fill="url(#bbaPageR)"/>
+  <path d="M37 26 H49 M39 30 H49 M41 34 H49" stroke="#f43f5e" stroke-width="1.2" stroke-linecap="round" stroke-opacity="0.45"/>
+  <path d="M31 22 Q34 36 31 52 L34.5 49 L38 52 Q35 36 33 22 Z" fill="url(#bbaRibbon)"/>
+</svg>`
+    },
+    'MBA':{
+      color:'#7c3aed',
+      bg:'linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%)',
+      border:'#ddd6fe',
+      shadow:'rgba(124,58,237,0.22)',
+      svg3d:`<svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="mbaCap" x1="12" y1="12" x2="52" y2="34" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#c084fc"/><stop offset="50%" stop-color="#8b5cf6"/><stop offset="100%" stop-color="#6d28d9"/></linearGradient>
+    <linearGradient id="mbaBase" x1="20" y1="26" x2="44" y2="44" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#5b21b6"/><stop offset="100%" stop-color="#2e1065"/></linearGradient>
+    <linearGradient id="mbaGold" x1="26" y1="36" x2="46" y2="56" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#fef08a"/><stop offset="50%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#b45309"/></linearGradient>
+    <filter id="mbaDrop" x="0" y="0" width="64" height="64" filterUnits="userSpaceOnUse"><feDropShadow dx="0" dy="3.5" stdDeviation="3.5" flood-color="#7c3aed" flood-opacity="0.35"/></filter>
+  </defs>
+  <ellipse cx="32" cy="56" rx="20" ry="3.5" fill="#3b0764" fill-opacity="0.25"/>
+  <path d="M20 27 C20 38 44 38 44 27 L44 34 C44 44 20 44 20 34 Z" fill="url(#mbaBase)"/>
+  <path d="M32 9 L57 22 L32 34 L7 22 Z" fill="url(#mbaCap)" filter="url(#mbaDrop)"/>
+  <path d="M32 9 L57 22 L32 24 L7 22 Z" fill="#ffffff" fill-opacity="0.32"/>
+  <circle cx="32" cy="40" r="7" fill="url(#mbaGold)"/>
+  <path d="M32 36 L33.5 39 L37 39.5 L34.5 42 L35.5 45 L32 43.5 L28.5 45 L29.5 42 L27 39.5 L30.5 39 Z" fill="#ffffff" fill-opacity="0.9"/>
+  <ellipse cx="32" cy="21.5" rx="3.5" ry="2" fill="#fef08a"/>
+  <path d="M32 21.5 Q43 21 48 27 T51 40" stroke="url(#mbaGold)" stroke-width="2.5" stroke-linecap="round"/>
+  <ellipse cx="51" cy="41" rx="2.8" ry="4" fill="#f59e0b"/>
+</svg>`
+    },
+    'BBS':{
+      color:'#d97706',
+      bg:'linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)',
+      border:'#fde68a',
+      shadow:'rgba(217,119,6,0.22)',
+      svg3d:`<svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bbsCover" x1="14" y1="10" x2="52" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#fbbf24"/><stop offset="45%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#b45309"/></linearGradient>
+    <linearGradient id="bbsSpine" x1="14" y1="10" x2="20" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#78350f"/></linearGradient>
+    <linearGradient id="bbsPages" x1="20" y1="14" x2="48" y2="48" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#ffffff"/><stop offset="100%" stop-color="#fde68a"/></linearGradient>
+    <linearGradient id="bbsGold" x1="42" y1="28" x2="52" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#fef08a"/><stop offset="100%" stop-color="#d97706"/></linearGradient>
+    <filter id="bbsDrop" x="0" y="0" width="64" height="64" filterUnits="userSpaceOnUse"><feDropShadow dx="0" dy="3.5" stdDeviation="3.5" flood-color="#b45309" flood-opacity="0.35"/></filter>
+  </defs>
+  <ellipse cx="32" cy="57" rx="20" ry="3.5" fill="#78350f" fill-opacity="0.25"/>
+  <rect x="18" y="14" width="34" height="42" rx="4" fill="#78350f"/>
+  <rect x="18" y="12" width="32" height="42" rx="3" fill="url(#bbsPages)"/>
+  <line x1="50" y1="16" x2="50" y2="50" stroke="#d97706" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="2 2"/>
+  <rect x="14" y="9" width="34" height="43" rx="4" fill="url(#bbsCover)" filter="url(#bbsDrop)"/>
+  <path d="M14 9 H18 V52 H14 C12 52 11 50 11 48 V13 C11 11 12 9 14 9 Z" fill="url(#bbsSpine)"/>
+  <rect x="18" y="12" width="2" height="38" fill="#ffffff" fill-opacity="0.3"/>
+  <path d="M42 27 H51 C52.5 27 53.5 28.2 53.5 29.8 V33.2 C53.5 34.8 52.5 36 51 36 H42 Z" fill="url(#bbsGold)"/>
+  <circle cx="48" cy="31.5" r="2" fill="#78350f"/>
+</svg>`
+    },
+    'BBA Professional':{
+      color:'#e11d48',
+      bg:'linear-gradient(135deg, #fff1f2 0%, #ffe4e6 100%)',
+      border:'#fecdd3',
+      shadow:'rgba(225,29,72,0.22)',
+      svg3d:`<svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="proBody" x1="12" y1="18" x2="52" y2="54" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#fb7185"/><stop offset="40%" stop-color="#e11d48"/><stop offset="100%" stop-color="#9f1239"/></linearGradient>
+    <linearGradient id="proFlap" x1="12" y1="18" x2="52" y2="38" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#fda4af"/><stop offset="100%" stop-color="#e11d48"/></linearGradient>
+    <linearGradient id="proGold" x1="20" y1="30" x2="44" y2="40" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#fef08a"/><stop offset="100%" stop-color="#d97706"/></linearGradient>
+    <filter id="proDrop" x="0" y="0" width="64" height="64" filterUnits="userSpaceOnUse"><feDropShadow dx="0" dy="3.5" stdDeviation="3.5" flood-color="#9f1239" flood-opacity="0.35"/></filter>
+  </defs>
+  <ellipse cx="32" cy="57" rx="20" ry="3.5" fill="#881337" fill-opacity="0.25"/>
+  <path d="M26 18 V12 C26 10 28 8 30 8 H34 C36 8 38 10 38 12 V18" stroke="#be123c" stroke-width="3" stroke-linecap="round"/>
+  <rect x="24.5" y="15" width="3" height="4" rx="1" fill="#fbbf24"/>
+  <rect x="36.5" y="15" width="3" height="4" rx="1" fill="#fbbf24"/>
+  <rect x="10" y="18" width="44" height="36" rx="6" fill="url(#proBody)" filter="url(#proDrop)"/>
+  <path d="M10 18 H54 V33 C54 35 52 37 49 37 H15 C12 37 10 35 10 33 Z" fill="url(#proFlap)"/>
+  <line x1="12" y1="20" x2="52" y2="20" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round" stroke-opacity="0.4"/>
+  <rect x="20" y="32" width="6" height="8" rx="1.5" fill="url(#proGold)"/>
+  <circle cx="23" cy="36" r="1" fill="#881337"/>
+  <rect x="38" y="32" width="6" height="8" rx="1.5" fill="url(#proGold)"/>
+  <circle cx="41" cy="36" r="1" fill="#881337"/>
+</svg>`
+    }
   };
   let allCourses=[],activeCategory=null;
   const bn='০১২৩৪৫৬৭৮৯',en='0123456789';
@@ -3233,7 +3379,7 @@ function vaShowToast(message){
     vaSetCache('va_all_course_rows', courses);
     return courses;
   }
-  function categoryHtml(cat,count){const m=CATEGORY_META[cat]||{color:'#5B8FBF',bg:'#EEF4F8',icon:'<circle cx="12" cy="12" r="8"/>'};return `<a href="All_Courses.html?level=${encodeURIComponent(cat)}" class="cat-card" data-cat="${esc(cat)}" style="--cat-color:${m.color}"><span class="cat-icon" style="background:${m.bg}"><svg viewBox="0 0 24 24" fill="none" stroke="${m.color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${m.icon}</svg></span><span class="cat-text"><b>${esc(cat)}</b><span>${toBn(count)}টি কোর্স</span></span></a>`}
+  function categoryHtml(cat,count){const m=CATEGORY_META[cat]||{color:'#5B8FBF',bg:'linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%)',border:'#bfdbfe',shadow:'rgba(91,143,191,0.22)',svg3d:'<svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="20" fill="#3b82f6"/></svg>'};return `<a href="All_Courses.html?level=${encodeURIComponent(cat)}" class="cat-card" data-cat="${esc(cat)}" style="--cat-color:${m.color};--cat-border:${m.border};--cat-shadow:${m.shadow}"><span class="cat-icon" style="background:${m.bg};border-color:${m.border}">${m.svg3d}</span><span class="cat-text"><b>${esc(cat)}</b><span>${toBn(count)}টি কোর্স</span></span></a>`}
   // tag ঘরে "Subject Wise" বা "Improvement" লেখা থাকলে এই কার্ড normal course-details.html
   // এ না গিয়ে per-subject.html এ যাবে (সেখানে single-subject কোর্সগুলো লেভেল/ডিপার্টমেন্ট/ইয়ার
   // অনুযায়ী ফিল্টার করে দেখানো হয়), এবং course_data availability-check এড়িয়ে সরাসরি লিংক হবে।
