@@ -886,21 +886,12 @@ function getEnrolledCourseKeys(){
   }catch(e){return new Set()}
 }
 
-const VA_CACHE_TTL_MS = 5 * 60 * 1000;
-function vaGetCache(key){
-  try{
-    const raw = sessionStorage.getItem(key);
-    if(!raw) return null;
-    const p = JSON.parse(raw);
-    if(Date.now() - (p.t || 0) < VA_CACHE_TTL_MS) return p.v;
-  }catch(e){}
-  return null;
-}
-function vaSetCache(key, value){
-  try{
-    sessionStorage.setItem(key, JSON.stringify({ t: Date.now(), v: value }));
-  }catch(e){}
-}
+// ডাটা ক্যাশিং সাময়িকভাবে সম্পূর্ণ বন্ধ — প্রতিবার সরাসরি লাইভ ইনস্ট্যান্ট ডাটা লোড হবে
+function vaGetCache(key){ return null; }
+function vaSetCache(key, value){ /* caching disabled */ }
+try{
+  sessionStorage.removeItem('va_all_course_rows');
+}catch(e){}
 
 async function fetchCourses(){
   const cached = vaGetCache('va_all_course_rows');
