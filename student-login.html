@@ -807,29 +807,45 @@ header.nav{
   letter-spacing: 0.3px;
 }
 
-/* Routine Button on Enrolled Course Card */
-.ecb-routine-btn{
+/* Routine & Live Buttons on Enrolled Course Card */
+.ecb-corner-actions{
   position: absolute;
   right: 12px;
   bottom: 12px;
   z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  pointer-events: auto;
+}
+.ecb-routine-btn,
+.ecb-live-btn{
+  position: relative;
+  right: auto;
+  bottom: auto;
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  justify-content: center;
+  gap: 5.5px;
   padding: 4px 11px;
   border-radius: 999px;
   font-family: 'Baloo Da 2', sans-serif;
   font-size: 12px;
   font-weight: 700;
-  letter-spacing: 0.2px;
+  letter-spacing: 0.25px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+  white-space: nowrap;
+}
+.ecb-routine-btn{
   background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
   color: #1D4ED8;
   border: 1px solid #BFDBFE;
   box-shadow: 0 2px 6px rgba(37, 99, 235, 0.12);
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  user-select: none;
-  -webkit-user-select: none;
 }
 .ecb-routine-btn:hover{
   background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
@@ -844,12 +860,111 @@ header.nav{
 .ecb-routine-btn svg{
   flex-shrink: 0;
 }
+
+/* 🔴 Animated Live Button */
+.ecb-live-btn{
+  background: linear-gradient(135deg, #FFF1F2 0%, #FFE4E6 100%);
+  color: #E11D48;
+  border: 1px solid #FECDD3;
+  box-shadow: 0 2px 8px rgba(225, 29, 72, 0.18);
+  animation: ecbLiveBadgeGlow 2.2s ease-in-out infinite;
+}
+.ecb-live-btn:hover{
+  background: linear-gradient(135deg, #F43F5E 0%, #E11D48 100%);
+  color: #ffffff;
+  border-color: #E11D48;
+  box-shadow: 0 4px 14px rgba(225, 29, 72, 0.42);
+  transform: translateY(-1.5px) scale(1.03);
+}
+.ecb-live-btn:active{
+  transform: scale(0.96);
+}
+.ecb-live-dot-wrap{
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 9px;
+  height: 9px;
+  flex-shrink: 0;
+}
+.ecb-live-dot{
+  width: 6.5px;
+  height: 6.5px;
+  border-radius: 50%;
+  background: #E11D48;
+  transition: background-color 0.2s ease;
+}
+.ecb-live-btn:hover .ecb-live-dot{
+  background: #ffffff;
+}
+.ecb-live-ping{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #F43F5E;
+  opacity: 0.8;
+  animation: ecbLivePing 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+.ecb-live-btn:hover .ecb-live-ping{
+  background: #ffffff;
+}
+.ecb-live-svg{
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+}
+.ecb-wave-1{
+  animation: ecbWavePulse 1.4s ease-in-out infinite;
+  transform-origin: center;
+}
+.ecb-wave-2{
+  animation: ecbWavePulse 1.4s ease-in-out infinite 0.25s;
+  transform-origin: center;
+}
+
+@keyframes ecbLivePing {
+  0% {
+    transform: scale(0.9);
+    opacity: 0.9;
+  }
+  75%, 100% {
+    transform: scale(2.5);
+    opacity: 0;
+  }
+}
+@keyframes ecbWavePulse {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scale(0.92);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+}
+@keyframes ecbLiveBadgeGlow {
+  0%, 100% {
+    box-shadow: 0 2px 8px rgba(225, 29, 72, 0.16);
+  }
+  50% {
+    box-shadow: 0 2px 14px rgba(225, 29, 72, 0.35);
+  }
+}
 @media(max-width: 480px){
-  .ecb-routine-btn{
+  .ecb-corner-actions{
     right: 8px;
     bottom: 8px;
+    gap: 4px;
+  }
+  .ecb-routine-btn,
+  .ecb-live-btn{
     padding: 3px 8px;
     font-size: 11px;
+    gap: 4px;
   }
 }
 
@@ -2272,6 +2387,28 @@ html.theme-transition *::after{
   color: #ffffff;
   border-color: #3B82F6;
   box-shadow: 0 4px 14px rgba(37, 99, 235, 0.5);
+}
+[data-theme="dark"] .ecb-live-btn{
+  background: linear-gradient(135deg, rgba(159, 18, 57, 0.38) 0%, rgba(225, 29, 72, 0.22) 100%);
+  color: #FDA4AF;
+  border-color: rgba(251, 113, 133, 0.42);
+  box-shadow: 0 2px 10px rgba(225, 29, 72, 0.28);
+}
+[data-theme="dark"] .ecb-live-btn:hover{
+  background: linear-gradient(135deg, #E11D48 0%, #BE123C 100%);
+  color: #ffffff;
+  border-color: #F43F5E;
+  box-shadow: 0 4px 16px rgba(244, 63, 94, 0.45);
+}
+[data-theme="dark"] .ecb-live-btn .ecb-live-dot{
+  background: #FB7185;
+}
+[data-theme="dark"] .ecb-live-btn .ecb-live-ping{
+  background: #FB7185;
+}
+[data-theme="dark"] .ecb-live-btn:hover .ecb-live-dot,
+[data-theme="dark"] .ecb-live-btn:hover .ecb-live-ping{
+  background: #ffffff;
 }
 
 [data-theme="dark"] .detail-back-btn{
@@ -4376,18 +4513,37 @@ html.theme-transition *::after{
         ? `<span class="ecb-billing"><span class="ecb-icon-emoji">🗓️</span> Next Payment: <span class="ecb-billing-value">${escapeHtml(formatNextPaymentDate(nextDateVal))}</span></span>`
         : '';
 
+      const isLive = Boolean(course.isLive || course.is_live);
+
       return `<button type="button" class="enrolled-course-btn${lockedClass}" data-course="${escapeHtml(course.name)}" data-sector="${escapeHtml(course.nuDcu||'')}" data-idx="${i}">
         <span class="ecb-corner-badge">${cornerLabel}</span>
         ${course.nuDcu ? `<span class="ecb-sector-badge">${escapeHtml(course.nuDcu)}</span>` : ''}
-        <span class="ecb-routine-btn" role="button" tabindex="0" title="কোর্সের রুটিন দেখুন" data-routine="${escapeHtml(course.routine || '')}" data-course-name="${escapeHtml(course.name)}">
-          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-            <line x1="16" y1="2" x2="16" y2="6"></line>
-            <line x1="8" y1="2" x2="8" y2="6"></line>
-            <line x1="3" y1="10" x2="21" y2="10"></line>
-          </svg>
-          <span>Routine</span>
-        </span>
+        <div class="ecb-corner-actions">
+          ${isLive ? `
+          <span class="ecb-live-btn" role="button" tabindex="0" title="লাইভ ক্লাস চলছে! সরাসরি যোগ দিন" data-idx="${i}">
+            <span class="ecb-live-dot-wrap" aria-hidden="true">
+              <span class="ecb-live-ping"></span>
+              <span class="ecb-live-dot"></span>
+            </span>
+            <svg viewBox="0 0 24 24" class="ecb-live-svg" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="2.2" fill="currentColor"/>
+              <path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5" class="ecb-wave-1"/>
+              <path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5" class="ecb-wave-1"/>
+              <path d="M19.1 4.9C23 8.8 23 15.2 19.1 19.1" class="ecb-wave-2"/>
+              <path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9" class="ecb-wave-2"/>
+            </svg>
+            <span>Live</span>
+          </span>` : ''}
+          <span class="ecb-routine-btn" role="button" tabindex="0" title="কোর্সের রুটিন দেখুন" data-routine="${escapeHtml(course.routine || '')}" data-course-name="${escapeHtml(course.name)}">
+            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="16" y1="2" x2="16" y2="6"></line>
+              <line x1="8" y1="2" x2="8" y2="6"></line>
+              <line x1="3" y1="10" x2="21" y2="10"></line>
+            </svg>
+            <span>Routine</span>
+          </span>
+        </div>
         <span class="ecb-icon">${iconEmoji}</span>
         <span class="ecb-body">
           <span class="ecb-name">${escapeHtml(displayName)}</span>
@@ -4446,8 +4602,8 @@ html.theme-transition *::after{
     };
     enrolledCourseList.querySelectorAll('.enrolled-course-btn').forEach(btn=>{
       btn.addEventListener('click',(e)=>{
-        // Routine বাটনে ক্লিক করলে কোর্স ডিটেইল ভিউ খুলবে না
-        if(e.target.closest('.ecb-routine-btn')) return;
+        // Routine বা Live বাটনে ক্লিক করলে মূল কোর্স ডিটেইল ভিউ পৃথকভাবে ট্রিগার হবে
+        if(e.target.closest('.ecb-routine-btn') || e.target.closest('.ecb-live-btn')) return;
         selectCourse(Number(btn.dataset.idx));
       });
     });
@@ -4468,6 +4624,81 @@ html.theme-transition *::after{
         }
       });
     });
+
+    // Live বাটনে ক্লিক হ্যান্ডলার
+    enrolledCourseList.querySelectorAll('.ecb-live-btn').forEach(lBtn=>{
+      const triggerLive = e =>{
+        e.preventDefault();
+        e.stopPropagation();
+        const idx = Number(lBtn.dataset.idx);
+        selectCourse(idx);
+        setTimeout(() => {
+          const liveCard = document.getElementById('liveClassCard');
+          if(liveCard && liveCard.style.display !== 'none'){
+            liveCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }, 250);
+      };
+      lBtn.addEventListener('click', triggerLive);
+      lBtn.addEventListener('keydown', e =>{
+        if(e.key === 'Enter' || e.key === ' '){
+          triggerLive(e);
+        }
+      });
+    });
+
+    // Background Real-time Live Status Sync (Dynamic Check)
+    (async function checkLiveStatusBackground() {
+      try {
+        const liveRes = await callApi({ action: 'get_live_status' });
+        if (liveRes && liveRes.status === 'ok' && Array.isArray(liveRes.liveCourses)) {
+          const liveNormSet = new Set(liveRes.liveCourses.map(c => normalizeForMatch(c)));
+          courses.forEach((c, idx) => {
+            const cNorm = normalizeForMatch(c.name);
+            let matchingLive = liveNormSet.has(cNorm);
+            if (!matchingLive && liveNormSet.size > 0) {
+              for (const lName of liveNormSet) {
+                if (lName === cNorm || (cNorm && lName && (lName.includes(cNorm) || cNorm.includes(lName)))) {
+                  matchingLive = true;
+                  break;
+                }
+              }
+            }
+            const cardBtn = enrolledCourseList.querySelector(`.enrolled-course-btn[data-idx="${idx}"]`);
+            if (cardBtn) {
+              const actionsContainer = cardBtn.querySelector('.ecb-corner-actions');
+              let existingLive = cardBtn.querySelector('.ecb-live-btn');
+              if (matchingLive && !existingLive && actionsContainer) {
+                const liveBtnHtml = `
+                  <span class="ecb-live-btn" role="button" tabindex="0" title="লাইভ ক্লাস চলছে! সরাসরি যোগ দিন" data-idx="${idx}">
+                    <span class="ecb-live-dot-wrap" aria-hidden="true">
+                      <span class="ecb-live-ping"></span>
+                      <span class="ecb-live-dot"></span>
+                    </span>
+                    <svg viewBox="0 0 24 24" class="ecb-live-svg" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <circle cx="12" cy="12" r="2.2" fill="currentColor"/>
+                      <path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5" class="ecb-wave-1"/>
+                      <path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5" class="ecb-wave-1"/>
+                      <path d="M19.1 4.9C23 8.8 23 15.2 19.1 19.1" class="ecb-wave-2"/>
+                      <path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9" class="ecb-wave-2"/>
+                    </svg>
+                    <span>Live</span>
+                  </span>`;
+                actionsContainer.insertAdjacentHTML('afterbegin', liveBtnHtml);
+                const newLiveBtn = actionsContainer.querySelector('.ecb-live-btn');
+                if (newLiveBtn) {
+                  newLiveBtn.addEventListener('click', e => {
+                    e.preventDefault(); e.stopPropagation(); selectCourse(idx);
+                  });
+                }
+              } else if (!matchingLive && existingLive) {
+                existingLive.remove();
+              }
+            }
+          });
+        }
+      } catch (e) {}
+    })();
   }
 
   // ============================================================
