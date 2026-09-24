@@ -2871,22 +2871,12 @@ const VISION_API = "https://late-forest-4748.dreamsicreation.workers.dev";
 // punctuation (dot, comma, hyphen ইত্যাদি) বাদ দিয়ে শুধু মূল শব্দ দিয়ে তুলনা করে।
 const normalizeForMatch = v => String(v ?? '').trim().toLowerCase().replace(/[^a-z0-9\u0980-\u09ff]+/g, ' ').replace(/\s+/g, ' ').trim();
 
-// ৫ মিনিটের লাইটওয়েট সেশন ক্যাশিং (পেজ রিলোড ও নেভিগেশনে বারবার D1 ডাটাবেজ হিট বন্ধ করতে)
-const VA_CACHE_TTL_MS = 5 * 60 * 1000;
-function vaGetCache(key){
-  try{
-    const raw = sessionStorage.getItem(key);
-    if(!raw) return null;
-    const p = JSON.parse(raw);
-    if(Date.now() - (p.t || 0) < VA_CACHE_TTL_MS) return p.v;
-  }catch(e){}
-  return null;
-}
-function vaSetCache(key, value){
-  try{
-    sessionStorage.setItem(key, JSON.stringify({ t: Date.now(), v: value }));
-  }catch(e){}
-}
+// ডাটা ক্যাশিং সাময়িকভাবে সম্পূর্ণ বন্ধ — প্রতিবার সরাসরি লাইভ ইনস্ট্যান্ট ডাটা লোড হবে
+function vaGetCache(key){ return null; }
+function vaSetCache(key, value){ /* caching disabled */ }
+try{
+  ['va_all_course_rows','va_teachers_list','va_gallery_data','va_free_videos','va_sw_courses'].forEach(k => sessionStorage.removeItem(k));
+}catch(e){}
 
 // মোবাইল নেভবার মেনু খোলা/বন্ধ করা
 document.getElementById('burgerBtn').addEventListener('click', () => {
@@ -3236,8 +3226,8 @@ function vaShowToast(message){
         slug:'',
         // D1 top_this is treated as a strict publish flag.
         // Accept yes / true / 1 regardless of capitalization or surrounding spaces.
-        topThis: ['yes','true','1'].includes(String(row.topThisRaw ?? row.topThis ?? '').trim().toLowerCase()) || row.topThis === true,
-        topThisRaw: String(row.topThisRaw ?? row.topThis ?? '').trim().toLowerCase()
+        topThis: ['yes','true','1'].includes(String(row.topThisRaw ?? row.topThis ?? row.top_this ?? '').trim().toLowerCase()) || row.topThis === true || String(row.top_this ?? '').trim().toLowerCase() === 'true' || String(row.top_this ?? '').trim().toLowerCase() === 'yes',
+        topThisRaw: String(row.topThisRaw ?? row.topThis ?? row.top_this ?? '').trim().toLowerCase()
       };
     }).filter(Boolean);
     vaSetCache('va_all_course_rows', courses);
