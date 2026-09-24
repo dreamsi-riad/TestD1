@@ -1665,22 +1665,12 @@
                 : `${SW_COURSE_PREFIX}${row.level}::${row.department || ''}::${row.year || ''}::${row.subject}`;
         }
 
-        // ৫ মিনিটের লাইটওয়েট সেশন ক্যাশিং (পেজ রিলোড ও নেভিগেশনে বারবার D1 ডাটাবেজ হিট বন্ধ করতে)
-        const VA_CACHE_TTL_MS = 5 * 60 * 1000;
-        function vaGetCache(key){
-            try{
-                const raw = sessionStorage.getItem(key);
-                if(!raw) return null;
-                const p = JSON.parse(raw);
-                if(Date.now() - (p.t || 0) < VA_CACHE_TTL_MS) return p.v;
-            }catch(e){}
-            return null;
-        }
-        function vaSetCache(key, value){
-            try{
-                sessionStorage.setItem(key, JSON.stringify({ t: Date.now(), v: value }));
-            }catch(e){}
-        }
+        // ডাটা ক্যাশিং সাময়িকভাবে সম্পূর্ণ বন্ধ — প্রতিবার সরাসরি লাইভ ইনস্ট্যান্ট ডাটা লোড হবে
+        function vaGetCache(key){ return null; }
+        function vaSetCache(key, value){ /* caching disabled */ }
+        try{
+            ['va_sw_courses','va_all_course_rows','va_teachers_list'].forEach(k => sessionStorage.removeItem(k));
+        }catch(e){}
 
         async function getAllSubjectWiseRows() {
             const cached = vaGetCache('va_sw_courses');
