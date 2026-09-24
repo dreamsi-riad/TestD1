@@ -903,6 +903,146 @@ header.nav{
   .img-modal-close{ top:12px; right:14px; width:38px; height:38px; }
 }
 
+/* ---------- কোর্স হাইলাইট পপআপ মডাল (top_this = modal) ---------- */
+.course-popup-overlay{
+  position:fixed;
+  inset:0;
+  z-index:100000;
+  background:rgba(10,15,29,.78);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  opacity:0;
+  visibility:hidden;
+  transition:opacity .35s ease, visibility .35s ease;
+}
+.course-popup-overlay.show{
+  display:flex;
+  opacity:1;
+  visibility:visible;
+}
+.course-popup-card{
+  position:relative;
+  width:100%;
+  max-width:min(92vw, 420px);
+  background:#ffffff;
+  border-radius:24px;
+  overflow:hidden;
+  box-shadow:0 30px 70px -15px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.08);
+  transform:scale(.92) translateY(14px);
+  transition:transform .38s cubic-bezier(.16,1,.3,1), opacity .38s ease;
+  display:flex;
+  flex-direction:column;
+}
+.course-popup-overlay.show .course-popup-card{
+  transform:scale(1) translateY(0);
+}
+.course-popup-close{
+  position:absolute;
+  top:12px;
+  right:12px;
+  z-index:10;
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  background:rgba(15,23,42,.65);
+  backdrop-filter:blur(6px);
+  -webkit-backdrop-filter:blur(6px);
+  border:1px solid rgba(255,255,255,.3);
+  color:#ffffff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:all .22s ease;
+  padding:0;
+}
+.course-popup-close:hover{
+  background:#dc2626;
+  border-color:#ef4444;
+  transform:scale(1.1) rotate(90deg);
+}
+.course-popup-media{
+  width:100%;
+  max-height:min(62vh, 400px);
+  background:#090d16;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+.course-popup-media img{
+  width:100%;
+  height:auto;
+  max-height:min(62vh, 400px);
+  object-fit:contain;
+  display:block;
+}
+.course-popup-action{
+  padding:16px 20px 20px;
+  background:#ffffff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.course-popup-btn{
+  width:100%;
+  padding:13px 22px;
+  font-family:'Baloo Da 2', sans-serif;
+  font-size:18px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  border-radius:14px;
+  background:linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+  color:#ffffff !important;
+  box-shadow:0 8px 22px rgba(232,163,61,.38);
+  border:none;
+  text-decoration:none;
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+.course-popup-btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 12px 28px rgba(232,163,61,.5);
+}
+.course-popup-timer-bar{
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  height:4px;
+  background:rgba(0,0,0,.08);
+  overflow:hidden;
+}
+.course-popup-timer-fill{
+  height:100%;
+  width:100%;
+  background:linear-gradient(90deg, #E8A33D, #F59E0B);
+  transform-origin:left center;
+}
+@keyframes coursePopupCountdown{
+  from{ transform:scaleX(1); }
+  to{ transform:scaleX(0); }
+}
+
+[data-theme="dark"] .course-popup-card{
+  background:#111827;
+  border:1px solid rgba(255,255,255,.1);
+  box-shadow:0 30px 80px rgba(0,0,0,.75);
+}
+[data-theme="dark"] .course-popup-action{
+  background:#111827;
+}
+[data-theme="dark"] .course-popup-timer-bar{
+  background:rgba(255,255,255,.08);
+}
+
+
 /* ---------- Section shell ---------- */
 section{ padding:45px 0; }
 .section-head{
@@ -1614,15 +1754,19 @@ section{ padding:45px 0; }
   justify-content:center;
   gap:10px;
 }
-.cta-band .eyebrow{ color:var(--accent); }
+.cta-band .eyebrow{ color:var(--accent); margin:0; }
 .cta-band .eyebrow::before{ background:var(--accent); }
-.cta-band h2,
-.cta-band p{
+.cta-band h2{
   display:none;
 }
-.cta-band .eyebrow{
+.cta-band p{
   margin:0;
+  color:#cbd5e1;
+  font-size:16.5px;
+  line-height:1.6;
+  font-weight:400;
 }
+
 
 /* dashed "ticket" divider with punched notches, only between the two halves */
 .cta-divider{
@@ -2607,6 +2751,39 @@ html.theme-transition *::after{
     <img id="imgModalImage" src="" alt="বড় করে দেখুন">
   </div>
 
+  <!-- ============================================================
+       কোর্স নোটিফিকেশন / হাইলাইট পপআপ মডাল
+       course_name টেবিলে top_this = modal থাকলে ওয়েবসাইটে প্রবেশের পর ৫ সেকেন্ড স্থায়ী থাকবে
+       ============================================================ -->
+  <div class="course-popup-overlay" id="coursePopupModal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="course-popup-card">
+      <button type="button" class="course-popup-close" id="coursePopupClose" aria-label="বন্ধ করুন">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <div class="course-popup-media">
+        <img id="coursePopupImage" src="" alt="কোর্স হাইলাইট">
+      </div>
+
+      <div class="course-popup-action">
+        <a id="coursePopupEnrollBtn" href="#" class="course-popup-btn course-details-trigger">
+          <span>এনরোল নাও</span>
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+      </div>
+
+      <div class="course-popup-timer-bar">
+        <div class="course-popup-timer-fill" id="coursePopupTimerFill"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- "আমাদের মেসেজ পাঠান" ফর্ম সেকশন সম্পূর্ণ সরিয়ে দেওয়া হয়েছে -->
 
   <!-- ============================================================
@@ -2618,7 +2795,7 @@ html.theme-transition *::after{
     <div class="cta-band">
       <div class="cta-left">
         <span class="eyebrow">সরাসরি যোগাযোগ</span>
-        <p>কোর্স, ক্লাস, পড়াশোনা, প্রোমো কোড অথবা যেকোনো বিষয়ে জানতে হলে এখনই কল করো।</p>
+        <p>কোর্স, ক্লাস, Special Offer অথবা যেকোনো বিষয়ে জানতে হলে এখনই যোগাযোগ করো।</p>
       </div>
       <div class="cta-divider"></div>
       <div class="cta-right">
@@ -3059,7 +3236,8 @@ function vaShowToast(message){
         slug:'',
         // D1 top_this is treated as a strict publish flag.
         // Accept yes / true / 1 regardless of capitalization or surrounding spaces.
-        topThis: ['yes','true','1'].includes(String(row.topThis ?? '').trim().toLowerCase()) || row.topThis === true
+        topThis: ['yes','true','1'].includes(String(row.topThisRaw ?? row.topThis ?? '').trim().toLowerCase()) || row.topThis === true,
+        topThisRaw: String(row.topThisRaw ?? row.topThis ?? '').trim().toLowerCase()
       };
     }).filter(Boolean);
     vaSetCache('va_all_course_rows', courses);
@@ -3180,6 +3358,9 @@ function vaShowToast(message){
       // Read ONLY courses explicitly marked top_this=yes/true/1.
       const topCourses=allCourses.filter(c=>c.topThis===true);
 
+      // Trigger modal if any course has top_this = 'modal'
+      checkAndTriggerCourseModal(allCourses);
+
       if(topCourses.length){
         renderTopThisOnly(topCourses);
         return;
@@ -3198,6 +3379,97 @@ function vaShowToast(message){
       toolbar.hidden=true;
       errorBox.hidden=false;
     }
+  }
+
+  // ============================================================
+  // COURSE HIGHLIGHT POPUP MODAL (top_this = 'modal')
+  // ============================================================
+  let popupTimer = null;
+  let popupStartTime = 0;
+  let popupRemainingMs = 5000;
+
+  function initAndShowCourseModal(c){
+    const modal = document.getElementById('coursePopupModal');
+    const img = document.getElementById('coursePopupImage');
+    const enrollBtn = document.getElementById('coursePopupEnrollBtn');
+    const closeBtn = document.getElementById('coursePopupClose');
+    const timerFill = document.getElementById('coursePopupTimerFill');
+    if(!modal || !img || !enrollBtn) return;
+
+    img.src = c.image;
+    img.alt = c.name;
+
+    const isSub = isSubjectWiseTag(c.tag);
+    enrollBtn.href = isSub ? 'per-subject.html' : `course-details.html?course=${encodeURIComponent(c.slug)}`;
+    enrollBtn.dataset.courseName = c.name;
+
+    function closeModal(){
+      clearTimeout(popupTimer);
+      modal.classList.remove('show');
+      modal.setAttribute('aria-hidden', 'true');
+      setTimeout(()=>{
+        if(!modal.classList.contains('show')) modal.style.display = 'none';
+      }, 380);
+    }
+
+    function startCountdown(ms){
+      clearTimeout(popupTimer);
+      popupStartTime = Date.now();
+      popupRemainingMs = ms;
+      popupTimer = setTimeout(closeModal, ms);
+      if(timerFill){
+        timerFill.style.animation = 'none';
+        void timerFill.offsetWidth;
+        timerFill.style.animation = `coursePopupCountdown ${ms}ms linear forwards`;
+      }
+    }
+
+    closeBtn?.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      closeModal();
+    });
+
+    modal.addEventListener('click', (e)=>{
+      if(e.target === modal) closeModal();
+    });
+
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape' && modal.classList.contains('show')) closeModal();
+    });
+
+    const card = modal.querySelector('.course-popup-card');
+    if(card){
+      card.addEventListener('mouseenter', ()=>{
+        clearTimeout(popupTimer);
+        popupRemainingMs = Math.max(800, popupRemainingMs - (Date.now() - popupStartTime));
+        if(timerFill) timerFill.style.animationPlayState = 'paused';
+      });
+      card.addEventListener('mouseleave', ()=>{
+        if(modal.classList.contains('show')){
+          popupStartTime = Date.now();
+          popupTimer = setTimeout(closeModal, popupRemainingMs);
+          if(timerFill) timerFill.style.animationPlayState = 'running';
+        }
+      });
+    }
+
+    setTimeout(()=>{
+      modal.style.display = 'flex';
+      void modal.offsetWidth;
+      modal.classList.add('show');
+      modal.setAttribute('aria-hidden', 'false');
+      startCountdown(5000);
+    }, 350);
+  }
+
+  function checkAndTriggerCourseModal(courses){
+    if(!courses || !courses.length) return;
+    const modalCourse = courses.find(c => {
+      const val = clean(c.topThisRaw || c.topThis);
+      return val === 'modal' || val.includes('modal');
+    });
+    if(!modalCourse || !modalCourse.image) return;
+    initAndShowCourseModal(modalCourse);
   }
 
   retryBtn.addEventListener('click',loadCourses);
