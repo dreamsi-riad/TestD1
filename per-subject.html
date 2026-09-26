@@ -847,6 +847,7 @@ function getEnrolledSubjectWiseIds(){
   }catch(e){ return new Set(); }
 }
 const enrolledSubjectWiseIds = getEnrolledSubjectWiseIds();
+const parseFeatures = v => clean(v).split(/[,、\n\r]/).map(clean).filter(Boolean);
 
 async function fetchSubjectWiseRows(){
   const r = await fetch(VISION_API, {
@@ -868,7 +869,9 @@ async function fetchSubjectWiseRows(){
       newPrice: clean(row.newPrice ?? row.new_price),
       oldPrice: clean(row.oldPrice ?? row.old_price),
       image: clean(row.imageUrl ?? row.image_url),
-      nuDcu: clean(row.nuDcu ?? row.nu_dcu).toUpperCase()
+      nuDcu: clean(row.nuDcu ?? row.nu_dcu).toUpperCase(),
+      teachers: clean(row.teachers),
+      teacherNames: parseFeatures(row.teachers)
     }))
     .filter(row => row.level && row.subject);
   return rows;
