@@ -1693,7 +1693,9 @@
                 newPrice: clean(row.newPrice ?? row.new_price),
                 oldPrice: clean(row.oldPrice ?? row.old_price),
                 image: normalizeImageUrl(row.imageUrl ?? row.image_url),
-                nuDcu: clean(row.nuDcu ?? row.nu_dcu).toUpperCase()
+                nuDcu: clean(row.nuDcu ?? row.nu_dcu).toUpperCase(),
+                teachers: clean(row.teachers),
+                teacherNames: parseFeatures(row.teachers)
             })).filter(row => row.level && row.subject);
             vaSetCache('va_sw_courses', data);
             return data;
@@ -1825,27 +1827,6 @@
                                 </div>`).join('')}
                         </div>
                     </div>`;
-            } else {
-                courseInstructorsHtml = `
-                    <div class="course-instructors-box">
-                        <div class="instructors-box-header">
-                            <span class="instructors-box-title">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
-                                </svg>
-                                কোর্স ইন্সট্রাক্টর
-                            </span>
-                        </div>
-                        <div class="instructors-list">
-                            <div class="instructor-card-item">
-                                <div class="instructor-card-initials" style="background:linear-gradient(135deg,#1E293B,#0F172A);color:#93C5FD">VA</div>
-                                <div class="instructor-card-info">
-                                    <h4 class="instructor-card-name">VISION Academics</h4>
-                                    <p class="instructor-card-desig">অভিজ্ঞ ও নিবেদিতপ্রাণ শিক্ষক প্যানেল</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>`;
             }
 
             // ইউজার কি অলরেডি ভর্তি?
@@ -1877,7 +1858,6 @@
                     <!-- বাম পাশ: মিডিয়া ও ইন্সট্রাক্টর -->
                     <div class="detail-media-wrap">
                         <div class="detail-image-box">
-                            <span class="detail-badge-corner">${escapeHtml(course.category)}</span>
                             ${image ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(course.name)}">` : '<div style="aspect-ratio:16/10;background:#1e293b;display:flex;align-items:center;justify-content:center;color:#94a3b8">Course Image</div>'}
                         </div>
                         ${courseInstructorsHtml}
@@ -1947,15 +1927,14 @@
 
             // ইন্সট্রাক্টর তথ্য
             const initials = name => escapeHtml(clean(name).slice(0, 1).toUpperCase() || '?');
-            const subKey = normalizeTextForMatch(row.subject);
-            const matchedTeacher = (teachers || []).find(t => {
-                const ts = normalizeTextForMatch(t.subject);
-                const tn = normalizeTextForMatch(t.name);
-                return (ts && (ts.includes(subKey) || subKey.includes(ts))) || (tn && tn.includes(subKey));
+            const teacherNames = row.teacherNames && row.teacherNames.length ? row.teacherNames : (row.teachers ? parseFeatures(row.teachers) : []);
+            const matchedTeachers = teacherNames.map(n => {
+                const key = normalizeTextForMatch(n);
+                return teachers.find(t => normalizeTextForMatch(t.name) === key) || {name: n, photo: '', subject: '', designation: ''};
             });
 
             let swInstructorsHtml = '';
-            if(matchedTeacher) {
+            if(matchedTeachers.length) {
                 swInstructorsHtml = `
                     <div class="course-instructors-box">
                         <div class="instructors-box-header">
@@ -1967,38 +1946,18 @@
                             </span>
                         </div>
                         <div class="instructors-list">
-                            <div class="instructor-card-item">
-                                ${matchedTeacher.photo
-                                    ? `<img src="${escapeHtml(matchedTeacher.photo)}" alt="${escapeHtml(matchedTeacher.name)}" class="instructor-card-avatar" loading="lazy">`
-                                    : `<div class="instructor-card-initials">${initials(matchedTeacher.name)}</div>`
-                                }
-                                <div class="instructor-card-info">
-                                    <h4 class="instructor-card-name">${escapeHtml(matchedTeacher.name)}</h4>
-                                    <p class="instructor-card-desig">${escapeHtml(matchedTeacher.designation || 'ফ্যাকাল্টি মেম্বার')}</p>
-                                    ${matchedTeacher.subject ? `<span class="instructor-card-subject">${escapeHtml(matchedTeacher.subject)}</span>` : ''}
-                                </div>
-                            </div>
-                        </div>
-                    </div>`;
-            } else {
-                swInstructorsHtml = `
-                    <div class="course-instructors-box">
-                        <div class="instructors-box-header">
-                            <span class="instructors-box-title">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>
-                                </svg>
-                                কোর্স ইন্সট্রাক্টর
-                            </span>
-                        </div>
-                        <div class="instructors-list">
-                            <div class="instructor-card-item">
-                                <div class="instructor-card-initials" style="background:linear-gradient(135deg,#1E293B,#0F172A);color:#93C5FD">VA</div>
-                                <div class="instructor-card-info">
-                                    <h4 class="instructor-card-name">VISION Academics</h4>
-                                    <p class="instructor-card-desig">অভিজ্ঞ ও নিবেদিতপ্রাণ শিক্ষক প্যানেল</p>
-                                </div>
-                            </div>
+                            ${matchedTeachers.map(t => `
+                                <div class="instructor-card-item">
+                                    ${t.photo
+                                        ? `<img src="${escapeHtml(t.photo)}" alt="${escapeHtml(t.name)}" class="instructor-card-avatar" loading="lazy">`
+                                        : `<div class="instructor-card-initials">${initials(t.name)}</div>`
+                                    }
+                                    <div class="instructor-card-info">
+                                        <h4 class="instructor-card-name">${escapeHtml(t.name)}</h4>
+                                        <p class="instructor-card-desig">${escapeHtml(t.designation || 'ফ্যাকাল্টি মেম্বার')}</p>
+                                        ${t.subject ? `<span class="instructor-card-subject">${escapeHtml(t.subject)}</span>` : ''}
+                                    </div>
+                                </div>`).join('')}
                         </div>
                     </div>`;
             }
@@ -2031,7 +1990,6 @@
                 <div class="course-detail-grid">
                     <div class="detail-media-wrap">
                         <div class="detail-image-box">
-                            <span class="detail-badge-corner">${escapeHtml(row.level)}</span>
                             ${image ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(row.subject)}">` : '<div style="aspect-ratio:16/10;background:#1e293b;display:flex;align-items:center;justify-content:center;color:#94a3b8">Subject Image</div>'}
                         </div>
                         ${swInstructorsHtml}
