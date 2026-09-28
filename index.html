@@ -3457,7 +3457,7 @@ function vaShowToast(message){
     courseGrid.innerHTML=staticSubjectWiseCardHtml()+(
       list.length
         ? list.map(cardHtml).join('')
-        : '<div class="course-empty"><strong>এই বিভাগে এখন কোনো কোর্স নেই।</strong><br>নতুন কোর্স যোগ করা হলে এখানে automatically দেখা যাবে।</div>'
+        : '<div class="course-empty"><strong style="font-size:20px;margin-bottom:0;">Upcoming</strong></div>'
     );
 
     catGrid.style.display='';
@@ -3695,7 +3695,7 @@ function vaShowToast(message){
         window.location.href = href;
         return;
       }
-      vaShowToast('😕 এই কোর্সটি এখনো available না — ক্লাস উপাদান শীঘ্রই যোগ করা হবে।');
+      vaShowToast('Upcoming');
       link.textContent = link.dataset.originalText || link.textContent;
       link.style.opacity = '';
       delete link.dataset.checking;
