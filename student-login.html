@@ -6,7 +6,7 @@
 (function(){
   try{
     var theme = localStorage.getItem('va_theme');
-    if(theme === 'dark' || (!theme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)){
+    if(theme === 'dark'){
       document.documentElement.setAttribute('data-theme', 'dark');
       document.documentElement.classList.add('dark');
     } else {
@@ -19,13 +19,26 @@
 <meta name="theme-color" content="#ffffff" id="metaThemeColor">
 <link rel="preload" as="image" href="assets/logo.png" fetchpriority="high">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>স্টুডেন্ট রেজিস্ট্রেশন ও লগইন | VISION Academics</title>
-<meta name="description" content="VISION Academics-এ স্টুডেন্ট রেজিস্ট্রেশন করুন অথবা মোবাইল নম্বর ও পাসওয়ার্ড দিয়ে লগইন করে নিজের ড্যাশবোর্ড দেখুন।">
+<title>Student Login & Registration | BBA VISION - VISION Plus</title>
+<meta name="description" content="BBA VISION ও VISION Plus-এর অফিসিয়াল স্টুডেন্ট পোর্টাল। BBA, HSC, BBS ও MBA কোর্সের লাইভ ক্লাস, রুটিন, নোটিশ এবং পেমেন্ট ড্যাশবোর্ড।">
+<meta name="keywords" content="BBA VISION, VISION Plus, BBA Best Coaching, BBA best platform, BBA student login, student portal, HSC, BBS, MBA, BBA Professional">
 <meta name="robots" content="noindex, follow">
-<link rel="canonical" href="https://www.visionacademics.online/student-login.html">
+<link rel="canonical" href="https://visionplusbd.com/student-login.html">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Student Login & Registration | BBA VISION - VISION Plus">
+<meta property="og:description" content="BBA VISION ও VISION Plus-এর অফিসিয়াল স্টুডেন্ট পোর্টাল।">
+<meta property="og:url" content="https://visionplusbd.com/student-login.html">
+<meta property="og:image" content="https://visionplusbd.com/og-image.jpg">
+<meta property="og:locale" content="bn_BD">
+
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&family=Baloo+Da+2:wght@500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Anek+Bangla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -98,7 +111,7 @@ header.nav{
 .nav-inner{
   max-width: min(1240px, 100%);
   margin: 0 auto;
-  height: 68px;
+  height: 64px;
   padding: 0 clamp(16px, 2.6vw, 32px);
   display: flex;
   align-items: center;
@@ -108,7 +121,7 @@ header.nav{
 .brand{
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   font-family: 'Baloo Da 2', sans-serif;
   font-weight: 800;
   font-size: 22px;
@@ -116,7 +129,7 @@ header.nav{
   color: var(--ink);
 }
 .brand .brand-logo{
-  height: 52px;
+  height: 64px;
   max-height: 100%;
   width: auto;
   aspect-ratio: 3.84/1;
@@ -160,8 +173,8 @@ header.nav{
 }
 
 @media(max-width: 480px){
-  .nav-inner{ gap: 8px; height: 58px; }
-  .brand .brand-logo{ height: 38px; }
+  .nav-inner{ gap: 8px; height: 64px; }
+  .brand .brand-logo{ height: 42px; }
   .back-link{ font-size: 12.5px; padding: 6px 12px; gap: 5px; }
 }
 
@@ -2544,8 +2557,8 @@ html.theme-transition *::after{
 
 <header class="nav">
   <div class="nav-inner">
-    <a href="index.html" class="brand" aria-label="VISION Academics Home">
-      <img src="assets/logo.png" alt="VISION Academics" class="brand-logo" fetchpriority="high" decoding="async">
+    <a href="index.html" class="brand" aria-label="VISION Plus Home">
+      <img src="assets/logo.png" alt="VISION Plus" class="brand-logo" fetchpriority="high" decoding="async">
     </a>
     <div class="nav-actions">
       <button type="button" class="theme-toggle-btn" id="themeToggleBtn" aria-label="নাইট মোড চালু করুন" title="নাইট মোড চালু করুন (Night Mode)">
@@ -2655,6 +2668,11 @@ html.theme-transition *::after{
               </div>
 
               <div class="form-row full">
+                <label for="reg_facebook">Facebook ID Link <span class="req">*</span></label>
+                <input type="text" id="reg_facebook" name="facebook" placeholder="যেমন: https://facebook.com/yourprofile" required>
+              </div>
+
+              <div class="form-row full">
                 <label for="reg_address">ঠিকানা</label>
                 <input type="text" id="reg_address" name="address" placeholder="বর্তমান ঠিকানা লিখুন">
               </div>
@@ -2732,7 +2750,7 @@ html.theme-transition *::after{
             <div class="profile-main-top">
               <div class="dash-welcome">
                 <h2 id="dashName">—</h2>
-                <p>VISION Academics-এ স্বাগতম</p>
+                <p>VISION Plus-এ স্বাগতম</p>
               </div>
               <button type="button" class="logout-link-btn" id="logoutBtn">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><path d="M16 17l5-5-5-5"></path><path d="M21 12H9"></path></svg>
@@ -3014,7 +3032,7 @@ html.theme-transition *::after{
     <div class="footer-grid">
       <div>
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
-          <img src="assets/logo.png" alt="VISION Academics" style="height:44px;width:auto;filter:brightness(0) invert(1);opacity:0.95;">
+          <img src="assets/logo.png" alt="VISION Plus" style="height:44px;width:auto;filter:brightness(0) invert(1);opacity:0.95;">
         </div>
         <p style="color:#cbd5e1;font-size:14.5px;line-height:1.7;max-width:36ch;">ব্যতিক্রমী শিক্ষা পদ্ধতি, আধুনিক প্রযুক্তি ও অভিজ্ঞ শিক্ষকদের নিয়ে বাংলাদেশের বিশ্বস্ত এডুকেশন প্ল্যাটফর্ম।</p>
       </div>
@@ -3032,7 +3050,7 @@ html.theme-transition *::after{
         <p>📍 ঢাকা, বাংলাদেশ</p>
       </div>
     </div>
-    <p class="copyright">© ২০২৬ VISION Academics — সর্বস্বত্ব সংরক্ষিত।</p>
+    <p class="copyright">© ২০২৬ VISION Plus — সর্বস্বত্ব সংরক্ষিত।</p>
   </div>
 </footer>
 
@@ -3064,6 +3082,7 @@ html.theme-transition *::after{
   const clean = value => String(value ?? '').trim();
   const enrollParam = enrollQuery.get('enroll');
   const enrollSectorParam = clean(enrollQuery.get('sector')).toUpperCase();
+  const enrollFreeParam = enrollQuery.get('free') === '1' || /\bfree\b/i.test(enrollQuery.get('price') || '');
   const escapeHtml = value => clean(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
   const SW_COURSE_PREFIX = 'SW::';
@@ -4460,28 +4479,6 @@ html.theme-transition *::after{
     if(!courses.length){ learningEmpty.style.display='block'; return; }
     learningEmpty.style.display='none';
     enrolledCourseList.innerHTML=courses.map((course,i)=>{
-      const isExpired = String(course.status||'').trim().toLowerCase()==='expired';
-      const isPending = String(course.status||'').trim().toLowerCase()==='pending';
-      const isCourseLocked = !!course.locked;
-      const lockReason = String(course.lockComment || '').trim();
-      
-      let badge = '';
-      if (isCourseLocked) {
-        badge = '<span class="locked-badge">🔒 লকড</span>';
-      } else if (isExpired) {
-        badge = '<span class="expired-badge">মেয়াদ শেষ</span>';
-      } else if (isPending) {
-        badge = '<span class="pending-badge">⏳ Pending</span>';
-      } else {
-        badge = '<span class="active-badge">✓ Active</span>';
-      }
-
-      const lockedClass = isCourseLocked ? ' is-locked' : (isExpired ? ' is-expired' : '');
-      const isSubjectWise = !!parseSubjectWiseCourseId(course.name);
-      const displayName = getSubjectWiseDisplayName(course.name);
-      const cornerLabel = isSubjectWise ? 'Subject' : 'Course';
-      const iconEmoji = isSubjectWise ? getSubjectIcon(displayName) : '🎓';
-
       const coursePriceVal = String(course.coursePrice || '').trim();
       const discountVal = String(course.discount || '').trim();
       const paidVal = String(course.paid || '').trim();
@@ -4505,13 +4502,40 @@ html.theme-transition *::after{
         }
       }
 
-      const priceLine = coursePriceVal
+      const isFreeCourse = /\bfree\b/i.test(coursePriceVal) || 
+                           /\bfree\b/i.test(paidVal) || 
+                           Boolean(course.isFree) || 
+                           (typeof freeCourseNamesSet !== 'undefined' && freeCourseNamesSet.has(normalizeForMatch(course.name)));
+
+      const isExpired = String(course.status||'').trim().toLowerCase()==='expired';
+      const isPending = !isFreeCourse && String(course.status||'').trim().toLowerCase()==='pending';
+      const isCourseLocked = !!course.locked;
+      const lockReason = String(course.lockComment || '').trim();
+      
+      let badge = '';
+      if (isCourseLocked) {
+        badge = '<span class="locked-badge">🔒 লকড</span>';
+      } else if (isExpired) {
+        badge = '<span class="expired-badge">মেয়াদ শেষ</span>';
+      } else if (isPending) {
+        badge = '<span class="pending-badge">⏳ Pending</span>';
+      } else {
+        badge = '<span class="active-badge">✓ Active</span>';
+      }
+
+      const lockedClass = isCourseLocked ? ' is-locked' : (isExpired ? ' is-expired' : '');
+      const isSubjectWise = !!parseSubjectWiseCourseId(course.name);
+      const displayName = getSubjectWiseDisplayName(course.name);
+      const cornerLabel = isSubjectWise ? 'Subject' : 'Course';
+      const iconEmoji = isSubjectWise ? getSubjectIcon(displayName) : '🎓';
+
+      const priceLine = (coursePriceVal && !isFreeCourse)
         ? `<span class="ecb-billing"><span class="ecb-icon-emoji">💰</span> Price: <span class="ecb-billing-value">${escapeHtml(coursePriceVal)}</span>${discountVal ? ` <span class="ecb-billing-discount">(dis: ${escapeHtml(discountVal)})</span>` : ''}</span>`
         : '';
-      const paidLine = paidVal
+      const paidLine = (paidVal && !isFreeCourse)
         ? `<span class="ecb-billing"><span class="ecb-icon-emoji">✅</span> Paid: <span class="ecb-billing-value">${escapeHtml(paidVal)}</span>${dueVal ? `<span class="ecb-billing-due">Due: <span class="ecb-billing-value">${escapeHtml(dueVal)}</span></span>` : ''}</span>`
         : '';
-      const nextDateLine = (nextDateVal && !isFullyPaid)
+      const nextDateLine = (nextDateVal && !isFullyPaid && !isFreeCourse)
         ? `<span class="ecb-billing"><span class="ecb-icon-emoji">🗓️</span> Next Payment: <span class="ecb-billing-value">${escapeHtml(formatNextPaymentDate(nextDateVal))}</span></span>`
         : '';
 
@@ -4586,8 +4610,12 @@ html.theme-transition *::after{
         return;
       }
 
-      // অনুমোদন অপেক্ষমান থাকলে পরবর্তী পেজে যাবে না
-      if(status === 'pending'){
+      // অনুমোদন অপেক্ষমান থাকলে পরবর্তী পেজে যাবে না (যদি না ফ্রি কোর্স হয়)
+      const isFreeCourse = /\bfree\b/i.test(String(course.coursePrice || '')) ||
+                           /\bfree\b/i.test(String(course.paid || '')) ||
+                           Boolean(course.isFree) ||
+                           (typeof freeCourseNamesSet !== 'undefined' && freeCourseNamesSet.has(normalizeForMatch(course.name)));
+      if(status === 'pending' && !isFreeCourse){
         vaShowToast('⏳ আপনার কোর্সটি এখনো অনুমোদনের অপেক্ষায় রয়েছে।');
         return;
       }
@@ -5224,6 +5252,30 @@ html.theme-transition *::after{
       .finally(()=>clearTimeout(timeout));
   }
 
+  let freeCourseNamesSet = new Set();
+  async function loadFreeCoursesSet(){
+    try {
+      let cached = null;
+      try {
+        const raw = sessionStorage.getItem('va_free_course_names');
+        if (raw) cached = JSON.parse(raw);
+      } catch(e){}
+      if (Array.isArray(cached) && cached.length) {
+        freeCourseNamesSet = new Set(cached.map(normalizeForMatch));
+        return;
+      }
+      const res = await callApi({ action: 'get_courses' });
+      if (res && res.status === 'ok' && Array.isArray(res.data)) {
+        const freeNames = res.data
+          .filter(c => /\bfree\b/i.test(String(c.price || '')) || /\bfree\b/i.test(String(c.coursePrice || '')))
+          .map(c => normalizeForMatch(c.name));
+        freeCourseNamesSet = new Set(freeNames);
+        try { sessionStorage.setItem('va_free_course_names', JSON.stringify(freeNames)); } catch(e){}
+      }
+    } catch(e){}
+  }
+  loadFreeCoursesSet();
+
   // get_course_data now requires an ACTIVE enrollment for the exact course
   // being requested — it can no longer double as a pre-enroll "does this
   // course have materials yet" check, since the student isn't enrolled at
@@ -5259,16 +5311,30 @@ html.theme-transition *::after{
 
     showLoading('কোর্সের তথ্য লোড হচ্ছে...');
     const fullMobile = String(user.mobile).trim();
+    const isFree = Boolean(enrollFreeParam) || freeCourseNamesSet.has(normalizeForMatch(courseName));
+
     const result=await callApi({
       action:'enroll',
       mobile:normalizeMobileForMatch(fullMobile),
       course:courseName,
       nuDcu:getCourseSector(courseName),
-      deviceToken: getDeviceToken()
+      deviceToken: getDeviceToken(),
+      free: isFree ? '1' : '0',
+      price: isFree ? 'Free' : ''
     });
     if(result.status !== 'ok') throw new Error(result.message || 'Course enrollment failed.');
     if(result.data){
       result.data.mobile = fullMobile;
+      if(isFree && Array.isArray(result.data.courses)){
+        result.data.courses.forEach(c => {
+          if(normalizeForMatch(c.name) === normalizeForMatch(courseName)){
+            c.status = 'Active';
+            c.coursePrice = 'Free';
+            c.paid = 'Free';
+            c.isFree = true;
+          }
+        });
+      }
       localStorage.setItem(LS_USER_KEY,JSON.stringify(result.data));
       await syncAndRenderDashboard(result.data);
     }
@@ -5448,6 +5514,14 @@ html.theme-transition *::after{
       return;
     }
 
+    const facebook = document.getElementById('reg_facebook').value.trim();
+    if(!facebook){
+      regStatus.textContent = '❌ Facebook ID Link দেওয়া বাধ্যতামূলক।';
+      regStatus.className = 'form-status show err';
+      document.getElementById('reg_facebook').focus();
+      return;
+    }
+
     const password = document.getElementById('reg_password').value;
 
     const payload = {
@@ -5460,6 +5534,8 @@ html.theme-transition *::after{
       institute: document.getElementById('reg_institute').value.trim(),
       mobile: mobile,
       email: document.getElementById('reg_email').value.trim(),
+      facebook: facebook,
+      facebook_link: facebook,
       address: document.getElementById('reg_address').value.trim(),
       password: password
     };
@@ -5664,15 +5740,6 @@ html.theme-transition *::after{
     applyTheme(nextTheme, true);
   });
 
-  try {
-    if(window.matchMedia){
-      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e){
-        if(!localStorage.getItem('va_theme')){
-          applyTheme(e.matches ? 'dark' : 'light', true);
-        }
-      });
-    }
-  } catch(e){}
 })();
 </script>
 </body>
