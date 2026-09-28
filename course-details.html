@@ -6,7 +6,7 @@
     (function(){
       try{
         var theme = localStorage.getItem('va_theme');
-        if(theme === 'dark' || (!theme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)){
+        if(theme === 'dark'){
           document.documentElement.setAttribute('data-theme', 'dark');
           document.documentElement.classList.add('dark');
         } else {
@@ -19,7 +19,32 @@
     <meta name="theme-color" content="#ffffff" id="metaThemeColor">
     <link rel="preload" as="image" href="assets/logo.png" fetchpriority="high">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Course Details | VISION Academics</title>
+    <title>Course Details - BBA, HSC, BBS & MBA Programs | BBA VISION - VISION Plus</title>
+    <meta name="description" content="BBA VISION ও VISION Plus-এর জনপ্রিয় কোর্সের বিস্তারিত বিবরণ — সিলেবাস, শিক্ষক পরিচিতি, ক্লাস রুটিন, মডেল টেস্ট ও ভর্তি তথ্য। BBA, HSC, BBS, MBA ও BBA Professional।">
+    <meta name="keywords" content="BBA VISION, VISION Plus, BBA Best Coaching, BBA best platform, BBA Professional, BBA, HSC, MBA, BBS, BBA course admission, course details, National University BBA">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://visionplusbd.com/course-details.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Course Details | BBA VISION - VISION Plus">
+    <meta property="og:description" content="BBA VISION ও VISION Plus — HSC, BBA, BBS, MBA ও BBA Professional-এর পূর্ণাঙ্গ কোর্স বিস্তারিত।">
+    <meta property="og:url" content="https://visionplusbd.com/course-details.html">
+    <meta property="og:image" content="https://visionplusbd.com/og-image.jpg">
+    <meta property="og:locale" content="bn_BD">
+
+    <!-- Twitter card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Course Details | BBA VISION - VISION Plus">
+    <meta name="twitter:description" content="সেরা BBA, HSC, BBS ও MBA কোর্সের বিস্তারিত তথ্য ও ভর্তি।">
+    <meta name="twitter:image" content="https://visionplusbd.com/og-image.jpg">
+
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -99,18 +124,18 @@
         .nav-inner {
             max-width: 1240px;
             margin: 0 auto;
-            height: 70px;
+            height: 64px;
             padding: 0 clamp(16px, 3vw, 32px);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 24px;
+            gap: 20px;
         }
         
         .brand {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             font-family: 'Baloo Da 2', sans-serif;
             font-weight: 800;
             font-size: 22px;
@@ -120,11 +145,12 @@
         }
         
         .brand .brand-logo {
-            height: 52px;
+            height: 64px;
             max-height: 100%;
             width: auto;
             aspect-ratio: 3.84/1;
             object-fit: contain;
+            flex: none;
             transition: transform 0.25s ease;
         }
         
@@ -321,8 +347,8 @@
         }
         
         @media(max-width: 480px) {
-            .nav-inner { gap: 10px; height: 60px; }
-            .brand .brand-logo { height: 40px; }
+            .nav-inner { gap: 8px; height: 64px; }
+            .brand .brand-logo { height: 42px; }
             .nav-cta { height: 36px; padding: 0 13px; font-size: 13px; gap: 6px; }
             .nav-cta svg.nav-login-icon { width: 14px; height: 14px; }
             .nav-cta--logged-in { padding: 0 10px 0 5px; gap: 6px; }
@@ -1507,8 +1533,8 @@
     <!-- ===== নেভবার ===== -->
     <header class="nav">
         <div class="nav-inner">
-            <a href="index.html" class="brand" aria-label="VISION Academics Home">
-                <img src="assets/logo.png" alt="VISION Academics" class="brand-logo" fetchpriority="high" decoding="async">
+            <a href="index.html" class="brand" aria-label="VISION Plus Home">
+                <img src="assets/logo.png" alt="VISION Plus" class="brand-logo" fetchpriority="high" decoding="async">
             </a>
             <nav class="nav-links" id="navLinks">
                 <a href="index.html#courses">কোর্সসমূহ</a>
@@ -1583,7 +1609,7 @@
             <div class="footer-grid">
                 <div>
                     <div class="footer-brand">
-                        <img src="assets/logo.png" alt="VISION Academics" class="footer-logo">
+                        <img src="assets/logo.png" alt="VISION Plus" class="footer-logo">
                     </div>
                     <p class="footer-desc">ব্যতিক্রমী শিক্ষা পদ্ধতি, আধুনিক প্রযুক্তি ও অভিজ্ঞ শিক্ষকদের নিয়ে বাংলাদেশের বিশ্বস্ত এডুকেশন প্ল্যাটফর্ম।</p>
                 </div>
@@ -1604,7 +1630,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <p class="copyright">© ২০২৬ VISION Academics — সর্বস্বত্ব সংরক্ষিত।</p>
+                <p class="copyright">© ২০২৬ VISION Plus — সর্বস্বত্ব সংরক্ষিত।</p>
             </div>
         </div>
     </footer>
@@ -1638,7 +1664,8 @@
         const parseFeatures = v => clean(v).split(/[,،]/).map(clean).filter(Boolean);
         const formatPrice = v => {
             const x = clean(v);
-            if(!x) return '';
+            if(!x || x === '-') return '';
+            if (/\bfree\b/i.test(x)) return x;
             return /[৳$€£]/.test(x) ? toBn(x) : `৳${toBn(x)}`;
         };
         function getCourseSlug() { return new URLSearchParams(window.location.search).get('course'); }
@@ -1771,7 +1798,7 @@
                 content.style.display = 'block';
                 return;
             }
-            document.title = `${course.name} | VISION Academics`;
+            document.title = `${course.name} | VISION Plus`;
             const description = course.longDescription || course.shortDescription || 'এই কোর্সের বিস্তারিত তথ্য শীঘ্রই আপডেট করা হবে।';
             
             // ফিচার আইটেমগুলোর মডার্ন রেন্ডার
@@ -1831,6 +1858,7 @@
 
             // ইউজার কি অলরেডি ভর্তি?
             const enrolledSet = getEnrolledCourseNames();
+            const isFree = /\bfree\b/i.test(String(course.price || ''));
             const cSector = (normalizeTextForMatch(course.category) === 'bba' && ['nu', 'dcu'].includes(normalizeTextForMatch(course.tag))) ? normalizeTextForMatch(course.tag) : '';
             const isEnrolled = enrolledSet.has(`${normalizeTextForMatch(course.name)}::${cSector}`);
 
@@ -1845,7 +1873,7 @@
                     </a>`;
             } else {
                 enrollButtonHtml = `
-                    <a href="student-login.html?enroll=${encodeURIComponent(course.name)}${course.tag && /^(nu|dcu)$/i.test(course.tag.trim()) ? `&sector=${encodeURIComponent(course.tag.trim().toUpperCase())}` : ''}" class="btn btn-primary enroll-btn">
+                    <a href="student-login.html?enroll=${encodeURIComponent(course.name)}${course.tag && /^(nu|dcu)$/i.test(course.tag.trim()) ? `&sector=${encodeURIComponent(course.tag.trim().toUpperCase())}` : ''}${isFree ? '&free=1' : ''}" class="btn btn-primary enroll-btn">
                         Enroll Now
                         <svg viewBox="0 0 20 20" fill="currentColor" style="width:18px;height:18px;">
                             <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
@@ -1919,7 +1947,7 @@
                 content.style.display = 'block';
                 return;
             }
-            document.title = `${row.subject} | VISION Academics`;
+            document.title = `${row.subject} | VISION Plus`;
             const description = row.description || 'এই সাবজেক্টের বিস্তারিত তথ্য শীঘ্রই আপডেট করা হবে।';
             const image = row.image || '';
             const courseId = buildSubjectWiseCourseId(row);
@@ -1965,6 +1993,7 @@
             // ইউজার কি অলরেডি ভর্তি?
             const enrolledSet = getEnrolledCourseNames();
             const swSector = normalizeTextForMatch(row.nuDcu);
+            const isFree = /\bfree\b/i.test(String(row.newPrice || ''));
             const isEnrolled = enrolledSet.has(`${normalizeTextForMatch(row.subject)}::${swSector}`) || enrolledSet.has(`${normalizeTextForMatch(courseId)}::${swSector}`);
 
             let enrollButtonHtml = '';
@@ -1978,7 +2007,7 @@
                     </a>`;
             } else {
                 enrollButtonHtml = `
-                    <a href="student-login.html?enroll=${encodeURIComponent(courseId)}" class="btn btn-primary enroll-btn">
+                    <a href="student-login.html?enroll=${encodeURIComponent(courseId)}${isFree ? '&free=1' : ''}" class="btn btn-primary enroll-btn">
                         Enroll Now
                         <svg viewBox="0 0 20 20" fill="currentColor" style="width:18px;height:18px;">
                             <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
@@ -2187,15 +2216,6 @@
         applyTheme(nextTheme, true);
       });
 
-      try {
-        if(window.matchMedia){
-          window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e){
-            if(!localStorage.getItem('va_theme')){
-              applyTheme(e.matches ? 'dark' : 'light', true);
-            }
-          });
-        }
-      } catch(e){}
     })();
     </script>
 </body>
