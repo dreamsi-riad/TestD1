@@ -858,7 +858,8 @@ function uniqueSlug(name,cat,used){
 function parseFeatures(v){return clean(v).split(/[,،]/).map(clean).filter(Boolean)}
 function formatPrice(v){
   const x=clean(v);
-  if(!x)return '';
+  if(!x || x === '-')return '';
+  if(/\bfree\b/i.test(x)) return x;
   return /[৳$€£]/.test(x)?toBn(x):`৳${toBn(x)}`;
 }
 
