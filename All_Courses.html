@@ -6,7 +6,7 @@
 (function(){
   try{
     var theme = localStorage.getItem('va_theme');
-    if(theme === 'dark' || (!theme && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)){
+    if(theme === 'dark'){
       document.documentElement.setAttribute('data-theme', 'dark');
       document.documentElement.classList.add('dark');
     } else {
@@ -19,11 +19,32 @@
 <meta name="theme-color" content="#ffffff" id="metaThemeColor">
 <link rel="preload" as="image" href="assets/logo.png" fetchpriority="high">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>All Courses | VISION Academics</title>
-<meta name="description" content="VISION Academics-এর সকল কোর্স — SSC, HSC, BBA, MBA, BBS এবং BBA Professional।">
+<title>All Courses - BBA, HSC, BBS, MBA & BBA Professional | BBA VISION - VISION Plus</title>
+<meta name="description" content="VISION Plus ও BBA VISION-এর সকল কোর্স — HSC, BBA (National University ও 7 College), BBA Professional, BBS এবং MBA। সেরা শিক্ষক, লাইভ ক্লাস ও পূর্ণাঙ্গ প্রস্তুতি।">
+<meta name="keywords" content="BBA VISION, VISION Plus, BBA Best Coaching, BBA best platform, BBA Professional, BBA, HSC, MBA, BBS, All BBA courses, BBA course admission, National University BBA">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://visionplusbd.com/All_Courses.html">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="All Courses - BBA, HSC, BBS, MBA & BBA Professional | BBA VISION - VISION Plus">
+<meta property="og:description" content="VISION Plus ও BBA VISION-এর সকল কোর্স — HSC, BBA, BBA Professional, BBS এবং MBA-এর সম্পূর্ণ অনলাইন কোর্স।">
+<meta property="og:url" content="https://visionplusbd.com/All_Courses.html">
+<meta property="og:image" content="https://visionplusbd.com/og-image.jpg">
+<meta property="og:locale" content="bn_BD">
+
+<!-- Twitter card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="All Courses | BBA VISION - VISION Plus">
+<meta name="twitter:description" content="HSC, BBA, BBA Professional, BBS ও MBA-এর পূর্ণাঙ্গ কোর্স সমূহ।">
+<meta name="twitter:image" content="https://visionplusbd.com/og-image.jpg">
+
 <link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
 <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&family=Baloo+Da+2:wght@500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Anek+Bangla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -81,14 +102,14 @@ header.nav{
   transition: all 0.3s ease;
 }
 .nav-inner{
-  max-width: 1240px; margin: 0 auto; height: 70px;
+  max-width: 1240px; margin: 0 auto; height: 64px;
   padding: 0 clamp(16px, 3vw, 36px);
-  display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  display: flex; align-items: center; justify-content: space-between; gap: 20px;
 }
-.brand{ display: flex; align-items: center; gap: 12px; }
+.brand{ display: flex; align-items: center; gap: 10px; }
 .brand-logo{
-  height: 52px; max-height: 100%; width: auto; aspect-ratio: 3.84/1;
-  object-fit: contain; display: block;
+  height: 64px; max-height: 100%; width: auto; aspect-ratio: 3.84/1;
+  object-fit: contain; display: block; flex: none;
   transition: transform 0.2s ease;
 }
 .brand:hover .brand-logo{ transform: scale(1.02); }
@@ -170,8 +191,8 @@ header.nav{
   .burger{ display: block; }
 }
 @media(max-width: 480px){
-  .nav-inner{ gap: 10px; height: 60px; padding: 0 14px; }
-  .brand-logo{ height: 40px; }
+  .nav-inner{ gap: 8px; height: 64px; padding: 0 14px; }
+  .brand-logo{ height: 42px; }
   .nav-cta{ height: 36px; padding: 0 13px; font-size: 13px; gap: 6px; }
   .nav-cta svg.nav-login-icon{ width: 14px; height: 14px; }
   .nav-cta--logged-in{ padding: 0 10px 0 5px; gap: 6px; }
@@ -677,8 +698,8 @@ html.theme-transition *::after{
 <body>
 <header class="nav">
   <div class="nav-inner">
-    <a href="index.html" class="brand" aria-label="VISION Academics Home">
-      <img src="assets/logo.png" alt="VISION Academics" class="brand-logo" fetchpriority="high" decoding="async">
+    <a href="index.html" class="brand" aria-label="VISION Plus Home">
+      <img src="assets/logo.png" alt="VISION Plus" class="brand-logo" fetchpriority="high" decoding="async">
     </a>
     <nav class="nav-links" id="navLinks">
       <a href="index.html#courses">কোর্সসমূহ</a>
@@ -747,8 +768,9 @@ html.theme-transition *::after{
 
       <div class="bba-filter-bar" id="bbaFilterBar" style="display:none" aria-label="BBA কোর্স ফিল্টার">
         <div class="bba-filter-group">
-          <label for="bbaUniversitySelect">বিশ্ববিদ্যালয়</label>
+          <label for="bbaUniversitySelect">ইনস্টিটিউট</label>
           <select id="bbaUniversitySelect">
+            <option value="">Institue Select করুন</option>
             <option value="dcu">Dhaka Central University (DCU)</option>
             <option value="nu">National University (NU)</option>
           </select>
@@ -756,6 +778,7 @@ html.theme-transition *::after{
         <div class="bba-filter-group">
           <label for="bbaYearSelect">বর্ষ</label>
           <select id="bbaYearSelect">
+            <option value="">Year Select করুন</option>
             <option value="1st Year">১ম বর্ষ</option>
             <option value="2nd Year">২য় বর্ষ</option>
             <option value="3rd Year">৩য় বর্ষ</option>
@@ -777,7 +800,7 @@ html.theme-transition *::after{
     <div class="footer-grid">
       <div>
         <div class="footer-brand">
-          <img src="assets/logo.png" alt="VISION Academics" class="footer-logo">
+          <img src="assets/logo.png" alt="VISION Plus" class="footer-logo">
         </div>
         <p class="footer-desc">ব্যতিক্রমী শিক্ষা পদ্ধতি, আধুনিক প্রযুক্তি ও অভিজ্ঞ শিক্ষকদের নিয়ে বাংলাদেশের বিশ্বস্ত এডুকেশন প্ল্যাটফর্ম।</p>
       </div>
@@ -798,7 +821,7 @@ html.theme-transition *::after{
       </div>
     </div>
     <div class="footer-bottom">
-      <p class="copyright">© ২০২৬ VISION Academics — সর্বস্বত্ব সংরক্ষিত।</p>
+      <p class="copyright">© ২০২৬ VISION Plus — সর্বস্বত্ব সংরক্ষিত।</p>
     </div>
   </div>
 </footer>
@@ -944,8 +967,10 @@ function cardHtml(c,enrolledKeys){
     actionHtml='<a href="per-subject.html" class="btn btn-primary">বিস্তারিত</a>';
   }else{
     const isBba=normalize(c.category)===normalize('BBA');
-    const bbaParams=isBba
-      ? `&nuDcu=${encodeURIComponent(sector||selectedUniversity)}&year=${encodeURIComponent(extractBbaYear(c.name)||selectedYear)}`
+    const bbaNuDcu = sector || selectedUniversity;
+    const bbaYr = extractBbaYear(c.name) || selectedYear;
+    const bbaParams = isBba
+      ? `${bbaNuDcu ? `&nuDcu=${encodeURIComponent(bbaNuDcu)}` : ''}${bbaYr ? `&year=${encodeURIComponent(bbaYr)}` : ''}`
       : '';
     actionHtml=`<a href="course-details.html?course=${encodeURIComponent(c.slug)}${bbaParams}" data-course-name="${esc(c.name)}" class="btn btn-primary course-details-trigger">বিস্তারিত</a>`;
   }
@@ -976,8 +1001,8 @@ function cardHtml(c,enrolledKeys){
 
 let allCourses=[];
 
-let selectedUniversity='dcu';
-let selectedYear='1st Year';
+let selectedUniversity='';
+let selectedYear='';
 let searchQuery='';
 
 const VALID_LEVELS=['SSC','HSC','BBA','MBA','BBS','BBA Professional'];
@@ -1009,10 +1034,12 @@ function render(){
     : allCourses.filter(c=>normalize(c.category)===normalize(activeLevel));
 
   if(normalize(activeLevel)===normalize('BBA')){
-    list=list.filter(c=>
-      normalize(c.tag)===selectedUniversity &&
-      normalize(extractBbaYear(c.name))===normalize(selectedYear)
-    );
+    if(selectedUniversity){
+      list=list.filter(c=>normalize(c.tag)===normalize(selectedUniversity));
+    }
+    if(selectedYear){
+      list=list.filter(c=>normalize(extractBbaYear(c.name))===normalize(selectedYear));
+    }
   }
 
   if(activeLevel==='ALL' && searchQuery.trim()){
@@ -1020,7 +1047,11 @@ function render(){
   }
 
   if(!list.length){
-    grid.innerHTML='<div class="course-empty"><strong>এই লেভেলে এখন কোনো কোর্স নেই।</strong><br>নতুন কোর্স যোগ করা হলে এখানে automatically দেখা যাবে।</div>';
+    if(searchQuery.trim()){
+      grid.innerHTML='<div class="course-empty"><strong>কোনো কোর্স খুঁজে পাওয়া যায়নি</strong></div>';
+    } else {
+      grid.innerHTML='<div class="course-empty"><strong style="font-size:20px;margin-bottom:0;">Upcoming</strong></div>';
+    }
     return;
   }
   grid.innerHTML=list.map(c=>cardHtml(c,enrolled)).join('');
@@ -1039,6 +1070,12 @@ async function loadCourses(){
 
 window.addEventListener('pageshow',(event)=>{
   activeLevel=requestedLevelMatch||'ALL';
+  selectedUniversity='';
+  selectedYear='';
+  const uSel=document.getElementById('bbaUniversitySelect');
+  const ySel=document.getElementById('bbaYearSelect');
+  if(uSel) uSel.value='';
+  if(ySel) ySel.value='';
   document.querySelectorAll('.level-btn').forEach(x=>{
     x.classList.toggle('active',normalize(x.dataset.level)===normalize(activeLevel));
     x.blur();
@@ -1058,8 +1095,17 @@ window.addEventListener('pageshow',(event)=>{
 document.getElementById('levelBar').addEventListener('click',e=>{
   const btn=e.target.closest('.level-btn');
   if(!btn || btn.classList.contains('subject-wise-nav'))return;
+  const prevLevel=activeLevel;
   activeLevel=btn.dataset.level;
   document.querySelectorAll('.level-btn').forEach(x=>x.classList.toggle('active',x===btn));
+  if(normalize(activeLevel)===normalize('BBA') && normalize(prevLevel)!==normalize('BBA')){
+    selectedUniversity='';
+    selectedYear='';
+    const uSel=document.getElementById('bbaUniversitySelect');
+    const ySel=document.getElementById('bbaYearSelect');
+    if(uSel) uSel.value='';
+    if(ySel) ySel.value='';
+  }
   updateBbaFilterVisibility();
   updateSearchBarVisibility();
   render();
@@ -1087,6 +1133,12 @@ document.querySelectorAll('#navLinks a').forEach(a=>{
 });
 
 document.addEventListener('DOMContentLoaded',()=>{
+  selectedUniversity='';
+  selectedYear='';
+  const uSel=document.getElementById('bbaUniversitySelect');
+  const ySel=document.getElementById('bbaYearSelect');
+  if(uSel) uSel.value='';
+  if(ySel) ySel.value='';
   document.querySelectorAll('.level-btn').forEach(x=>{
     x.classList.toggle('active',normalize(x.dataset.level)===normalize(activeLevel));
   });
@@ -1203,7 +1255,7 @@ function vaShowToast(message){
         window.location.href = href;
         return;
       }
-      vaShowToast('😕 এই কোর্সটি এখনো available না — ক্লাস উপাদান শীঘ্রই যোগ করা হবে।');
+      vaShowToast('Upcoming');
       link.textContent = link.dataset.originalText || link.textContent;
       link.style.opacity = '';
       delete link.dataset.checking;
@@ -1265,15 +1317,6 @@ function vaShowToast(message){
     applyTheme(nextTheme, true);
   });
 
-  try {
-    if(window.matchMedia){
-      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e){
-        if(!localStorage.getItem('va_theme')){
-          applyTheme(e.matches ? 'dark' : 'light', true);
-        }
-      });
-    }
-  } catch(e){}
 })();
 </script>
 </body>
