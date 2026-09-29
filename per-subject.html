@@ -873,28 +873,44 @@ const parseFeatures = v => clean(v).split(/[,、\n\r]/).map(clean).filter(Boolea
 const VA_SW_CACHE_KEY = 'va_sw_courses';
 const VA_SW_CACHE_TTL = 60 * 60 * 1000;
 
-// Admin যেকোনো change করলে server version বাড়ে, তখন cache clear হয়ে fresh data লোড হয়।
-(async function checkAndInvalidateCache(){
-  try{
-    const res = await fetch(VISION_API, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ action: 'get_cache_version' })
-    });
-    if(!res.ok) return;
-    const j = await res.json();
-    if(j.status !== 'ok') return;
-    const serverV = String(j.v || '0');
-    const localV  = localStorage.getItem('va_cv') || '0';
-    if(serverV !== localV){
-      try{ sessionStorage.removeItem(VA_SW_CACHE_KEY); }catch(e){}
-      localStorage.setItem('va_cv', serverV);
-    }
-  }catch(e){}
-})();
+// পূর্বের যেকোনো পুরনো ক্যাশ সমস্ত ইউজারের ব্রাউজার থেকে একবার স্বয়ংক্রিয়ভাবে ক্লিন করে নেওয়া
+try {
+  if (localStorage.getItem('va_build_v') !== '2026_09_v2') {
+    try{ sessionStorage.removeItem(VA_SW_CACHE_KEY); }catch(e){}
+    localStorage.setItem('va_build_v', '2026_09_v2');
+    localStorage.removeItem('va_cv');
+  }
+} catch(e) {}
+
+// Admin যেকোনো change করলে server version বাড়ে, তখন cache clear হয়ে fresh data লোড হয়।
+let cacheCheckPromise = null;
+function ensureCacheValid(){
+  if(!cacheCheckPromise){
+    cacheCheckPromise = (async function(){
+      try{
+        const res = await fetch(VISION_API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'get_cache_version' })
+        });
+        if(!res.ok) return;
+        const j = await res.json();
+        if(j.status !== 'ok') return;
+        const serverV = String(j.v ?? '0');
+        const localV  = localStorage.getItem('va_cv');
+        if(localV === null || serverV !== localV){
+          try{ sessionStorage.removeItem(VA_SW_CACHE_KEY); }catch(e){}
+          localStorage.setItem('va_cv', serverV);
+        }
+      }catch(e){}
+    })();
+  }
+  return cacheCheckPromise;
+}
 
 
 async function fetchSubjectWiseRows(){
+  await ensureCacheValid();
   try{
     const raw = sessionStorage.getItem(VA_SW_CACHE_KEY);
     if(raw){
