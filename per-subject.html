@@ -869,12 +869,45 @@ function getEnrolledSubjectWiseIds(){
 const enrolledSubjectWiseIds = getEnrolledSubjectWiseIds();
 const parseFeatures = v => clean(v).split(/[,、\n\r]/).map(clean).filter(Boolean);
 
+// SessionStorage cache — TTL: ১ ঘণ্টা
+const VA_SW_CACHE_KEY = 'va_sw_courses';
+const VA_SW_CACHE_TTL = 60 * 60 * 1000;
+
+// Admin যেকোনো change করলে server version বাড়ে, তখন cache clear হয়ে fresh data লোড হয়।
+(async function checkAndInvalidateCache(){
+  try{
+    const res = await fetch(VISION_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'get_cache_version' })
+    });
+    if(!res.ok) return;
+    const j = await res.json();
+    if(j.status !== 'ok') return;
+    const serverV = String(j.v || '0');
+    const localV  = localStorage.getItem('va_cv') || '0';
+    if(serverV !== localV){
+      try{ sessionStorage.removeItem(VA_SW_CACHE_KEY); }catch(e){}
+      localStorage.setItem('va_cv', serverV);
+    }
+  }catch(e){}
+})();
+
+
 async function fetchSubjectWiseRows(){
+  try{
+    const raw = sessionStorage.getItem(VA_SW_CACHE_KEY);
+    if(raw){
+      const { data, expires } = JSON.parse(raw);
+      if(Date.now() < expires) return data;
+      sessionStorage.removeItem(VA_SW_CACHE_KEY);
+    }
+  }catch(e){}
+
   const r = await fetch(VISION_API, {
     method:'POST',
     headers:{'Content-Type':'text/plain;charset=utf-8'},
-    body: JSON.stringify({ action:'get_subjectwise_courses' }),
-    cache:'no-store'
+    body: JSON.stringify({ action:'get_subjectwise_courses' })
   });
   if(!r.ok) throw new Error(`Subjectwise Course Name: HTTP ${r.status}`);
   const j = await r.json();
@@ -894,6 +927,11 @@ async function fetchSubjectWiseRows(){
       teacherNames: parseFeatures(row.teachers)
     }))
     .filter(row => row.level && row.subject);
+
+  try{
+    sessionStorage.setItem(VA_SW_CACHE_KEY, JSON.stringify({ data: rows, expires: Date.now() + VA_SW_CACHE_TTL }));
+  }catch(e){}
+
   return rows;
 }
 
@@ -1043,7 +1081,7 @@ async function init(){
     populateLevelSelect();
   }catch(e){
     console.error('Subject wise data load failed:', e);
-    document.getElementById('resultsArea').innerHTML = `<div class="ps-status"><strong>ডেটা লোড করা যায়নি</strong>ইন্টারনেট কানেকশন চেক করে আবার চেষ্টা করুন। (${esc(e.message||'')})</div>`;
+    document.getElementById('resultsArea').innerHTML = `<div class="ps-status"><strong>ডেটা লোড করা যায়নি</strong>ইন্টারনেট কানেকশন চেক করে আবার চেষ্টা করুন।</div>`;
   }
 }
 
