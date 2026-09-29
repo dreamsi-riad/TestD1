@@ -946,11 +946,11 @@ header.nav{
 .course-popup-card{
   position:relative;
   width:100%;
-  max-width:min(92vw, 420px);
+  max-width:min(90vw, 380px);
   background:#ffffff;
-  border-radius:24px;
+  border-radius:18px;
   overflow:hidden;
-  box-shadow:0 30px 70px -15px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.08);
+  box-shadow:0 25px 65px -12px rgba(0,0,0,.5), 0 0 0 1px rgba(255,255,255,.08);
   transform:scale(.92) translateY(14px);
   transition:transform .38s cubic-bezier(.16,1,.3,1), opacity .38s ease;
   display:flex;
@@ -961,11 +961,11 @@ header.nav{
 }
 .course-popup-close{
   position:absolute;
-  top:12px;
-  right:12px;
+  top:10px;
+  right:10px;
   z-index:10;
-  width:36px;
-  height:36px;
+  width:32px;
+  height:32px;
   border-radius:50%;
   background:rgba(15,23,42,.65);
   backdrop-filter:blur(6px);
@@ -986,7 +986,7 @@ header.nav{
 }
 .course-popup-media{
   width:100%;
-  max-height:min(62vh, 400px);
+  max-height:min(55vh, 350px);
   background:#090d16;
   display:flex;
   align-items:center;
@@ -996,12 +996,12 @@ header.nav{
 .course-popup-media img{
   width:100%;
   height:auto;
-  max-height:min(62vh, 400px);
+  max-height:min(55vh, 350px);
   object-fit:contain;
   display:block;
 }
 .course-popup-action{
-  padding:16px 20px 20px;
+  padding:6px 14px 8px;
   background:#ffffff;
   display:flex;
   align-items:center;
@@ -1009,25 +1009,27 @@ header.nav{
 }
 .course-popup-btn{
   width:100%;
-  padding:13px 22px;
-  font-family:'Baloo Da 2', sans-serif;
-  font-size:18px;
+  padding:6px 14px;
+  font-family:'Baloo Da 2', 'Inter', sans-serif;
+  font-size:14px;
   font-weight:700;
   display:flex;
   align-items:center;
   justify-content:center;
-  gap:8px;
-  border-radius:14px;
-  background:linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
-  color:#ffffff !important;
-  box-shadow:0 8px 22px rgba(232,163,61,.38);
-  border:none;
+  gap:6px;
+  border-radius:10px;
+  background:#f1f5f9;
+  color:#334155 !important;
+  border:1px solid #cbd5e1;
+  cursor:pointer;
   text-decoration:none;
-  transition:transform .2s ease, box-shadow .2s ease;
+  transition:all .2s ease;
+  line-height:1.2;
 }
 .course-popup-btn:hover{
-  transform:translateY(-2px);
-  box-shadow:0 12px 28px rgba(232,163,61,.5);
+  background:#fee2e2;
+  color:#dc2626 !important;
+  border-color:#fca5a5;
 }
 .course-popup-timer-bar{
   position:absolute;
@@ -1056,6 +1058,16 @@ header.nav{
 }
 [data-theme="dark"] .course-popup-action{
   background:#111827;
+}
+[data-theme="dark"] .course-popup-btn{
+  background:#1e293b;
+  color:#cbd5e1 !important;
+  border-color:#334155;
+}
+[data-theme="dark"] .course-popup-btn:hover{
+  background:#450a0a;
+  color:#f87171 !important;
+  border-color:#7f1d1d;
 }
 [data-theme="dark"] .course-popup-timer-bar{
   background:rgba(255,255,255,.08);
@@ -2825,13 +2837,13 @@ html.theme-transition *::after{
       </div>
 
       <div class="course-popup-action">
-        <a id="coursePopupEnrollBtn" href="#" class="course-popup-btn course-details-trigger">
-          <span>এনরোল নাও</span>
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="5" y1="12" x2="19" y2="12"></line>
-            <polyline points="12 5 19 12 12 19"></polyline>
+        <button type="button" class="course-popup-btn" id="coursePopupActionCloseBtn" aria-label="Close">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
-        </a>
+          <span>Close</span>
+        </button>
       </div>
 
       <div class="course-popup-timer-bar">
@@ -2927,12 +2939,23 @@ const VISION_API = "https://late-forest-4748.dreamsicreation.workers.dev";
 // punctuation (dot, comma, hyphen ইত্যাদি) বাদ দিয়ে শুধু মূল শব্দ দিয়ে তুলনা করে।
 const normalizeForMatch = v => String(v ?? '').trim().toLowerCase().replace(/[^a-z0-9\u0980-\u09ff]+/g, ' ').replace(/\s+/g, ' ').trim();
 
-// ডাটা ক্যাশিং সাময়িকভাবে সম্পূর্ণ বন্ধ — প্রতিবার সরাসরি লাইভ ইনস্ট্যান্ট ডাটা লোড হবে
-function vaGetCache(key){ return null; }
-function vaSetCache(key, value){ /* caching disabled */ }
-try{
-  ['va_all_course_rows','va_teachers_list','va_gallery_data','va_free_videos','va_sw_courses'].forEach(k => sessionStorage.removeItem(k));
-}catch(e){}
+// SessionStorage cache — default TTL: ১ ঘণ্টা | course_name: ১০ মিনিট
+const VA_CACHE_TTL        = 60 * 60 * 1000; // ১ ঘণ্টা
+const VA_COURSE_CACHE_TTL = 10 * 60 * 1000; // ১০ মিনিট (course_name)
+function vaGetCache(key){
+  try{
+    const raw = sessionStorage.getItem(key);
+    if(!raw) return null;
+    const { data, expires } = JSON.parse(raw);
+    if(Date.now() > expires){ sessionStorage.removeItem(key); return null; }
+    return data;
+  }catch(e){ return null; }
+}
+function vaSetCache(key, value, ttl = VA_CACHE_TTL){
+  try{
+    sessionStorage.setItem(key, JSON.stringify({ data: value, expires: Date.now() + ttl }));
+  }catch(e){}
+}
 
 // মোবাইল নেভবার মেনু খোলা/বন্ধ করা
 document.getElementById('burgerBtn').addEventListener('click', () => {
@@ -3189,11 +3212,116 @@ document.querySelectorAll('#navLinks a').forEach(link => {
     setupInfiniteTrack(feedbackTrack, feedbackWrap, feedbackSection, images, 'শিক্ষার্থীর মতামত');
   }
 
+  // ============================================================
+  // NOTIFICATION POPUP MODAL (Gallery Table -> modal_notify 1st row)
+  // ============================================================
+  let notifyPopupTimer = null;
+  let notifyPopupStartTime = 0;
+  let notifyPopupRemainingMs = 5000;
+  let notifyModalShown = false;
+
+  function convertDriveImageUrl(v){
+    const x = String(v ?? '').trim();
+    const f = x.match(/drive\.google\.com\/file\/d\/([^/]+)/i);
+    const i = x.match(/[?&]id=([^&]+)/i);
+    if(f) return `https://drive.google.com/thumbnail?id=${f[1]}&sz=w1000`;
+    if(x.includes('drive.google.com') && i) return `https://drive.google.com/thumbnail?id=${i[1]}&sz=w1000`;
+    return x;
+  }
+
+  function initAndShowNotifyModal(rawUrl){
+    if(notifyModalShown) return;
+    const cleanUrl = String(rawUrl || '').trim();
+    if(!cleanUrl || ['null', 'undefined', '-', 'none', 'n/a'].includes(cleanUrl.toLowerCase())) {
+      return;
+    }
+
+    const modal = document.getElementById('coursePopupModal');
+    const img = document.getElementById('coursePopupImage');
+    const actionCloseBtn = document.getElementById('coursePopupActionCloseBtn');
+    const closeBtn = document.getElementById('coursePopupClose');
+    const timerFill = document.getElementById('coursePopupTimerFill');
+    if(!modal || !img) return;
+
+    const finalImg = convertDriveImageUrl(cleanUrl);
+    if(!finalImg) return;
+
+    notifyModalShown = true;
+    img.src = finalImg;
+    img.alt = 'Notification';
+
+    function closeModal(){
+      clearTimeout(notifyPopupTimer);
+      modal.classList.remove('show');
+      modal.setAttribute('aria-hidden', 'true');
+      setTimeout(()=>{
+        if(!modal.classList.contains('show')) modal.style.display = 'none';
+      }, 380);
+    }
+
+    function startCountdown(ms){
+      clearTimeout(notifyPopupTimer);
+      notifyPopupStartTime = Date.now();
+      notifyPopupRemainingMs = ms;
+      notifyPopupTimer = setTimeout(closeModal, ms);
+      if(timerFill){
+        timerFill.style.animation = 'none';
+        void timerFill.offsetWidth;
+        timerFill.style.animation = `coursePopupCountdown ${ms}ms linear forwards`;
+      }
+    }
+
+    actionCloseBtn?.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      closeModal();
+    });
+
+    closeBtn?.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      closeModal();
+    });
+
+    modal.addEventListener('click', (e)=>{
+      if(e.target === modal) closeModal();
+    });
+
+    document.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape' && modal.classList.contains('show')) closeModal();
+    });
+
+    const card = modal.querySelector('.course-popup-card');
+    if(card){
+      card.addEventListener('mouseenter', ()=>{
+        clearTimeout(notifyPopupTimer);
+        notifyPopupRemainingMs = Math.max(800, notifyPopupRemainingMs - (Date.now() - notifyPopupStartTime));
+        if(timerFill) timerFill.style.animationPlayState = 'paused';
+      });
+      card.addEventListener('mouseleave', ()=>{
+        if(modal.classList.contains('show')){
+          notifyPopupStartTime = Date.now();
+          notifyPopupTimer = setTimeout(closeModal, notifyPopupRemainingMs);
+          if(timerFill) timerFill.style.animationPlayState = 'running';
+        }
+      });
+    }
+
+    setTimeout(()=>{
+      modal.style.display = 'flex';
+      void modal.offsetWidth;
+      modal.classList.add('show');
+      modal.setAttribute('aria-hidden', 'false');
+      startCountdown(5000);
+    }, 400);
+  }
+
   async function loadGallery(){
     const cached = vaGetCache('va_gallery_data');
     if(cached){
       renderGalleryImages(cached.images || []);
       renderFeedbackImages(cached.feedbackImages || []);
+      if(cached.modalNotify){
+        initAndShowNotifyModal(cached.modalNotify);
+      }
       return;
     }
     try{
@@ -3206,10 +3334,14 @@ document.querySelectorAll('#navLinks a').forEach(link => {
       const data = j.data;
       const images = Array.isArray(data) ? data.filter(Boolean) : (Array.isArray(data?.images) ? data.images.filter(Boolean) : []);
       const feedbackImages = Array.isArray(data?.feedbackImages) ? data.feedbackImages.filter(Boolean) : [];
+      const modalNotify = String(data?.modalNotify || '').trim();
 
-      vaSetCache('va_gallery_data', { images, feedbackImages });
+      vaSetCache('va_gallery_data', { images, feedbackImages, modalNotify });
       renderGalleryImages(images);
       renderFeedbackImages(feedbackImages);
+      if(modalNotify){
+        initAndShowNotifyModal(modalNotify);
+      }
     }catch(e){
       console.error('Gallery load failed:', e);
       if(galleryWrap) galleryWrap.style.display = 'none';
@@ -3444,7 +3576,7 @@ function vaShowToast(message){
         topThisRaw: String(row.topThisRaw ?? row.topThis ?? row.top_this ?? '').trim().toLowerCase()
       };
     }).filter(Boolean);
-    vaSetCache('va_all_course_rows', courses);
+    vaSetCache('va_all_course_rows', courses, VA_COURSE_CACHE_TTL);
     return courses;
   }
   function categoryHtml(cat,count){const m=CATEGORY_META[cat]||{color:'#5B8FBF',bg:'linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%)',border:'#bfdbfe',shadow:'rgba(91,143,191,0.22)',svg3d:'<svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="32" r="20" fill="#3b82f6"/></svg>'};return `<a href="All_Courses.html?level=${encodeURIComponent(cat)}" class="cat-card" data-cat="${esc(cat)}" style="--cat-color:${m.color};--cat-border:${m.border};--cat-shadow:${m.shadow}"><span class="cat-icon" style="background:${m.bg};border-color:${m.border}">${m.svg3d}</span><span class="cat-text"><b>${esc(cat)}</b><span>${toBn(count)}টি কোর্স</span></span></a>`}
@@ -3557,9 +3689,6 @@ function vaShowToast(message){
       // Read ONLY courses explicitly marked top_this=yes/true/1.
       const topCourses=allCourses.filter(c=>c.topThis===true);
 
-      // Trigger modal if any course has top_this = 'modal'
-      checkAndTriggerCourseModal(allCourses);
-
       if(topCourses.length){
         renderTopThisOnly(topCourses);
         return;
@@ -3578,98 +3707,6 @@ function vaShowToast(message){
       toolbar.hidden=true;
       errorBox.hidden=false;
     }
-  }
-
-  // ============================================================
-  // COURSE HIGHLIGHT POPUP MODAL (top_this = 'modal')
-  // ============================================================
-  let popupTimer = null;
-  let popupStartTime = 0;
-  let popupRemainingMs = 5000;
-
-  function initAndShowCourseModal(c){
-    const modal = document.getElementById('coursePopupModal');
-    const img = document.getElementById('coursePopupImage');
-    const enrollBtn = document.getElementById('coursePopupEnrollBtn');
-    const closeBtn = document.getElementById('coursePopupClose');
-    const timerFill = document.getElementById('coursePopupTimerFill');
-    if(!modal || !img || !enrollBtn) return;
-
-    img.src = c.image;
-    img.alt = c.name;
-
-    const isSub = isSubjectWiseTag(c.tag);
-    enrollBtn.href = isSub ? 'per-subject.html' : `course-details.html?course=${encodeURIComponent(c.slug)}`;
-    enrollBtn.dataset.courseName = c.name;
-    enrollBtn.dataset.hasSubjects = clean(c.subjectList) ? '1' : '0';
-
-    function closeModal(){
-      clearTimeout(popupTimer);
-      modal.classList.remove('show');
-      modal.setAttribute('aria-hidden', 'true');
-      setTimeout(()=>{
-        if(!modal.classList.contains('show')) modal.style.display = 'none';
-      }, 380);
-    }
-
-    function startCountdown(ms){
-      clearTimeout(popupTimer);
-      popupStartTime = Date.now();
-      popupRemainingMs = ms;
-      popupTimer = setTimeout(closeModal, ms);
-      if(timerFill){
-        timerFill.style.animation = 'none';
-        void timerFill.offsetWidth;
-        timerFill.style.animation = `coursePopupCountdown ${ms}ms linear forwards`;
-      }
-    }
-
-    closeBtn?.addEventListener('click', (e)=>{
-      e.stopPropagation();
-      closeModal();
-    });
-
-    modal.addEventListener('click', (e)=>{
-      if(e.target === modal) closeModal();
-    });
-
-    document.addEventListener('keydown', (e)=>{
-      if(e.key === 'Escape' && modal.classList.contains('show')) closeModal();
-    });
-
-    const card = modal.querySelector('.course-popup-card');
-    if(card){
-      card.addEventListener('mouseenter', ()=>{
-        clearTimeout(popupTimer);
-        popupRemainingMs = Math.max(800, popupRemainingMs - (Date.now() - popupStartTime));
-        if(timerFill) timerFill.style.animationPlayState = 'paused';
-      });
-      card.addEventListener('mouseleave', ()=>{
-        if(modal.classList.contains('show')){
-          popupStartTime = Date.now();
-          popupTimer = setTimeout(closeModal, popupRemainingMs);
-          if(timerFill) timerFill.style.animationPlayState = 'running';
-        }
-      });
-    }
-
-    setTimeout(()=>{
-      modal.style.display = 'flex';
-      void modal.offsetWidth;
-      modal.classList.add('show');
-      modal.setAttribute('aria-hidden', 'false');
-      startCountdown(5000);
-    }, 350);
-  }
-
-  function checkAndTriggerCourseModal(courses){
-    if(!courses || !courses.length) return;
-    const modalCourse = courses.find(c => {
-      const val = clean(c.topThisRaw || c.topThis);
-      return val === 'modal' || val.includes('modal');
-    });
-    if(!modalCourse || !modalCourse.image) return;
-    initAndShowCourseModal(modalCourse);
   }
 
   retryBtn.addEventListener('click',loadCourses);
