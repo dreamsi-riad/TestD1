@@ -1547,13 +1547,38 @@ section{ padding:45px 0; }
 }
 
 /* ---------- Free YouTube videos ---------- */
+/* বেশি ফ্রি ক্লাস যোগ করা হলে পরের লাইনে যাবে না — horizontal scroll হবে (ডেস্কটপ ও মোবাইল সব জায়গায়) */
 .video-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(247px,273px));
-  justify-content:start;
+  display:flex;
+  flex-wrap:nowrap;
+  overflow-x:auto;
   gap:22px;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  padding-top:4px;
+  padding-bottom:12px;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(30,42,71,0.2) transparent;
+}
+.video-grid::-webkit-scrollbar{
+  height:6px;
+}
+.video-grid::-webkit-scrollbar-track{
+  background:rgba(0,0,0,0.04);
+  border-radius:999px;
+}
+.video-grid::-webkit-scrollbar-thumb{
+  background:rgba(30,42,71,0.2);
+  border-radius:999px;
+}
+.video-grid::-webkit-scrollbar-thumb:hover{
+  background:rgba(30,42,71,0.35);
 }
 .video-card{
+  position:relative;
+  flex:0 0 270px;
+  max-width:270px;
+  scroll-snap-align:start;
   background:#fff;
   border:1px solid var(--paper-line);
   border-radius:var(--radius);
@@ -1611,26 +1636,21 @@ section{ padding:45px 0; }
 }
 
 .video-data-loading,.video-data-state{width:100%;padding:18px;text-align:center;color:var(--ink-soft);font-family:'Hind Siliguri',sans-serif}.pill-row .video-data-loading,.pill-row .video-data-state{padding:8px 12px}.video-thumb:focus{outline:3px solid rgba(79,143,255,.35);outline-offset:2px}
+.video-grid .video-data-loading,.video-grid .video-data-state{flex:0 0 100%;}
 
-/* মোবাইলে ভিডিও কার্ড গ্রিডের বদলে পাশাপাশি (horizontal) স্ক্রল হবে — শিক্ষক কার্ডের মতোই,
-   ভিডিও ১টা থাকুক বা ৫টা, কার্ডের size একই থাকবে (পুরো width জুড়ে বড় হয়ে যাবে না) */
+/* মোবাইলে ভিডিও কার্ডের সাইজ রেসপন্সিভ রাখা */
 @media(max-width:760px){
   .video-grid{
-    display:flex;
-    flex-wrap:nowrap;
-    overflow-x:auto;
-    scroll-snap-type:x mandatory;
     gap:16px;
     padding-bottom:10px;
-    -webkit-overflow-scrolling:touch;
   }
   .video-card{
     flex:0 0 80%;
-    scroll-snap-align:start;
+    max-width:80%;
   }
 }
 @media(max-width:480px){
-  .video-card{ flex:0 0 91%; }
+  .video-card{ flex:0 0 91%; max-width:91%; }
 }
 
 /* ---------- Teachers ---------- */
@@ -2371,6 +2391,18 @@ html.theme-transition *::after{
 [data-theme="dark"] .video-data-state{
   color:#94A3B8;
 }
+[data-theme="dark"] .video-grid{
+  scrollbar-color:rgba(255,255,255,0.2) transparent;
+}
+[data-theme="dark"] .video-grid::-webkit-scrollbar-track{
+  background:rgba(255,255,255,0.05);
+}
+[data-theme="dark"] .video-grid::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,0.2);
+}
+[data-theme="dark"] .video-grid::-webkit-scrollbar-thumb:hover{
+  background:rgba(255,255,255,0.35);
+}
 
 /* Teachers Section in Dark Mode */
 [data-theme="dark"] .teacher-card{
@@ -2523,7 +2555,7 @@ html.theme-transition *::after{
 
         <div class="hero-trust-bar">
           <div class="trust-stars">★★★★★</div>
-          <span class="trust-text"><b>১৭,০০০+</b> সফল শিক্ষার্থী এবং ১০০+ সফল লাইভ ব্যাচ</span>
+          <span class="trust-text"><b>১৭,০০০+</b> সফল শিক্ষার্থী এবং ৫৩+ সফল লাইভ ব্যাচ</span>
         </div>
       </div>
 
@@ -2535,33 +2567,27 @@ html.theme-transition *::after{
 
             <!-- পিনবোর্ড ছবি ১ -->
             <div class="pin-card">
-              <img src="https://drive.google.com/thumbnail?id=1l8Fn0LB44mr2eifXrvPQpQStulqbBIuA&sz=w1000" alt="শিক্ষক ১">
-              <div class="name">শিক্ষক ১</div>
+              <img src="https://drive.google.com/thumbnail?id=1l8Fn0LB44mr2eifXrvPQpQStulqbBIuA&sz=w1000" alt="VISION Plus Feature 1">
             </div>
             <!-- পিনবোর্ড ছবি ২ -->
             <div class="pin-card">
-              <img src="https://drive.google.com/thumbnail?id=1DkDnIok_RN0VQFqS25COhqiA0rTaU7mF&sz=w1000" alt="শিক্ষক ২">
-              <div class="name">শিক্ষক ২</div>
+              <img src="https://drive.google.com/thumbnail?id=1DkDnIok_RN0VQFqS25COhqiA0rTaU7mF&sz=w1000" alt="VISION Plus Feature 2">
             </div>
             <!-- পিনবোর্ড ছবি ৩ -->
             <div class="pin-card">
-              <img src="https://drive.google.com/thumbnail?id=1BWKhQD4mOL4lqftQfGAUKElRaVLGHBPW&sz=w1000" alt="শিক্ষক ৩">
-              <div class="name">শিক্ষক ৩</div>
+              <img src="https://drive.google.com/thumbnail?id=1BWKhQD4mOL4lqftQfGAUKElRaVLGHBPW&sz=w1000" alt="VISION Plus Feature 3">
             </div>
             <!-- পিনবোর্ড ছবি ৪ -->
             <div class="pin-card">
-              <img src="https://drive.google.com/thumbnail?id=1XwOaaH-NNTeTff3wJdTvH4tefbQonsds&sz=w1000" alt="শিক্ষক ৪">
-              <div class="name">শিক্ষক ৪</div>
+              <img src="https://drive.google.com/thumbnail?id=1XwOaaH-NNTeTff3wJdTvH4tefbQonsds&sz=w1000" alt="VISION Plus Feature 4">
             </div>
             <!-- পিনবোর্ড ছবি ৫ -->
             <div class="pin-card">
-              <img src="https://drive.google.com/thumbnail?id=1tlkhp8lzvklnpWBnqIbNQfCPx_AArFHV&sz=w1000" alt="শিক্ষক ৫">
-              <div class="name">শিক্ষক ৫</div>
+              <img src="https://drive.google.com/thumbnail?id=1tlkhp8lzvklnpWBnqIbNQfCPx_AArFHV&sz=w1000" alt="VISION Plus Feature 5">
             </div>
             <!-- ক্লোন (ছবি ১ এর সিমলেস-লুপ ক্লোন — হাত দেওয়ার দরকার নেই, ছবি ১ বদলালে এটাও বদলান) -->
             <div class="pin-card">
-              <img src="https://drive.google.com/thumbnail?id=1l8Fn0LB44mr2eifXrvPQpQStulqbBIuA&sz=w1000" alt="শিক্ষক ১">
-              <div class="name">শিক্ষক ১</div>
+              <img src="https://drive.google.com/thumbnail?id=1l8Fn0LB44mr2eifXrvPQpQStulqbBIuA&sz=w1000" alt="VISION Plus Feature 1">
             </div>
 
           </div>
