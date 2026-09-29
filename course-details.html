@@ -877,11 +877,11 @@
         }
         
         /* অ্যাকশন বাটনস (কল টু অ্যাকশন) */
+        /* অ্যাকশন বাটনস (কল টু অ্যাকশন) */
         .detail-actions {
             display: flex;
-            align-items: center;
+            align-items: stretch;
             gap: 12px;
-            flex-wrap: wrap;
             margin-top: 4px;
             padding-top: 16px;
             border-top: 1.5px dashed var(--paper-line);
@@ -892,7 +892,7 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            padding: 11px 26px;
+            padding: 11px 24px;
             border-radius: 999px;
             font-family: 'Anek Bangla', sans-serif;
             font-weight: 700;
@@ -904,6 +904,12 @@
             box-sizing: border-box;
             user-select: none;
             white-space: nowrap;
+        }
+        
+        .detail-actions .btn {
+            flex: 1 1 0;
+            min-width: 0;
+            padding: 11px 16px;
         }
         
         .btn-primary.enroll-btn {
@@ -928,7 +934,6 @@
             color: #ffffff !important;
             border: 1px solid rgba(255, 255, 255, 0.25) !important;
             box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35) !important;
-            padding: 11px 26px !important;
             font-weight: 700;
             font-size: 15px;
         }
@@ -948,7 +953,6 @@
             background: #ffffff;
             color: var(--ink);
             border: 1.5px solid #CBD5E1;
-            padding: 11px 22px;
             white-space: nowrap;
             box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
         }
