@@ -403,12 +403,12 @@
         /* মেইন কার্ড গ্রিড */
         .course-detail-grid {
             display: grid;
-            grid-template-columns: 1.12fr 0.88fr;
-            gap: 44px;
+            grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+            gap: 36px;
             align-items: start;
             background: var(--card);
             border-radius: var(--radius-lg);
-            padding: clamp(24px, 3.5vw, 42px);
+            padding: clamp(24px, 3.2vw, 38px);
             box-shadow: var(--shadow-md);
             border: 1px solid var(--paper-line);
             position: relative;
@@ -425,13 +425,28 @@
             background: linear-gradient(90deg, #2563EB, #06B6D4, #10B981);
         }
         
-        /* ===== বাম পাশ: মিডিয়া ও হাইলাইটস ===== */
+        /* বাম পাশ: হেডার, ইমেজ, প্রাইস, সুবিধা ও বাটন */
+        .detail-left-col,
         .detail-media-wrap {
-            position: sticky;
-            top: 94px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            min-width: 0;
+        }
+
+        /* ডান পাশ: বিস্তারিত বিবরণ ও ইন্সট্রাক্টর */
+        .detail-right-col,
+        .detail-content {
             display: flex;
             flex-direction: column;
             gap: 18px;
+            min-width: 0;
+        }
+
+        .detail-header-block {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
         
         .detail-image-box {
@@ -579,31 +594,24 @@
             border: 1px solid rgba(245, 158, 11, 0.25);
         }
         
-        /* ===== ডান পাশ: তথ্য ও এনরোলমেন্ট ===== */
-        .detail-content {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-        
         .detail-eyebrow-row {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             flex-wrap: wrap;
         }
         
         .detail-category-badge {
             display: inline-flex;
             align-items: center;
-            gap: 7px;
-            background: var(--primary-light);
-            color: var(--primary-dark);
-            border: 1px solid rgba(37, 99, 235, 0.2);
-            padding: 4px 14px;
+            gap: 6px;
+            background: #EFF6FF;
+            color: #1D4ED8;
+            border: 1px solid #BFDBFE;
+            padding: 3px 12px;
             border-radius: 999px;
             font-family: 'Baloo Da 2', sans-serif;
-            font-size: 13px;
+            font-size: 12.5px;
             font-weight: 700;
             letter-spacing: 0.04em;
             text-transform: uppercase;
@@ -611,46 +619,45 @@
         
         .detail-category-badge::before {
             content: "";
-            width: 7px;
-            height: 7px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
-            background: var(--primary);
+            background: #2563EB;
         }
         
         .detail-tag {
             display: inline-flex;
             align-items: center;
             font-family: 'Baloo Da 2', sans-serif;
-            font-size: 12.5px;
+            font-size: 12px;
             font-weight: 700;
             color: #7C3AED;
             background: #F5F3FF;
             border: 1px solid #DDD6FE;
-            padding: 4px 13px;
+            padding: 3px 12px;
             border-radius: 999px;
         }
         
         .detail-title {
             font-family: 'Baloo Da 2', 'Anek Bangla', sans-serif;
-            font-size: clamp(26px, 3.2vw, 36px);
+            font-size: clamp(23px, 2.6vw, 31px);
             font-weight: 800;
             color: var(--ink);
-            line-height: 1.22;
+            line-height: 1.25;
             letter-spacing: -0.01em;
             margin: 0;
         }
         
         /* প্রিমিয়াম প্রাইসিং কার্ড */
         .detail-price-card {
-            background: linear-gradient(145deg, #F8FAFC 0%, #EFF6FF 100%);
-            border: 1.5px solid rgba(37, 99, 235, 0.15);
-            border-radius: var(--radius);
-            padding: 16px 22px;
+            background: #F0F7FF;
+            border: 1.5px solid #DBEAFE;
+            border-radius: 14px;
+            padding: 14px 20px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            position: relative;
-            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.05);
+            gap: 4px;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.04);
         }
         
         .detail-price-main {
@@ -787,35 +794,40 @@
             color: var(--ink-soft);
         }
         
-        /* বিবরণ ব্লক */
+        /* বিবরণ ব্লক (Right Column) */
         .detail-description-card {
             background: #ffffff;
             border: 1px solid var(--paper-line);
             border-radius: var(--radius);
-            padding: 18px 22px;
-            font-size: 16.5px;
+            padding: clamp(20px, 2.8vw, 30px);
+            font-size: 15.5px;
             color: var(--ink-soft);
             line-height: 1.8;
-            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.02);
+            box-shadow: 0 2px 10px rgba(15, 23, 42, 0.02);
         }
         
-        .detail-description-card p {
-            margin-bottom: 8px;
+        .desc-para {
+            margin-bottom: 12px;
         }
-        .detail-description-card p:last-child {
-            margin-bottom: 0;
+        .desc-bullet-line {
+            margin-bottom: 6px;
+            padding-left: 2px;
+            line-height: 1.65;
+        }
+        .desc-gap {
+            height: 12px;
         }
         
-        /* ফিচার তালিকা */
+        /* ফিচার তালিকা (Course Facilities) */
         .detail-features-wrap {
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 8px;
         }
         
         .detail-features-title {
             font-family: 'Baloo Da 2', sans-serif;
-            font-size: 14px;
+            font-size: 14.5px;
             font-weight: 700;
             color: var(--ink);
             margin-bottom: 2px;
@@ -825,29 +837,33 @@
             list-style: none;
             padding: 0;
             margin: 0;
-            display: grid;
-            gap: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
         }
         
         .detail-features li {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 8px 14px;
+            gap: 11px;
+            padding: 9px 13px;
             border-radius: 10px;
             background: #f8fafc;
             border: 1px solid #f1f5f9;
-            color: #334155;
-            font-size: 15.5px;
-            font-weight: 600;
+            color: #1e293b;
+            font-size: 14px;
+            font-weight: 700;
+            transition: background-color 0.15s ease;
+        }
+        
+        .detail-features li:hover {
+            background: #f1f5f9;
         }
         
         .detail-feature-check {
-            width: 22px;
-            height: 22px;
-            border-radius: 50%;
-            background: var(--green-light);
-            color: var(--green-dark);
+            width: 18px;
+            height: 18px;
+            color: #10B981;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -855,18 +871,19 @@
         }
         
         .detail-feature-check svg {
-            width: 13px;
-            height: 13px;
-            stroke-width: 3;
+            width: 16px;
+            height: 16px;
+            stroke-width: 3.2;
         }
         
         /* অ্যাকশন বাটনস (কল টু অ্যাকশন) */
         .detail-actions {
             display: flex;
-            gap: 14px;
+            align-items: center;
+            gap: 12px;
             flex-wrap: wrap;
-            margin-top: 10px;
-            padding-top: 20px;
+            margin-top: 4px;
+            padding-top: 16px;
             border-top: 1.5px dashed var(--paper-line);
         }
         
@@ -874,30 +891,30 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 9px;
-            padding: 14px 34px;
+            gap: 8px;
+            padding: 11px 26px;
             border-radius: 999px;
             font-family: 'Anek Bangla', sans-serif;
             font-weight: 700;
-            font-size: 16px;
+            font-size: 15px;
             border: none;
             text-decoration: none;
-            transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
             cursor: pointer;
             box-sizing: border-box;
             user-select: none;
+            white-space: nowrap;
         }
         
         .btn-primary.enroll-btn {
             background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
             color: #ffffff;
-            padding: 15px 44px;
-            box-shadow: 0 8px 22px rgba(37, 99, 235, 0.35);
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
         }
         
         .btn-primary.enroll-btn:hover {
-            transform: translateY(-2.5px);
-            box-shadow: 0 14px 30px rgba(37, 99, 235, 0.45);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.42);
             background: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%);
         }
         
@@ -905,22 +922,21 @@
             transform: translateY(0);
         }
         
-        /* অলরেডি এনরোল্ড বাটন (উজ্জ্বল সবুজ গ্রেডিয়েন্ট) */
+        /* অলরেডি এনরোল্ড বাটন */
         .course-enrolled-trigger {
             background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
             color: #ffffff !important;
             border: 1px solid rgba(255, 255, 255, 0.25) !important;
-            box-shadow: 0 8px 22px rgba(16, 185, 129, 0.38) !important;
-            padding: 15px 44px !important;
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35) !important;
+            padding: 11px 26px !important;
             font-weight: 700;
-            font-size: 16px;
+            font-size: 15px;
         }
         
         .course-enrolled-trigger:hover {
             background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
-            transform: translateY(-2.5px);
-            box-shadow: 0 14px 30px rgba(16, 185, 129, 0.5) !important;
-            color: #ffffff !important;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.45) !important;
         }
         
         .course-enrolled-trigger:active {
@@ -931,18 +947,18 @@
         #howToBuyBtn {
             background: #ffffff;
             color: var(--ink);
-            border: 1.5px solid var(--paper-line);
-            padding: 15px 26px;
+            border: 1.5px solid #CBD5E1;
+            padding: 11px 22px;
             white-space: nowrap;
             box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
         }
         
         #howToBuyBtn:hover {
-            background: #0f172a;
-            color: #ffffff;
-            border-color: #0f172a;
+            background: #F8FAFC;
+            color: var(--ink);
+            border-color: #94A3B8;
             transform: translateY(-2px);
-            box-shadow: 0 10px 24px rgba(15, 23, 42, 0.16);
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
         }
         
         #howToBuyBtn:active {
@@ -950,64 +966,106 @@
         }
         
         #howToBuyBtn svg {
-            width: 18px;
-            height: 18px;
+            width: 17px;
+            height: 17px;
             stroke-width: 2.2;
         }
         
         /* রেস্পনসিভ ব্রেকপয়েন্টস */
         @media(max-width: 880px) {
             .course-detail-section {
-                padding: 24px 0 40px;
+                padding: 16px 0 36px;
             }
             .course-detail-grid {
                 grid-template-columns: 1fr;
-                gap: 28px;
-                padding: 22px;
-            }
-            .detail-media-wrap {
-                position: static;
-            }
-            .detail-actions {
-                flex-direction: column;
-                gap: 12px;
-            }
-            .detail-actions .btn {
-                flex: none;
-                width: 100%;
-                min-height: 52px;
-                height: 52px;
-                padding: 0 24px !important;
-                border-radius: 999px;
-                justify-content: center;
-            }
-        }
-        
-        @media(max-width: 480px) {
-            .container {
-                padding: 0 10px;
-            }
-            .course-detail-section {
-                padding: 16px 0 32px;
-            }
-            .course-detail-grid {
+                gap: 20px;
                 padding: 16px 14px;
                 border-radius: 18px;
-                gap: 20px;
             }
-            .detail-actions {
-                flex-direction: column;
+            .detail-left-col {
+                gap: 13px;
+            }
+            .detail-right-col {
+                gap: 16px;
+            }
+            .detail-title {
+                font-size: clamp(21px, 5.2vw, 25px);
+                line-height: 1.25;
+            }
+            .detail-image-box {
+                border-radius: 14px;
+            }
+            .detail-price-card {
+                padding: 11px 15px;
+                border-radius: 12px;
+                gap: 3px;
+            }
+            .price-now {
+                font-size: 26px;
+            }
+            .detail-features-title {
+                font-size: 14px;
+                margin-bottom: 1px;
+            }
+            .course-instructors-box {
+                padding: 12px 14px;
+                border-radius: 12px;
+                gap: 8px;
+            }
+            .instructor-card-avatar,
+            .instructor-card-initials {
+                width: 44px;
+                height: 44px;
+                border-radius: 10px;
+            }
+            .instructor-card-name {
+                font-size: 15px;
+            }
+            .detail-features {
+                gap: 6px;
+            }
+            .detail-features li {
+                padding: 8px 12px;
+                font-size: 13.5px;
+                border-radius: 8px;
                 gap: 10px;
             }
+            .detail-feature-check {
+                width: 18px;
+                height: 18px;
+            }
+            .detail-actions {
+                display: flex;
+                flex-direction: row;
+                gap: 8px;
+                flex-wrap: wrap;
+                margin-top: 2px;
+                padding-top: 13px;
+                border-top: 1.5px dashed var(--paper-line);
+            }
+            /* ফোন ভিউতে বাটনের টেক্সট একই রেখে হাইট যথাসম্ভব কম রাখা */
             .detail-actions .btn {
-                flex: none;
-                width: 100%;
-                min-height: 50px;
-                height: 50px;
-                padding: 0 20px !important;
-                border-radius: 999px;
-                justify-content: center;
-                font-size: 15.5px;
+                flex: 1 1 calc(50% - 4px);
+                min-width: 135px;
+                min-height: 39px !important;
+                height: 39px !important;
+                padding: 0 14px !important;
+                font-size: 13.5px !important;
+                border-radius: 999px !important;
+                gap: 6px;
+                box-shadow: 0 2px 8px rgba(37, 99, 235, 0.2) !important;
+            }
+            #howToBuyBtn {
+                padding: 0 12px !important;
+                font-size: 13.5px !important;
+                min-height: 38px !important;
+                height: 38px !important;
+            }
+            .detail-description-card {
+                padding: 16px 14px;
+                font-size: 14.5px;
+                line-height: 1.7;
+                border-radius: 14px;
             }
             .trust-perks-bar {
                 grid-template-columns: 1fr 1fr 1fr;
@@ -1018,6 +1076,21 @@
             .trust-perk-sub { font-size: 10px; }
             .trust-perk-icon { width: 26px; height: 26px; }
             .trust-perk-icon svg { width: 14px; height: 14px; }
+        }
+        
+        @media(max-width: 420px) {
+            .container {
+                padding: 0 10px;
+            }
+            .course-detail-grid {
+                padding: 14px 12px;
+            }
+            .detail-actions .btn {
+                flex: 1 1 100%;
+                min-height: 37px !important;
+                height: 37px !important;
+                font-size: 13px !important;
+            }
         }
 
         /* ===== "কোর্সটি যেভাবে কিনবেন" ভিডিও মোডাল ===== */
@@ -1668,6 +1741,25 @@
             if (/\bfree\b/i.test(x)) return x;
             return /[৳$€£]/.test(x) ? toBn(x) : `৳${toBn(x)}`;
         };
+        function formatDescription(desc) {
+            const raw = clean(desc);
+            if(!raw) return '<p class="desc-para">এই কোর্সের বিস্তারিত তথ্য শীঘ্রই আপডেট করা হবে।</p>';
+            const lines = raw.split(/\r?\n/);
+            let html = '';
+            lines.forEach(rawLine => {
+                const line = clean(rawLine);
+                if(!line) {
+                    html += '<div class="desc-gap"></div>';
+                    return;
+                }
+                if(/^[•\-\*▪♦◆▶\u25C6\u25C7\u25BA\u25B6🔹⭐🎯⚡🎁💡]/.test(line)) {
+                    html += `<div class="desc-bullet-line">${escapeHtml(line)}</div>`;
+                } else {
+                    html += `<p class="desc-para">${escapeHtml(line)}</p>`;
+                }
+            });
+            return html;
+        }
         function getCourseSlug() { return new URLSearchParams(window.location.search).get('course'); }
         function getSwId() { return new URLSearchParams(window.location.search).get('sw'); }
 
@@ -1894,26 +1986,23 @@
 
             content.innerHTML = `
                 <div class="course-detail-grid">
-                    <!-- বাম পাশ: মিডিয়া ও ইন্সট্রাক্টর -->
-                    <div class="detail-media-wrap">
-                        <div class="detail-image-box">
-                            ${image ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(course.name)}">` : '<div style="aspect-ratio:16/10;background:#1e293b;display:flex;align-items:center;justify-content:center;color:#94a3b8">Course Image</div>'}
+                    <!-- বাম পাশ: হেডার (টাইটেল + ব্যাজ), ইমেজ, প্রাইস, কোর্স সুবিধা ও বাটন -->
+                    <div class="detail-left-col">
+                        <div class="detail-header-block">
+                            <div class="detail-eyebrow-row">
+                                <span class="detail-category-badge">${escapeHtml(course.category)}${course.tag ? ` ${escapeHtml(course.tag)}` : ''}</span>
+                                ${course.tag ? `<span class="detail-tag">${escapeHtml(course.tag)}</span>` : ''}
+                            </div>
+                            <h1 class="detail-title">${escapeHtml(course.name)}</h1>
                         </div>
-                        ${courseInstructorsHtml}
-                    </div>
 
-                    <!-- ডান পাশ: বিস্তারিত তথ্য ও এনরোলমেন্ট -->
-                    <div class="detail-content">
-                        <div class="detail-eyebrow-row">
-                            <span class="detail-category-badge">${escapeHtml(course.category)}</span>
-                            ${course.tag ? `<span class="detail-tag">${escapeHtml(course.tag)}</span>` : ''}
+                        <div class="detail-image-box">
+                            ${image ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(course.name)}" loading="eager">` : '<div style="aspect-ratio:16/10;background:#1e293b;display:flex;align-items:center;justify-content:center;color:#94a3b8">Course Image</div>'}
                         </div>
-                        
-                        <h1 class="detail-title">${escapeHtml(course.name)}</h1>
-                        
+
                         <div class="detail-price-card">
                             <div class="detail-price-main">
-                                ${course.price ? `<span class="price-now">${escapeHtml(course.price)}</span>` : ''}
+                                ${course.price ? `<span class="price-now">${escapeHtml(course.price)}</span>` : '<span class="price-now">Free</span>'}
                                 ${course.oldPrice ? `<span class="price-old">${escapeHtml(course.oldPrice)}</span>` : ''}
                                 ${course.oldPrice ? `<span class="price-discount-tag">অফার প্রাইস</span>` : ''}
                             </div>
@@ -1923,11 +2012,13 @@
                                     <span>${escapeHtml(course.priceNote)}</span>
                                 </div>` : ''}
                         </div>
-                        
-                        <div class="detail-description-card">${escapeHtml(description).replace(/\n/g, '<br>')}</div>
-                        
+
+                        <!-- কোর্স ইন্সট্রাক্টর তথ্য (কোর্সের সুবিধার উপরে) -->
+                        ${courseInstructorsHtml}
+
+                        <!-- কোর্সের বিশেষ সুবিধা -->
                         ${featuresHtml}
-                        
+
                         <div class="detail-actions">
                             ${enrollButtonHtml}
                             <button type="button" class="btn btn-outline" id="howToBuyBtn">
@@ -1937,6 +2028,13 @@
                                 </svg>
                                 <span>কোর্সটি যেভাবে কিনবেন</span>
                             </button>
+                        </div>
+                    </div>
+
+                    <!-- ডান পাশ: বিস্তারিত বিবরণ (Long Description) -->
+                    <div class="detail-right-col">
+                        <div class="detail-description-card">
+                            ${formatDescription(description)}
                         </div>
                     </div>
                 </div>`;
@@ -2031,31 +2129,31 @@
 
             content.innerHTML = `
                 <div class="course-detail-grid">
-                    <div class="detail-media-wrap">
-                        <div class="detail-image-box">
-                            ${image ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(row.subject)}">` : '<div style="aspect-ratio:16/10;background:#1e293b;display:flex;align-items:center;justify-content:center;color:#94a3b8">Subject Image</div>'}
+                    <!-- বাম পাশ: হেডার, ইমেজ, প্রাইস ও বাটন -->
+                    <div class="detail-left-col">
+                        <div class="detail-header-block">
+                            <div class="detail-eyebrow-row">
+                                <span class="detail-category-badge">${escapeHtml(row.level)}${metaBits ? ` • ${metaBits}` : ''}</span>
+                                ${row.nuDcu ? `<span class="detail-tag">${escapeHtml(row.nuDcu)}</span>` : ''}
+                            </div>
+                            <h1 class="detail-title">${escapeHtml(row.subject)}</h1>
                         </div>
-                        ${swInstructorsHtml}
-                    </div>
 
-                    <div class="detail-content">
-                        <div class="detail-eyebrow-row">
-                            <span class="detail-category-badge">${escapeHtml(row.level)}${metaBits ? ` • ${metaBits}` : ''}</span>
-                            ${row.nuDcu ? `<span class="detail-tag">${escapeHtml(row.nuDcu)}</span>` : ''}
+                        <div class="detail-image-box">
+                            ${image ? `<img src="${escapeHtml(image)}" alt="${escapeHtml(row.subject)}" loading="eager">` : '<div style="aspect-ratio:16/10;background:#1e293b;display:flex;align-items:center;justify-content:center;color:#94a3b8">Subject Image</div>'}
                         </div>
-                        
-                        <h1 class="detail-title">${escapeHtml(row.subject)}</h1>
-                        
+
                         <div class="detail-price-card">
                             <div class="detail-price-main">
-                                ${row.newPrice ? `<span class="price-now">${escapeHtml(formatPrice(row.newPrice))}</span>` : ''}
+                                ${row.newPrice ? `<span class="price-now">${escapeHtml(formatPrice(row.newPrice))}</span>` : '<span class="price-now">Free</span>'}
                                 ${row.oldPrice ? `<span class="price-old">${escapeHtml(formatPrice(row.oldPrice))}</span>` : ''}
                                 ${row.oldPrice ? `<span class="price-discount-tag">অফার প্রাইস</span>` : ''}
                             </div>
                         </div>
-                        
-                        <div class="detail-description-card">${escapeHtml(description).replace(/\n/g, '<br>')}</div>
-                        
+
+                        <!-- কোর্স ইন্সট্রাক্টর তথ্য (কোর্সের সুবিধার উপরে) -->
+                        ${swInstructorsHtml}
+
                         <div class="detail-actions">
                             ${enrollButtonHtml}
                             <button type="button" class="btn btn-outline" id="howToBuyBtn">
@@ -2065,6 +2163,13 @@
                                 </svg>
                                 <span>কোর্সটি যেভাবে কিনবেন</span>
                             </button>
+                        </div>
+                    </div>
+
+                    <!-- ডান পাশ: বিস্তারিত বিবরণ -->
+                    <div class="detail-right-col">
+                        <div class="detail-description-card">
+                            ${formatDescription(description)}
                         </div>
                     </div>
                 </div>`;
