@@ -2944,6 +2944,15 @@ const VA_CACHE_TTL        = 60 * 60 * 1000; // ১ ঘণ্টা
 const VA_COURSE_CACHE_TTL = 60 * 60 * 1000; // ১ ঘণ্টা (course_name)
 const VA_CACHE_KEYS = ['va_all_course_rows','va_teachers_list','va_gallery_data','va_free_videos','va_sw_courses'];
 
+// পূর্বের যেকোনো পুরনো ক্যাশ সমস্ত ইউজারের ব্রাউজার থেকে একবার স্বয়ংক্রিয়ভাবে ক্লিন করে নেওয়া
+try {
+  if (localStorage.getItem('va_build_v') !== '2026_09_v2') {
+    VA_CACHE_KEYS.forEach(k => { try{ sessionStorage.removeItem(k); }catch(e){} });
+    localStorage.setItem('va_build_v', '2026_09_v2');
+    localStorage.removeItem('va_cv');
+  }
+} catch(e) {}
+
 function vaGetCache(key){
   try{
     const raw = sessionStorage.getItem(key);
@@ -2963,24 +2972,30 @@ function vaClearAllCache(){
 }
 
 // Admin যেকোনো change করলে server version বাড়ে, তখন সব cache clear হয়ে fresh data লোড হয়।
-(async function checkAndInvalidateCache(){
-  try{
-    const res = await fetch(VISION_API, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ action: 'get_cache_version' })
-    });
-    if(!res.ok) return;
-    const j = await res.json();
-    if(j.status !== 'ok') return;
-    const serverV = String(j.v || '0');
-    const localV  = localStorage.getItem('va_cv') || '0';
-    if(serverV !== localV){
-      vaClearAllCache();
-      localStorage.setItem('va_cv', serverV);
-    }
-  }catch(e){}
-})();
+let cacheCheckPromise = null;
+function ensureCacheValid(){
+  if(!cacheCheckPromise){
+    cacheCheckPromise = (async function(){
+      try{
+        const res = await fetch(VISION_API, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ action: 'get_cache_version' })
+        });
+        if(!res.ok) return;
+        const j = await res.json();
+        if(j.status !== 'ok') return;
+        const serverV = String(j.v ?? '0');
+        const localV  = localStorage.getItem('va_cv');
+        if(localV === null || serverV !== localV){
+          vaClearAllCache();
+          localStorage.setItem('va_cv', serverV);
+        }
+      }catch(e){}
+    })();
+  }
+  return cacheCheckPromise;
+}
 
 // মোবাইল নেভবার মেনু খোলা/বন্ধ করা
 document.getElementById('burgerBtn').addEventListener('click', () => {
@@ -3125,6 +3140,7 @@ document.querySelectorAll('#navLinks a').forEach(link => {
   }
 
   async function loadTeachers(){
+    await ensureCacheValid();
     const cached = vaGetCache('va_teachers_list');
     if(cached && cached.length){
       renderTeachersList(cached);
@@ -3340,6 +3356,7 @@ document.querySelectorAll('#navLinks a').forEach(link => {
   }
 
   async function loadGallery(){
+    await ensureCacheValid();
     const cached = vaGetCache('va_gallery_data');
     if(cached){
       renderGalleryImages(cached.images || []);
@@ -3572,6 +3589,7 @@ function vaShowToast(message){
   }
   const enrolledCourseNames = getEnrolledCourseNames();
   async function fetchAllCourseRows(){
+    await ensureCacheValid();
     const cached = vaGetCache('va_all_course_rows');
     if(cached && cached.length) return cached;
 
@@ -3859,6 +3877,7 @@ function vaShowToast(message){
   }
 
   async function fetchVideos(){
+    await ensureCacheValid();
     const cached = vaGetCache('va_free_videos');
     if(cached && cached.length) return cached;
 
