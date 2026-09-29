@@ -1033,12 +1033,23 @@ function getEnrolledCourseKeys(){
   }catch(e){return new Set()}
 }
 
-// ডাটা ক্যাশিং সাময়িকভাবে সম্পূর্ণ বন্ধ — প্রতিবার সরাসরি লাইভ ইনস্ট্যান্ট ডাটা লোড হবে
-function vaGetCache(key){ return null; }
-function vaSetCache(key, value){ /* caching disabled */ }
-try{
-  sessionStorage.removeItem('va_all_course_rows');
-}catch(e){}
+// SessionStorage cache — default TTL: ১ ঘণ্টা | course_name: ১০ মিনিট
+const VA_CACHE_TTL        = 60 * 60 * 1000; // ১ ঘণ্টা
+const VA_COURSE_CACHE_TTL = 10 * 60 * 1000; // ১০ মিনিট (course_name)
+function vaGetCache(key){
+  try{
+    const raw = sessionStorage.getItem(key);
+    if(!raw) return null;
+    const { data, expires } = JSON.parse(raw);
+    if(Date.now() > expires){ sessionStorage.removeItem(key); return null; }
+    return data;
+  }catch(e){ return null; }
+}
+function vaSetCache(key, value, ttl = VA_CACHE_TTL){
+  try{
+    sessionStorage.setItem(key, JSON.stringify({ data: value, expires: Date.now() + ttl }));
+  }catch(e){}
+}
 
 async function fetchCourses(){
   const cached = vaGetCache('va_all_course_rows');
@@ -1072,7 +1083,7 @@ async function fetchCourses(){
       slug:uniqueSlug(name,category,used)
     };
   }).filter(Boolean);
-  vaSetCache('va_all_course_rows', list);
+  vaSetCache('va_all_course_rows', list, VA_COURSE_CACHE_TTL);
   return list;
 }
 
