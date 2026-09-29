@@ -428,18 +428,36 @@ header.nav{
   color: #ffffff !important;
 }
 
-.course-empty, .status{
+.course-empty{
   grid-column: 1 / -1; text-align: center; padding: 60px 20px;
   color: var(--ink-soft); background: #fff; border: 1.5px dashed var(--paper-line);
   border-radius: var(--radius-lg); font-size: 16px;
 }
-.status strong, .course-empty strong{
+.course-empty strong{
   font-family: 'Baloo Da 2', sans-serif; font-size: 18px; color: var(--ink); display: block; margin-bottom: 6px;
 }
+.status{
+  grid-column: 1 / -1; text-align: center; padding: 50px 20px;
+  color: var(--ink-muted); background: #fff; border: 1.5px dashed var(--paper-line);
+  border-radius: var(--radius-lg);
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 14.5px;
+  font-weight: 400 !important;
+  line-height: 1.6;
+}
+.status strong{
+  font-family: 'Anek Bangla', sans-serif; font-size: 15px; font-weight: 500 !important; color: var(--ink-soft); display: block; margin-bottom: 4px;
+}
+.status-msg{
+  font-family: 'Anek Bangla', sans-serif;
+  font-size: 14.5px;
+  font-weight: 400 !important;
+  color: var(--ink-muted);
+}
 .spinner{
-  width: 36px; height: 36px; border-radius: 50%;
-  border: 3.5px solid rgba(37, 99, 235, 0.15); border-top-color: var(--primary);
-  animation: spin 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite; margin: 0 auto 14px;
+  width: 32px; height: 32px; border-radius: 50%;
+  border: 3px solid rgba(37, 99, 235, 0.15); border-top-color: var(--primary);
+  animation: spin 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite; margin: 0 auto 12px;
 }
 @keyframes spin{ to{ transform: rotate(360deg); } }
 
@@ -796,7 +814,7 @@ html.theme-transition *::after{
       </div>
 
       <div class="course-grid" id="courseGrid">
-        <div class="status"><div class="spinner"></div>কোর্সের তথ্য লোড হচ্ছে...</div>
+        <div class="status"><div class="spinner"></div><span class="status-msg">কোর্সের তথ্য লোড হচ্ছে...</span></div>
       </div>
     </div>
   </section>
@@ -880,17 +898,26 @@ function extractBbaYear(title){
 }
 
 const UNIVERSITY_ALIASES={
-  nu:'nu national university national',
-  dcu:'dcu dhaka central university central'
+  nu:'nu national university national জাতীয় বিশ্ববিদ্যালয়',
+  dcu:'dcu dhaka central university central 7 college seven ঢাকা কলেজ'
 };
 
 function courseSearchText(c){
-  const tagKey=normalize(c.tag);
+  const catNorm=normalize(c.category);
+  const nameNorm=normalize(c.name);
+  const tagNorm=normalize(c.tag);
+  let uniAlias='';
+  if(catNorm.includes('nu') || nameNorm.includes('(nu)') || tagNorm === 'nu'){
+    uniAlias += ' ' + UNIVERSITY_ALIASES.nu;
+  }
+  if(catNorm.includes('dcu') || nameNorm.includes('(dcu)') || tagNorm === 'dcu'){
+    uniAlias += ' ' + UNIVERSITY_ALIASES.dcu;
+  }
   return normalize([
     c.category,
     c.name,
     c.tag,
-    UNIVERSITY_ALIASES[tagKey]||'',
+    uniAlias,
     extractBbaYear(c.name)
   ].join(' '));
 }
