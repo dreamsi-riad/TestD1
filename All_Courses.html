@@ -1110,6 +1110,8 @@ async function fetchCourses(){
   const list = (j.data||[]).map(row=>{
     const category=clean(row.level),name=clean(row.name);
     if(!category||!name)return null;
+    const topThisRaw = String(row.topThisRaw ?? row.topThis ?? row.top_this ?? '').trim().toLowerCase();
+    const topThis = ['yes','true','1'].includes(topThisRaw);
     return {
       name,
       tag:clean(row.tag),
@@ -1122,7 +1124,9 @@ async function fetchCourses(){
       features:parseFeatures(row.featureText),
       subjectList:clean(row.subjectList || row.subject_list),
       category,
-      slug:uniqueSlug(name,category,used)
+      slug:uniqueSlug(name,category,used),
+      topThis,
+      topThisRaw
     };
   }).filter(Boolean);
   vaSetCache('va_all_course_rows', list, VA_COURSE_CACHE_TTL);
