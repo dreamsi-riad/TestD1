@@ -1036,6 +1036,8 @@ function getEnrolledCourseKeys(){
 // SessionStorage cache — default TTL: ১ ঘণ্টা | course_name: ১০ মিনিট
 const VA_CACHE_TTL        = 60 * 60 * 1000; // ১ ঘণ্টা
 const VA_COURSE_CACHE_TTL = 10 * 60 * 1000; // ১০ মিনিট (course_name)
+const VA_CACHE_KEYS = ['va_all_course_rows','va_teachers_list','va_gallery_data','va_free_videos','va_sw_courses'];
+
 function vaGetCache(key){
   try{
     const raw = sessionStorage.getItem(key);
@@ -1050,6 +1052,30 @@ function vaSetCache(key, value, ttl = VA_CACHE_TTL){
     sessionStorage.setItem(key, JSON.stringify({ data: value, expires: Date.now() + ttl }));
   }catch(e){}
 }
+function vaClearAllCache(){
+  VA_CACHE_KEYS.forEach(k => { try{ sessionStorage.removeItem(k); }catch(e){} });
+}
+
+// Admin যেকোনো change করলে server version বাড়ে, তখন সব cache clear হয়ে fresh data লোড হয়।
+(async function checkAndInvalidateCache(){
+  try{
+    const res = await fetch(VISION_API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'get_cache_version' })
+    });
+    if(!res.ok) return;
+    const j = await res.json();
+    if(j.status !== 'ok') return;
+    const serverV = String(j.v || '0');
+    const localV  = localStorage.getItem('va_cv') || '0';
+    if(serverV !== localV){
+      vaClearAllCache();
+      localStorage.setItem('va_cv', serverV);
+    }
+  }catch(e){}
+})();
+
 
 async function fetchCourses(){
   const cached = vaGetCache('va_all_course_rows');
