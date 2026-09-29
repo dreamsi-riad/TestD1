@@ -1033,9 +1033,9 @@ function getEnrolledCourseKeys(){
   }catch(e){return new Set()}
 }
 
-// SessionStorage cache — default TTL: ১ ঘণ্টা | course_name: ১০ মিনিট
+// SessionStorage cache — TTL: ১ ঘণ্টা
 const VA_CACHE_TTL        = 60 * 60 * 1000; // ১ ঘণ্টা
-const VA_COURSE_CACHE_TTL = 10 * 60 * 1000; // ১০ মিনিট (course_name)
+const VA_COURSE_CACHE_TTL = 60 * 60 * 1000; // ১ ঘণ্টা (course_name)
 const VA_CACHE_KEYS = ['va_all_course_rows','va_teachers_list','va_gallery_data','va_free_videos','va_sw_courses'];
 
 function vaGetCache(key){
