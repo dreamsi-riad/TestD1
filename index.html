@@ -3591,7 +3591,16 @@ function vaShowToast(message){
   async function fetchAllCourseRows(){
     await ensureCacheValid();
     const cached = vaGetCache('va_all_course_rows');
-    if(cached && cached.length) return cached;
+    if(cached && cached.length){
+      cached.forEach(c => {
+        if(c.topThis === undefined){
+          const raw = String(c.topThisRaw ?? c.top_this ?? '').trim().toLowerCase();
+          c.topThis = ['yes','true','1'].includes(raw);
+          c.topThisRaw = raw;
+        }
+      });
+      return cached;
+    }
 
     const r=await fetch(VISION_API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'get_courses'})});
     if(!r.ok)throw Error(`Course Name: HTTP ${r.status}`);
@@ -3686,18 +3695,14 @@ function vaShowToast(message){
   // ============================================================
   // TOP THIS MODE
   // ------------------------------------------------------------
-  // course_name.top_this = yes হলে ONLY top_this=yes course(s) show হবে.
-  // Category cards, section heading, toolbar এবং static Subject Wise card
-  // কিছুই render হবে না।
-  //
-  // একাধিক course-এ yes থাকলে সবগুলো show হবে।
+  // Index/Home page-এ শুধুমাত্র top_this=yes কোর্সগুলোই দেখা যাবে।
+  // কোনো কোর্সে top_this না থাকলে নিচে কোনো কোর্স কার্ড দেখাবে না (খালি থাকবে)।
+  // সমস্ত কোর্স All_Courses.html-এ স্বাভাবিকভাবে দেখা যাবে।
   // ============================================================
   const coursesSection=document.getElementById('courses');
   const coursesSectionHead=coursesSection ? coursesSection.querySelector('.section-head') : null;
 
   function setTopThisMode(enabled){
-    // Category cards and their counts stay visible in both modes.
-    // top_this controls only the course cards shown below.
     if(coursesSectionHead) coursesSectionHead.style.display='';
     catGrid.style.display='';
     if(enabled){
@@ -3709,18 +3714,22 @@ function vaShowToast(message){
   function renderTopThisOnly(topCourses){
     setTopThisMode(true);
 
-    // Counts are calculated from ALL courses, not only top_this courses.
+    // Counts are calculated from ALL courses for category cards
     renderCategories();
 
-    // Do not call renderCourses() here because that adds the static Subject Wise card.
-    // In top_this mode ONLY top_this=yes course(s) are shown.
-    courseGrid.innerHTML=topCourses.length
-      ? topCourses.map(cardHtml).join('')
-      : '';
+    // Index page ONLY shows top_this=yes course(s). If none marked, show no cards below.
+    if(topCourses.length){
+      courseGrid.style.display='';
+      courseGrid.innerHTML=topCourses.map(cardHtml).join('');
+    }else{
+      courseGrid.style.display='none';
+      courseGrid.innerHTML='';
+    }
   }
 
   async function loadCourses(){
     errorBox.hidden=true;
+    courseGrid.style.display='';
     courseGrid.innerHTML=Array(3).fill(courseSkelHtml()).join('');
     catGrid.innerHTML=Array(6).fill(catSkelHtml()).join('');
 
@@ -3732,15 +3741,8 @@ function vaShowToast(message){
       // Read ONLY courses explicitly marked top_this=yes/true/1.
       const topCourses=allCourses.filter(c=>c.topThis===true);
 
-      if(topCourses.length){
-        renderTopThisOnly(topCourses);
-        return;
-      }
-
-      // No top_this course -> restore the normal page.
-      setTopThisMode(false);
-      renderCategories();
-      renderCourses(null);
+      // Home page strictly shows top_this courses (or 0 courses if none marked).
+      renderTopThisOnly(topCourses);
 
     }catch(e){
       console.error('Course load failed:',e);
