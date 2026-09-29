@@ -2909,13 +2909,13 @@ html.theme-transition *::after{
               </div>
 
               <div class="form-row">
-                <label for="reg_email">ইমেইল <span class="req">*</span></label>
-                <input type="email" id="reg_email" name="email" placeholder="যেমন: example@mail.com" required>
+                <label for="reg_email">ইমেইল <span class="opt" style="font-size:12px;font-weight:400;color:var(--ink-muted);">(ঐচ্ছিক)</span></label>
+                <input type="email" id="reg_email" name="email" placeholder="যেমন: example@mail.com">
               </div>
 
               <div class="form-row full">
-                <label for="reg_facebook">Facebook ID Link <span class="req">*</span></label>
-                <input type="text" id="reg_facebook" name="facebook" placeholder="যেমন: https://facebook.com/yourprofile" required>
+                <label for="reg_facebook">Facebook ID Link <span class="opt" style="font-size:12px;font-weight:400;color:var(--ink-muted);">(ঐচ্ছিক)</span></label>
+                <input type="text" id="reg_facebook" name="facebook" placeholder="যেমন: https://facebook.com/yourprofile">
               </div>
 
               <div class="form-row full">
@@ -4305,7 +4305,9 @@ html.theme-transition *::after{
           const pdfHtml = locked
             ? '<span class="class-pdf-btn is-locked" title="আগে ক্লাসটি unlock করুন">🔒</span>'
             : (item.pdfUrl ? `<a class="class-pdf-btn" href="${escapeHtml(driveDirectLink(item.pdfUrl))}" target="_blank" rel="noopener" title="Download PDF" onclick="event.stopPropagation()"><svg viewBox="0 0 40 50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><rect x="0" y="0" width="40" height="16" fill="#e21c1c"/><text x="20" y="12" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="9.5" font-weight="800" fill="#ffffff" letter-spacing="0.3">PDF</text><path d="M20 22v14" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/><path d="M14 30l6 6 6-6" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M12 42h16" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/></svg></a>` : '');
-          return `<div class="class-item-row"><button type="button" class="class-item${locked?' is-locked':''}" data-video="${locked?'':escapeHtml(item.url)}" data-locked="${locked?'1':'0'}"><span class="class-play">${playIcon}</span><span class="class-meta"><span class="class-title">${escapeHtml(item.className || `Class ${index+1}`)}</span><span class="class-chapter">${escapeHtml(item.chapter || '')}</span></span></button>${pdfHtml}</div>`;
+          const mainTitle = item.chapter || item.className || `Class ${index+1}`;
+          const subTitle = item.chapter ? (item.className || '') : '';
+          return `<div class="class-item-row"><button type="button" class="class-item${locked?' is-locked':''}" data-video="${locked?'':escapeHtml(item.url)}" data-locked="${locked?'1':'0'}"><span class="class-play">${playIcon}</span><span class="class-meta"><span class="class-title">${escapeHtml(mainTitle)}</span>${subTitle ? `<span class="class-chapter">${escapeHtml(subTitle)}</span>` : ''}</span></button>${pdfHtml}</div>`;
         }).join('')
       : '<div class="learning-empty">কোনো ক্লাস খুঁজে পাওয়া যায়নি।</div>';
     classList.querySelectorAll('.class-item').forEach(item=>item.addEventListener('click',()=>{
@@ -4323,7 +4325,7 @@ html.theme-transition *::after{
       const q = normalizeForMatch(classSearchInput.value);
       if(!q){ renderClassItems(activeSubjectRows); return; }
       const filtered = activeSubjectRows.filter(item=>{
-        const haystack = normalizeForMatch(`${item.className || ''}`);
+        const haystack = normalizeForMatch(`${item.chapter || ''} ${item.className || ''}`);
         return haystack.includes(q);
       });
       renderClassItems(filtered);
@@ -5839,20 +5841,14 @@ html.theme-transition *::after{
     }
 
     const email = document.getElementById('reg_email').value.trim();
-    if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
-      regStatus.textContent = '❌ সঠিক ইমেইল এড্রেস দেওয়া বাধ্যতামূলক (যেমন: example@mail.com)।';
+    if(email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+      regStatus.textContent = '❌ সঠিক ইমেইল এড্রেস দিন (যেমন: example@mail.com)।';
       regStatus.className = 'form-status show err';
       document.getElementById('reg_email').focus();
       return;
     }
 
     const facebook = document.getElementById('reg_facebook').value.trim();
-    if(!facebook){
-      regStatus.textContent = '❌ Facebook ID Link দেওয়া বাধ্যতামূলক।';
-      regStatus.className = 'form-status show err';
-      document.getElementById('reg_facebook').focus();
-      return;
-    }
 
     const password = document.getElementById('reg_password').value;
 
