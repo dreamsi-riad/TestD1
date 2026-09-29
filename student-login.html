@@ -1337,49 +1337,88 @@ header.nav{
 .filter-select-wrap::after{
   content: "";
   position: absolute;
-  right: 16px;
+  right: 15px;
   top: 50%;
-  width: 8px;
-  height: 8px;
-  border-right: 2.2px solid rgba(255, 255, 255, 0.9);
-  border-bottom: 2.2px solid rgba(255, 255, 255, 0.9);
-  transform: translateY(-70%) rotate(45deg);
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-65%) rotate(45deg);
   pointer-events: none;
+  transition: transform 0.2s ease;
 }
 .filter-select{
   width: 100%;
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
-  font: 700 clamp(13px, 3.6vw, 15px)/1.2 'Anek Bangla', sans-serif;
-  color: #fff;
-  background: linear-gradient(135deg, #1E293B, #0F172A 70%);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-family: 'Anek Bangla', 'Hind Siliguri', sans-serif;
+  font-size: clamp(13px, 3.5vw, 14.5px);
+  font-weight: 500;
+  line-height: 1.35;
   border-radius: 12px;
-  padding: 12px 36px 12px 16px;
+  padding: 11px 36px 11px 16px;
   cursor: pointer;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.15);
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
 }
-.filter-select:hover{
-  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.25);
-  border-color: rgba(255, 255, 255, 0.3);
+
+/* সাবজেক্ট স্পিনার - প্রিমিয়াম সফট স্কাই/ব্লু টিন্ট */
+.filter-select-wrap--subject{ color: #0284C7; }
+.filter-select--subject,
+#subjectSelect{
+  background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%);
+  border: 1.5px solid #BAE6FD;
+  color: #0369A1;
+  box-shadow: 0 2px 8px rgba(2, 132, 199, 0.06);
 }
-.filter-select:focus{
+.filter-select--subject:hover,
+#subjectSelect:hover{
+  border-color: #38BDF8;
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.14);
+}
+.filter-select--subject:focus,
+#subjectSelect:focus{
   outline: none;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.4);
+  border-color: #0284C7;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2);
 }
+
+/* চ্যাপ্টার স্পিনার - প্রিমিয়াম সফট ভায়োলেট/পার্পল টিন্ট */
+.filter-select-wrap--chapter{ color: #9333EA; }
+.filter-select--chapter,
+#chapterSelect{
+  background: linear-gradient(135deg, #FAF5FF 0%, #F3E8FF 100%);
+  border: 1.5px solid #E9D5FF;
+  color: #7E22CE;
+  box-shadow: 0 2px 8px rgba(126, 34, 206, 0.06);
+}
+.filter-select--chapter:hover,
+#chapterSelect:hover{
+  border-color: #C084FC;
+  box-shadow: 0 4px 14px rgba(126, 34, 206, 0.14);
+}
+.filter-select--chapter:focus,
+#chapterSelect:focus{
+  outline: none;
+  border-color: #9333EA;
+  box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.2);
+}
+
 .filter-select:disabled{
-  opacity: 0.55;
+  opacity: 0.5;
   cursor: not-allowed;
+  filter: grayscale(0.5);
   box-shadow: none;
 }
 .filter-select option{
   color: var(--ink);
-  background: #fff;
+  background: #ffffff;
+  font-weight: 500;
+  padding: 8px 12px;
 }
 
 /* টপিক সার্চ */
@@ -2673,10 +2712,21 @@ html.theme-transition *::after{
   color:#64748B;
 }
 
-[data-theme="dark"] .filter-select{
-  background-color:#162035;
-  border-color:rgba(255,255,255,0.12);
-  color:#F8FAFC;
+[data-theme="dark"] .filter-select-wrap--subject{ color: #7DD3FC; }
+[data-theme="dark"] .filter-select--subject,
+[data-theme="dark"] #subjectSelect{
+  background: linear-gradient(135deg, rgba(3, 105, 161, 0.24) 0%, rgba(14, 165, 233, 0.14) 100%);
+  border-color: rgba(56, 189, 248, 0.35);
+  color: #BAE6FD;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+}
+[data-theme="dark"] .filter-select-wrap--chapter{ color: #E9D5FF; }
+[data-theme="dark"] .filter-select--chapter,
+[data-theme="dark"] #chapterSelect{
+  background: linear-gradient(135deg, rgba(126, 34, 206, 0.24) 0%, rgba(168, 85, 247, 0.14) 100%);
+  border-color: rgba(192, 132, 252, 0.35);
+  color: #F3E8FF;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
 }
 [data-theme="dark"] .filter-select option{
   background:#111827;
@@ -3153,11 +3203,11 @@ html.theme-transition *::after{
               </div>
 
               <div class="filter-row" id="filterRow" style="display:none;">
-                <div class="filter-select-wrap">
-                  <select id="subjectSelect" class="filter-select" aria-label="Subject"></select>
+                <div class="filter-select-wrap filter-select-wrap--subject">
+                  <select id="subjectSelect" class="filter-select filter-select--subject" aria-label="Subject"></select>
                 </div>
-                <div class="filter-select-wrap">
-                  <select id="chapterSelect" class="filter-select" aria-label="Chapter"></select>
+                <div class="filter-select-wrap filter-select-wrap--chapter">
+                  <select id="chapterSelect" class="filter-select filter-select--chapter" aria-label="Chapter"></select>
                 </div>
               </div>
               <div class="class-search-wrap" id="classSearchWrap" style="display:none;">
@@ -4281,6 +4331,11 @@ html.theme-transition *::after{
   }
 
   function populateChapterSelect(rows, subject){
+    if(!subject){
+      chapterSelect.innerHTML = '<option value="">সব চ্যাপ্টার</option>';
+      chapterSelect.disabled = true;
+      return [];
+    }
     const subjectRows = rows.filter(x =>
       isCleanSubjectMatch(x.subject, subject) ||
       normalizeForMatch(x.subject) === normalizeForMatch(subject)
@@ -4551,10 +4606,20 @@ html.theme-transition *::after{
     courseLearningPanel.style.display='block';
     filterRow.style.display='flex';
     subjectSelect.disabled = false;
-    subjectSelect.innerHTML = subjects.map(s=>`<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join('');
+    subjectSelect.innerHTML = `<option value="">-- বিষয় নির্বাচন করুন --</option>` +
+      subjects.map(s=>`<option value="${escapeHtml(s)}">${escapeHtml(s)}</option>`).join('');
 
     const applyFilters=()=>{
       const subject = subjectSelect.value;
+      if(!subject){
+        stopClassPlayer();
+        chapterSelect.innerHTML = '<option value="">-- চ্যাপ্টার --</option>';
+        chapterSelect.disabled = true;
+        if(classSearchInput) classSearchInput.value='';
+        if(classSearchWrap) classSearchWrap.style.display = 'none';
+        classList.innerHTML = '<div class="learning-empty" style="padding:48px 16px;text-align:center;color:var(--ink-soft);"><span style="font-size:26px;display:block;margin-bottom:8px;">📖</span>ক্লাস দেখতে উপরের ড্রপডাউন থেকে একটি বিষয় (Subject) নির্বাচন করুন।</div>';
+        return;
+      }
       const chapter = chapterSelect.value;
       stopClassPlayer();
       let filtered = rows.filter(x =>
@@ -4568,11 +4633,24 @@ html.theme-transition *::after{
       renderClassItems(filtered);
     };
 
-    subjectSelect.onchange = ()=>{ populateChapterSelect(rows, subjectSelect.value); applyFilters(); };
+    subjectSelect.onchange = ()=>{
+      if(subjectSelect.value){
+        populateChapterSelect(rows, subjectSelect.value);
+        chapterSelect.disabled = false;
+      } else {
+        chapterSelect.innerHTML = '<option value="">-- চ্যাপ্টার --</option>';
+        chapterSelect.disabled = true;
+      }
+      applyFilters();
+    };
     chapterSelect.onchange = applyFilters;
 
-    populateChapterSelect(rows, subjects[0]);
-    applyFilters();
+    // শুরুতে কোনো সাবজেক্ট বা ক্লাস অটো-সিলেক্ট থাকবে না
+    subjectSelect.value = '';
+    chapterSelect.innerHTML = '<option value="">-- চ্যাপ্টার --</option>';
+    chapterSelect.disabled = true;
+    if(classSearchWrap) classSearchWrap.style.display = 'none';
+    classList.innerHTML = '<div class="learning-empty" style="padding:48px 16px;text-align:center;color:var(--ink-soft);"><span style="font-size:26px;display:block;margin-bottom:8px;">📖</span>ক্লাস দেখতে উপরের ড্রপডাউন থেকে একটি বিষয় (Subject) নির্বাচন করুন।</div>';
   }
 
   function classLearningReset(){
@@ -4870,8 +4948,7 @@ html.theme-transition *::after{
 
       if(detailTitle){
         const baseName = getSubjectWiseDisplayName(course.name) || course.name || 'কোর্স';
-        const sectorTag = String(course.nuDcu || '').trim().toUpperCase();
-        detailTitle.textContent = sectorTag ? `${baseName} (${sectorTag})` : baseName;
+        detailTitle.textContent = baseName;
       }
       showCourseDetailView();
       loadCourseClasses(course.name, course.nuDcu);
