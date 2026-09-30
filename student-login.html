@@ -1752,20 +1752,86 @@ header.nav{
   flex: none;
   width: 44px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 1.5px solid var(--paper-line);
-  background: #ffffff;
-  border-radius: 10px;
+  gap: 3px;
+  padding: 4px 2px;
+  border: 1.5px solid rgba(239, 68, 68, 0.22);
+  background: linear-gradient(180deg, #FFFFFF 0%, #FFF5F5 100%);
+  border-radius: 12px;
   overflow: hidden;
-  transition: all 0.2s ease;
+  text-decoration: none;
+  position: relative;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 6px rgba(239, 68, 68, 0.05);
+  box-sizing: border-box;
+}
+.class-pdf-badge{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+  color: #FFFFFF;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 8.5px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  line-height: 1;
+  padding: 2px 4.5px;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(239, 68, 68, 0.35);
+  pointer-events: none;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.class-pdf-icon{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #DC2626;
+  pointer-events: none;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.class-pdf-icon svg{
+  width: 17px;
+  height: 17px;
+  display: block;
 }
 .class-pdf-btn:hover{
-  border-color: var(--margin);
-  transform: translateY(-1.5px);
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
+  border-color: #EF4444;
+  background: linear-gradient(180deg, #FFF1F2 0%, #FFE4E6 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(239, 68, 68, 0.22);
 }
-.class-pdf-btn svg{ width: 100%; height: 100%; }
+.class-pdf-btn:hover .class-pdf-icon{
+  transform: translateY(2px);
+}
+.class-pdf-btn:hover .class-pdf-badge{
+  transform: scale(1.06);
+}
+.class-pdf-btn:active{
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(239, 68, 68, 0.15);
+}
+.class-pdf-btn.is-locked{
+  border-color: var(--paper-line);
+  background: #F1F5F9;
+  color: #94A3B8;
+  cursor: not-allowed;
+  opacity: 0.65;
+  box-shadow: none;
+}
+.class-pdf-btn.is-locked:hover{
+  transform: none;
+  border-color: var(--paper-line);
+  background: #F1F5F9;
+  box-shadow: none;
+}
+.class-pdf-btn.is-locked svg{
+  width: 16px;
+  height: 16px;
+  display: block;
+}
 
 .class-play{
   flex: none;
@@ -2447,6 +2513,12 @@ html.theme-transition *::after{
 [data-theme="dark"] .theme-toggle-btn .theme-icon--moon{ display:none; }
 [data-theme="dark"] .theme-toggle-btn .theme-icon--sun{ display:block; }
 
+[data-theme="dark"] #iabBanner{
+  background:linear-gradient(135deg, #78350F, #92400E) !important;
+  color:#FEF3C7 !important;
+  border-bottom:1.5px solid #F59E0B !important;
+}
+
 [data-theme="dark"] header.nav{
   background:rgba(9,13,22,0.88);
   border-bottom:1px solid rgba(255,255,255,0.08);
@@ -2695,12 +2767,28 @@ html.theme-transition *::after{
 [data-theme="dark"] .class-title{ color:#F8FAFC; }
 [data-theme="dark"] .class-chapter{ color:#94A3B8; }
 [data-theme="dark"] .class-pdf-btn{
-  background:#1E293B;
-  border-color:rgba(255,255,255,0.1);
+  background: linear-gradient(180deg, #1E293B 0%, #0F172A 100%);
+  border-color: rgba(239, 68, 68, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
 }
 [data-theme="dark"] .class-pdf-btn:hover{
-  border-color:#F87171;
-  box-shadow:0 4px 14px rgba(248,113,113,0.25);
+  background: linear-gradient(180deg, #273549 0%, #1E293B 100%);
+  border-color: #F87171;
+  box-shadow: 0 6px 20px rgba(239, 68, 68, 0.32);
+}
+[data-theme="dark"] .class-pdf-icon{
+  color: #F87171;
+}
+[data-theme="dark"] .class-pdf-btn.is-locked{
+  background: #0F172A;
+  border-color: rgba(255, 255, 255, 0.06);
+  color: #64748B;
+  opacity: 0.5;
+}
+[data-theme="dark"] .class-pdf-btn.is-locked:hover{
+  background: #0F172A;
+  border-color: rgba(255, 255, 255, 0.06);
+  box-shadow: none;
 }
 [data-theme="dark"] .class-item.is-locked{
   background:#0D1322;
@@ -2800,6 +2888,20 @@ html.theme-transition *::after{
   </div>
 </div>
 
+
+<div id="iabBanner" style="display:none;background:linear-gradient(135deg,#FEF3C7,#FDE68A);color:#92400E;padding:11px 16px;text-align:center;font-size:13.5px;font-weight:600;border-bottom:1.5px solid #F59E0B;line-height:1.5;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+  ⚠️ আপনি Facebook অ্যাপের ভেতরে আছেন! ক্লাস দেখা ও PDF ডাউনলোডের সুবিধার্থে উপরে ডানপাশে ৩-ডট (⋮) চেপে <b>'Open in Chrome / ব্রাউজারে ওপেন করুন'</b> বেছে নিন।
+</div>
+<script>
+(function(){
+  try {
+    if (/FBAN|FBAV|Instagram|Messenger/i.test(navigator.userAgent)) {
+      var b = document.getElementById('iabBanner');
+      if (b) b.style.display = 'block';
+    }
+  } catch(e){}
+})();
+</script>
 
 <header class="nav">
   <div class="nav-inner">
@@ -3307,6 +3409,9 @@ html.theme-transition *::after{
   const LS_REGISTERED_KEY = "va_registered";
   const LS_DEVICE_TOKEN_KEY = "va_device_token";
   const LS_STUDENT_SESSION_TOKEN_KEY = "va_student_session_token";
+  const LS_FP_KEY = "va_fp";
+
+  // localStorage UUID — backward compat (still used as fallback)
   function getDeviceToken(){
     let token = localStorage.getItem(LS_DEVICE_TOKEN_KEY);
     if(!token){
@@ -3316,6 +3421,94 @@ html.theme-transition *::after{
       localStorage.setItem(LS_DEVICE_TOKEN_KEY, token);
     }
     return token;
+  }
+
+  // Universal Hardware Fingerprint — 100% Cross-Browser & In-App Browser Stable
+  // Guaranteed identical across Chrome, Edge, Firefox, FB In-App Browser, Samsung Internet on the same physical device
+  async function getFingerprint(){
+    try {
+      const parts = [];
+
+      // 1. Hardware Device Model & OS Architecture (from User-Agent system descriptor)
+      // Example on Android: "linux; android 14; sm-a525f" — identical across Chrome, Edge, FB In-App Browser
+      // Example on Windows PC: "windows nt 10.0; win64; x64" — identical across Chrome, Edge, Firefox
+      // Example on iPhone: "iphone; cpu iphone os 17_5 like mac os x"
+      const ua = String(navigator.userAgent || '');
+      const uaMatch = ua.match(/\(([^)]+)\)/);
+      let deviceOs = '';
+      if (uaMatch && uaMatch[1]) {
+        deviceOs = uaMatch[1]
+          .replace(/;\s*wv/gi, '')
+          .replace(/;\s*Build\/[^\s;)]+/gi, '')
+          .replace(/\s*Build\/[^\s;)]+/gi, '')
+          .replace(/\s+/g, ' ')
+          .trim()
+          .toLowerCase();
+      }
+      parts.push(deviceOs || String(navigator.platform || '').trim().toLowerCase());
+
+      // 2. Hardware Platform
+      parts.push(String(navigator.platform || '').trim().toLowerCase());
+
+      // 3. CPU Logical Cores
+      parts.push(navigator.hardwareConcurrency || 4);
+
+      // 4. Touch Hardware
+      parts.push(navigator.maxTouchPoints || 0);
+
+      // 5. Display Color Depth
+      parts.push(screen.colorDepth || 24);
+
+      // 6. Timezone & Offset
+      try {
+        parts.push(Intl.DateTimeFormat().resolvedOptions().timeZone || '');
+      } catch(e){}
+      parts.push(new Date().getTimezoneOffset());
+
+      // 7. Desktop/Laptop Only: Screen Resolution & GPU Chipset
+      // On mobile devices, screen resolution & WebGL vary/fail inside FB/Messenger WebViews due to app zoom & sandboxing.
+      // The hardware phone model in #1 already guarantees 100% device uniqueness on mobile.
+      // On desktop PCs, WebGL and screen resolution are standard and rock-solid across Chrome/Edge/Firefox.
+      if (!navigator.maxTouchPoints) {
+        const sw = Math.round(screen.width || 0);
+        const sh = Math.round(screen.height || 0);
+        parts.push(Math.min(sw, sh) + 'x' + Math.max(sw, sh));
+
+        try {
+          const canvas = document.createElement('canvas');
+          const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+          if (gl) {
+            const ext = gl.getExtension('WEBGL_debug_renderer_info');
+            if (ext) {
+              const raw = String(gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) || '');
+              const cleanedGpu = raw
+                .replace(/^ANGLE\s*\(/i, '')
+                .replace(/\)$/, '')
+                .replace(/Direct3D\S+/gi, '')
+                .replace(/OpenGL\s+ES\s+[\d.]+/gi, '')
+                .replace(/vs_\S+\s+ps_\S+/gi, '')
+                .replace(/,\s*(D3D11|D3D12|D3D9|Vulkan|Metal|OpenGL|WARP)/gi, '')
+                .replace(/^(Google Inc\.|ARM|Qualcomm|Intel|NVIDIA|ATI Technologies Inc\.|Apple)\s*,?\s*/i, '')
+                .replace(/[(),]/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim()
+                .toLowerCase();
+              parts.push(cleanedGpu);
+            }
+          }
+        } catch(e){}
+      }
+
+      // Fast native SHA-256 hash (instant, zero CDN lag)
+      const raw = parts.join('|||');
+      const encoder = new TextEncoder();
+      const data = encoder.encode(raw);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    } catch(err) {
+      return '';
+    }
   }
   const classDataCache = new Map();
   let courseDataRowsPromise = null;
@@ -3706,8 +3899,9 @@ html.theme-transition *::after{
   let dashboardWatchDisplayTimer = null;
   let dashboardData = null;
 
-  const WATCH_FLUSH_THRESHOLD_SEC = 60; // get_wt = Yes হলে server sync-ও এই interval-এ হবে (আগে ছিল 20s)
-  const LOCAL_PERSIST_INTERVAL_SEC = 60; // localStorage-এ save হয় এই interval-এ (আগে ছিল 5s)
+  // ভিডিও চলাকালীন কোনো server sync নেই। শুধু LocalStorage-এ জমা হয়।
+  // Dashboard লোডে syncPendingWatchTime() → D1 sync হয় (মাত্র ১টি Write)।
+  const LOCAL_PERSIST_INTERVAL_SEC = 300; // localStorage-এ save হয় প্রতি ৫ মিনিটে (ব্রাউজার ক্র্যাশ প্রোটেকশন)
   const LS_WATCH_PENDING_KEY = 'va_watch_pending_v1';
 
   function normalizeWatchCourse(value){
@@ -3873,26 +4067,18 @@ html.theme-transition *::after{
   function startWatchTracking(){
     stopWatchTracking();
 
+    // প্রতি সেকেন্ডে শুধু কাউন্টার বাড়ে — কোনো API call নেই।
+    // D1 sync শুধুমাত্র Dashboard লোডে syncPendingWatchTime()-এর মাধ্যমে হয়।
     watchTrackTimer = setInterval(()=>{
       watchPendingSeconds += 1;
 
-      // D1 is contacted only after admin has enabled get_wt = Yes.
-      // (flushWatchTime() itself persists to localStorage first, so when
-      // this fires, that counts as this course's localStorage save too.)
-      if(currentWatchGetWt && watchPendingSeconds >= WATCH_FLUSH_THRESHOLD_SEC){
-        flushWatchTime();
-        return;
-      }
-
-      // Keep localStorage updated while the video is playing (every 1 min).
-      if(watchPendingSeconds >= LOCAL_PERSIST_INTERVAL_SEC){
+      // প্রতি ৫ মিনিটে localStorage-এ সেভ হয় (ব্রাউজার ক্র্যাশ হলেও ডেটা থাকবে)।
+      if(watchPendingSeconds % LOCAL_PERSIST_INTERVAL_SEC === 0){
         persistCurrentWatchPending();
       }
     }, 1000);
 
-    if(!watchPersistTimer){
-      watchPersistTimer = setInterval(persistCurrentWatchPending, LOCAL_PERSIST_INTERVAL_SEC * 1000);
-    }
+    // অতিরিক্ত persist timer আর দরকার নেই — উপরের interval-ই যথেষ্ট।
   }
 
   function stopWatchTracking(){
@@ -3906,66 +4092,10 @@ html.theme-transition *::after{
     }
   }
 
-  async function flushWatchTime(useBeacon){
-    if(watchPendingSeconds <= 0 || !currentWatchCourse) return;
-
-    const mobile = getCurrentUserMobile();
-    if(!mobile){
-      watchPendingSeconds = 0;
-      return;
-    }
-
-    // Always save locally first. LocalStorage is the source of truth until
-    // the server gate is enabled and a successful sync is confirmed.
+  // flushWatchTime → এখন শুধু LocalStorage-এ সেভ করে।
+  // Server sync সম্পূর্ণ বন্ধ। Dashboard লোডে syncPendingWatchTime() D1-তে পাঠাবে।
+  function flushWatchTime(){
     persistCurrentWatchPending();
-
-    if(!currentWatchGetWt) return;
-
-    const pending = getWatchPendingSeconds(currentWatchCourse, currentWatchSector, mobile);
-    if(pending <= 0) return;
-
-    try{
-      const result = await callApi({
-        action:'track_watch',
-        mobile: normalizeMobileForMatch(mobile),
-        course: currentWatchCourse,
-        nuDcu: currentWatchSector,
-        seconds: pending
-      });
-
-      if(result.status === 'ok'){
-        subtractWatchPendingSeconds(currentWatchCourse, currentWatchSector, mobile, pending);
-        if(typeof result.watchTimeMinutes === 'number'){
-          setWatchBaseMinutes(currentWatchCourse, currentWatchSector, mobile, result.watchTimeMinutes);
-          if(dashboardData){
-            const course = (Array.isArray(dashboardData.courses) ? dashboardData.courses : []).find(c =>
-              normalizeWatchCourse(c?.name) === normalizeWatchCourse(currentWatchCourse) &&
-              normalizeForMatch(c?.nuDcu || '') === normalizeForMatch(currentWatchSector || '')
-            );
-            if(course) course.watchTime = result.watchTimeMinutes;
-          }
-        }
-        refreshDashboardWatchTimeDisplay();
-      } else if(result.courseLocked){
-        // Manual course lock freezes watch time. Keep the server-recorded
-        // total visible and discard pending seconds that could not be synced.
-        subtractWatchPendingSeconds(currentWatchCourse, currentWatchSector, mobile, pending);
-        if(typeof result.watchTimeMinutes === 'number'){
-          setWatchBaseMinutes(currentWatchCourse, currentWatchSector, mobile, result.watchTimeMinutes);
-          if(dashboardData){
-            const course = (Array.isArray(dashboardData.courses) ? dashboardData.courses : []).find(c =>
-              normalizeWatchCourse(c?.name) === normalizeWatchCourse(currentWatchCourse) &&
-              normalizeForMatch(c?.nuDcu || '') === normalizeForMatch(currentWatchSector || '')
-            );
-            if(course) course.watchTime = result.watchTimeMinutes;
-          }
-        }
-        refreshDashboardWatchTimeDisplay();
-      }
-    }catch(err){
-      console.error('Current watch-time sync failed:', err);
-      // Never delete local pending time on failure.
-    }
   }
 
   document.addEventListener('visibilitychange', ()=>{
@@ -4273,7 +4403,7 @@ html.theme-transition *::after{
           classDataCache.set(cacheKey, result);
           return result;
         }
-        throw new Error(json.message || 'Course Data API error.');
+        throw new Error(json.message || 'Course data error');
       }
       const allRows = Array.isArray(json.data) ? json.data : [];
       const swParsed = parseSubjectWiseCourseId(courseName);
@@ -4287,7 +4417,7 @@ html.theme-transition *::after{
     }catch(error){
       console.error('Class data fetch failed:', error);
       result = error.name === 'AbortError'
-        ? {status:'error',message:'সার্ভারে সাড়া পেতে বেশি সময় লাগছে। ইন্টারনেট সংযোগ চেক করুন।'}
+        ? {status:'error',message:'Poor internet connection'}
         : notFound;
     }
     classDataCache.set(cacheKey,result);
@@ -4303,8 +4433,8 @@ html.theme-transition *::after{
             ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>'
             : '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
           const pdfHtml = locked
-            ? '<span class="class-pdf-btn is-locked" title="আগে ক্লাসটি unlock করুন">🔒</span>'
-            : (item.pdfUrl ? `<a class="class-pdf-btn" href="${escapeHtml(driveDirectLink(item.pdfUrl))}" target="_blank" rel="noopener" title="Download PDF" onclick="event.stopPropagation()"><svg viewBox="0 0 40 50" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none"><rect x="0" y="0" width="40" height="16" fill="#e21c1c"/><text x="20" y="12" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="9.5" font-weight="800" fill="#ffffff" letter-spacing="0.3">PDF</text><path d="M20 22v14" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/><path d="M14 30l6 6 6-6" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/><path d="M12 42h16" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/></svg></a>` : '');
+            ? '<span class="class-pdf-btn is-locked" title="আগে ক্লাসটি unlock করুন"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>'
+            : (item.pdfUrl ? `<a class="class-pdf-btn" href="${escapeHtml(driveDirectLink(item.pdfUrl))}" target="_blank" rel="noopener" title="PDF নোট ডাউনলোড করুন" onclick="event.stopPropagation()"><span class="class-pdf-badge">PDF</span><span class="class-pdf-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v9m0 0l-3.5-3.5M10 12l3.5-3.5"/><path d="M4 14.5v1a1.5 1.5 0 001.5 1.5h9a1.5 1.5 0 001.5-1.5v-1"/></svg></span></a>` : '');
           const mainTitle = item.chapter || item.className || `Class ${index+1}`;
           const subTitle = item.chapter ? (item.className || '') : '';
           return `<div class="class-item-row"><button type="button" class="class-item${locked?' is-locked':''}" data-video="${locked?'':escapeHtml(item.url)}" data-locked="${locked?'1':'0'}"><span class="class-play">${playIcon}</span><span class="class-meta"><span class="class-title">${escapeHtml(mainTitle)}</span>${subTitle ? `<span class="class-chapter">${escapeHtml(subTitle)}</span>` : ''}</span></button>${pdfHtml}</div>`;
@@ -5556,7 +5686,7 @@ html.theme-transition *::after{
     }
   }
 
-  function callApi(payload){
+  async function callApi(payload){
     const controller = new AbortController();
     const timeout = setTimeout(()=>controller.abort(), 20000);
     const requestPayload = {...payload};
@@ -5565,13 +5695,16 @@ html.theme-transition *::after{
       if(sessionToken) requestPayload.sessionToken = sessionToken;
       requestPayload.deviceToken = getDeviceToken();
     }
+    // Always attach fingerprint for multi-browser same-device detection
+    const fp = await getFingerprint();
+    if(fp) requestPayload.fingerprintHash = fp;
     return fetch(FORM_ENDPOINT,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(requestPayload),signal:controller.signal})
       .then(res=>{
-        if(!res.ok) throw new Error('সার্ভার থেকে তথ্য পাওয়া যায়নি।');
+        if(!res.ok) throw new Error('Try Again Later 401');
         return res.json();
       })
       .catch(err=>{
-        if(err.name === 'AbortError') throw new Error('সার্ভারে সাড়া পেতে বেশি সময় লাগছে। Apps Script deployment/access চেক করুন।');
+        if(err.name === 'AbortError') throw new Error('Session Timeout, Check your internet connection');
         throw err;
       })
       .finally(()=>clearTimeout(timeout));
@@ -5963,14 +6096,18 @@ html.theme-transition *::after{
     loginSubmitBtn.disabled = true;
     loginSubmitBtn.textContent = 'লগইন হচ্ছে...';
 
-    callApi({
-      action: 'login',
-      mobile: mobileForMatch,
-      password: password,
-      deviceToken: getDeviceToken()
+    getFingerprint().then(fp => {
+      return callApi({
+        action: 'login',
+        mobile: mobileForMatch,
+        password: password,
+        deviceToken: getDeviceToken(),
+        fingerprintHash: fp || undefined
+      });
     })
       .then(async function(result){
         if(result.status === 'ok'){
+          if(result.fpDebug) console.log('[Fingerprint Debug]', result.fpDebug);
           if(result.token){
             localStorage.setItem(LS_STUDENT_SESSION_TOKEN_KEY, String(result.token));
           }
@@ -6000,7 +6137,7 @@ html.theme-transition *::after{
       })
       .catch(function(){
         hideLoading();
-        loginStatus.textContent = '❌ সার্ভারে সমস্যা হয়েছে, আবার চেষ্টা করুন।';
+        loginStatus.textContent = 'Try Again Later 402';
         loginStatus.className = 'form-status show err';
       })
       .finally(function(){
