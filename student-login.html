@@ -550,38 +550,68 @@ header.nav{
   transform: scale(1.15);
 }
 
-/* মাইক্রো ফিচার হাইলাইটস (৩টি পিল) */
+/* মাইক্রো ফিচার হাইলাইটস (৪টি ব্যাজ গ্রিড) */
 .study-features-row{
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 7px;
-  margin-top: 12px;
+  margin-top: 14px;
   width: 100%;
-  flex-wrap: wrap;
   z-index: 2;
 }
 .study-feat-pill{
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 700;
   color: var(--ink-soft);
-  background: rgba(255, 255, 255, 0.7);
-  border: 1px solid rgba(226, 232, 240, 0.85);
-  padding: 3px 9px;
-  border-radius: 999px;
-  display: inline-flex;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(226, 232, 240, 0.95);
+  padding: 6px 5px;
+  border-radius: 9px;
+  display: flex;
   align-items: center;
+  justify-content: center;
   gap: 4px;
-  transition: all 0.2s ease;
+  line-height: 1.2;
+  transition: all 0.22s ease;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
 }
-[data-theme="dark"] .study-feat-pill{
-  background: rgba(30, 41, 59, 0.6);
-  border-color: rgba(255, 255, 255, 0.08);
-  color: #CBD5E1;
+.study-feat-pill .feat-ico{
+  font-size: 11px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+.study-feat-pill .feat-txt{
+  white-space: nowrap;
+  letter-spacing: -0.15px;
 }
 .study-feat-pill:hover{
-  border-color: rgba(37, 99, 235, 0.3);
-  transform: translateY(-1px);
+  border-color: rgba(37, 99, 235, 0.35);
+  background: #FFFFFF;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.09);
+}
+[data-theme="dark"] .study-feat-pill{
+  background: rgba(30, 41, 59, 0.75);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #CBD5E1;
+}
+[data-theme="dark"] .study-feat-pill:hover{
+  background: rgba(30, 41, 59, 0.95);
+  border-color: rgba(56, 189, 248, 0.4);
+  color: #F8FAFC;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+/* ডার্ক মোডে স্টাডি রিসোর্স কার্ড এডাপটেশন */
+[data-theme="dark"] .study-res-bg{
+  fill: #1E293B !important;
+  stroke: rgba(56, 189, 248, 0.32) !important;
+}
+[data-theme="dark"] .study-res-title{
+  fill: #F1F5F9 !important;
+}
+[data-theme="dark"] .study-res-subtitle{
+  fill: #38BDF8 !important;
 }
 
 /* ফর্ম হেডার মিনি */
@@ -3809,7 +3839,7 @@ html.theme-transition *::after{
 
               <div class="study-scene-badge">
                 <span class="badge-dot"></span>
-                <span>BBA VISION লার্নিং পোর্টাল</span>
+                <span>VISION</span>
               </div>
 
               <div class="study-illustration-wrap">
@@ -3907,13 +3937,20 @@ html.theme-transition *::after{
                     <path d="M 52 37 Q 50 48 54 58 L 52 65 L 50 58" fill="#F59E0B"/>
                   </g>
 
-                  <!-- Floating Element 3: Analytics / Skill Rating Card (Middle Right) -->
+                  <!-- Floating Element 3: Study Material / Resource Card (Middle Right) -->
                   <g class="floating-chart-card" id="sceneChartCard">
-                    <rect x="208" y="98" width="60" height="40" rx="9" fill="#FFFFFF" stroke="rgba(37,99,235,0.22)" stroke-width="1.2" filter="drop-shadow(0 6px 16px rgba(37,99,235,0.14))"/>
-                    <text x="214" y="111" font-family="'Baloo Da 2', sans-serif" font-size="9" font-weight="800" fill="#1E3A8A">BBA সাকসেস</text>
-                    <text x="214" y="125" font-family="'Baloo Da 2', sans-serif" font-size="12" font-weight="800" fill="#10B981">৯৮%+</text>
-                    <path d="M 242 128 L 248 120 L 253 123 L 260 114" fill="none" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    <circle cx="260" cy="114" r="2.2" fill="#10B981"/>
+                    <rect class="study-res-bg" x="194" y="94" width="78" height="42" rx="9" fill="#FFFFFF" stroke="rgba(37,99,235,0.22)" stroke-width="1.2" filter="drop-shadow(0 6px 16px rgba(37,99,235,0.14))"/>
+                    <!-- PDF Document Icon -->
+                    <rect x="200" y="103" width="13" height="17" rx="2.5" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.2"/>
+                    <path d="M 208 103 L 213 108 L 208 108 Z" fill="#2563EB"/>
+                    <line x1="203" y1="110" x2="209" y2="110" stroke="#3B82F6" stroke-width="1" stroke-linecap="round"/>
+                    <line x1="203" y1="114" x2="208" y2="114" stroke="#3B82F6" stroke-width="1" stroke-linecap="round"/>
+                    <!-- Text -->
+                    <text class="study-res-title" x="218" y="112" font-family="'Hind Siliguri', 'Baloo Da 2', sans-serif" font-size="8.8" font-weight="700" fill="#1E3A8A">স্টাডি ম্যাটেরিয়াল</text>
+                    <text class="study-res-subtitle" x="218" y="125" font-family="'Hind Siliguri', sans-serif" font-size="8" font-weight="600" fill="#2563EB">PDF ও শিট 📚</text>
+                    <!-- Green Check Badge -->
+                    <circle cx="265" cy="101" r="3.5" fill="#10B981"/>
+                    <path d="M 263.5 101 L 264.5 102 L 266.5 100" fill="none" stroke="#FFFFFF" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/>
                   </g>
 
                   <!-- Floating Element 4: Rolled Diploma / Certificate (Middle Left) -->
@@ -3938,11 +3975,24 @@ html.theme-transition *::after{
                 <span id="studyLiveText">সুরক্ষিত ও এনক্রিপ্টেড সেশন</span>
               </div>
 
-              <!-- Micro Feature Pills -->
+              <!-- 4 Feature Badges as requested -->
               <div class="study-features-row">
-                <span class="study-feat-pill">🎓 লাইভ ক্লাস</span>
-                <span class="study-feat-pill">📊 ইনস্ট্যান্ট রেজাল্ট</span>
-                <span class="study-feat-pill">⚡ স্মার্ট ড্যাশবোর্ড</span>
+                <div class="study-feat-pill">
+                  <span class="feat-ico">🎥</span>
+                  <span class="feat-txt">ইন্টারেক্টিভ লাইভ ক্লাস</span>
+                </div>
+                <div class="study-feat-pill">
+                  <span class="feat-ico">⚡</span>
+                  <span class="feat-txt">স্পেশাল ওয়ান শট ক্লাস</span>
+                </div>
+                <div class="study-feat-pill">
+                  <span class="feat-ico">📝</span>
+                  <span class="feat-txt">এক্সাম স্পেশাল শর্ট সাজেশন</span>
+                </div>
+                <div class="study-feat-pill">
+                  <span class="feat-ico">💬</span>
+                  <span class="feat-txt">২৪/৭ সাপোর্ট</span>
+                </div>
               </div>
             </div>
 
