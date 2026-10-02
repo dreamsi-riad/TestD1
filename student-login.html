@@ -298,215 +298,290 @@ header.nav{
   background: linear-gradient(90deg, #2563EB 0%, #06B6D4 50%, #10B981 100%);
 }
 
-/* ===== ইন্টারেক্টিভ স্টুডেন্ট অবতার ও লগইন স্প্লিট লেআউট ===== */
+/* ===== নান্দনিক স্টাডি আর্ট ইলাস্ট্রেশন ও স্প্লিট লেআউট (Aesthetic Study Workspace) ===== */
 .login-layout-split{
   display: grid;
-  grid-template-columns: 310px 1fr;
-  gap: 28px;
+  grid-template-columns: 340px 1fr;
+  gap: 30px;
   align-items: center;
 }
-@media(max-width: 767px){
+@media(max-width: 840px){
   .login-layout-split{
     grid-template-columns: 1fr;
-    gap: 18px;
+    gap: 22px;
   }
   .auth-box.login-mode{
-    max-width: 480px;
+    max-width: 520px;
   }
 }
 
-/* অবতার কার্ড (Left Column) */
-.mascot-card{
-  background: linear-gradient(160deg, #F0F7FF 0%, #E0EDFF 100%);
+/* স্টাডি আর্ট শোকেস কার্ড */
+.study-art-card{
+  background: linear-gradient(155deg, #F8FAFD 0%, #EEF4FE 50%, #E3EFFF 100%);
   border: 1.5px solid rgba(37, 99, 235, 0.16);
-  border-radius: 20px;
-  padding: 20px 16px;
+  border-radius: 24px;
+  padding: 22px 18px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  text-align: center;
   position: relative;
   overflow: hidden;
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.9), 0 8px 24px rgba(37, 99, 235, 0.08);
-  transition: all 0.3s ease;
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.9), 0 12px 32px -8px rgba(37, 99, 235, 0.12);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
-[data-theme="dark"] .mascot-card{
-  background: linear-gradient(160deg, #131E35 0%, #0F172A 100%);
-  border-color: rgba(56, 189, 248, 0.18);
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05), 0 8px 24px rgba(0, 0, 0, 0.4);
+[data-theme="dark"] .study-art-card{
+  background: linear-gradient(155deg, #0F172A 0%, #131F38 60%, #172554 100%);
+  border-color: rgba(56, 189, 248, 0.2);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.06), 0 14px 36px rgba(0, 0, 0, 0.5);
 }
 
-/* অ্যাম্বিয়েন্ট গ্লো */
-.mascot-ambient-glow{
+/* অ্যাম্বিয়েন্ট ব্যাকড্রপ গ্লো */
+.study-art-glow{
   position: absolute;
-  top: -20px;
+  top: 15%;
   left: 50%;
   transform: translateX(-50%);
-  width: 180px;
-  height: 180px;
-  background: radial-gradient(circle, rgba(37, 99, 235, 0.25) 0%, transparent 70%);
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.22) 0%, rgba(6, 182, 212, 0.12) 50%, transparent 70%);
   border-radius: 50%;
   pointer-events: none;
-  filter: blur(20px);
-  animation: mascotGlowPulse 4s ease-in-out infinite alternate;
+  filter: blur(28px);
+  animation: studyGlowPulse 5s ease-in-out infinite alternate;
 }
-@keyframes mascotGlowPulse{
-  0%{ opacity: 0.5; transform: translateX(-50%) scale(0.9); }
-  100%{ opacity: 0.9; transform: translateX(-50%) scale(1.15); }
+@keyframes studyGlowPulse{
+  0%{ opacity: 0.6; transform: translateX(-50%) scale(0.9); }
+  100%{ opacity: 1; transform: translateX(-50%) scale(1.2); }
 }
 
-/* স্পিচ বাবল */
-.mascot-speech{
+/* টপ সিন ব্যাজ */
+.study-scene-badge{
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(37, 99, 235, 0.2);
   border-radius: 999px;
   padding: 5px 14px;
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 700;
-  color: var(--ink);
-  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
-  margin-bottom: 12px;
-  max-width: 100%;
+  color: #1D4ED8;
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);
+  margin-bottom: 14px;
   position: relative;
   z-index: 2;
-  transition: all 0.25s ease;
 }
-[data-theme="dark"] .mascot-speech{
-  background: #1E293B;
+[data-theme="dark"] .study-scene-badge{
+  background: rgba(30, 41, 59, 0.85);
   border-color: rgba(56, 189, 248, 0.3);
-  color: #F8FAFC;
+  color: #60A5FA;
 }
-.mascot-speech-dot{
+.study-scene-badge .badge-dot{
   width: 7px;
   height: 7px;
   border-radius: 50%;
   background: #10B981;
   box-shadow: 0 0 8px #10B981;
-  flex: none;
-  animation: dotBlink 1.8s infinite;
+  animation: dotPulse 2s infinite;
 }
-@keyframes dotBlink{
+@keyframes dotPulse{
   0%, 100%{ opacity: 1; transform: scale(1); }
   50%{ opacity: 0.4; transform: scale(0.8); }
 }
 
-/* অবতার এসভিজি র‍্যাপার */
-.mascot-avatar-wrap{
-  width: 160px;
-  height: 160px;
+/* ভেক্টর ইলাস্ট্রেশন কন্টেইনার */
+.study-illustration-wrap{
+  width: 280px;
+  height: 195px;
   position: relative;
   z-index: 2;
   margin: 0 auto;
 }
-.mascot-svg{
+.study-illustration-svg{
   width: 100%;
   height: 100%;
   display: block;
-  filter: drop-shadow(0 8px 16px rgba(15, 23, 42, 0.08));
+  overflow: visible;
+  filter: drop-shadow(0 10px 20px rgba(15, 23, 42, 0.09));
 }
 
-/* হাত ও চোখের মুভমেন্ট */
-.mascot-hand{
-  transform-origin: 100px 185px;
-  transition: transform 0.42s cubic-bezier(0.34, 1.4, 0.64, 1), opacity 0.22s ease;
-  will-change: transform, opacity;
-}
-.mascot-hand--left{
-  transform: translateY(68px) scale(0.6);
-  opacity: 0;
-  pointer-events: none;
-}
-.mascot-hand--right{
-  transform: translateY(68px) scale(0.6);
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* চোখ বন্ধ অ্যানিমেশন (Password focused) */
-.is-covering .mascot-hand--left{
-  transform: translateY(0) scale(1);
-  opacity: 1;
-}
-.is-covering .mascot-hand--right{
-  transform: translateY(0) scale(1);
-  opacity: 1;
-}
-.is-covering #mascotMouth{
-  d: path("M 94 125 Q 100 120 106 125");
-}
-
-/* উঁকি দেওয়ার অ্যানিমেশন (Password peeked) */
-.is-peeking .mascot-hand--left{
-  transform: translateY(0) scale(1);
-  opacity: 1;
-}
-.is-peeking .mascot-hand--right{
-  transform: translateY(26px) rotate(16deg) scale(0.92);
-  opacity: 1;
-}
-.is-peeking #mascotPupilRight{
-  transform: translate(2px, 0);
-}
-
-/* মোবাইল ইনপুট দেখার চোখ */
-#mascotPupilLeft, #mascotPupilRight{
-  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+/* ফ্লোটিং গ্র্যাজুয়েশন ক্যাপ অ্যানিমেশন */
+.floating-grad-cap{
+  transform-origin: 190px 45px;
+  animation: floatGradCap 4.5s ease-in-out infinite alternate;
   will-change: transform;
 }
-
-/* জেন্টল ব্রিদিং অ্যানিমেশন */
-#mascotHead{
-  transform-origin: 100px 130px;
-  animation: mascotBreath 4s ease-in-out infinite alternate;
+@keyframes floatGradCap{
+  0%{ transform: translateY(0px) rotate(-4deg); }
+  50%{ transform: translateY(-9px) rotate(2deg); }
+  100%{ transform: translateY(-4px) rotate(-2deg); }
 }
-@keyframes mascotBreath{
-  0%{ transform: translateY(0); }
-  100%{ transform: translateY(-2px); }
+.cap-tassel{
+  transform-origin: 190px 44px;
+  animation: tasselSway 3s ease-in-out infinite alternate;
 }
-
-/* সাকসেস বা সেলিব্রেশন */
-.is-celebrating #mascotHead{
-  animation: mascotCheer 0.6s ease-in-out infinite alternate;
-}
-@keyframes mascotCheer{
-  0%{ transform: translateY(0) rotate(-2deg); }
-  100%{ transform: translateY(-6px) rotate(2deg); }
+@keyframes tasselSway{
+  0%{ transform: rotate(-6deg); }
+  100%{ transform: rotate(10deg); }
 }
 
-/* শেকিং অন এরর */
-.is-error #mascotHead{
-  animation: mascotShake 0.4s ease-in-out;
+/* ফ্লোটিং গ্লোয়িং বুক অ্যানিমেশন */
+.floating-book{
+  transform-origin: 52px 52px;
+  animation: floatBook 5s ease-in-out infinite alternate;
+  will-change: transform;
 }
-@keyframes mascotShake{
-  0%, 100%{ transform: translateX(0); }
-  25%{ transform: translateX(-6px); }
-  75%{ transform: translateX(6px); }
+@keyframes floatBook{
+  0%{ transform: translateY(0px) rotate(3deg); }
+  50%{ transform: translateY(-8px) rotate(-2deg); }
+  100%{ transform: translateY(-3px) rotate(1deg); }
+}
+.book-glow-aura{
+  animation: bookAuraPulse 3s ease-in-out infinite alternate;
+}
+@keyframes bookAuraPulse{
+  0%{ opacity: 0.3; transform: scale(0.95); }
+  100%{ opacity: 0.8; transform: scale(1.08); }
 }
 
-/* ব্যাজ পিল */
-.mascot-badge-pill{
-  margin-top: 12px;
+/* ফ্লোটিং গ্রাফ / অ্যানালিটিক্স উইজেট */
+.floating-chart-card{
+  transform-origin: 232px 116px;
+  animation: floatChart 4.8s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@keyframes floatChart{
+  0%{ transform: translateY(0px) scale(1); }
+  50%{ transform: translateY(-6px) scale(1.03); }
+  100%{ transform: translateY(-2px) scale(0.99); }
+}
+
+/* ফ্লোটিং রোলড ডিপ্লোমা */
+.floating-diploma{
+  transform-origin: 40px 125px;
+  animation: floatDiploma 5.2s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@keyframes floatDiploma{
+  0%{ transform: translateY(0px) rotate(-5deg); }
+  100%{ transform: translateY(-7px) rotate(4deg); }
+}
+
+/* ল্যাপটপ স্ক্রিন গ্লো ও ডাটা ওয়েভস */
+.laptop-screen-content{
+  animation: screenBreathe 4s ease-in-out infinite alternate;
+}
+@keyframes screenBreathe{
+  0%{ opacity: 0.85; filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.4)); }
+  100%{ opacity: 1; filter: drop-shadow(0 0 14px rgba(37, 99, 235, 0.7)); }
+}
+.screen-bar-1{ transform-origin: bottom; animation: barGrow 2.5s ease-in-out infinite alternate; }
+.screen-bar-2{ transform-origin: bottom; animation: barGrow 2.5s ease-in-out infinite alternate 0.4s; }
+.screen-bar-3{ transform-origin: bottom; animation: barGrow 2.5s ease-in-out infinite alternate 0.8s; }
+@keyframes barGrow{
+  0%{ transform: scaleY(0.7); }
+  100%{ transform: scaleY(1.1); }
+}
+
+/* কফি স্টিম অ্যানিমেশন */
+.coffee-steam{
+  animation: steamDrift 2.8s ease-in-out infinite;
+  opacity: 0;
+}
+@keyframes steamDrift{
+  0%{ opacity: 0; transform: translateY(0) scaleX(0.8); }
+  50%{ opacity: 0.6; }
+  100%{ opacity: 0; transform: translateY(-8px) scaleX(1.3); }
+}
+
+/* টুইঙ্কলিং স্টার পার্টিক্যালস */
+.sparkle-star{
+  animation: starTwinkle 2.4s ease-in-out infinite alternate;
+}
+.sparkle-star-1{ animation-delay: 0s; }
+.sparkle-star-2{ animation-delay: 0.8s; }
+.sparkle-star-3{ animation-delay: 1.5s; }
+@keyframes starTwinkle{
+  0%{ opacity: 0.2; transform: scale(0.6) rotate(0deg); }
+  100%{ opacity: 1; transform: scale(1.15) rotate(45deg); }
+}
+
+/* লাইভ সিকিউরিটি মোশন (ইনপুট ফোকাসে অ্যাক্টিভ হয়) */
+.study-live-badge{
+  margin-top: 14px;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  font-size: 11.5px;
+  gap: 7px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink-soft);
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+  transition: all 0.3s ease;
+  z-index: 2;
+}
+[data-theme="dark"] .study-live-badge{
+  background: rgba(30, 41, 59, 0.7);
+  border-color: rgba(255, 255, 255, 0.1);
+  color: #94A3B8;
+}
+.study-live-badge svg{
+  color: #10B981;
+  transition: transform 0.3s ease, color 0.3s ease;
+}
+.is-typing-focus .study-live-badge{
+  border-color: rgba(37, 99, 235, 0.4);
+  background: #EFF6FF;
+  color: #1D4ED8;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.15);
+}
+[data-theme="dark"] .is-typing-focus .study-live-badge{
+  background: #1E293B;
+  border-color: #38BDF8;
+  color: #93C5FD;
+}
+.is-typing-focus .study-live-badge svg{
+  color: #2563EB;
+  transform: scale(1.15);
+}
+
+/* মাইক্রো ফিচার হাইলাইটস (৩টি পিল) */
+.study-features-row{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  margin-top: 12px;
+  width: 100%;
+  flex-wrap: wrap;
+  z-index: 2;
+}
+.study-feat-pill{
+  font-size: 11px;
   font-weight: 700;
   color: var(--ink-soft);
   background: rgba(255, 255, 255, 0.7);
-  padding: 4px 10px;
+  border: 1px solid rgba(226, 232, 240, 0.85);
+  padding: 3px 9px;
   border-radius: 999px;
-  border: 1px solid rgba(226, 232, 240, 0.8);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
 }
-[data-theme="dark"] .mascot-badge-pill{
+[data-theme="dark"] .study-feat-pill{
   background: rgba(30, 41, 59, 0.6);
   border-color: rgba(255, 255, 255, 0.08);
-  color: #94A3B8;
+  color: #CBD5E1;
 }
-.mascot-badge-pill svg{
-  color: #10B981;
+.study-feat-pill:hover{
+  border-color: rgba(37, 99, 235, 0.3);
+  transform: translateY(-1px);
 }
 
 /* ফর্ম হেডার মিনি */
@@ -3728,124 +3803,146 @@ html.theme-transition *::after{
 
         <div class="panel" id="loginPanel">
           <div class="login-layout-split">
-            <!-- Left Side: Interactive Animated Student Avatar Mascot -->
-            <div class="mascot-card" id="loginMascotCard">
-              <div class="mascot-ambient-glow" aria-hidden="true"></div>
+            <!-- Left Side: Modern Aesthetic Study Art Illustration Showcase -->
+            <div class="study-art-card" id="loginStudyArtCard">
+              <div class="study-art-glow" aria-hidden="true"></div>
 
-              <div class="mascot-speech" id="mascotSpeech" aria-live="polite">
-                <span class="mascot-speech-dot"></span>
-                <span id="mascotSpeechText">স্বাগতম! আপনার অ্যাকাউন্টে প্রবেশ করুন 👋</span>
+              <div class="study-scene-badge">
+                <span class="badge-dot"></span>
+                <span>BBA VISION লার্নিং পোর্টাল</span>
               </div>
 
-              <div class="mascot-avatar-wrap">
-                <svg class="mascot-svg" id="studentMascotSvg" viewBox="0 0 200 200" aria-label="ইন্টারেক্টিভ স্টুডেন্ট অবতার">
+              <div class="study-illustration-wrap">
+                <svg class="study-illustration-svg" viewBox="0 0 280 200" aria-label="মডার্ন স্টাডি আর্ট ইলাস্ট্রেশন">
                   <defs>
-                    <radialGradient id="mascotBgGrad" cx="50%" cy="40%" r="60%">
-                      <stop offset="0%" stop-color="#EFF6FF"/>
-                      <stop offset="100%" stop-color="#DBEAFE"/>
-                    </radialGradient>
-                    <linearGradient id="mascotSkin" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stop-color="#FDDFC7"/>
-                      <stop offset="100%" stop-color="#F8C8A0"/>
+                    <linearGradient id="deskGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#E2E8F0"/>
+                      <stop offset="100%" stop-color="#CBD5E1"/>
                     </linearGradient>
-                    <linearGradient id="mascotJacket" x1="0" y1="0" x2="1" y2="1">
+                    <linearGradient id="laptopBodyGrad" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stop-color="#475569"/>
+                      <stop offset="100%" stop-color="#1E293B"/>
+                    </linearGradient>
+                    <linearGradient id="laptopScreenGrad" x1="0" y1="0" x2="1" y2="1">
                       <stop offset="0%" stop-color="#1E3A8A"/>
+                      <stop offset="50%" stop-color="#2563EB"/>
+                      <stop offset="100%" stop-color="#0284C7"/>
+                    </linearGradient>
+                    <linearGradient id="gradCapGrad" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stop-color="#0F172A"/>
+                      <stop offset="60%" stop-color="#1E3A8A"/>
                       <stop offset="100%" stop-color="#2563EB"/>
+                    </linearGradient>
+                    <linearGradient id="goldTasselGrad" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stop-color="#F59E0B"/>
+                      <stop offset="100%" stop-color="#FCD34D"/>
+                    </linearGradient>
+                    <linearGradient id="bookCoverGrad" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stop-color="#E11D48"/>
+                      <stop offset="100%" stop-color="#FB7185"/>
+                    </linearGradient>
+                    <linearGradient id="bookPagesGrad" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stop-color="#FFFFFF"/>
+                      <stop offset="100%" stop-color="#F1F5F9"/>
                     </linearGradient>
                   </defs>
 
-                  <!-- Backdrop circle -->
-                  <circle cx="100" cy="100" r="82" fill="url(#mascotBgGrad)" stroke="rgba(37,99,235,0.14)" stroke-width="2"/>
+                  <!-- Desk Surface & Floor Ambient Shadow -->
+                  <ellipse cx="140" cy="182" rx="122" ry="14" fill="rgba(15,23,42,0.06)"/>
+                  <path d="M 36 172 L 244 172 L 236 182 L 44 182 Z" fill="url(#deskGrad)"/>
+                  <line x1="36" y1="172" x2="244" y2="172" stroke="rgba(255,255,255,0.8)" stroke-width="1.5"/>
 
-                  <!-- Body & Jacket -->
-                  <g id="mascotBody">
-                    <path d="M 45 190 C 50 160, 75 150, 100 150 C 125 150, 150 160, 155 190 L 160 200 L 40 200 Z" fill="url(#mascotJacket)"/>
-                    <path d="M 86 151 L 100 170 L 114 151 Z" fill="#FFFFFF"/>
-                    <path d="M 97 165 L 103 165 L 100 188 Z" fill="#2563EB"/>
+                  <!-- Desk Plant (Left) -->
+                  <path d="M 64 163 L 74 163 L 72 172 L 66 172 Z" fill="#F97316"/>
+                  <path d="M 69 163 C 65 154, 59 152, 58 156 C 62 159, 66 161, 69 163 Z" fill="#10B981"/>
+                  <path d="M 69 163 C 73 153, 79 152, 80 156 C 76 159, 72 161, 69 163 Z" fill="#34D399"/>
+
+                  <!-- Modern Laptop on Desk -->
+                  <path d="M 94 170 L 186 170 L 194 174 L 86 174 Z" fill="url(#laptopBodyGrad)"/>
+                  <rect x="132" y="171" width="16" height="2" rx="1" fill="#94A3B8"/>
+
+                  <!-- Laptop Screen Base & Bezel -->
+                  <rect x="103" y="111" width="74" height="50" rx="5" fill="#0F172A" stroke="#334155" stroke-width="2"/>
+                  <!-- Glowing Screen -->
+                  <rect class="laptop-screen-content" id="laptopScreen" x="106" y="114" width="68" height="44" rx="3" fill="url(#laptopScreenGrad)"/>
+
+                  <!-- Screen Content: Analytics Dashboard & Waves -->
+                  <g opacity="0.92">
+                    <line x1="112" y1="148" x2="168" y2="148" stroke="#60A5FA" stroke-width="1" stroke-dasharray="2 2"/>
+                    <path d="M 112 144 Q 124 134, 134 138 T 152 125 T 168 123" fill="none" stroke="#FBBF24" stroke-width="2" stroke-linecap="round"/>
+                    <rect class="screen-bar-1" x="114" y="136" width="5" height="11" rx="1.5" fill="#67E8F9"/>
+                    <rect class="screen-bar-2" x="122" y="130" width="5" height="17" rx="1.5" fill="#38BDF8"/>
+                    <rect class="screen-bar-3" x="130" y="124" width="5" height="23" rx="1.5" fill="#60A5FA"/>
+                    <circle cx="168" cy="123" r="2.5" fill="#FFFFFF"/>
                   </g>
 
-                  <!-- Head, Hair, Face -->
-                  <g id="mascotHead">
-                    <!-- Ears -->
-                    <circle cx="56" cy="105" r="9" fill="#F8C8A0"/>
-                    <circle cx="56" cy="105" r="5" fill="#EFA97A"/>
-                    <circle cx="144" cy="105" r="9" fill="#F8C8A0"/>
-                    <circle cx="144" cy="105" r="5" fill="#EFA97A"/>
+                  <!-- Coffee Mug with Rising Steam (Right) -->
+                  <rect x="200" y="156" width="13" height="15" rx="3.5" fill="#3B82F6"/>
+                  <path d="M 213 159 C 217 159, 217 166, 213 166" fill="none" stroke="#3B82F6" stroke-width="2"/>
+                  <path class="coffee-steam" d="M 206 151 Q 208 147 205 142" stroke="#93C5FD" stroke-width="1.5" stroke-linecap="round" fill="none"/>
 
-                    <!-- Face Base -->
-                    <ellipse cx="100" cy="105" rx="42" ry="46" fill="url(#mascotSkin)"/>
-
-                    <!-- Hair -->
-                    <path d="M 58 96 C 54 62, 72 46, 100 46 C 128 46, 146 62, 142 96 C 136 82, 126 76, 115 78 C 102 80, 94 72, 82 75 C 70 78, 63 86, 58 96 Z" fill="#1E293B"/>
-
-                    <!-- Eyebrows -->
-                    <path id="mascotBrowL" d="M 72 84 Q 82 80 90 84" stroke="#1E293B" stroke-width="3" stroke-linecap="round" fill="none"/>
-                    <path id="mascotBrowR" d="M 110 84 Q 118 80 128 84" stroke="#1E293B" stroke-width="3" stroke-linecap="round" fill="none"/>
-
-                    <!-- Blush -->
-                    <ellipse cx="70" cy="118" rx="6" ry="4" fill="#FB7185" opacity="0.35"/>
-                    <ellipse cx="130" cy="118" rx="6" ry="4" fill="#FB7185" opacity="0.35"/>
-
-                    <!-- Eye Whites -->
-                    <ellipse id="mascotEyeWhiteL" cx="82" cy="102" rx="11" ry="12" fill="#FFFFFF"/>
-                    <ellipse id="mascotEyeWhiteR" cx="118" cy="102" rx="11" ry="12" fill="#FFFFFF"/>
-
-                    <!-- Pupils (Tracking & Responsive) -->
-                    <g id="mascotPupilsGroup">
-                      <g id="mascotPupilLeft">
-                        <circle cx="82" cy="102" r="5.5" fill="#0F172A"/>
-                        <circle cx="80.5" cy="100" r="2" fill="#FFFFFF"/>
-                      </g>
-                      <g id="mascotPupilRight">
-                        <circle cx="118" cy="102" r="5.5" fill="#0F172A"/>
-                        <circle cx="116.5" cy="100" r="2" fill="#FFFFFF"/>
-                      </g>
-                    </g>
-
-                    <!-- Happy Eyes (Celebration State) -->
-                    <path id="mascotHappyEyeL" d="M 72 104 Q 82 94 92 104" stroke="#0F172A" stroke-width="3" stroke-linecap="round" fill="none" style="display:none;"/>
-                    <path id="mascotHappyEyeR" d="M 108 104 Q 118 94 128 104" stroke="#0F172A" stroke-width="3" stroke-linecap="round" fill="none" style="display:none;"/>
-
-                    <!-- Glasses -->
-                    <g id="mascotGlasses">
-                      <circle cx="82" cy="102" r="14" fill="rgba(37,99,235,0.05)" stroke="#2563EB" stroke-width="2.5"/>
-                      <circle cx="118" cy="102" r="14" fill="rgba(37,99,235,0.05)" stroke="#2563EB" stroke-width="2.5"/>
-                      <line x1="96" y1="102" x2="104" y2="102" stroke="#2563EB" stroke-width="2.5"/>
-                      <line x1="56" y1="102" x2="68" y2="102" stroke="#2563EB" stroke-width="2"/>
-                      <line x1="132" y1="102" x2="144" y2="102" stroke="#2563EB" stroke-width="2"/>
-                      <path d="M 74 94 L 81 90" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" opacity="0.6"/>
-                      <path d="M 110 94 L 117 90" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" opacity="0.6"/>
-                    </g>
-
-                    <!-- Nose -->
-                    <path d="M 98 112 Q 100 115 102 112" stroke="#D97745" stroke-width="2" stroke-linecap="round" fill="none"/>
-
-                    <!-- Mouth -->
-                    <path id="mascotMouth" d="M 93 126 Q 100 133 107 126" stroke="#1E293B" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                  <!-- Floating Element 1: Graduation Cap with Gold Tassel (Top Right) -->
+                  <g class="floating-grad-cap" id="sceneGradCap">
+                    <polygon points="190,30 234,43 190,56 146,43" fill="url(#gradCapGrad)" filter="drop-shadow(0 6px 10px rgba(15,23,42,0.28))"/>
+                    <path d="M 170 50 L 170 63 C 170 72, 210 72, 210 63 L 210 50 Z" fill="#1E293B"/>
+                    <circle cx="190" cy="43" r="3" fill="url(#goldTasselGrad)"/>
+                    <path class="cap-tassel" d="M 190 43 Q 214 50 218 68 L 220 78" fill="none" stroke="url(#goldTasselGrad)" stroke-width="2.2" stroke-linecap="round"/>
+                    <circle cx="220" cy="78" r="3" fill="#F59E0B"/>
                   </g>
 
-                  <!-- Animated Hands for Eye Covering ("চোখ বন্ধ অ্যানিমেশন") -->
-                  <g id="mascotHandL" class="mascot-hand mascot-hand--left">
-                    <path d="M 64 122 C 60 102, 66 90, 80 86 C 86 84, 92 88, 96 95 C 98 100, 96 107, 95 114 C 93 123, 83 133, 73 134 Z" fill="#F8C8A0" stroke="#EFA97A" stroke-width="1.5"/>
-                    <path d="M 74 92 C 77 98, 78 104, 78 110" stroke="#EFA97A" stroke-width="1.2" stroke-linecap="round" fill="none"/>
-                    <path d="M 83 93 C 85 99, 86 105, 86 111" stroke="#EFA97A" stroke-width="1.2" stroke-linecap="round" fill="none"/>
-                    <path d="M 90 98 C 91 103, 91 108, 90 113" stroke="#EFA97A" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                  <!-- Floating Element 2: Open Glowing Knowledge Book (Top Left) -->
+                  <g class="floating-book" id="sceneFloatingBook">
+                    <ellipse class="book-glow-aura" cx="52" cy="56" rx="36" ry="26" fill="rgba(37,99,235,0.15)" filter="blur(6px)"/>
+                    <!-- Book cover -->
+                    <path d="M 26 63 Q 52 67 52 52 Q 52 67 78 63 L 76 46 Q 52 50 52 37 Q 52 50 28 46 Z" fill="url(#bookCoverGrad)" filter="drop-shadow(0 4px 8px rgba(225,29,72,0.2))"/>
+                    <!-- Book pages -->
+                    <path d="M 30 45 Q 52 49 52 37 Q 52 49 74 45 L 72 61 Q 52 65 52 52 Q 52 65 32 61 Z" fill="url(#bookPagesGrad)"/>
+                    <line x1="36" y1="48" x2="48" y2="47" stroke="#94A3B8" stroke-width="1.2" stroke-linecap="round"/>
+                    <line x1="36" y1="53" x2="48" y2="52" stroke="#94A3B8" stroke-width="1.2" stroke-linecap="round"/>
+                    <line x1="36" y1="58" x2="46" y2="57" stroke="#94A3B8" stroke-width="1.2" stroke-linecap="round"/>
+                    <line x1="56" y1="47" x2="68" y2="48" stroke="#94A3B8" stroke-width="1.2" stroke-linecap="round"/>
+                    <line x1="56" y1="52" x2="68" y2="53" stroke="#94A3B8" stroke-width="1.2" stroke-linecap="round"/>
+                    <line x1="58" y1="57" x2="68" y2="58" stroke="#94A3B8" stroke-width="1.2" stroke-linecap="round"/>
+                    <!-- Gold Ribbon -->
+                    <path d="M 52 37 Q 50 48 54 58 L 52 65 L 50 58" fill="#F59E0B"/>
                   </g>
 
-                  <g id="mascotHandR" class="mascot-hand mascot-hand--right">
-                    <path d="M 136 122 C 140 102, 134 90, 120 86 C 114 84, 108 88, 104 95 C 102 100, 104 107, 105 114 C 107 123, 117 133, 127 134 Z" fill="#F8C8A0" stroke="#EFA97A" stroke-width="1.5"/>
-                    <path d="M 126 92 C 123 98, 122 104, 122 110" stroke="#EFA97A" stroke-width="1.2" stroke-linecap="round" fill="none"/>
-                    <path d="M 117 93 C 115 99, 114 105, 114 111" stroke="#EFA97A" stroke-width="1.2" stroke-linecap="round" fill="none"/>
-                    <path d="M 110 98 C 109 103, 109 108, 110 113" stroke="#EFA97A" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                  <!-- Floating Element 3: Analytics / Skill Rating Card (Middle Right) -->
+                  <g class="floating-chart-card" id="sceneChartCard">
+                    <rect x="208" y="98" width="60" height="40" rx="9" fill="#FFFFFF" stroke="rgba(37,99,235,0.22)" stroke-width="1.2" filter="drop-shadow(0 6px 16px rgba(37,99,235,0.14))"/>
+                    <text x="214" y="111" font-family="'Baloo Da 2', sans-serif" font-size="9" font-weight="800" fill="#1E3A8A">BBA সাকসেস</text>
+                    <text x="214" y="125" font-family="'Baloo Da 2', sans-serif" font-size="12" font-weight="800" fill="#10B981">৯৮%+</text>
+                    <path d="M 242 128 L 248 120 L 253 123 L 260 114" fill="none" stroke="#10B981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <circle cx="260" cy="114" r="2.2" fill="#10B981"/>
                   </g>
+
+                  <!-- Floating Element 4: Rolled Diploma / Certificate (Middle Left) -->
+                  <g class="floating-diploma" id="sceneDiploma">
+                    <rect x="22" y="118" width="38" height="13" rx="6.5" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1.2" filter="drop-shadow(0 4px 8px rgba(245,158,11,0.2))"/>
+                    <rect x="37" y="117" width="8" height="15" rx="2" fill="#EF4444"/>
+                    <path d="M 41 132 L 38 138 L 41 136 L 44 138 Z" fill="#EF4444"/>
+                  </g>
+
+                  <!-- Sparkles (Golden & Cyan Stars) -->
+                  <path class="sparkle-star sparkle-star-1" d="M 120 40 Q 120 47 127 47 Q 120 47 120 54 Q 120 47 113 47 Q 120 47 120 40 Z" fill="#F59E0B"/>
+                  <path class="sparkle-star sparkle-star-2" d="M 256 68 Q 256 74 262 74 Q 256 74 256 80 Q 256 74 250 74 Q 256 74 256 68 Z" fill="#38BDF8"/>
+                  <path class="sparkle-star sparkle-star-3" d="M 82 86 Q 82 91 87 91 Q 82 91 82 96 Q 82 91 77 91 Q 82 91 82 86 Z" fill="#F59E0B"/>
                 </svg>
               </div>
 
-              <div class="mascot-badge-pill">
+              <!-- Live Security Status Badge -->
+              <div class="study-live-badge" id="studyLiveBadge">
                 <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                 </svg>
-                <span>নিরাপদ ও এনক্রিপ্টেড পোর্টাল</span>
+                <span id="studyLiveText">সুরক্ষিত ও এনক্রিপ্টেড সেশন</span>
+              </div>
+
+              <!-- Micro Feature Pills -->
+              <div class="study-features-row">
+                <span class="study-feat-pill">🎓 লাইভ ক্লাস</span>
+                <span class="study-feat-pill">📊 ইনস্ট্যান্ট রেজাল্ট</span>
+                <span class="study-feat-pill">⚡ স্মার্ট ড্যাশবোর্ড</span>
               </div>
             </div>
 
@@ -7470,133 +7567,104 @@ html.theme-transition *::after{
   });
 
   // ============================================================
-  // Interactive Student Avatar Mascot Controller ("চোখ বন্ধ অ্যানিমেশন")
+  // Modern Aesthetic Study Art Workspace Illustration Controller
   // ============================================================
-  function initMascotController(){
-    const mascotCard = document.getElementById('loginMascotCard');
-    if(!mascotCard) return;
+  function initStudySceneController(){
+    const studyCard = document.getElementById('loginStudyArtCard');
+    if(!studyCard) return;
 
     const mobileInput = document.getElementById('login_mobile');
     const passInput = document.getElementById('login_password');
-    const speechText = document.getElementById('mascotSpeechText');
-    const pupilL = document.getElementById('mascotPupilLeft');
-    const pupilR = document.getElementById('mascotPupilRight');
-    const happyL = document.getElementById('mascotHappyEyeL');
-    const happyR = document.getElementById('mascotHappyEyeR');
-    const pupilsGrp = document.getElementById('mascotPupilsGroup');
-    const mouth = document.getElementById('mascotMouth');
+    const liveText = document.getElementById('studyLiveText');
+    const laptopScreen = document.getElementById('laptopScreen');
+    const gradCap = document.getElementById('sceneGradCap');
+    const book = document.getElementById('sceneFloatingBook');
+    const chartCard = document.getElementById('sceneChartCard');
+    const diploma = document.getElementById('sceneDiploma');
 
-    let isCovering = false;
-    let isPeeking = false;
-
-    function setSpeech(txt){
-      if(speechText) speechText.textContent = txt;
+    function setLiveStatus(text, isAlert){
+      if(liveText) liveText.textContent = text;
+      if(isAlert){
+        studyCard.classList.add('is-typing-focus');
+      } else {
+        studyCard.classList.remove('is-typing-focus');
+      }
     }
 
-    function resetPupils(){
-      if(pupilL) pupilL.style.transform = '';
-      if(pupilR) pupilR.style.transform = '';
-    }
-
-    // 1. Mobile Input - Eye Tracking & Watching
+    // 1. Mobile Input Focus & Typing Interaction
     if(mobileInput){
       mobileInput.addEventListener('focus', function(){
-        if(isCovering) return;
-        mascotCard.classList.add('is-watching');
-        setSpeech('আপনার মোবাইল নম্বর লিখুন... 📱');
-        if(pupilL) pupilL.style.transform = 'translate(0px, 4px)';
-        if(pupilR) pupilR.style.transform = 'translate(0px, 4px)';
+        setLiveStatus('মোবাইল নম্বর যাচাই হচ্ছে... 📱', true);
       });
-
       mobileInput.addEventListener('input', function(){
-        if(isCovering) return;
         const len = mobileInput.value.length;
-        const shiftX = Math.min(Math.max((len - 5.5) * 0.8, -4.5), 4.5);
-        if(pupilL) pupilL.style.transform = `translate(${shiftX}px, 4.5px)`;
-        if(pupilR) pupilR.style.transform = `translate(${shiftX}px, 4.5px)`;
-        setSpeech('নম্বর লিখছেন... ✍️');
+        if(len > 0){
+          setLiveStatus(`নম্বর লিখছেন (${len}/১১)... ✍️`, true);
+        } else {
+          setLiveStatus('মোবাইল নম্বর লিখুন... 📱', true);
+        }
       });
-
       mobileInput.addEventListener('blur', function(){
-        mascotCard.classList.remove('is-watching');
-        resetPupils();
         if(!passInput || document.activeElement !== passInput){
-          setSpeech('স্বাগতম! আপনার অ্যাকাউন্টে প্রবেশ করুন 👋');
+          setLiveStatus('সুরক্ষিত ও এনক্রিপ্টেড সেশন', false);
         }
       });
     }
 
-    // 2. Password Input - Eye Covering ("চোখ বন্ধ অ্যানিমেশন") & Peek
+    // 2. Password Input Focus Interaction
     if(passInput){
       passInput.addEventListener('focus', function(){
-        isCovering = true;
-        resetPupils();
-        if(passInput.type === 'text'){
-          isPeeking = true;
-          mascotCard.classList.add('is-peeking');
-          mascotCard.classList.remove('is-covering');
-          setSpeech('একটু উঁকি দিয়ে দেখছি! 👁️');
-        } else {
-          isPeeking = false;
-          mascotCard.classList.add('is-covering');
-          mascotCard.classList.remove('is-peeking');
-          setSpeech('পাসওয়ার্ড গোপন রাখছি! 🙈');
-        }
+        setLiveStatus('পাসওয়ার্ড এনক্রিপ্ট করা হচ্ছে... 🔒', true);
       });
-
       passInput.addEventListener('blur', function(){
-        isCovering = false;
-        isPeeking = false;
-        mascotCard.classList.remove('is-covering', 'is-peeking');
         if(!mobileInput || document.activeElement !== mobileInput){
-          setSpeech('স্বাগতম! আপনার অ্যাকাউন্টে প্রবেশ করুন 👋');
+          setLiveStatus('সুরক্ষিত ও এনক্রিপ্টেড সেশন', false);
         }
       });
     }
 
-    // 3. Password Show/Hide Peek Trigger
+    // 3. Password Toggle Hook
     window.updateMascotPasswordPeek = function(isTextVisible){
-      if(!isCovering && document.activeElement !== passInput) return;
-      if(isTextVisible){
-        isPeeking = true;
-        mascotCard.classList.add('is-peeking');
-        mascotCard.classList.remove('is-covering');
-        setSpeech('একটু উঁকি দিয়ে দেখছি! 👁️');
-      } else {
-        isPeeking = false;
-        mascotCard.classList.add('is-covering');
-        mascotCard.classList.remove('is-peeking');
-        setSpeech('পাসওয়ার্ড গোপন রাখছি! 🙈');
+      if(document.activeElement === passInput){
+        setLiveStatus(isTextVisible ? 'পাসওয়ার্ড দৃশ্যমান 👁️' : 'পাসওয়ার্ড গোপন ও এনক্রিপ্টেড 🔒', true);
       }
     };
 
-    // 4. Success / Error Feedback Trigger
+    // 4. Login Submission & Feedback
     window.setMascotCelebration = function(isSuccess){
       if(isSuccess){
-        mascotCard.classList.remove('is-covering', 'is-peeking', 'is-watching');
-        mascotCard.classList.add('is-celebrating');
-        if(happyL && happyR && pupilsGrp){
-          happyL.style.display = 'block';
-          happyR.style.display = 'block';
-          pupilsGrp.style.display = 'none';
-        }
-        if(mouth) mouth.setAttribute('d', 'M 91 124 Q 100 138 109 124');
-        setSpeech('লগইন সফল! স্বাগতম... 🎉');
+        setLiveStatus('লগইন সফল! ড্যাশবোর্ডে প্রবেশ করছি... 🎉', true);
+        if(laptopScreen) laptopScreen.style.filter = 'drop-shadow(0 0 18px #10B981)';
       } else {
-        mascotCard.classList.add('is-error');
-        setSpeech('নম্বর বা পাসওয়ার্ড ভুল হয়েছে! 🧐');
+        setLiveStatus('মোবাইল বা পাসওয়ার্ড ভুল হয়েছে! ❌', true);
         setTimeout(function(){
-          mascotCard.classList.remove('is-error');
-          if(!isCovering && !isPeeking){
-            setSpeech('স্বাগতম! আপনার অ্যাকাউন্টে প্রবেশ করুন 👋');
-          }
-        }, 2200);
+          setLiveStatus('সুরক্ষিত ও এনক্রিপ্টেড সেশন', false);
+        }, 2600);
       }
     };
+
+    // 5. Subtle Mouse Parallax Depth Effect on Floating Academic Elements
+    studyCard.addEventListener('mousemove', function(e){
+      const rect = studyCard.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+      if(gradCap) gradCap.style.transform = `translate(${x * 14}px, ${y * 14}px) rotate(${x * 6}deg)`;
+      if(book) book.style.transform = `translate(${x * -12}px, ${y * -12}px) rotate(${y * 4}deg)`;
+      if(chartCard) chartCard.style.transform = `translate(${x * 10}px, ${y * -8}px)`;
+      if(diploma) diploma.style.transform = `translate(${x * -8}px, ${y * 10}px)`;
+    });
+
+    studyCard.addEventListener('mouseleave', function(){
+      if(gradCap) gradCap.style.transform = '';
+      if(book) book.style.transform = '';
+      if(chartCard) chartCard.style.transform = '';
+      if(diploma) diploma.style.transform = '';
+    });
   }
 
-  // Initialize Mascot Controller
-  initMascotController();
+  // Initialize Study Scene Controller
+  initStudySceneController();
 
 })();
 </script>
