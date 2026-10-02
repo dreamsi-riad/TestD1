@@ -320,7 +320,7 @@ header.nav{
   background: linear-gradient(155deg, #F8FAFD 0%, #EEF4FE 50%, #E3EFFF 100%);
   border: 1.5px solid rgba(37, 99, 235, 0.16);
   border-radius: 24px;
-  padding: 22px 18px 20px;
+  padding: 16px 16px 14px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -354,47 +354,10 @@ header.nav{
   100%{ opacity: 1; transform: translateX(-50%) scale(1.2); }
 }
 
-/* টপ সিন ব্যাজ */
-.study-scene-badge{
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(37, 99, 235, 0.2);
-  border-radius: 999px;
-  padding: 5px 14px;
-  font-size: 12.5px;
-  font-weight: 700;
-  color: #1D4ED8;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08);
-  margin-bottom: 14px;
-  position: relative;
-  z-index: 2;
-}
-[data-theme="dark"] .study-scene-badge{
-  background: rgba(30, 41, 59, 0.85);
-  border-color: rgba(56, 189, 248, 0.3);
-  color: #60A5FA;
-}
-.study-scene-badge .badge-dot{
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #10B981;
-  box-shadow: 0 0 8px #10B981;
-  animation: dotPulse 2s infinite;
-}
-@keyframes dotPulse{
-  0%, 100%{ opacity: 1; transform: scale(1); }
-  50%{ opacity: 0.4; transform: scale(0.8); }
-}
-
 /* ভেক্টর ইলাস্ট্রেশন কন্টেইনার */
 .study-illustration-wrap{
-  width: 280px;
-  height: 195px;
+  width: 274px;
+  height: 184px;
   position: relative;
   z-index: 2;
   margin: 0 auto;
@@ -446,16 +409,24 @@ header.nav{
   100%{ opacity: 0.8; transform: scale(1.08); }
 }
 
-/* ফ্লোটিং গ্রাফ / অ্যানালিটিক্স উইজেট */
-.floating-chart-card{
-  transform-origin: 232px 116px;
-  animation: floatChart 4.8s ease-in-out infinite alternate;
+/* ফ্লোটিং স্টাডি নোটবুক ও পেন্সিল অ্যানিমেশন */
+.floating-study-notes{
+  transform-origin: 230px 114px;
+  animation: floatStudyNotes 4.8s ease-in-out infinite alternate;
   will-change: transform;
 }
-@keyframes floatChart{
-  0%{ transform: translateY(0px) scale(1); }
-  50%{ transform: translateY(-6px) scale(1.03); }
-  100%{ transform: translateY(-2px) scale(0.99); }
+@keyframes floatStudyNotes{
+  0%{ transform: translateY(0px) rotate(0deg); }
+  50%{ transform: translateY(-7px) rotate(-2deg); }
+  100%{ transform: translateY(-2px) rotate(1.5deg); }
+}
+.floating-pencil{
+  transform-origin: 254px 124px;
+  animation: pencilWiggle 3.2s ease-in-out infinite alternate;
+}
+@keyframes pencilWiggle{
+  0%{ transform: rotate(-30deg) translateY(0px); }
+  100%{ transform: rotate(-36deg) translateY(-3px); }
 }
 
 /* ফ্লোটিং রোলড ডিপ্লোমা */
@@ -508,46 +479,13 @@ header.nav{
   100%{ opacity: 1; transform: scale(1.15) rotate(45deg); }
 }
 
-/* লাইভ সিকিউরিটি মোশন (ইনপুট ফোকাসে অ্যাক্টিভ হয়) */
-.study-live-badge{
-  margin-top: 14px;
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  background: rgba(255, 255, 255, 0.88);
-  border: 1px solid rgba(226, 232, 240, 0.9);
-  padding: 6px 14px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--ink-soft);
-  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
-  transition: all 0.3s ease;
-  z-index: 2;
+/* ইনপুট টাইপিং ফোকাসে ইন্টারেক্টিভ সিন গ্লো */
+.is-typing-focus .laptop-screen-content{
+  filter: drop-shadow(0 0 16px rgba(37, 99, 235, 0.95)) drop-shadow(0 0 24px rgba(56, 189, 248, 0.6)) !important;
 }
-[data-theme="dark"] .study-live-badge{
-  background: rgba(30, 41, 59, 0.7);
-  border-color: rgba(255, 255, 255, 0.1);
-  color: #94A3B8;
-}
-.study-live-badge svg{
-  color: #10B981;
-  transition: transform 0.3s ease, color 0.3s ease;
-}
-.is-typing-focus .study-live-badge{
-  border-color: rgba(37, 99, 235, 0.4);
-  background: #EFF6FF;
-  color: #1D4ED8;
-  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.15);
-}
-[data-theme="dark"] .is-typing-focus .study-live-badge{
-  background: #1E293B;
-  border-color: #38BDF8;
-  color: #93C5FD;
-}
-.is-typing-focus .study-live-badge svg{
-  color: #2563EB;
-  transform: scale(1.15);
+.is-typing-focus .study-art-glow{
+  opacity: 1 !important;
+  transform: translateX(-50%) scale(1.3) !important;
 }
 
 /* মাইক্রো ফিচার হাইলাইটস (৪টি ব্যাজ গ্রিড) */
@@ -555,7 +493,7 @@ header.nav{
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 7px;
-  margin-top: 14px;
+  margin-top: 10px;
   width: 100%;
   z-index: 2;
 }
@@ -602,16 +540,19 @@ header.nav{
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
 }
 
-/* ডার্ক মোডে স্টাডি রিসোর্স কার্ড এডাপটেশন */
-[data-theme="dark"] .study-res-bg{
+/* ডার্ক মোডে স্টাডি নোটবুক ও পেন্সিল এডাপটেশন */
+[data-theme="dark"] #sceneStudyNotes .notes-paper{
   fill: #1E293B !important;
-  stroke: rgba(56, 189, 248, 0.32) !important;
 }
-[data-theme="dark"] .study-res-title{
-  fill: #F1F5F9 !important;
+[data-theme="dark"] #sceneStudyNotes .notes-band{
+  fill: #334155 !important;
 }
-[data-theme="dark"] .study-res-subtitle{
-  fill: #38BDF8 !important;
+[data-theme="dark"] #sceneStudyNotes .notes-line{
+  stroke: #475569 !important;
+}
+[data-theme="dark"] #sceneStudyNotes .notes-spiral{
+  fill: #64748B !important;
+  stroke: #475569 !important;
 }
 
 /* ফর্ম হেডার মিনি */
@@ -3837,11 +3778,6 @@ html.theme-transition *::after{
             <div class="study-art-card" id="loginStudyArtCard">
               <div class="study-art-glow" aria-hidden="true"></div>
 
-              <div class="study-scene-badge">
-                <span class="badge-dot"></span>
-                <span>VISION</span>
-              </div>
-
               <div class="study-illustration-wrap">
                 <svg class="study-illustration-svg" viewBox="0 0 280 200" aria-label="মডার্ন স্টাডি আর্ট ইলাস্ট্রেশন">
                   <defs>
@@ -3874,6 +3810,10 @@ html.theme-transition *::after{
                     <linearGradient id="bookPagesGrad" x1="0" y1="0" x2="1" y2="1">
                       <stop offset="0%" stop-color="#FFFFFF"/>
                       <stop offset="100%" stop-color="#F1F5F9"/>
+                    </linearGradient>
+                    <linearGradient id="notesCoverGrad" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stop-color="#4F46E5"/>
+                      <stop offset="100%" stop-color="#7C3AED"/>
                     </linearGradient>
                   </defs>
 
@@ -3937,20 +3877,60 @@ html.theme-transition *::after{
                     <path d="M 52 37 Q 50 48 54 58 L 52 65 L 50 58" fill="#F59E0B"/>
                   </g>
 
-                  <!-- Floating Element 3: Study Material / Resource Card (Middle Right) -->
-                  <g class="floating-chart-card" id="sceneChartCard">
-                    <rect class="study-res-bg" x="194" y="94" width="78" height="42" rx="9" fill="#FFFFFF" stroke="rgba(37,99,235,0.22)" stroke-width="1.2" filter="drop-shadow(0 6px 16px rgba(37,99,235,0.14))"/>
-                    <!-- PDF Document Icon -->
-                    <rect x="200" y="103" width="13" height="17" rx="2.5" fill="#EFF6FF" stroke="#2563EB" stroke-width="1.2"/>
-                    <path d="M 208 103 L 213 108 L 208 108 Z" fill="#2563EB"/>
-                    <line x1="203" y1="110" x2="209" y2="110" stroke="#3B82F6" stroke-width="1" stroke-linecap="round"/>
-                    <line x1="203" y1="114" x2="208" y2="114" stroke="#3B82F6" stroke-width="1" stroke-linecap="round"/>
-                    <!-- Text -->
-                    <text class="study-res-title" x="218" y="112" font-family="'Hind Siliguri', 'Baloo Da 2', sans-serif" font-size="8.8" font-weight="700" fill="#1E3A8A">স্টাডি ম্যাটেরিয়াল</text>
-                    <text class="study-res-subtitle" x="218" y="125" font-family="'Hind Siliguri', sans-serif" font-size="8" font-weight="600" fill="#2563EB">PDF ও শিট 📚</text>
-                    <!-- Green Check Badge -->
-                    <circle cx="265" cy="101" r="3.5" fill="#10B981"/>
-                    <path d="M 263.5 101 L 264.5 102 L 266.5 100" fill="none" stroke="#FFFFFF" stroke-width="0.9" stroke-linecap="round" stroke-linejoin="round"/>
+                  <!-- Floating Element 3: Spiral Study Notebook & Angled Student Pencil (Middle Right) -->
+                  <g class="floating-study-notes" id="sceneStudyNotes">
+                    <!-- Soft Backdrop Glow Aura -->
+                    <ellipse cx="230" cy="116" rx="28" ry="22" fill="rgba(99,102,241,0.14)" filter="blur(5px)"/>
+
+                    <!-- Spiral Notebook (Slightly tilted) -->
+                    <g transform="rotate(5 226 114)">
+                      <!-- Colorful Sticky Bookmark Tabs on Top -->
+                      <rect x="220" y="87" width="7" height="6" rx="1.5" fill="#10B981"/>
+                      <rect x="229" y="87" width="7" height="6" rx="1.5" fill="#F59E0B"/>
+                      <rect x="238" y="88" width="7" height="5" rx="1.5" fill="#EC4899"/>
+
+                      <!-- Notebook Back Cover -->
+                      <rect x="206" y="91" width="44" height="50" rx="5" fill="url(#notesCoverGrad)" filter="drop-shadow(0 5px 12px rgba(79,70,229,0.22))"/>
+
+                      <!-- Notebook Inner Page -->
+                      <rect class="notes-paper" x="211" y="94" width="36" height="44" rx="3.5" fill="#FFFFFF"/>
+
+                      <!-- Accent Header Band -->
+                      <rect class="notes-band" x="214" y="97" width="30" height="3.5" rx="1.5" fill="#E0E7FF"/>
+
+                      <!-- Lined Rules (Abstract vector study lines, NO text) -->
+                      <line class="notes-line" x1="215" y1="105" x2="239" y2="105" stroke="#CBD5E1" stroke-width="1.2" stroke-linecap="round"/>
+                      <line class="notes-line" x1="215" y1="111" x2="239" y2="111" stroke="#CBD5E1" stroke-width="1.2" stroke-linecap="round"/>
+                      <line class="notes-line" x1="215" y1="117" x2="235" y2="117" stroke="#CBD5E1" stroke-width="1.2" stroke-linecap="round"/>
+                      <line class="notes-line" x1="215" y1="123" x2="238" y2="123" stroke="#CBD5E1" stroke-width="1.2" stroke-linecap="round"/>
+                      <line class="notes-line" x1="215" y1="129" x2="232" y2="129" stroke="#CBD5E1" stroke-width="1.2" stroke-linecap="round"/>
+
+                      <!-- Twin Spiral Ring Coils on Left Spine -->
+                      <g class="notes-spiral" fill="#94A3B8" stroke="#64748B" stroke-width="0.5">
+                        <rect x="204" y="97" width="5.5" height="2.2" rx="1.1"/>
+                        <rect x="204" y="103.5" width="5.5" height="2.2" rx="1.1"/>
+                        <rect x="204" y="110" width="5.5" height="2.2" rx="1.1"/>
+                        <rect x="204" y="116.5" width="5.5" height="2.2" rx="1.1"/>
+                        <rect x="204" y="123" width="5.5" height="2.2" rx="1.1"/>
+                        <rect x="204" y="129.5" width="5.5" height="2.2" rx="1.1"/>
+                      </g>
+                    </g>
+
+                    <!-- Angled Student Pencil Floating Beside Notebook -->
+                    <g class="floating-pencil" transform="rotate(-30 252 122)">
+                      <!-- Pencil Body (Golden Yellow Hexagonal Shaft) -->
+                      <rect x="249" y="100" width="6" height="30" rx="1" fill="#F59E0B"/>
+                      <rect x="251" y="100" width="2" height="30" fill="#FBBF24"/>
+                      <!-- Metal Ferrule -->
+                      <rect x="249" y="96" width="6" height="4" fill="#CBD5E1"/>
+                      <line x1="249" y1="98" x2="255" y2="98" stroke="#94A3B8" stroke-width="0.8"/>
+                      <!-- Pink Eraser -->
+                      <rect x="249" y="92" width="6" height="4.5" rx="1.8" fill="#F43F5E"/>
+                      <!-- Sharpened Wood Cone Tip -->
+                      <polygon points="249,130 255,130 252,137" fill="#FDE68A"/>
+                      <!-- Graphite Lead Point -->
+                      <polygon points="250.8,134.5 253.2,134.5 252,138" fill="#1E293B"/>
+                    </g>
                   </g>
 
                   <!-- Floating Element 4: Rolled Diploma / Certificate (Middle Left) -->
@@ -3965,14 +3945,6 @@ html.theme-transition *::after{
                   <path class="sparkle-star sparkle-star-2" d="M 256 68 Q 256 74 262 74 Q 256 74 256 80 Q 256 74 250 74 Q 256 74 256 68 Z" fill="#38BDF8"/>
                   <path class="sparkle-star sparkle-star-3" d="M 82 86 Q 82 91 87 91 Q 82 91 82 96 Q 82 91 77 91 Q 82 91 82 86 Z" fill="#F59E0B"/>
                 </svg>
-              </div>
-
-              <!-- Live Security Status Badge -->
-              <div class="study-live-badge" id="studyLiveBadge">
-                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                </svg>
-                <span id="studyLiveText">সুরক্ষিত ও এনক্রিপ্টেড সেশন</span>
               </div>
 
               <!-- 4 Feature Badges as requested -->
@@ -7629,7 +7601,7 @@ html.theme-transition *::after{
     const laptopScreen = document.getElementById('laptopScreen');
     const gradCap = document.getElementById('sceneGradCap');
     const book = document.getElementById('sceneFloatingBook');
-    const chartCard = document.getElementById('sceneChartCard');
+    const studyNotes = document.getElementById('sceneStudyNotes');
     const diploma = document.getElementById('sceneDiploma');
 
     function setLiveStatus(text, isAlert){
@@ -7701,14 +7673,14 @@ html.theme-transition *::after{
 
       if(gradCap) gradCap.style.transform = `translate(${x * 14}px, ${y * 14}px) rotate(${x * 6}deg)`;
       if(book) book.style.transform = `translate(${x * -12}px, ${y * -12}px) rotate(${y * 4}deg)`;
-      if(chartCard) chartCard.style.transform = `translate(${x * 10}px, ${y * -8}px)`;
+      if(studyNotes) studyNotes.style.transform = `translate(${x * 10}px, ${y * -8}px) rotate(${x * -4}deg)`;
       if(diploma) diploma.style.transform = `translate(${x * -8}px, ${y * 10}px)`;
     });
 
     studyCard.addEventListener('mouseleave', function(){
       if(gradCap) gradCap.style.transform = '';
       if(book) book.style.transform = '';
-      if(chartCard) chartCard.style.transform = '';
+      if(studyNotes) studyNotes.style.transform = '';
       if(diploma) diploma.style.transform = '';
     });
   }
