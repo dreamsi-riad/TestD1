@@ -225,7 +225,46 @@ header.nav{
 .auth-wrap{
   padding: 8px 0 48px;
   flex: 1;
+  position: relative;
+  overflow: hidden;
 }
+
+/* অ্যাম্বিয়েন্ট ব্যাকগ্রাউন্ড ওর্বস (Ambient Glowing Mesh) */
+.ambient-orb{
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(75px);
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform;
+}
+.ambient-orb-1{
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.14) 0%, rgba(37, 99, 235, 0) 70%);
+  top: 5%;
+  left: 5%;
+  animation: floatOrb1 18s ease-in-out infinite alternate;
+}
+.ambient-orb-2{
+  width: 360px;
+  height: 360px;
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.13) 0%, rgba(245, 158, 11, 0.07) 50%, rgba(0,0,0,0) 70%);
+  bottom: 8%;
+  right: 6%;
+  animation: floatOrb2 22s ease-in-out infinite alternate;
+}
+@keyframes floatOrb1{
+  0%{ transform: translate(0, 0) scale(1); }
+  50%{ transform: translate(40px, 35px) scale(1.1); }
+  100%{ transform: translate(-30px, 55px) scale(0.95); }
+}
+@keyframes floatOrb2{
+  0%{ transform: translate(0, 0) scale(1); }
+  50%{ transform: translate(-45px, -30px) scale(1.12); }
+  100%{ transform: translate(35px, -20px) scale(0.92); }
+}
+
 .auth-box{
   max-width: 600px;
   margin: 0 auto;
@@ -236,7 +275,15 @@ header.nav{
   padding: clamp(20px, 3.2vw, 32px);
   position: relative;
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: max-width 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, background 0.3s ease;
+  z-index: 1;
+}
+.auth-box.login-mode{
+  max-width: 820px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 24px 60px -12px rgba(37, 99, 235, 0.14), 0 8px 24px -4px rgba(15, 23, 42, 0.06);
 }
 #dashboardSection .auth-box{
   max-width: 960px;
@@ -249,6 +296,267 @@ header.nav{
   right: 0;
   height: 4px;
   background: linear-gradient(90deg, #2563EB 0%, #06B6D4 50%, #10B981 100%);
+}
+
+/* ===== ইন্টারেক্টিভ স্টুডেন্ট অবতার ও লগইন স্প্লিট লেআউট ===== */
+.login-layout-split{
+  display: grid;
+  grid-template-columns: 310px 1fr;
+  gap: 28px;
+  align-items: center;
+}
+@media(max-width: 767px){
+  .login-layout-split{
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .auth-box.login-mode{
+    max-width: 480px;
+  }
+}
+
+/* অবতার কার্ড (Left Column) */
+.mascot-card{
+  background: linear-gradient(160deg, #F0F7FF 0%, #E0EDFF 100%);
+  border: 1.5px solid rgba(37, 99, 235, 0.16);
+  border-radius: 20px;
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.9), 0 8px 24px rgba(37, 99, 235, 0.08);
+  transition: all 0.3s ease;
+}
+[data-theme="dark"] .mascot-card{
+  background: linear-gradient(160deg, #131E35 0%, #0F172A 100%);
+  border-color: rgba(56, 189, 248, 0.18);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.05), 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+/* অ্যাম্বিয়েন্ট গ্লো */
+.mascot-ambient-glow{
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(circle, rgba(37, 99, 235, 0.25) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(20px);
+  animation: mascotGlowPulse 4s ease-in-out infinite alternate;
+}
+@keyframes mascotGlowPulse{
+  0%{ opacity: 0.5; transform: translateX(-50%) scale(0.9); }
+  100%{ opacity: 0.9; transform: translateX(-50%) scale(1.15); }
+}
+
+/* স্পিচ বাবল */
+.mascot-speech{
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #ffffff;
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  border-radius: 999px;
+  padding: 5px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+  margin-bottom: 12px;
+  max-width: 100%;
+  position: relative;
+  z-index: 2;
+  transition: all 0.25s ease;
+}
+[data-theme="dark"] .mascot-speech{
+  background: #1E293B;
+  border-color: rgba(56, 189, 248, 0.3);
+  color: #F8FAFC;
+}
+.mascot-speech-dot{
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10B981;
+  box-shadow: 0 0 8px #10B981;
+  flex: none;
+  animation: dotBlink 1.8s infinite;
+}
+@keyframes dotBlink{
+  0%, 100%{ opacity: 1; transform: scale(1); }
+  50%{ opacity: 0.4; transform: scale(0.8); }
+}
+
+/* অবতার এসভিজি র‍্যাপার */
+.mascot-avatar-wrap{
+  width: 160px;
+  height: 160px;
+  position: relative;
+  z-index: 2;
+  margin: 0 auto;
+}
+.mascot-svg{
+  width: 100%;
+  height: 100%;
+  display: block;
+  filter: drop-shadow(0 8px 16px rgba(15, 23, 42, 0.08));
+}
+
+/* হাত ও চোখের মুভমেন্ট */
+.mascot-hand{
+  transform-origin: 100px 185px;
+  transition: transform 0.42s cubic-bezier(0.34, 1.4, 0.64, 1), opacity 0.22s ease;
+  will-change: transform, opacity;
+}
+.mascot-hand--left{
+  transform: translateY(68px) scale(0.6);
+  opacity: 0;
+  pointer-events: none;
+}
+.mascot-hand--right{
+  transform: translateY(68px) scale(0.6);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* চোখ বন্ধ অ্যানিমেশন (Password focused) */
+.is-covering .mascot-hand--left{
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+.is-covering .mascot-hand--right{
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+.is-covering #mascotMouth{
+  d: path("M 94 125 Q 100 120 106 125");
+}
+
+/* উঁকি দেওয়ার অ্যানিমেশন (Password peeked) */
+.is-peeking .mascot-hand--left{
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+.is-peeking .mascot-hand--right{
+  transform: translateY(26px) rotate(16deg) scale(0.92);
+  opacity: 1;
+}
+.is-peeking #mascotPupilRight{
+  transform: translate(2px, 0);
+}
+
+/* মোবাইল ইনপুট দেখার চোখ */
+#mascotPupilLeft, #mascotPupilRight{
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
+}
+
+/* জেন্টল ব্রিদিং অ্যানিমেশন */
+#mascotHead{
+  transform-origin: 100px 130px;
+  animation: mascotBreath 4s ease-in-out infinite alternate;
+}
+@keyframes mascotBreath{
+  0%{ transform: translateY(0); }
+  100%{ transform: translateY(-2px); }
+}
+
+/* সাকসেস বা সেলিব্রেশন */
+.is-celebrating #mascotHead{
+  animation: mascotCheer 0.6s ease-in-out infinite alternate;
+}
+@keyframes mascotCheer{
+  0%{ transform: translateY(0) rotate(-2deg); }
+  100%{ transform: translateY(-6px) rotate(2deg); }
+}
+
+/* শেকিং অন এরর */
+.is-error #mascotHead{
+  animation: mascotShake 0.4s ease-in-out;
+}
+@keyframes mascotShake{
+  0%, 100%{ transform: translateX(0); }
+  25%{ transform: translateX(-6px); }
+  75%{ transform: translateX(6px); }
+}
+
+/* ব্যাজ পিল */
+.mascot-badge-pill{
+  margin-top: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--ink-soft);
+  background: rgba(255, 255, 255, 0.7);
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+[data-theme="dark"] .mascot-badge-pill{
+  background: rgba(30, 41, 59, 0.6);
+  border-color: rgba(255, 255, 255, 0.08);
+  color: #94A3B8;
+}
+.mascot-badge-pill svg{
+  color: #10B981;
+}
+
+/* ফর্ম হেডার মিনি */
+.login-header-mini{
+  margin-bottom: 18px;
+}
+.login-title{
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--ink);
+  margin: 0 0 4px;
+  line-height: 1.2;
+}
+.login-subtitle{
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin: 0;
+  line-height: 1.4;
+}
+
+/* ইনপুট ফিল্ডস উইথ আইকন */
+.input-with-icon{
+  position: relative;
+  width: 100%;
+}
+.input-with-icon .input-leading-icon{
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94A3B8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+  z-index: 2;
+}
+.input-with-icon input{
+  padding-left: 44px !important;
+  height: 46px;
+  border-radius: 12px;
+  font-size: 15px;
+}
+.input-with-icon:focus-within .input-leading-icon{
+  color: #2563EB;
+  transform: translateY(-50%) scale(1.08);
+}
+[data-theme="dark"] .input-with-icon:focus-within .input-leading-icon{
+  color: #38BDF8;
 }
 
 /* সেগমেন্টেড ট্যাব সুইচ */
@@ -339,35 +647,68 @@ header.nav{
   box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
 }
 
-/* বাটনস */
+/* বাটনস (Standard 46px Height) */
 .btn{
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 14px 28px;
-  border-radius: 999px;
+  height: 46px;
+  min-height: 46px;
+  padding: 0 24px;
+  border-radius: 12px;
   font-weight: 700;
-  font-size: 16px;
+  font-size: 15.5px;
+  line-height: 1.2;
   border: none;
   transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   width: 100%;
+  position: relative;
+  overflow: hidden;
 }
 .btn-primary{
   background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
   color: #ffffff;
-  box-shadow: 0 8px 22px rgba(37, 99, 235, 0.32);
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.28), 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+.btn-primary::after{
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.24), transparent);
+  transform: skewX(-20deg);
+  transition: 0.6s ease;
+}
+.btn-primary:hover::after{
+  left: 150%;
 }
 .btn-primary:hover{
   transform: translateY(-2px);
-  box-shadow: 0 14px 28px rgba(37, 99, 235, 0.42);
+  box-shadow: 0 10px 24px rgba(37, 99, 235, 0.4);
   background: linear-gradient(135deg, #1D4ED8 0%, #1E40AF 100%);
+}
+.btn-primary:active{
+  transform: scale(0.98);
 }
 .btn-primary:disabled{
   opacity: 0.6;
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
+}
+#loginSubmitBtn::after{
+  content: "→";
+  font-size: 17px;
+  font-weight: 800;
+  margin-left: 6px;
+  display: inline-block;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+#loginSubmitBtn:hover::after{
+  transform: translateX(4px);
 }
 
 .btn-outline{
@@ -454,6 +795,190 @@ header.nav{
 }
 .switch-hint button:hover{
   color: var(--accent-dark);
+}
+.switch-hint button:disabled{
+  color: var(--ink-muted);
+  cursor: not-allowed;
+  text-decoration: none;
+  opacity: .7;
+}
+
+/* পাসওয়ার্ড ভুলে গেছেন লিংক */
+.forgot-pass-link{
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: none;
+  transition: all .2s ease;
+  font-family: 'Baloo Da 2', sans-serif;
+}
+.forgot-pass-link:hover{
+  color: var(--accent-dark);
+  text-decoration: underline;
+}
+
+/* পাসওয়ার্ড শো/হাইড ইনপুট র‍্যাপার */
+.pwd-input-wrap{
+  position: relative;
+  width: 100%;
+}
+.pwd-input-wrap input{
+  width: 100%;
+  padding-right: 44px !important;
+}
+.pwd-toggle-btn{
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color .2s;
+  z-index: 2;
+}
+.pwd-toggle-btn:hover{
+  color: var(--accent);
+}
+
+/* ফরগট পাসওয়ার্ড প্যানেল ও উইজার্ড */
+.forgot-header{
+  margin-bottom: 18px;
+}
+.forgot-back-btn{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  color: #64748b;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 10px;
+  transition: all .2s ease;
+  font-family: 'Baloo Da 2', sans-serif;
+}
+.forgot-back-btn:hover{
+  color: var(--accent);
+  transform: translateX(-2px);
+}
+.forgot-title{
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--ink);
+  margin: 0 0 6px;
+  font-family: 'Baloo Da 2', sans-serif;
+}
+.forgot-subtitle{
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin: 0;
+  line-height: 1.5;
+}
+.forgot-steps-bar{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 16px 0 22px;
+  padding: 10px 14px;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 14px;
+}
+[data-theme="dark"] .forgot-steps-bar{
+  background: #0f172a;
+  border-color: #334155;
+}
+.forgot-step{
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #94A3B8;
+  transition: all .25s ease;
+}
+.forgot-step .step-num{
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #E2E8F0;
+  color: #64748B;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  transition: all .25s ease;
+}
+.forgot-step.active{
+  color: var(--accent);
+}
+.forgot-step.active .step-num{
+  background: var(--accent);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(37,99,235,.35);
+}
+.forgot-step.done{
+  color: #10B981;
+}
+.forgot-step.done .step-num{
+  background: #10B981;
+  color: #ffffff;
+}
+.forgot-step-line{
+  flex: 1;
+  height: 2px;
+  background: #E2E8F0;
+  margin: 0 8px;
+  transition: background .25s ease;
+}
+.forgot-step-line.done{
+  background: #10B981;
+}
+.otp-notice-box{
+  background: #EFF6FF;
+  border: 1px solid #BFDBFE;
+  color: #1E40AF;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-size: 13.5px;
+  font-weight: 600;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 1.4;
+}
+[data-theme="dark"] .otp-notice-box{
+  background: #1e293b;
+  border-color: #3b82f6;
+  color: #93c5fd;
+}
+.otp-input-field{
+  text-align: center !important;
+  font-size: 26px !important;
+  font-weight: 800 !important;
+  letter-spacing: 12px !important;
+  font-family: monospace, sans-serif !important;
+  padding: 10px 14px !important;
+  border-radius: 12px !important;
+  background: #ffffff !important;
+}
+[data-theme="dark"] .otp-input-field{
+  background: #1e293b !important;
+  color: #ffffff !important;
 }
 
 /* ===== ড্যাশবোর্ড প্রোফাইল হেডার (v2) ===== */
@@ -1833,6 +2358,152 @@ header.nav{
   display: block;
 }
 
+/* ============================================================
+   Subject Suggestion Pinned Card & Button
+   ============================================================ */
+.subject-suggestion-card{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 14px;
+  margin-bottom: 8px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #FFFDF5 0%, #FEF9C3 100%);
+  border: 1.5px solid #FCD34D;
+  box-shadow: 0 2px 10px rgba(245, 158, 11, 0.10);
+  transition: all .2s ease;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.subject-suggestion-card::before{
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, #F59E0B 0%, #D97706 100%);
+}
+[data-theme="dark"] .subject-suggestion-card{
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.08) 0%, rgba(180, 83, 9, 0.15) 100%);
+  border-color: rgba(245, 158, 11, 0.35);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+}
+.suggestion-card-left{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+.suggestion-card-badge{
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+  border: 1px solid #F59E0B;
+  color: #92400E;
+  font-size: 11.5px;
+  font-weight: 800;
+  padding: 3px 9px;
+  border-radius: 999px;
+  letter-spacing: 0.3px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+[data-theme="dark"] .suggestion-card-badge{
+  background: rgba(245, 158, 11, 0.2);
+  border-color: rgba(245, 158, 11, 0.45);
+  color: #FCD34D;
+}
+.suggestion-star-icon{
+  font-size: 11px;
+}
+.suggestion-card-subject{
+  font-size: clamp(13.5px, 3.6vw, 15px);
+  font-weight: 800;
+  color: #78350F;
+  font-family: 'Baloo Da 2', sans-serif;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+[data-theme="dark"] .suggestion-card-subject{
+  color: #FDE68A;
+}
+.suggestion-card-right{
+  flex-shrink: 0;
+}
+.suggestion-download-btn{
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+  color: #FFFFFF !important;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 3px 10px rgba(217, 119, 6, 0.28);
+  transition: all .22s ease;
+  white-space: nowrap;
+  font-family: 'Baloo Da 2', sans-serif;
+  cursor: pointer;
+}
+.suggestion-download-btn:hover{
+  background: linear-gradient(135deg, #D97706 0%, #B45309 100%);
+  transform: translateY(-1.5px);
+  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.38);
+}
+.suggestion-download-btn:active{
+  transform: translateY(0);
+}
+.suggestion-download-btn.is-locked{
+  background: #E2E8F0;
+  border-color: #CBD5E1;
+  color: #64748B !important;
+  box-shadow: none;
+  cursor: not-allowed;
+  transform: none;
+}
+[data-theme="dark"] .suggestion-download-btn.is-locked{
+  background: #1E293B;
+  border-color: #334155;
+  color: #94A3B8 !important;
+}
+@media (max-width: 520px){
+  .subject-suggestion-card{
+    padding: 7px 10px;
+    gap: 8px;
+  }
+  .suggestion-card-left{
+    gap: 6px;
+  }
+  .suggestion-card-badge{
+    font-size: 10.5px;
+    padding: 2px 7px;
+  }
+  .suggestion-card-subject{
+    font-size: 12.5px;
+  }
+  .suggestion-download-btn{
+    padding: 6px 10px;
+    font-size: 12px;
+    gap: 4px;
+    border-radius: 8px;
+  }
+  .suggestion-download-btn svg{
+    width: 14px;
+    height: 14px;
+  }
+}
+
 .class-play{
   flex: none;
   width: clamp(34px, 8.4vw, 42px);
@@ -2546,12 +3217,25 @@ html.theme-transition *::after{
   border:1px solid rgba(96,165,250,0.25);
 }
 
+[data-theme="dark"] .ambient-orb-1{
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.16) 0%, transparent 70%);
+}
+[data-theme="dark"] .ambient-orb-2{
+  background: radial-gradient(circle, rgba(129, 140, 248, 0.14) 0%, transparent 70%);
+}
 [data-theme="dark"] .auth-box,
 [data-theme="dark"] .auth-card{
   background:#111827;
   border-color:rgba(255,255,255,0.08);
   box-shadow:0 12px 36px rgba(0,0,0,0.45);
 }
+[data-theme="dark"] .auth-box.login-mode{
+  background: rgba(17, 24, 39, 0.94);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.65), 0 0 20px rgba(37, 99, 235, 0.15);
+}
+[data-theme="dark"] .login-title{ color: #F8FAFC; }
+[data-theme="dark"] .login-subtitle{ color: #94A3B8; }
 [data-theme="dark"] .auth-tab{
   color:#94A3B8;
   background:transparent;
@@ -2889,8 +3573,10 @@ html.theme-transition *::after{
 </div>
 
 
-<div id="iabBanner" style="display:none;background:linear-gradient(135deg,#FEF3C7,#FDE68A);color:#92400E;padding:11px 16px;text-align:center;font-size:13.5px;font-weight:600;border-bottom:1.5px solid #F59E0B;line-height:1.5;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
-  ⚠️ আপনি Facebook অ্যাপের ভেতরে আছেন! ক্লাস দেখা ও PDF ডাউনলোডের সুবিধার্থে উপরে ডানপাশে ৩-ডট (⋮) চেপে <b>'Open in Chrome / ব্রাউজারে ওপেন করুন'</b> বেছে নিন।
+<div id="iabBanner" style="display:none;background:linear-gradient(135deg,#FEF3C7,#FDE68A);color:#92400E;padding:12px 16px;text-align:center;font-size:13.5px;font-weight:600;border-bottom:1.5px solid #F59E0B;line-height:1.6;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+  ⚠️ আপনি Facebook অ্যাপের ভেতরে আছেন!<br>
+  ক্লাস দেখা ও PDF ডাউনলোডের সুবিধার্থে Chrome-এ ওপেন করুন অথবা উপরে ৩-ডট (⋮) চেপে 'Open in browser' বেছে নিন:<br>
+  <a id="iabChromeBtn" href="intent://visionplusbd.com/student-login.html#Intent;scheme=https;package=com.android.chrome;end" style="display:inline-block;margin-top:6px;padding:6px 16px;background:#2563EB;color:#fff;text-decoration:none;border-radius:6px;font-weight:700;font-size:13px;box-shadow:0 2px 6px rgba(37,99,235,0.3);">🌐 Google Chrome-এ ওপেন করুন</a>
 </div>
 <script>
 (function(){
@@ -2944,8 +3630,10 @@ html.theme-transition *::after{
   </section>
 
   <section class="auth-wrap">
+    <div class="ambient-orb ambient-orb-1" aria-hidden="true"></div>
+    <div class="ambient-orb ambient-orb-2" aria-hidden="true"></div>
     <div class="container">
-      <div class="auth-box">
+      <div class="auth-box login-mode">
 
         <div class="tab-switch" id="tabSwitch">
           <button type="button" class="tab-btn" id="tabLoginBtn">লগইন</button>
@@ -3039,19 +3727,246 @@ html.theme-transition *::after{
         </div>
 
         <div class="panel" id="loginPanel">
-          <form id="loginForm">
-            <div class="form-row full">
-              <label for="login_mobile">মোবাইল নম্বর <span class="req">*</span></label>
-              <input type="tel" id="login_mobile" name="mobile" placeholder="01XXXXXXXXX" required>
+          <div class="login-layout-split">
+            <!-- Left Side: Interactive Animated Student Avatar Mascot -->
+            <div class="mascot-card" id="loginMascotCard">
+              <div class="mascot-ambient-glow" aria-hidden="true"></div>
+
+              <div class="mascot-speech" id="mascotSpeech" aria-live="polite">
+                <span class="mascot-speech-dot"></span>
+                <span id="mascotSpeechText">স্বাগতম! আপনার অ্যাকাউন্টে প্রবেশ করুন 👋</span>
+              </div>
+
+              <div class="mascot-avatar-wrap">
+                <svg class="mascot-svg" id="studentMascotSvg" viewBox="0 0 200 200" aria-label="ইন্টারেক্টিভ স্টুডেন্ট অবতার">
+                  <defs>
+                    <radialGradient id="mascotBgGrad" cx="50%" cy="40%" r="60%">
+                      <stop offset="0%" stop-color="#EFF6FF"/>
+                      <stop offset="100%" stop-color="#DBEAFE"/>
+                    </radialGradient>
+                    <linearGradient id="mascotSkin" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#FDDFC7"/>
+                      <stop offset="100%" stop-color="#F8C8A0"/>
+                    </linearGradient>
+                    <linearGradient id="mascotJacket" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stop-color="#1E3A8A"/>
+                      <stop offset="100%" stop-color="#2563EB"/>
+                    </linearGradient>
+                  </defs>
+
+                  <!-- Backdrop circle -->
+                  <circle cx="100" cy="100" r="82" fill="url(#mascotBgGrad)" stroke="rgba(37,99,235,0.14)" stroke-width="2"/>
+
+                  <!-- Body & Jacket -->
+                  <g id="mascotBody">
+                    <path d="M 45 190 C 50 160, 75 150, 100 150 C 125 150, 150 160, 155 190 L 160 200 L 40 200 Z" fill="url(#mascotJacket)"/>
+                    <path d="M 86 151 L 100 170 L 114 151 Z" fill="#FFFFFF"/>
+                    <path d="M 97 165 L 103 165 L 100 188 Z" fill="#2563EB"/>
+                  </g>
+
+                  <!-- Head, Hair, Face -->
+                  <g id="mascotHead">
+                    <!-- Ears -->
+                    <circle cx="56" cy="105" r="9" fill="#F8C8A0"/>
+                    <circle cx="56" cy="105" r="5" fill="#EFA97A"/>
+                    <circle cx="144" cy="105" r="9" fill="#F8C8A0"/>
+                    <circle cx="144" cy="105" r="5" fill="#EFA97A"/>
+
+                    <!-- Face Base -->
+                    <ellipse cx="100" cy="105" rx="42" ry="46" fill="url(#mascotSkin)"/>
+
+                    <!-- Hair -->
+                    <path d="M 58 96 C 54 62, 72 46, 100 46 C 128 46, 146 62, 142 96 C 136 82, 126 76, 115 78 C 102 80, 94 72, 82 75 C 70 78, 63 86, 58 96 Z" fill="#1E293B"/>
+
+                    <!-- Eyebrows -->
+                    <path id="mascotBrowL" d="M 72 84 Q 82 80 90 84" stroke="#1E293B" stroke-width="3" stroke-linecap="round" fill="none"/>
+                    <path id="mascotBrowR" d="M 110 84 Q 118 80 128 84" stroke="#1E293B" stroke-width="3" stroke-linecap="round" fill="none"/>
+
+                    <!-- Blush -->
+                    <ellipse cx="70" cy="118" rx="6" ry="4" fill="#FB7185" opacity="0.35"/>
+                    <ellipse cx="130" cy="118" rx="6" ry="4" fill="#FB7185" opacity="0.35"/>
+
+                    <!-- Eye Whites -->
+                    <ellipse id="mascotEyeWhiteL" cx="82" cy="102" rx="11" ry="12" fill="#FFFFFF"/>
+                    <ellipse id="mascotEyeWhiteR" cx="118" cy="102" rx="11" ry="12" fill="#FFFFFF"/>
+
+                    <!-- Pupils (Tracking & Responsive) -->
+                    <g id="mascotPupilsGroup">
+                      <g id="mascotPupilLeft">
+                        <circle cx="82" cy="102" r="5.5" fill="#0F172A"/>
+                        <circle cx="80.5" cy="100" r="2" fill="#FFFFFF"/>
+                      </g>
+                      <g id="mascotPupilRight">
+                        <circle cx="118" cy="102" r="5.5" fill="#0F172A"/>
+                        <circle cx="116.5" cy="100" r="2" fill="#FFFFFF"/>
+                      </g>
+                    </g>
+
+                    <!-- Happy Eyes (Celebration State) -->
+                    <path id="mascotHappyEyeL" d="M 72 104 Q 82 94 92 104" stroke="#0F172A" stroke-width="3" stroke-linecap="round" fill="none" style="display:none;"/>
+                    <path id="mascotHappyEyeR" d="M 108 104 Q 118 94 128 104" stroke="#0F172A" stroke-width="3" stroke-linecap="round" fill="none" style="display:none;"/>
+
+                    <!-- Glasses -->
+                    <g id="mascotGlasses">
+                      <circle cx="82" cy="102" r="14" fill="rgba(37,99,235,0.05)" stroke="#2563EB" stroke-width="2.5"/>
+                      <circle cx="118" cy="102" r="14" fill="rgba(37,99,235,0.05)" stroke="#2563EB" stroke-width="2.5"/>
+                      <line x1="96" y1="102" x2="104" y2="102" stroke="#2563EB" stroke-width="2.5"/>
+                      <line x1="56" y1="102" x2="68" y2="102" stroke="#2563EB" stroke-width="2"/>
+                      <line x1="132" y1="102" x2="144" y2="102" stroke="#2563EB" stroke-width="2"/>
+                      <path d="M 74 94 L 81 90" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" opacity="0.6"/>
+                      <path d="M 110 94 L 117 90" stroke="#FFFFFF" stroke-width="1.8" stroke-linecap="round" opacity="0.6"/>
+                    </g>
+
+                    <!-- Nose -->
+                    <path d="M 98 112 Q 100 115 102 112" stroke="#D97745" stroke-width="2" stroke-linecap="round" fill="none"/>
+
+                    <!-- Mouth -->
+                    <path id="mascotMouth" d="M 93 126 Q 100 133 107 126" stroke="#1E293B" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                  </g>
+
+                  <!-- Animated Hands for Eye Covering ("চোখ বন্ধ অ্যানিমেশন") -->
+                  <g id="mascotHandL" class="mascot-hand mascot-hand--left">
+                    <path d="M 64 122 C 60 102, 66 90, 80 86 C 86 84, 92 88, 96 95 C 98 100, 96 107, 95 114 C 93 123, 83 133, 73 134 Z" fill="#F8C8A0" stroke="#EFA97A" stroke-width="1.5"/>
+                    <path d="M 74 92 C 77 98, 78 104, 78 110" stroke="#EFA97A" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                    <path d="M 83 93 C 85 99, 86 105, 86 111" stroke="#EFA97A" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                    <path d="M 90 98 C 91 103, 91 108, 90 113" stroke="#EFA97A" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                  </g>
+
+                  <g id="mascotHandR" class="mascot-hand mascot-hand--right">
+                    <path d="M 136 122 C 140 102, 134 90, 120 86 C 114 84, 108 88, 104 95 C 102 100, 104 107, 105 114 C 107 123, 117 133, 127 134 Z" fill="#F8C8A0" stroke="#EFA97A" stroke-width="1.5"/>
+                    <path d="M 126 92 C 123 98, 122 104, 122 110" stroke="#EFA97A" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                    <path d="M 117 93 C 115 99, 114 105, 114 111" stroke="#EFA97A" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                    <path d="M 110 98 C 109 103, 109 108, 110 113" stroke="#EFA97A" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+                  </g>
+                </svg>
+              </div>
+
+              <div class="mascot-badge-pill">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+                <span>নিরাপদ ও এনক্রিপ্টেড পোর্টাল</span>
+              </div>
             </div>
-            <div class="form-row full">
-              <label for="login_password">পাসওয়ার্ড <span class="req">*</span></label>
-              <input type="password" id="login_password" name="password" placeholder="আপনার পাসওয়ার্ড" required>
+
+            <!-- Right Side: Login Form -->
+            <div class="login-form-side">
+              <div class="login-header-mini">
+                <h2 class="login-title">স্টুডেন্ট লগইন</h2>
+                <p class="login-subtitle">আপনার নিবন্ধিত মোবাইল নম্বর ও পাসওয়ার্ড দিন</p>
+              </div>
+
+              <form id="loginForm">
+                <div class="form-row full">
+                  <label for="login_mobile">মোবাইল নম্বর <span class="req">*</span></label>
+                  <div class="input-with-icon">
+                    <span class="input-leading-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                      </svg>
+                    </span>
+                    <input type="tel" id="login_mobile" name="mobile" placeholder="01XXXXXXXXX" required autocomplete="username">
+                  </div>
+                </div>
+
+                <div class="form-row full">
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                    <label for="login_password" style="margin-bottom:0;">পাসওয়ার্ড <span class="req">*</span></label>
+                    <button type="button" class="forgot-pass-link" id="goForgotLink">পাসওয়ার্ড ভুলে গেছেন?</button>
+                  </div>
+                  <div class="pwd-input-wrap input-with-icon">
+                    <span class="input-leading-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                      </svg>
+                    </span>
+                    <input type="password" id="login_password" name="password" placeholder="আপনার পাসওয়ার্ড দিন" required autocomplete="current-password">
+                    <button type="button" class="pwd-toggle-btn" onclick="togglePasswordVisibility('login_password', this)" title="Show/Hide Password" aria-label="Toggle password visibility">
+                      <svg class="eye-open" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      <svg class="eye-closed" style="display:none;" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                    </button>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="loginSubmitBtn">লগইন করুন</button>
+                <p class="form-status" id="loginStatus"></p>
+              </form>
+
+              <p class="switch-hint">অ্যাকাউন্ট নেই? <button type="button" id="goRegisterLink">রেজিস্ট্রেশন করুন</button></p>
             </div>
-            <button type="submit" class="btn btn-primary" id="loginSubmitBtn">লগইন করুন</button>
-            <p class="form-status" id="loginStatus"></p>
+          </div>
+        </div>
+
+        <div class="panel" id="forgotPanel">
+          <div class="forgot-header">
+            <button type="button" class="forgot-back-btn" id="forgotBackBtn">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+              <span>লগইনে ফিরে যান</span>
+            </button>
+            <h3 class="forgot-title">পাসওয়ার্ড রিসেট</h3>
+            <p class="forgot-subtitle" id="forgotSubTitle">আপনার নিবন্ধিত মোবাইল নম্বর দিন। আমরা ভেরিফিকেশনের জন্য একটি OTP পাঠাবো।</p>
+          </div>
+
+          <!-- Step Indicator -->
+          <div class="forgot-steps-bar">
+            <div class="forgot-step active" id="fStepIndicator1"><span class="step-num">১</span><span class="step-txt">মোবাইল</span></div>
+            <div class="forgot-step-line" id="fStepLine1"></div>
+            <div class="forgot-step" id="fStepIndicator2"><span class="step-num">২</span><span class="step-txt">OTP যাচাই</span></div>
+            <div class="forgot-step-line" id="fStepLine2"></div>
+            <div class="forgot-step" id="fStepIndicator3"><span class="step-num">৩</span><span class="step-txt">নতুন পাসওয়ার্ড</span></div>
+          </div>
+
+          <!-- Step 1: Enter Mobile -->
+          <form id="forgotStep1Form">
+            <div class="form-row full">
+              <label for="forgot_mobile">মোবাইল নম্বর <span class="req">*</span></label>
+              <input type="tel" id="forgot_mobile" placeholder="01XXXXXXXXX" required autocomplete="tel">
+            </div>
+            <button type="submit" class="btn btn-primary" id="forgotStep1Btn">OTP পাঠান</button>
           </form>
-          <p class="switch-hint">অ্যাকাউন্ট নেই? <button type="button" id="goRegisterLink">রেজিস্ট্রেশন করুন</button></p>
+
+          <!-- Step 2: Verify OTP -->
+          <form id="forgotStep2Form" style="display:none;">
+            <div class="form-row full">
+              <div class="otp-notice-box">
+                <span class="otp-notice-icon">📱</span>
+                <div><strong id="forgotOtpTargetMobile">01XXXXXXXXX</strong> নম্বরে পাঠানো ৬ সংখ্যার OTP কোডটি লিখুন:</div>
+              </div>
+              <input type="text" id="forgot_otp" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="one-time-code" placeholder="------" class="otp-input-field" required>
+            </div>
+            <button type="submit" class="btn btn-primary" id="forgotStep2Btn">OTP যাচাই করুন</button>
+            <p class="switch-hint" style="margin-top:14px;">
+              OTP পাননি? <button type="button" class="otp-resend-btn" id="forgotResendBtn" disabled>পুনরায় পাঠান (৬০)</button>
+            </p>
+          </form>
+
+          <!-- Step 3: Set New Password -->
+          <form id="forgotStep3Form" style="display:none;">
+            <div class="form-row full">
+              <label for="forgot_new_password">নতুন পাসওয়ার্ড <span class="req">*</span></label>
+              <div class="pwd-input-wrap">
+                <input type="password" id="forgot_new_password" placeholder="কমপক্ষে ৪ অক্ষরের নতুন পাসওয়ার্ড" required autocomplete="new-password">
+                <button type="button" class="pwd-toggle-btn" onclick="togglePasswordVisibility('forgot_new_password', this)" title="Show/Hide Password" aria-label="Toggle password visibility">
+                  <svg class="eye-open" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg class="eye-closed" style="display:none;" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                </button>
+              </div>
+            </div>
+            <div class="form-row full">
+              <label for="forgot_confirm_password">নতুন পাসওয়ার্ড নিশ্চিত করুন <span class="req">*</span></label>
+              <div class="pwd-input-wrap">
+                <input type="password" id="forgot_confirm_password" placeholder="পাসওয়ার্ডটি পুনরায় লিখুন" required autocomplete="new-password">
+                <button type="button" class="pwd-toggle-btn" onclick="togglePasswordVisibility('forgot_confirm_password', this)" title="Show/Hide Password" aria-label="Toggle password visibility">
+                  <svg class="eye-open" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg class="eye-closed" style="display:none;" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                </button>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" id="forgotStep3Btn">পাসওয়ার্ড সংরক্ষণ করুন</button>
+          </form>
+
+          <p class="form-status" id="forgotStatus"></p>
         </div>
 
       </div>
@@ -3427,25 +4342,47 @@ html.theme-transition *::after{
   // Guaranteed identical across Chrome, Edge, Firefox, FB In-App Browser, Samsung Internet on the same physical device
   async function getFingerprint(){
     try {
+      const cached = localStorage.getItem(LS_FP_KEY);
+      if(cached && typeof cached === 'string' && cached.length >= 32){
+        return cached;
+      }
+
       const parts = [];
 
-      // 1. Hardware Device Model & OS Architecture (from User-Agent system descriptor)
-      // Example on Android: "linux; android 14; sm-a525f" — identical across Chrome, Edge, FB In-App Browser
-      // Example on Windows PC: "windows nt 10.0; win64; x64" — identical across Chrome, Edge, Firefox
-      // Example on iPhone: "iphone; cpu iphone os 17_5 like mac os x"
+      // 1. Hardware Device Model & OS (Client Hints with UA fallback for Chrome UA-reduction)
+      let deviceModel = '';
+      if (navigator.userAgentData && navigator.userAgentData.getHighEntropyValues) {
+        try {
+          const hints = await navigator.userAgentData.getHighEntropyValues(['model']);
+          if (hints && hints.model) {
+            deviceModel = String(hints.model).trim().toLowerCase();
+          }
+        } catch(e){}
+      }
+
       const ua = String(navigator.userAgent || '');
       const uaMatch = ua.match(/\(([^)]+)\)/);
-      let deviceOs = '';
-      if (uaMatch && uaMatch[1]) {
-        deviceOs = uaMatch[1]
-          .replace(/;\s*wv/gi, '')
-          .replace(/;\s*Build\/[^\s;)]+/gi, '')
-          .replace(/\s*Build\/[^\s;)]+/gi, '')
-          .replace(/\s+/g, ' ')
-          .trim()
-          .toLowerCase();
+      let rawParenthetical = uaMatch ? uaMatch[1] : '';
+
+      if (!deviceModel && rawParenthetical) {
+        // In WebViews / browsers with unreduced UA, extract model token (e.g. SM-A525F from "Linux; Android 14; SM-A525F; wv")
+        const tokens = rawParenthetical.split(';').map(t => t.trim().toLowerCase());
+        for (const t of tokens) {
+          if (!t.startsWith('linux') && !t.startsWith('android') && !t.startsWith('build') && t !== 'wv' && t !== 'k' && t !== 'mobile') {
+            deviceModel = t;
+            break;
+          }
+        }
       }
-      parts.push(deviceOs || String(navigator.platform || '').trim().toLowerCase());
+
+      let os = 'other';
+      if (/Windows/i.test(ua)) os = 'windows';
+      else if (/Android/i.test(ua)) os = 'android';
+      else if (/iPhone|iPad|iPod/i.test(ua)) os = 'ios';
+      else if (/Macintosh|Mac OS/i.test(ua)) os = 'mac';
+      else if (/Linux/i.test(ua)) os = 'linux';
+
+      parts.push(os + ' ' + (deviceModel || 'device'));
 
       // 2. Hardware Platform
       parts.push(String(navigator.platform || '').trim().toLowerCase());
@@ -3505,17 +4442,21 @@ html.theme-transition *::after{
       const data = encoder.encode(raw);
       const hashBuffer = await crypto.subtle.digest('SHA-256', data);
       const hashArray = Array.from(new Uint8Array(hashBuffer));
-      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      const hash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      if(hash){
+        try{ localStorage.setItem(LS_FP_KEY, hash); }catch(e){}
+      }
+      return hash;
     } catch(err) {
-      return '';
+      const fallback = localStorage.getItem(LS_FP_KEY);
+      return fallback || '';
     }
   }
   const classDataCache = new Map();
   let courseDataRowsPromise = null;
   let activeSubjectRows = [];
   const enrollQuery = new URLSearchParams(window.location.search);
-  // সব matching-এই এখন loose normalize ব্যবহার হয় — case, extra space, এবং যেকোনো
-  // punctuation (dot, comma, hyphen ইত্যাদি) বাদ দিয়ে শুধু মূল শব্দ দিয়ে তুলনা করে।
+  // Normalize text helper
   const normalizeLoose = v => String(v ?? '').trim().toLowerCase().replace(/[^a-z0-9\u0980-\u09ff]+/g, ' ').replace(/\s+/g, ' ').trim();
   const normalizeForMatch = normalizeLoose;
   const clean = value => String(value ?? '').trim();
@@ -3608,13 +4549,11 @@ html.theme-transition *::after{
   }
 
   function findSubjectWiseClassRows(allRows, parsed){
-    // subjectwise_course_name-এ level থাকে শুধু "BBA" (plain), sector আলাদা কলামে (nu_dcu)।
-    // কিন্তু course_data_bba_nu/course_data_bba_dcu টেবিলের row-এর level আসে "BBA NU"/"BBA DCU" হিসেবে।
-    // তাই মেলানোর আগে level + sector জোড়া লাগিয়ে সঠিক টেবিলের row বেছে নেওয়া হচ্ছে।
+    // Match subject-wise level and sector
     const effectiveLevel = parsed.nuDcu ? `${parsed.level} ${parsed.nuDcu}` : parsed.level;
     return allRows.filter(r=>{
       if(!r.subject) return false;
-      if(!r.locked && !r.url && !r.pdfUrl && !r.className) return false;
+      if(!r.locked && !r.url && !r.pdfUrl && !r.className && !r.suggestionUrl) return false;
       if (effectiveLevel) {
         const rL = normalizeLoose(r.level || '');
         const effL = normalizeLoose(effectiveLevel);
@@ -3631,10 +4570,14 @@ html.theme-transition *::after{
   }
 
   const authPageHead = document.getElementById('authPageHead');
+  const tabSwitch = document.getElementById('tabSwitch');
   const tabRegisterBtn = document.getElementById('tabRegisterBtn');
   const tabLoginBtn = document.getElementById('tabLoginBtn');
   const registerPanel = document.getElementById('registerPanel');
   const loginPanel = document.getElementById('loginPanel');
+  const forgotPanel = document.getElementById('forgotPanel');
+  const goForgotLink = document.getElementById('goForgotLink');
+  const forgotBackBtn = document.getElementById('forgotBackBtn');
   const dashboardSection = document.getElementById('dashboardSection');
   const authWrapSection = registerPanel.closest('.auth-wrap');
 
@@ -3695,22 +4638,42 @@ html.theme-transition *::after{
   hideLoading();
 
   function showRegister(){
+    if(tabSwitch) tabSwitch.style.display = '';
+    if(forgotPanel) forgotPanel.classList.remove('active');
     registerPanel.classList.add('active');
     loginPanel.classList.remove('active');
     tabRegisterBtn.classList.add('active');
     tabLoginBtn.classList.remove('active');
+    const ab = registerPanel.closest('.auth-box');
+    if(ab) ab.classList.remove('login-mode');
   }
   function showLogin(){
+    if(tabSwitch) tabSwitch.style.display = '';
+    if(forgotPanel) forgotPanel.classList.remove('active');
     loginPanel.classList.add('active');
     registerPanel.classList.remove('active');
     tabLoginBtn.classList.add('active');
     tabRegisterBtn.classList.remove('active');
+    const ab = loginPanel.closest('.auth-box');
+    if(ab) ab.classList.add('login-mode');
+    window.scrollTo(0, 0);
+  }
+  function showForgot(){
+    if(tabSwitch) tabSwitch.style.display = 'none';
+    if(loginPanel) loginPanel.classList.remove('active');
+    if(registerPanel) registerPanel.classList.remove('active');
+    if(forgotPanel) forgotPanel.classList.add('active');
+    const ab = forgotPanel.closest('.auth-box');
+    if(ab) ab.classList.remove('login-mode');
+    if(typeof resetForgotFlow === 'function') resetForgotFlow();
     window.scrollTo(0, 0);
   }
   tabRegisterBtn.addEventListener('click', showRegister);
   tabLoginBtn.addEventListener('click', showLogin);
   goLoginLink.addEventListener('click', showLogin);
   goRegisterLink.addEventListener('click', showRegister);
+  if(goForgotLink) goForgotLink.addEventListener('click', showForgot);
+  if(forgotBackBtn) forgotBackBtn.addEventListener('click', showLogin);
 
   function parseDateValue(value){
     if(value instanceof Date) return Number.isNaN(value.getTime()) ? null : value;
@@ -3879,7 +4842,7 @@ html.theme-transition *::after{
       const m = value.match(re);
       if(m) return m[1];
     }
-    // যদি সরাসরি 11-অক্ষরের YouTube ID দেওয়া হয়, সেটাও গ্রহণ করবে
+    // Direct 11-char ID support
     return /^[A-Za-z0-9_-]{11}$/.test(value) ? value : '';
   }
 
@@ -3899,9 +4862,8 @@ html.theme-transition *::after{
   let dashboardWatchDisplayTimer = null;
   let dashboardData = null;
 
-  // ভিডিও চলাকালীন কোনো server sync নেই। শুধু LocalStorage-এ জমা হয়।
-  // Dashboard লোডে syncPendingWatchTime() → D1 sync হয় (মাত্র ১টি Write)।
-  const LOCAL_PERSIST_INTERVAL_SEC = 300; // localStorage-এ save হয় প্রতি ৫ মিনিটে (ব্রাউজার ক্র্যাশ প্রোটেকশন)
+  // Watch time persist interval (5 mins)
+  const LOCAL_PERSIST_INTERVAL_SEC = 300;
   const LS_WATCH_PENDING_KEY = 'va_watch_pending_v1';
 
   function normalizeWatchCourse(value){
@@ -4038,6 +5000,7 @@ html.theme-transition *::after{
         try{
           const result = await callApi({
             action:'track_watch',
+            mobile: mobile,
             course: courseName,
             nuDcu: sector,
             seconds: snapshotSeconds
@@ -4067,18 +5030,15 @@ html.theme-transition *::after{
   function startWatchTracking(){
     stopWatchTracking();
 
-    // প্রতি সেকেন্ডে শুধু কাউন্টার বাড়ে — কোনো API call নেই।
-    // D1 sync শুধুমাত্র Dashboard লোডে syncPendingWatchTime()-এর মাধ্যমে হয়।
+    // Track watch time per second
     watchTrackTimer = setInterval(()=>{
       watchPendingSeconds += 1;
 
-      // প্রতি ৫ মিনিটে localStorage-এ সেভ হয় (ব্রাউজার ক্র্যাশ হলেও ডেটা থাকবে)।
+      // Persist periodically
       if(watchPendingSeconds % LOCAL_PERSIST_INTERVAL_SEC === 0){
         persistCurrentWatchPending();
       }
     }, 1000);
-
-    // অতিরিক্ত persist timer আর দরকার নেই — উপরের interval-ই যথেষ্ট।
   }
 
   function stopWatchTracking(){
@@ -4092,8 +5052,7 @@ html.theme-transition *::after{
     }
   }
 
-  // flushWatchTime → এখন শুধু LocalStorage-এ সেভ করে।
-  // Server sync সম্পূর্ণ বন্ধ। Dashboard লোডে syncPendingWatchTime() D1-তে পাঠাবে।
+  // Save watch time to local storage
   function flushWatchTime(){
     persistCurrentWatchPending();
   }
@@ -4409,10 +5368,18 @@ html.theme-transition *::after{
       const swParsed = parseSubjectWiseCourseId(courseName);
       const matchedRows = swParsed ? findSubjectWiseClassRows(allRows, swParsed) : allRows.filter(r => {
         if(!r.subject) return false;
-        if(!r.locked && !r.url && !r.pdfUrl && !r.className) return false;
+        if(!r.locked && !r.url && !r.pdfUrl && !r.className && !r.suggestionUrl) return false;
         return true;
       });
-      const rows = matchedRows.map(r=>({subject:r.subject,chapter:r.chapter,className:r.className,url:r.url,pdfUrl:r.pdfUrl,locked:!!r.locked}));
+      const rows = matchedRows.map(r=>({
+        subject: r.subject,
+        chapter: r.chapter,
+        className: r.className,
+        url: r.url,
+        pdfUrl: r.pdfUrl,
+        suggestionUrl: r.suggestionUrl || '',
+        locked: !!r.locked
+      }));
       result = rows.length ? {status:'ok',data:rows} : notFound;
     }catch(error){
       console.error('Class data fetch failed:', error);
@@ -4426,20 +5393,65 @@ html.theme-transition *::after{
 
 
   function renderClassItems(rows){
-    classList.innerHTML = rows.length
-      ? rows.map((item,index)=>{
-          const locked = !!item.locked;
-          const playIcon = locked
-            ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>'
-            : '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
-          const pdfHtml = locked
-            ? '<span class="class-pdf-btn is-locked" title="আগে ক্লাসটি unlock করুন"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>'
-            : (item.pdfUrl ? `<a class="class-pdf-btn" href="${escapeHtml(driveDirectLink(item.pdfUrl))}" target="_blank" rel="noopener" title="PDF নোট ডাউনলোড করুন" onclick="event.stopPropagation()"><span class="class-pdf-badge">PDF</span><span class="class-pdf-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v9m0 0l-3.5-3.5M10 12l3.5-3.5"/><path d="M4 14.5v1a1.5 1.5 0 001.5 1.5h9a1.5 1.5 0 001.5-1.5v-1"/></svg></span></a>` : '');
-          const mainTitle = item.chapter || item.className || `Class ${index+1}`;
-          const subTitle = item.chapter ? (item.className || '') : '';
-          return `<div class="class-item-row"><button type="button" class="class-item${locked?' is-locked':''}" data-video="${locked?'':escapeHtml(item.url)}" data-locked="${locked?'1':'0'}"><span class="class-play">${playIcon}</span><span class="class-meta"><span class="class-title">${escapeHtml(mainTitle)}</span>${subTitle ? `<span class="class-chapter">${escapeHtml(subTitle)}</span>` : ''}</span></button>${pdfHtml}</div>`;
-        }).join('')
-      : '<div class="learning-empty">কোনো ক্লাস খুঁজে পাওয়া যায়নি।</div>';
+    // Detect if active subject has a suggestion URL
+    let suggestionHtml = '';
+    const activeSuggestionItem = (activeSubjectRows || []).find(r => r.suggestionUrl && r.suggestionUrl.trim());
+    if(activeSuggestionItem && activeSuggestionItem.suggestionUrl){
+      const sUrl = activeSuggestionItem.suggestionUrl.trim();
+      const sSubject = activeSuggestionItem.subject || (subjectSelect && subjectSelect.value) || currentWatchCourse || 'বিষয়';
+      const isSubjectLocked = (activeSubjectRows || []).length > 0 && (activeSubjectRows || []).every(r => r.locked);
+
+      const sBtnHtml = isSubjectLocked
+        ? `<span class="suggestion-download-btn is-locked" title="সাজেশন unlock করতে কোর্সটি unlock করুন">
+             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+               <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+             </svg>
+             <span>সাজেশন লক</span>
+           </span>`
+        : `<a class="suggestion-download-btn" href="${escapeHtml(driveDirectLink(sUrl))}" target="_blank" rel="noopener" title="সাজেশন PDF ডাউনলোড করুন" onclick="event.stopPropagation()">
+             <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+               <path d="M10 3v9m0 0l-3.5-3.5M10 12l3.5-3.5"/><path d="M4 14.5v1a1.5 1.5 0 001.5 1.5h9a1.5 1.5 0 001.5-1.5v-1"/>
+             </svg>
+             <span>সাজেশন PDF</span>
+           </a>`;
+
+      suggestionHtml = `
+        <div class="subject-suggestion-card">
+          <div class="suggestion-card-left">
+            <div class="suggestion-card-badge">
+              <span class="suggestion-star-icon">⭐</span>
+              <span>সুপার শর্ট সাজেশন</span>
+            </div>
+            <span class="suggestion-card-subject">${escapeHtml(sSubject)}</span>
+          </div>
+          <div class="suggestion-card-right">
+            ${sBtnHtml}
+          </div>
+        </div>
+      `;
+    }
+
+    const classRows = rows.filter(r => r.url || r.className || r.pdfUrl);
+
+    if(classRows.length > 0){
+      classList.innerHTML = suggestionHtml + classRows.map((item,index)=>{
+        const locked = !!item.locked;
+        const playIcon = locked
+          ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>'
+          : '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+        const pdfHtml = locked
+          ? '<span class="class-pdf-btn is-locked" title="আগে ক্লাসটি unlock করুন"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>'
+          : (item.pdfUrl ? `<a class="class-pdf-btn" href="${escapeHtml(driveDirectLink(item.pdfUrl))}" target="_blank" rel="noopener" title="PDF নোট ডাউনলোড করুন" onclick="event.stopPropagation()"><span class="class-pdf-badge">PDF</span><span class="class-pdf-icon"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v9m0 0l-3.5-3.5M10 12l3.5-3.5"/><path d="M4 14.5v1a1.5 1.5 0 001.5 1.5h9a1.5 1.5 0 001.5-1.5v-1"/></svg></span></a>` : '');
+        const mainTitle = item.chapter || item.className || `Class ${index+1}`;
+        const subTitle = item.chapter ? (item.className || '') : '';
+        return `<div class="class-item-row"><button type="button" class="class-item${locked?' is-locked':''}" data-video="${locked?'':escapeHtml(item.url)}" data-locked="${locked?'1':'0'}"><span class="class-play">${playIcon}</span><span class="class-meta"><span class="class-title">${escapeHtml(mainTitle)}</span>${subTitle ? `<span class="class-chapter">${escapeHtml(subTitle)}</span>` : ''}</span></button>${pdfHtml}</div>`;
+      }).join('');
+    } else if(suggestionHtml){
+      classList.innerHTML = suggestionHtml + '<div class="learning-empty" style="padding:28px 16px;">এই বিষয়ের কোনো ক্লাস ভিডিও এখনো আপলোড করা হয়নি।</div>';
+    } else {
+      classList.innerHTML = '<div class="learning-empty">কোনো ক্লাস খুঁজে পাওয়া যায়নি।</div>';
+    }
+
     classList.querySelectorAll('.class-item').forEach(item=>item.addEventListener('click',()=>{
       if(item.dataset.locked === '1'){
         vaShowToast('এই ক্লাসটি এখনো unlock হয়নি — বাকি পেমেন্ট সম্পন্ন করলে unlock হবে।');
@@ -4555,8 +5567,6 @@ html.theme-transition *::after{
         courseName: courseName,
         nuDcu: sector || ''
       });
-
-      console.log('[Live Class Check Result]:', { course: courseName, sector: sector, response: res });
 
       if (res && res.status === 'ok' && res.meetingNumber) {
         currentZoomConfig = res;
@@ -4777,7 +5787,7 @@ html.theme-transition *::after{
     };
     chapterSelect.onchange = applyFilters;
 
-    // শুরুতে কোনো সাবজেক্ট বা ক্লাস অটো-সিলেক্ট থাকবে না
+    // Reset dropdown selection
     subjectSelect.value = '';
     chapterSelect.innerHTML = '<option value="">-- চ্যাপ্টার --</option>';
     chapterSelect.disabled = true;
@@ -4802,6 +5812,7 @@ html.theme-transition *::after{
     currentWatchGetWt = false;
     if(classSearchInput) classSearchInput.value='';
     if(classSearchWrap) classSearchWrap.style.display='none';
+    classDataCache.clear();
   }
 
   function showExpiredNotice(course){
@@ -4816,7 +5827,7 @@ html.theme-transition *::after{
     </div>`;
   }
 
-  // ===== PENDING NOTICE (নতুন যোগ করা) =====
+  // Pending notice
   function showPendingNotice(course){
     classLearningReset();
     courseLearningPanel.style.display='block';
@@ -4886,9 +5897,7 @@ html.theme-transition *::after{
     if(dashHeadV2) dashHeadV2.style.display = '';
   }
 
-  // "ফিরে যান" বাটন চাপলে সত্যিকারের browser history.back() ট্রিগার করা হয়,
-  // যাতে UI বাটন আর ডিভাইসের physical/browser back বাটন — দুটোই একই পথে
-  // (popstate হ্যান্ডলারে) গিয়ে একইভাবে কোর্স-লিস্ট ভিউতে ফিরে আসে।
+  // Back to course list
   function goBackToCourseList(){
     if(history.state && history.state.vaView === 'courseDetail'){
       history.back();
@@ -5043,7 +6052,7 @@ html.theme-transition *::after{
       if(!course) return;
       const status = String(course.status || '').trim().toLowerCase();
 
-      // কোর্স লকড থাকলে পরবর্তী পেজে যাবে না এবং কোনো ক্লাস লোড হবে না
+      // Check locked status
       if(course.locked){
         const reason = String(course.lockComment || '').trim();
         if(reason){
@@ -5054,19 +6063,19 @@ html.theme-transition *::after{
         return;
       }
 
-      // মেয়াদ শেষ হয়ে থাকলে পরবর্তী পেজে যাবে না
+      // Check expired status
       if(status === 'expired'){
         vaShowToast('⚠️ এই কোর্সের অ্যাক্সেসের মেয়াদ শেষ হয়ে গেছে।');
         return;
       }
 
-      // ডিভাইস ব্লক থাকলে পরবর্তী পেজে যাবে না
+      // Check device block
       if(isDeviceBlocked){
         vaShowToast('🔒 একাধিক ডিভাইসে লগইন সনাক্ত হওয়ায় কোর্স অ্যাক্সেস স্থগিত করা হয়েছে। আনলক করতে কর্তৃপক্ষের সাথে যোগাযোগ করুন।');
         return;
       }
 
-      // অনুমোদন অপেক্ষমান থাকলে পরবর্তী পেজে যাবে না (যদি না ফ্রি কোর্স হয়)
+      // Check pending status
       const isFreeCourse = /\bfree\b/i.test(String(course.coursePrice || '')) ||
                            /\bfree\b/i.test(String(course.paid || '')) ||
                            Boolean(course.isFree) ||
@@ -5087,13 +6096,13 @@ html.theme-transition *::after{
     };
     enrolledCourseList.querySelectorAll('.enrolled-course-btn').forEach(btn=>{
       btn.addEventListener('click',(e)=>{
-        // Routine বা Live বাটনে ক্লিক করলে মূল কোর্স ডিটেইল ভিউ পৃথকভাবে ট্রিগার হবে
+        // Ignore clicks on routine or live button
         if(e.target.closest('.ecb-routine-btn') || e.target.closest('.ecb-live-btn')) return;
         selectCourse(Number(btn.dataset.idx));
       });
     });
 
-    // Routine বাটনে ক্লিক হ্যান্ডলার
+    // Routine button click
     enrolledCourseList.querySelectorAll('.ecb-routine-btn').forEach(rBtn=>{
       const triggerRoutine = e =>{
         e.preventDefault();
@@ -5110,7 +6119,7 @@ html.theme-transition *::after{
       });
     });
 
-    // Live বাটনে ক্লিক হ্যান্ডলার
+    // Live button click
     enrolledCourseList.querySelectorAll('.ecb-live-btn').forEach(lBtn=>{
       const triggerLive = e =>{
         e.preventDefault();
@@ -5605,14 +6614,12 @@ html.theme-transition *::after{
     }catch(e){
       localStorage.removeItem(LS_USER_KEY);
       showAuthUI();
-      // এখন থেকে সবসময় Login ট্যাব default-এ দেখাবে (আগে registered থাকুক বা না থাকুক) —
-      // Register button-এ ক্লিক করলে তখনো registration করা যাবে, শুধু default view বদলেছে।
+      // Default to login tab
       showLogin();
     }
   } else {
     showAuthUI();
-    // এখন থেকে সবসময় Login ট্যাব default-এ দেখাবে (আগে registered থাকুক বা না থাকুক) —
-    // Register button-এ ক্লিক করলে তখনো registration করা যাবে, শুধু default view বদলেছে।
+    // Default to login tab
     showLogin();
   }
 
@@ -5691,7 +6698,7 @@ html.theme-transition *::after{
     const timeout = setTimeout(()=>controller.abort(), 20000);
     const requestPayload = {...payload};
     const sessionToken = localStorage.getItem(LS_STUDENT_SESSION_TOKEN_KEY);
-    if(requestPayload.action !== 'login' && requestPayload.action !== 'register' && requestPayload.action !== 'register_send_otp'){
+    if(requestPayload.action !== 'login' && requestPayload.action !== 'register' && requestPayload.action !== 'register_send_otp' && !requestPayload.action.startsWith('forgot_')){
       if(sessionToken) requestPayload.sessionToken = sessionToken;
       requestPayload.deviceToken = getDeviceToken();
     }
@@ -5799,9 +6806,7 @@ html.theme-transition *::after{
     return true;
   }
 
-  // লেভেল অনুযায়ী ডিপার্টমেন্ট লিস্ট পাল্টানো: HSC নির্বাচন করলে
-  // Science/Commerce/Arts দেখাবে, বাকি সব লেভেলে (BBA, MBA, BBS, BBA Professional)
-  // আগের মতোই ৪টা department option দেখাবে।
+  // Department options by level
   const DEPARTMENTS_BY_LEVEL = {
     HSC: ['Science', 'Commerce', 'Arts']
   };
@@ -6060,10 +7065,7 @@ html.theme-transition *::after{
     function agreeHandler(){
       if(deviceModalAgreeBtn.disabled) return;
       closeModal();
-      // Dialog-e "Yes" click korar sathe sathe smooth loading animation শুরু —
-      // login সম্পন্ন হয়ে dashboard render হওয়া পর্যন্ত এটা দেখাবে। animation টা
-      // নিজে থেকেই বন্ধ হয়ে যাবে renderProfileInfo()-এর ভেতরের hideLoading() কল
-      // থেকে, যেটা dashboard visible হওয়ার ঠিক আগ মুহূর্তে চলে (দেখুন: renderProfileInfo)।
+      // Show loading
       showLoading('লগইন করা হচ্ছে...');
       onAgree();
     }
@@ -6107,7 +7109,7 @@ html.theme-transition *::after{
     })
       .then(async function(result){
         if(result.status === 'ok'){
-          if(result.fpDebug) console.log('[Fingerprint Debug]', result.fpDebug);
+          if(typeof window.setMascotCelebration === 'function') window.setMascotCelebration(true);
           if(result.token){
             localStorage.setItem(LS_STUDENT_SESSION_TOKEN_KEY, String(result.token));
           }
@@ -6131,11 +7133,13 @@ html.theme-transition *::after{
             await syncAndRenderDashboard(result.data);
           }
         } else {
+          if(typeof window.setMascotCelebration === 'function') window.setMascotCelebration(false);
           loginStatus.textContent = '❌ ' + (result.message || 'লগইন ব্যর্থ হয়েছে।');
           loginStatus.className = 'form-status show err';
         }
       })
       .catch(function(){
+        if(typeof window.setMascotCelebration === 'function') window.setMascotCelebration(false);
         hideLoading();
         loginStatus.textContent = 'Try Again Later 402';
         loginStatus.className = 'form-status show err';
@@ -6145,6 +7149,313 @@ html.theme-transition *::after{
         loginSubmitBtn.disabled = false;
         loginSubmitBtn.textContent = 'লগইন করুন';
       });
+  }
+
+  // ============================================================
+  // Password Visibility Toggle
+  // ============================================================
+  window.togglePasswordVisibility = function(inputId, btn){
+    const input = document.getElementById(inputId);
+    if(!input) return;
+    const isPass = input.type === 'password';
+    input.type = isPass ? 'text' : 'password';
+    if(btn){
+      const openEye = btn.querySelector('.eye-open');
+      const closedEye = btn.querySelector('.eye-closed');
+      if(openEye && closedEye){
+        if(isPass){
+          openEye.style.display = 'none';
+          closedEye.style.display = 'block';
+        } else {
+          openEye.style.display = 'block';
+          closedEye.style.display = 'none';
+        }
+      }
+    }
+    if(inputId === 'login_password' && typeof window.updateMascotPasswordPeek === 'function'){
+      window.updateMascotPasswordPeek(input.type === 'text');
+    }
+  };
+
+  // ============================================================
+  // Forgot Password Controller (3-Step Flow)
+  // ============================================================
+  const forgotSubTitle = document.getElementById('forgotSubTitle');
+  const fStepIndicator1 = document.getElementById('fStepIndicator1');
+  const fStepIndicator2 = document.getElementById('fStepIndicator2');
+  const fStepIndicator3 = document.getElementById('fStepIndicator3');
+  const fStepLine1 = document.getElementById('fStepLine1');
+  const fStepLine2 = document.getElementById('fStepLine2');
+
+  const forgotStep1Form = document.getElementById('forgotStep1Form');
+  const forgot_mobile = document.getElementById('forgot_mobile');
+  const forgotStep1Btn = document.getElementById('forgotStep1Btn');
+
+  const forgotStep2Form = document.getElementById('forgotStep2Form');
+  const forgotOtpTargetMobile = document.getElementById('forgotOtpTargetMobile');
+  const forgot_otp = document.getElementById('forgot_otp');
+  const forgotStep2Btn = document.getElementById('forgotStep2Btn');
+  const forgotResendBtn = document.getElementById('forgotResendBtn');
+
+  const forgotStep3Form = document.getElementById('forgotStep3Form');
+  const forgot_new_password = document.getElementById('forgot_new_password');
+  const forgot_confirm_password = document.getElementById('forgot_confirm_password');
+  const forgotStep3Btn = document.getElementById('forgotStep3Btn');
+  const forgotStatus = document.getElementById('forgotStatus');
+
+  let forgotCurrentMobile = '';
+  let forgotCurrentOtpId = '';
+  let forgotResetToken = '';
+  let forgotTimerInterval = null;
+  let forgotCountdown = 60;
+
+  function setForgotStatus(msg, type){
+    if(!forgotStatus) return;
+    if(!msg){
+      forgotStatus.textContent = '';
+      forgotStatus.className = 'form-status';
+      return;
+    }
+    forgotStatus.textContent = msg;
+    forgotStatus.className = 'form-status show ' + (type === 'ok' ? 'ok' : 'err');
+  }
+
+  function setForgotStep(step){
+    setForgotStatus('');
+    if(step === 1){
+      if(fStepIndicator1) fStepIndicator1.className = 'forgot-step active';
+      if(fStepLine1) fStepLine1.className = 'forgot-step-line';
+      if(fStepIndicator2) fStepIndicator2.className = 'forgot-step';
+      if(fStepLine2) fStepLine2.className = 'forgot-step-line';
+      if(fStepIndicator3) fStepIndicator3.className = 'forgot-step';
+
+      if(forgotStep1Form) forgotStep1Form.style.display = 'block';
+      if(forgotStep2Form) forgotStep2Form.style.display = 'none';
+      if(forgotStep3Form) forgotStep3Form.style.display = 'none';
+      if(forgotSubTitle) forgotSubTitle.textContent = 'আপনার নিবন্ধিত মোবাইল নম্বর দিন। আমরা ভেরিফিকেশনের জন্য একটি OTP পাঠাবো।';
+      if(forgot_mobile) forgot_mobile.focus();
+    } else if(step === 2){
+      if(fStepIndicator1) fStepIndicator1.className = 'forgot-step done';
+      if(fStepLine1) fStepLine1.className = 'forgot-step-line done';
+      if(fStepIndicator2) fStepIndicator2.className = 'forgot-step active';
+      if(fStepLine2) fStepLine2.className = 'forgot-step-line';
+      if(fStepIndicator3) fStepIndicator3.className = 'forgot-step';
+
+      if(forgotStep1Form) forgotStep1Form.style.display = 'none';
+      if(forgotStep2Form) forgotStep2Form.style.display = 'block';
+      if(forgotStep3Form) forgotStep3Form.style.display = 'none';
+      if(forgotSubTitle) forgotSubTitle.textContent = 'আপনার মোবাইলে পাঠানো ৬ সংখ্যার OTP কোডটি দিয়ে ভেরিফাই করুন।';
+      if(forgot_otp){
+        forgot_otp.value = '';
+        forgot_otp.focus();
+      }
+    } else if(step === 3){
+      if(fStepIndicator1) fStepIndicator1.className = 'forgot-step done';
+      if(fStepLine1) fStepLine1.className = 'forgot-step-line done';
+      if(fStepIndicator2) fStepIndicator2.className = 'forgot-step done';
+      if(fStepLine2) fStepLine2.className = 'forgot-step-line done';
+      if(fStepIndicator3) fStepIndicator3.className = 'forgot-step active';
+
+      if(forgotStep1Form) forgotStep1Form.style.display = 'none';
+      if(forgotStep2Form) forgotStep2Form.style.display = 'none';
+      if(forgotStep3Form) forgotStep3Form.style.display = 'block';
+      if(forgotSubTitle) forgotSubTitle.textContent = 'আপনার অ্যাকাউন্টের জন্য একটি শক্তিশালী নতুন পাসওয়ার্ড সেট করুন।';
+      if(forgot_new_password){
+        forgot_new_password.value = '';
+        forgot_new_password.focus();
+      }
+      if(forgot_confirm_password) forgot_confirm_password.value = '';
+    }
+  }
+
+  function resetForgotFlow(){
+    if(forgotTimerInterval){
+      clearInterval(forgotTimerInterval);
+      forgotTimerInterval = null;
+    }
+    forgotCurrentMobile = '';
+    forgotCurrentOtpId = '';
+    forgotResetToken = '';
+    if(forgot_mobile) forgot_mobile.value = '';
+    if(forgot_otp) forgot_otp.value = '';
+    if(forgot_new_password) forgot_new_password.value = '';
+    if(forgot_confirm_password) forgot_confirm_password.value = '';
+    setForgotStep(1);
+  }
+
+  function startForgotCountdown(seconds){
+    if(forgotTimerInterval) clearInterval(forgotTimerInterval);
+    forgotCountdown = Number(seconds) > 0 ? Number(seconds) : 60;
+    if(forgotResendBtn){
+      forgotResendBtn.disabled = true;
+      forgotResendBtn.textContent = `পুনরায় পাঠান (${forgotCountdown})`;
+    }
+    forgotTimerInterval = setInterval(function(){
+      forgotCountdown--;
+      if(!forgotResendBtn) return;
+      if(forgotCountdown <= 0){
+        clearInterval(forgotTimerInterval);
+        forgotTimerInterval = null;
+        forgotResendBtn.disabled = false;
+        forgotResendBtn.textContent = 'পুনরায় পাঠান';
+      } else {
+        forgotResendBtn.textContent = `পুনরায় পাঠান (${forgotCountdown})`;
+      }
+    }, 1000);
+  }
+
+  if(forgot_otp){
+    forgot_otp.addEventListener('input', function(){
+      this.value = this.value.replace(/[^0-9]/g, '').slice(0, 6);
+    });
+  }
+
+  if(forgotStep1Form){
+    forgotStep1Form.addEventListener('submit', async function(e){
+      e.preventDefault();
+      const mobileVal = (forgot_mobile ? forgot_mobile.value : '').trim();
+      if(!/^01[0-9]{9}$/.test(mobileVal)){
+        setForgotStatus('সঠিক ১১ সংখ্যার মোবাইল নম্বর দিন (যেমন: 01XXXXXXXXX)', 'err');
+        return;
+      }
+      setForgotStatus('');
+      forgotStep1Btn.disabled = true;
+      forgotStep1Btn.textContent = 'যাচাই ও OTP পাঠানো হচ্ছে...';
+      try{
+        const res = await callApi({ action: 'forgot_send_otp', mobile: mobileVal });
+        if(res && res.status === 'ok'){
+          forgotCurrentMobile = mobileVal;
+          forgotCurrentOtpId = res.otpId || '';
+          if(forgotOtpTargetMobile) forgotOtpTargetMobile.textContent = mobileVal;
+          setForgotStep(2);
+          startForgotCountdown(res.expiresIn || 60);
+          vaShowToast('OTP কোড আপনার মোবাইলে পাঠানো হয়েছে');
+        } else {
+          setForgotStatus(res && res.message ? res.message : 'OTP পাঠাতে ব্যর্থ হয়েছে। আবার চেষ্টা করুন।', 'err');
+        }
+      } catch(err){
+        setForgotStatus('নেটওয়ার্ক ত্রুটি! অনুগ্রহ করে আবার চেষ্টা করুন।', 'err');
+      } finally {
+        forgotStep1Btn.disabled = false;
+        forgotStep1Btn.textContent = 'OTP পাঠান';
+      }
+    });
+  }
+
+  if(forgotResendBtn){
+    forgotResendBtn.addEventListener('click', async function(){
+      if(!forgotCurrentMobile) return;
+      forgotResendBtn.disabled = true;
+      forgotResendBtn.textContent = 'পাঠানো হচ্ছে...';
+      setForgotStatus('');
+      try{
+        const res = await callApi({ action: 'forgot_send_otp', mobile: forgotCurrentMobile });
+        if(res && res.status === 'ok'){
+          forgotCurrentOtpId = res.otpId || '';
+          vaShowToast('নতুন OTP পাঠানো হয়েছে');
+          startForgotCountdown(res.expiresIn || 60);
+        } else {
+          setForgotStatus(res && res.message ? res.message : 'OTP পুনরায় পাঠাতে সমস্যা হয়েছে।', 'err');
+          forgotResendBtn.disabled = false;
+          forgotResendBtn.textContent = 'পুনরায় পাঠান';
+        }
+      } catch(err){
+        setForgotStatus('নেটওয়ার্ক ত্রুটি! আবার চেষ্টা করুন।', 'err');
+        forgotResendBtn.disabled = false;
+        forgotResendBtn.textContent = 'পুনরায় পাঠান';
+      }
+    });
+  }
+
+  if(forgotStep2Form){
+    forgotStep2Form.addEventListener('submit', async function(e){
+      e.preventDefault();
+      const otpVal = (forgot_otp ? forgot_otp.value : '').trim();
+      if(!/^[0-9]{6}$/.test(otpVal)){
+        setForgotStatus('অনুগ্রহ করে ৬ সংখ্যার সঠিক OTP কোডটি লিখুন', 'err');
+        return;
+      }
+      setForgotStatus('');
+      forgotStep2Btn.disabled = true;
+      forgotStep2Btn.textContent = 'যাচাই করা হচ্ছে...';
+      try{
+        const res = await callApi({
+          action: 'forgot_verify_otp',
+          mobile: forgotCurrentMobile,
+          otpId: forgotCurrentOtpId,
+          otp: otpVal
+        });
+        if(res && res.status === 'ok'){
+          if(forgotTimerInterval){
+            clearInterval(forgotTimerInterval);
+            forgotTimerInterval = null;
+          }
+          forgotResetToken = res.resetToken || '';
+          setForgotStep(3);
+          vaShowToast('OTP সফলভাবে যাচাই হয়েছে!');
+        } else {
+          setForgotStatus(res && res.message ? res.message : 'ভুল OTP কোড দিয়েছেন।', 'err');
+        }
+      } catch(err){
+        setForgotStatus('যাচাইকরণে সমস্যা হয়েছে। আবার চেষ্টা করুন।', 'err');
+      } finally {
+        forgotStep2Btn.disabled = false;
+        forgotStep2Btn.textContent = 'OTP যাচাই করুন';
+      }
+    });
+  }
+
+  if(forgotStep3Form){
+    forgotStep3Form.addEventListener('submit', async function(e){
+      e.preventDefault();
+      const p1 = forgot_new_password ? forgot_new_password.value : '';
+      const p2 = forgot_confirm_password ? forgot_confirm_password.value : '';
+      if(!p1 || p1.length < 4){
+        setForgotStatus('পাসওয়ার্ড কমপক্ষে ৪ অক্ষরের হতে হবে।', 'err');
+        return;
+      }
+      if(p1 !== p2){
+        setForgotStatus('উভয় পাসওয়ার্ড এক হতে হবে! আবার মিলিয়ে দেখুন।', 'err');
+        return;
+      }
+      setForgotStatus('');
+      forgotStep3Btn.disabled = true;
+      forgotStep3Btn.textContent = 'সংরক্ষণ করা হচ্ছে...';
+      try{
+        const res = await callApi({
+          action: 'forgot_reset_password',
+          mobile: forgotCurrentMobile,
+          resetToken: forgotResetToken,
+          newPassword: p1
+        });
+        if(res && res.status === 'ok'){
+          setForgotStatus('পাসওয়ার্ড সফলভাবে পরিবর্তন করা হয়েছে! লগইন পেজে নিয়ে যাওয়া হচ্ছে...', 'ok');
+          vaShowToast('🎉 পাসওয়ার্ড সফলভাবে আপডেট হয়েছে!');
+          const savedMobile = forgotCurrentMobile;
+          setTimeout(function(){
+            showLogin();
+            const loginMobileInput = document.getElementById('login_mobile');
+            const loginPassInput = document.getElementById('login_password');
+            if(loginMobileInput) loginMobileInput.value = savedMobile;
+            if(loginPassInput){
+              loginPassInput.value = '';
+              loginPassInput.focus();
+            }
+            if(loginStatus){
+              loginStatus.textContent = 'পাসওয়ার্ড পরিবর্তিত হয়েছে। নতুন পাসওয়ার্ড দিয়ে লগইন করুন।';
+              loginStatus.className = 'form-status show ok';
+            }
+          }, 1500);
+        } else {
+          setForgotStatus(res && res.message ? res.message : 'পাসওয়ার্ড পরিবর্তন করতে সমস্যা হয়েছে।', 'err');
+        }
+      } catch(err){
+        setForgotStatus('সার্ভার সমস্যা! আবার চেষ্টা করুন।', 'err');
+      } finally {
+        forgotStep3Btn.disabled = false;
+        forgotStep3Btn.textContent = 'পাসওয়ার্ড সংরক্ষণ করুন';
+      }
+    });
   }
 
   logoutBtn.addEventListener('click', function(){
@@ -6157,6 +7468,135 @@ html.theme-transition *::after{
     showAuthUI();
     showLogin();
   });
+
+  // ============================================================
+  // Interactive Student Avatar Mascot Controller ("চোখ বন্ধ অ্যানিমেশন")
+  // ============================================================
+  function initMascotController(){
+    const mascotCard = document.getElementById('loginMascotCard');
+    if(!mascotCard) return;
+
+    const mobileInput = document.getElementById('login_mobile');
+    const passInput = document.getElementById('login_password');
+    const speechText = document.getElementById('mascotSpeechText');
+    const pupilL = document.getElementById('mascotPupilLeft');
+    const pupilR = document.getElementById('mascotPupilRight');
+    const happyL = document.getElementById('mascotHappyEyeL');
+    const happyR = document.getElementById('mascotHappyEyeR');
+    const pupilsGrp = document.getElementById('mascotPupilsGroup');
+    const mouth = document.getElementById('mascotMouth');
+
+    let isCovering = false;
+    let isPeeking = false;
+
+    function setSpeech(txt){
+      if(speechText) speechText.textContent = txt;
+    }
+
+    function resetPupils(){
+      if(pupilL) pupilL.style.transform = '';
+      if(pupilR) pupilR.style.transform = '';
+    }
+
+    // 1. Mobile Input - Eye Tracking & Watching
+    if(mobileInput){
+      mobileInput.addEventListener('focus', function(){
+        if(isCovering) return;
+        mascotCard.classList.add('is-watching');
+        setSpeech('আপনার মোবাইল নম্বর লিখুন... 📱');
+        if(pupilL) pupilL.style.transform = 'translate(0px, 4px)';
+        if(pupilR) pupilR.style.transform = 'translate(0px, 4px)';
+      });
+
+      mobileInput.addEventListener('input', function(){
+        if(isCovering) return;
+        const len = mobileInput.value.length;
+        const shiftX = Math.min(Math.max((len - 5.5) * 0.8, -4.5), 4.5);
+        if(pupilL) pupilL.style.transform = `translate(${shiftX}px, 4.5px)`;
+        if(pupilR) pupilR.style.transform = `translate(${shiftX}px, 4.5px)`;
+        setSpeech('নম্বর লিখছেন... ✍️');
+      });
+
+      mobileInput.addEventListener('blur', function(){
+        mascotCard.classList.remove('is-watching');
+        resetPupils();
+        if(!passInput || document.activeElement !== passInput){
+          setSpeech('স্বাগতম! আপনার অ্যাকাউন্টে প্রবেশ করুন 👋');
+        }
+      });
+    }
+
+    // 2. Password Input - Eye Covering ("চোখ বন্ধ অ্যানিমেশন") & Peek
+    if(passInput){
+      passInput.addEventListener('focus', function(){
+        isCovering = true;
+        resetPupils();
+        if(passInput.type === 'text'){
+          isPeeking = true;
+          mascotCard.classList.add('is-peeking');
+          mascotCard.classList.remove('is-covering');
+          setSpeech('একটু উঁকি দিয়ে দেখছি! 👁️');
+        } else {
+          isPeeking = false;
+          mascotCard.classList.add('is-covering');
+          mascotCard.classList.remove('is-peeking');
+          setSpeech('পাসওয়ার্ড গোপন রাখছি! 🙈');
+        }
+      });
+
+      passInput.addEventListener('blur', function(){
+        isCovering = false;
+        isPeeking = false;
+        mascotCard.classList.remove('is-covering', 'is-peeking');
+        if(!mobileInput || document.activeElement !== mobileInput){
+          setSpeech('স্বাগতম! আপনার অ্যাকাউন্টে প্রবেশ করুন 👋');
+        }
+      });
+    }
+
+    // 3. Password Show/Hide Peek Trigger
+    window.updateMascotPasswordPeek = function(isTextVisible){
+      if(!isCovering && document.activeElement !== passInput) return;
+      if(isTextVisible){
+        isPeeking = true;
+        mascotCard.classList.add('is-peeking');
+        mascotCard.classList.remove('is-covering');
+        setSpeech('একটু উঁকি দিয়ে দেখছি! 👁️');
+      } else {
+        isPeeking = false;
+        mascotCard.classList.add('is-covering');
+        mascotCard.classList.remove('is-peeking');
+        setSpeech('পাসওয়ার্ড গোপন রাখছি! 🙈');
+      }
+    };
+
+    // 4. Success / Error Feedback Trigger
+    window.setMascotCelebration = function(isSuccess){
+      if(isSuccess){
+        mascotCard.classList.remove('is-covering', 'is-peeking', 'is-watching');
+        mascotCard.classList.add('is-celebrating');
+        if(happyL && happyR && pupilsGrp){
+          happyL.style.display = 'block';
+          happyR.style.display = 'block';
+          pupilsGrp.style.display = 'none';
+        }
+        if(mouth) mouth.setAttribute('d', 'M 91 124 Q 100 138 109 124');
+        setSpeech('লগইন সফল! স্বাগতম... 🎉');
+      } else {
+        mascotCard.classList.add('is-error');
+        setSpeech('নম্বর বা পাসওয়ার্ড ভুল হয়েছে! 🧐');
+        setTimeout(function(){
+          mascotCard.classList.remove('is-error');
+          if(!isCovering && !isPeeking){
+            setSpeech('স্বাগতম! আপনার অ্যাকাউন্টে প্রবেশ করুন 👋');
+          }
+        }, 2200);
+      }
+    };
+  }
+
+  // Initialize Mascot Controller
+  initMascotController();
 
 })();
 </script>
