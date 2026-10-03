@@ -644,25 +644,32 @@ header.nav{
 .form-grid{
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0 16px;
+  gap: 12px 14px;
 }
 .form-grid .full{ grid-column: 1 / -1; }
 @media(max-width: 640px){
-  .form-grid{ grid-template-columns: 1fr; }
+  .form-grid{
+    grid-template-columns: 1fr;
+    gap: 12px 0;
+  }
 }
 .form-row{
-  margin-bottom: 18px;
+  margin-bottom: 16px;
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 6px;
+}
+.form-grid .form-row{
+  margin-bottom: 0;
 }
 .form-row label{
   font-weight: 700;
-  font-size: 14.5px;
+  font-size: 13.5px;
   color: #1E293B;
   display: flex;
   align-items: center;
   gap: 4px;
+  line-height: 1.25;
 }
 .form-row label .req{
   color: var(--margin);
@@ -672,14 +679,32 @@ header.nav{
 .form-row select{
   font-family: inherit;
   font-size: 15px;
-  padding: 12px 16px;
-  border-radius: 12px;
+  height: 42px;
+  min-height: 42px;
+  padding: 0 14px;
+  border-radius: 10px;
   border: 1.5px solid var(--paper-line);
   background: #F8FAFC;
   color: var(--ink);
   outline: none;
-  transition: all 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
   width: 100%;
+  box-sizing: border-box;
+}
+.form-row select{
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px 16px;
+  padding-right: 36px;
+  cursor: pointer;
+}
+.form-row input::placeholder{
+  color: #94A3B8;
+  font-size: 14px;
 }
 .form-row input:hover,
 .form-row select:hover{
@@ -690,7 +715,7 @@ header.nav{
 .form-row select:focus{
   border-color: var(--accent);
   background: #ffffff;
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+  box-shadow: 0 0 0 3.5px rgba(37, 99, 235, 0.12);
 }
 
 /* বাটনস (Standard 46px Height) */
@@ -878,22 +903,29 @@ header.nav{
 }
 .pwd-toggle-btn{
   position: absolute;
-  right: 12px;
+  right: 6px;
   top: 50%;
   transform: translateY(-50%);
   background: none;
   border: none;
   color: #64748b;
   cursor: pointer;
-  padding: 4px;
+  width: 32px;
+  height: 32px;
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: color .2s;
+  border-radius: 8px;
+  transition: color 0.2s ease, background-color 0.2s ease, transform 0.15s ease;
   z-index: 2;
 }
 .pwd-toggle-btn:hover{
   color: var(--accent);
+  background: rgba(37, 99, 235, 0.08);
+}
+.pwd-toggle-btn:active{
+  transform: translateY(-50%) scale(0.92);
 }
 
 /* ফরগট পাসওয়ার্ড প্যানেল ও উইজার্ড */
@@ -3293,13 +3325,33 @@ html.theme-transition *::after{
 [data-theme="dark"] .form-row label{ color:#CBD5E1; }
 [data-theme="dark"] .form-row input,
 [data-theme="dark"] .form-row select{
-  background:#162035;
-  border-color:rgba(255,255,255,0.1);
+  background:#131E35;
+  border-color:rgba(255,255,255,0.12);
   color:#F8FAFC;
+}
+[data-theme="dark"] .form-row select{
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+}
+[data-theme="dark"] .form-row input::placeholder{
+  color:#64748B;
+}
+[data-theme="dark"] .form-row input:hover,
+[data-theme="dark"] .form-row select:hover{
+  border-color:rgba(255,255,255,0.22);
+  background:#182644;
 }
 [data-theme="dark"] .form-row input:focus,
 [data-theme="dark"] .form-row select:focus{
   border-color:#38BDF8;
+  background:#182644;
+  box-shadow: 0 0 0 3.5px rgba(56, 189, 248, 0.16);
+}
+[data-theme="dark"] .pwd-toggle-btn{
+  color:#94A3B8;
+}
+[data-theme="dark"] .pwd-toggle-btn:hover{
+  color:#38BDF8;
+  background:rgba(56, 189, 248, 0.12);
 }
 [data-theme="dark"] .input-hint,
 [data-theme="dark"] .switch-hint{ color:#94A3B8; }
@@ -3734,7 +3786,7 @@ html.theme-transition *::after{
                 <input type="text" id="reg_session" name="session" placeholder="যেমন: ২০২৫-২৬">
               </div>
 
-              <div class="form-row">
+              <div class="form-row full">
                 <label for="reg_institute">প্রতিষ্ঠানের নাম</label>
                 <input type="text" id="reg_institute" name="institute" placeholder="স্কুল/কলেজ/বিশ্ববিদ্যালয়">
               </div>
@@ -3761,7 +3813,13 @@ html.theme-transition *::after{
 
               <div class="form-row full">
                 <label for="reg_password">পাসওয়ার্ড <span class="req">*</span></label>
-                <input type="password" id="reg_password" name="password" placeholder="আপনার পাসওয়ার্ড দিন" required>
+                <div class="pwd-input-wrap">
+                  <input type="password" id="reg_password" name="password" placeholder="আপনার পাসওয়ার্ড দিন" required autocomplete="new-password">
+                  <button type="button" class="pwd-toggle-btn" onclick="togglePasswordVisibility('reg_password', this)" title="Show/Hide Password" aria-label="Toggle password visibility">
+                    <svg class="eye-open" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    <svg class="eye-closed" style="display:none;" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                  </button>
+                </div>
               </div>
 
             </div>
