@@ -1,0 +1,11 @@
+# robots.txt for https://visionplusbd.com
+User-agent: *
+Allow: /
+
+# Prevent indexing of internal endpoints and tracking URLs
+Disallow: /worker/
+Disallow: /*?*fbclid=
+Disallow: /*?*utm_
+
+# XML Sitemap
+Sitemap: https://visionplusbd.com/sitemap.xml

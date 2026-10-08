@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<script>
+(function(){
+  try{
+    var theme = localStorage.getItem('va_theme');
+    if(theme === 'dark'){
+      document.documentElement.setAttribute('data-theme', 'dark');
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+      document.documentElement.classList.remove('dark');
+    }
+  }catch(e){}
+})();
+</script>
+<meta name="theme-color" content="#ffffff" id="metaThemeColor">
+<link rel="preload" as="image" href="assets/logo.png" fetchpriority="high">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BBA VISION | VISION Plus - Best BBA Coaching, HSC, BBS & MBA Platform in Bangladesh</title>
+<meta name="description" content="BBA VISION ও VISION Plus — বাংলাদেশের সেরা BBA platform ও BBA Best Coaching। HSC, BBA (National University ও 7 College), BBA Professional, BBS এবং MBA-এর অভিজ্ঞ শিক্ষক, লাইভ ক্লাস, প্রিমিয়াম নোট ও মডেল টেস্ট।">
+<meta name="keywords" content="BBA VISION, VISION Plus, BBA Best Coaching, BBA best platform, BBA Professional, BBA, HSC, MBA, BBS, Best BBA coaching in Bangladesh, National University BBA, 7 College BBA, সেরা বিবিএ কোচিং, বিবিএ ভিশন, ভিশন প্লাস, বিবিএ কোচিং">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://visionplusbd.com/">
+
+<!-- Open Graph tags: Facebook/WhatsApp e link share korle preview dekhabe -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="BBA VISION | VISION Plus - Best BBA Coaching, HSC, BBS & MBA Platform">
+<meta property="og:description" content="BBA VISION ও VISION Plus — বাংলাদেশের সেরা BBA platform ও BBA Best Coaching। HSC, BBA, BBA Professional, BBS এবং MBA-এর সম্পূর্ণ অনলাইন কোর্স।">
+<meta property="og:url" content="https://visionplusbd.com/">
+<meta property="og:image" content="https://visionplusbd.com/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="bn_BD">
+<meta property="og:site_name" content="BBA VISION | VISION Plus">
+
+<!-- Twitter card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="BBA VISION | VISION Plus - Best BBA Coaching & Learning Platform">
+<meta name="twitter:description" content="বাংলাদেশের সেরা BBA, HSC, MBA, BBS ও BBA Professional কোচিং প্লাটফর্ম।">
+<meta name="twitter:image" content="https://visionplusbd.com/og-image.jpg">
+
+<meta name="google-site-verification" content="izg5ddFmOt6TFiqisARrqQGlld1H6dOl1w42efkPkQ4" />
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<!-- Structured Data: Google ke bujhay je eta ekta educational institution -->
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    "name": "BBA VISION | VISION Plus",
+    "alternateName": ["BBA VISION", "VISION Plus", "BBA Best Coaching", "BBA best platform", "BBA Professional"],
+    "url": "https://visionplusbd.com/",
+    "logo": "https://visionplusbd.com/assets/logo.png",
+    "image": "https://visionplusbd.com/og-image.jpg",
+    "description": "BBA VISION & VISION Plus is Bangladesh's top learning platform and best BBA coaching for HSC, BBA (National University & 7 College), BBA Professional, BBS, and MBA.",
+    "sameAs": []
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "BBA VISION | VISION Plus",
+    "url": "https://visionplusbd.com/",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://visionplusbd.com/All_Courses?search={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "প্রধান নেভিগেশন ও সাইটলিঙ্কস",
+    "description": "BBA VISION ও VISION Plus-এর প্রধান কোর্স ও সেকশনসমূহ",
+    "itemListElement": [
+      {
+        "@type": "SiteNavigationElement",
+        "position": 1,
+        "name": "আমাদের সকল কোর্স",
+        "description": "HSC, BBA, BBA Professional, BBS ও MBA-এর সম্পূর্ণ অনলাইন কোর্সসমূহ।",
+        "url": "https://visionplusbd.com/All_Courses"
+      },
+      {
+        "@type": "SiteNavigationElement",
+        "position": 2,
+        "name": "বিষয়ভিত্তিক কোর্স",
+        "description": "Accounting, Finance, Management ও Marketing-এর সাবজেক্ট ভিত্তিক সিঙ্গেল কোর্স।",
+        "url": "https://visionplusbd.com/per-subject"
+      },
+      {
+        "@type": "SiteNavigationElement",
+        "position": 3,
+        "name": "অভিজ্ঞ শিক্ষকবৃন্দ",
+        "description": "BBA ও HSC কোর্সের শীর্ষ ও অভিজ্ঞ শিক্ষকদের প্রোফাইল।",
+        "url": "https://visionplusbd.com/teachers"
+      },
+      {
+        "@type": "SiteNavigationElement",
+        "position": 4,
+        "name": "বই ও সাজেশন্স শপ",
+        "description": "BBA, HSC, BBS ও MBA-এর সহায়িকা বই, সাজেশন্স ও শিক্ষা উপকরণ।",
+        "url": "https://visionplusbd.com/shop"
+      },
+      {
+        "@type": "SiteNavigationElement",
+        "position": 5,
+        "name": "স্টুডেন্ট পোর্টাল ও লাইভ ক্লাস",
+        "description": "স্টুডেন্ট লগইন, লাইভ জুম ক্লাস, রুটিন ও কোর্স ম্যাটেরিয়ালস।",
+        "url": "https://visionplusbd.com/student-login"
+      }
+    ]
+  }
+]
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&family=Baloo+Da+2:wght@500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Anek+Bangla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/index.css">
+</head>
+<body>
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="#top" class="brand">
+      <!-- নেভবারের লোগো — এই একটা ছবিতেই লোগো + প্রতিষ্ঠানের নাম দুটোই আছে
+           (ছবির রেশিও প্রায় 3840x1000 ≈ 3.84:1 রাখলে সবচেয়ে ভালো ফিট হবে, বিকৃত হবে না) -->
+      <img src="assets/logo.png" alt="VISION Plus" class="brand-logo" fetchpriority="high" decoding="async">
+    </a>
+    <!-- নেভবার মেনু লিংক (উপরের সারির লেখাগুলো) -->
+    <nav class="nav-links" id="navLinks">
+      <a href="All_Courses.html">কোর্সসমূহ</a>
+      <a href="#videos">ফ্রি ক্লাস</a>
+      <a href="teachers.html">শিক্ষকবৃন্দ</a>
+      <a href="shop.html">শপ</a>
+      <a href="#why">কেন আমরা</a>
+    </nav>
+    <div class="nav-actions">
+      <!-- নাইট মোড / ডে মোড টগল বাটন -->
+      <button type="button" class="theme-toggle-btn" id="themeToggleBtn" aria-label="নাইট মোড চালু করুন" title="নাইট মোড চালু করুন (Night Mode)">
+        <svg class="theme-icon theme-icon--moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <svg class="theme-icon theme-icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      </button>
+      <!-- নেভবারের ডানপাশের "ভর্তি হোন" বাটন — ক্লিক করলে সরাসরি student-login.html পেজে যাবে -->
+      <a href="student-login.html" class="nav-cta" id="navLoginBtn"><svg class="nav-login-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg><span>লগইন</span></a>
+      <button class="burger" id="burgerBtn">☰</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============================================================
+       হিরো সেকশন — পেজের সবচেয়ে উপরের বড় অংশ
+       ============================================================ -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-content-area">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          <span>A New Vision for Education</span>
+        </div>
+        <h1>শিখো সেরাদের সাথে, <span class="gradient-text">গড়ো উজ্জ্বল ভবিষ্যৎ</span></h1>
+        
+        <div class="hero-cta-group">
+          <a href="All_Courses.html" class="all-courses-btn">
+            <span>সকল কোর্স দেখুন</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg>
+          </a>
+          <a href="#videos" class="hero-ghost-btn">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <span>ফ্রি ক্লাস দেখুন</span>
+          </a>
+        </div>
+
+        <div class="hero-trust-bar">
+          <div class="trust-stars">★★★★★</div>
+          <span class="trust-text"><b>১৭,০০০+</b> সফল শিক্ষার্থী এবং <b>৫৩+</b> সফল লাইভ ব্যাচ</span>
+        </div>
+      </div>
+
+      <div class="hero-photo-area">
+        <!-- পিনবোর্ড — ৩ সেকেন্ড পরপর ঘুরতে থাকা ৫টা ছবি; ৬ষ্ঠটা (সবার শেষে) সিমলেস লুপ
+             তৈরির জন্য ১ম ছবিরই একটা ক্লোন — ১ম ছবি বদলালে এই ক্লোনটাও বদলে দিতে হবে -->
+        <div class="pinboard">
+          <div class="pin-track" id="pinTrack">
+
+            <!-- পিনবোর্ড ছবি ১ -->
+            <div class="pin-card">
+              <img src="https://drive.google.com/thumbnail?id=1l8Fn0LB44mr2eifXrvPQpQStulqbBIuA&sz=w1000" alt="VISION Plus Feature 1">
+            </div>
+            <!-- পিনবোর্ড ছবি ২ -->
+            <div class="pin-card">
+              <img src="https://drive.google.com/thumbnail?id=1DkDnIok_RN0VQFqS25COhqiA0rTaU7mF&sz=w1000" alt="VISION Plus Feature 2">
+            </div>
+            <!-- পিনবোর্ড ছবি ৩ -->
+            <div class="pin-card">
+              <img src="https://drive.google.com/thumbnail?id=1BWKhQD4mOL4lqftQfGAUKElRaVLGHBPW&sz=w1000" alt="VISION Plus Feature 3">
+            </div>
+            <!-- পিনবোর্ড ছবি ৪ -->
+            <div class="pin-card">
+              <img src="https://drive.google.com/thumbnail?id=1XwOaaH-NNTeTff3wJdTvH4tefbQonsds&sz=w1000" alt="VISION Plus Feature 4">
+            </div>
+            <!-- পিনবোর্ড ছবি ৫ -->
+            <div class="pin-card">
+              <img src="https://drive.google.com/thumbnail?id=1tlkhp8lzvklnpWBnqIbNQfCPx_AArFHV&sz=w1000" alt="VISION Plus Feature 5">
+            </div>
+            <!-- ক্লোন (ছবি ১ এর সিমলেস-লুপ ক্লোন — হাত দেওয়ার দরকার নেই, ছবি ১ বদলালে এটাও বদলান) -->
+            <div class="pin-card">
+              <img src="https://drive.google.com/thumbnail?id=1l8Fn0LB44mr2eifXrvPQpQStulqbBIuA&sz=w1000" alt="VISION Plus Feature 1">
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-stats-area">
+        <!-- হিরো স্ট্যাটস — ৪টা সংখ্যা কার্ড (স্ক্রিনে আসলে ০ থেকে গুনে গুনে সংখ্যাটায় উঠবে) -->
+        <div class="hero-stats" id="hero-stats">
+
+          <!-- স্ট্যাটস কার্ড ১ — অভিজ্ঞ শিক্ষক -->
+          <div class="stat-card">
+            <div class="stat-icon-box" style="background:linear-gradient(145deg,#5B8DEF,#1E3A8A); --glow-color:rgba(30,58,138,.55)">
+              <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg>
+            </div>
+            <div class="stat-text">
+              <b class="stat-number" style="color:#1E3A8A" data-final="১৫+">০</b>
+              <span>অভিজ্ঞ শিক্ষক</span>
+            </div>
+          </div>
+
+          <!-- স্ট্যাটস কার্ড ২ — শিক্ষার্থী -->
+          <div class="stat-card">
+            <div class="stat-icon-box" style="background:linear-gradient(145deg,#F6C453,#A9740A); --glow-color:rgba(169,116,10,.55)">
+              <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <div class="stat-text">
+              <b class="stat-number" style="color:#A9740A" data-final="১৭,০০০+">০</b>
+              <span>শিক্ষার্থী</span>
+            </div>
+          </div>
+
+          <!-- স্ট্যাটস কার্ড ৩ — কোর্সের সংখ্যা -->
+          <div class="stat-card">
+            <div class="stat-icon-box" style="background:linear-gradient(145deg,#4ADE94,#0F5132); --glow-color:rgba(15,81,50,.5)">
+              <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            </div>
+            <div class="stat-text">
+              <b class="stat-number" style="color:#0F5132" data-final="২০+">০</b>
+              <span>কোর্সের সংখ্যা</span>
+            </div>
+          </div>
+
+          <!-- স্ট্যাটস কার্ড ৪ — ইউটিউব সাবস্ক্রাইবার (এখন অন্য ৩টার মতোই কাউন্ট-আপ অ্যানিমেশন হয়, শুধু বড় সংখ্যা বলে একটু দ্রুত) -->
+          <div class="stat-card">
+            <div class="stat-icon-box" style="background:linear-gradient(145deg,#FF6B6B,#E1302E); --glow-color:rgba(225,48,46,.55)">
+              <svg class="stat-icon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.42a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.42 8.6.42 8.6.42s6.88 0 8.6-.42a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33Z" fill="#fff" stroke="none"/><path d="m9.75 15.02 5.75-3.27-5.75-3.27v6.54Z" fill="#E1302E" stroke="none"/></svg>
+            </div>
+            <div class="stat-text">
+              <b class="stat-number" style="color:#E1302E" data-final="১০০০০০+">০</b>
+              <span>ইউটিউব সাবস্ক্রাইবার</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       কোর্সসমূহ সেকশন
+       ============================================================ -->
+  <section id="courses">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">আমাদের প্রোগ্রামসমূহ</span>
+      </div>
+
+      <!-- ============================================================
+           DYNAMIC COURSE AREA
+           Google Sheet-এর ৬টি Tab থেকে category + course data লোড হবে।
+           ============================================================ -->
+      <div class="cat-grid" id="catGrid" aria-label="কোর্স ক্যাটাগরি">
+        <div class="cat-card-skel"><span class="skel-icon"></span><span class="skel-lines"><span class="skel-line big"></span><span class="skel-line small"></span></span></div>
+        <div class="cat-card-skel"><span class="skel-icon"></span><span class="skel-lines"><span class="skel-line big"></span><span class="skel-line small"></span></span></div>
+        <div class="cat-card-skel"><span class="skel-icon"></span><span class="skel-lines"><span class="skel-line big"></span><span class="skel-line small"></span></span></div>
+        <div class="cat-card-skel"><span class="skel-icon"></span><span class="skel-lines"><span class="skel-line big"></span><span class="skel-line small"></span></span></div>
+        <div class="cat-card-skel"><span class="skel-icon"></span><span class="skel-lines"><span class="skel-line big"></span><span class="skel-line small"></span></span></div>
+        <div class="cat-card-skel"><span class="skel-icon"></span><span class="skel-lines"><span class="skel-line big"></span><span class="skel-line small"></span></span></div>
+      </div>
+
+      <div class="course-data-toolbar" id="courseDataToolbar" hidden>
+        <div class="course-result-count" id="courseResultCount"></div>
+      </div>
+
+      <div class="course-grid" id="courseGrid" aria-live="polite">
+        <div class="course-card-skel"><span class="skel-img"></span><span class="skel-top"><span class="skel-pill"></span></span><span class="skel-body"><span class="skel-line title"></span><span class="skel-line desc1"></span><span class="skel-line desc2"></span><span class="skel-foot"><span class="skel-price"></span><span class="skel-btn"></span></span></span></div>
+        <div class="course-card-skel"><span class="skel-img"></span><span class="skel-top"><span class="skel-pill"></span></span><span class="skel-body"><span class="skel-line title"></span><span class="skel-line desc1"></span><span class="skel-line desc2"></span><span class="skel-foot"><span class="skel-price"></span><span class="skel-btn"></span></span></span></div>
+        <div class="course-card-skel"><span class="skel-img"></span><span class="skel-top"><span class="skel-pill"></span></span><span class="skel-body"><span class="skel-line title"></span><span class="skel-line desc1"></span><span class="skel-line desc2"></span><span class="skel-foot"><span class="skel-price"></span><span class="skel-btn"></span></span></span></div>
+      </div>
+
+      <div class="course-data-error" id="courseDataError" hidden>
+        <strong>কোর্সের তথ্য লোড করা যায়নি</strong>
+        <p>ইন্টারনেট কানেকশন চেক করে আবার চেষ্টা করুন।</p>
+        <button type="button" class="btn btn-primary" id="courseRetryBtn">আবার চেষ্টা করুন</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       কেন আমরা সেকশন — ৩টা স্ট্যাটিক কার্ড, আইকন + টাইটেল + বর্ণনা কোড দিয়ে বানানো (কোনো ছবি নেই)
+       ============================================================ -->
+  <section id="why">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">আমাদের বিশেষত্ব</span>
+      </div>
+      <div class="why-grid">
+        <!-- কার্ড ১ — অভিজ্ঞ শিক্ষক (বেগুনি) -->
+        <div class="why-card" style="--why-bg-start:#F1EAFF; --why-bg-end:#ffffff; --why-tint:rgba(124,58,237,.14)">
+          <div class="why-icon-box" style="background:linear-gradient(145deg,#A78BFA,#6D28D9); --glow-color:rgba(109,40,217,.5)">
+            <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10 12 5 2 10l10 5 10-5Z"/><path d="M6 12.5V17c0 1.5 2.5 3 6 3s6-1.5 6-3v-4.5"/><path d="M22 10v6"/></svg>
+          </div>
+          <div class="why-text">
+            <h3>অভিজ্ঞ শিক্ষক</h3>
+            <p>অভিজ্ঞ শিক্ষকদের সাথে লাইভ ও রেকর্ডেড ক্লাসে শেখা হবে আরও সহজ।</p>
+          </div>
+        </div>
+        <!-- কার্ড ২ — সাজানো স্টাডি প্ল্যান (নীল) -->
+        <div class="why-card" style="--why-bg-start:#EAF3FF; --why-bg-end:#ffffff; --why-tint:rgba(37,99,235,.14)">
+          <div class="why-icon-box" style="background:linear-gradient(145deg,#60A5FA,#1D4ED8); --glow-color:rgba(29,78,216,.5)">
+            <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8"/><path d="M12 17v4"/><path d="M10.5 8.5v4l4-2-4-2Z" fill="#fff" stroke="none"/></svg>
+          </div>
+          <div class="why-text">
+            <h3>সাজানো স্টাডি প্ল্যান</h3>
+            <p>ভিডিও লেকচার, প্র্যাকটিস শিট ও লাইভ ক্লাস — সব এক জায়গায়।</p>
+          </div>
+        </div>
+        <!-- কার্ড ৩ — স্বল্প খরচ (কমলা) -->
+        <div class="why-card" style="--why-bg-start:#FFF3E6; --why-bg-end:#ffffff; --why-tint:rgba(217,119,6,.14)">
+          <div class="why-icon-box" style="background:linear-gradient(145deg,#FBBF60,#D97706); --glow-color:rgba(217,119,6,.5)">
+            <svg class="why-icon" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41 12 22l-9-9V4a1 1 0 0 1 1-1h9l7.59 7.59a2 2 0 0 1 0 2.82Z"/><circle cx="7.5" cy="7.5" r="1.5" fill="#fff" stroke="none"/></svg>
+          </div>
+          <div class="why-text">
+            <h3>স্বল্প খরচ</h3>
+            <p>স্বল্প খরচে সর্বোচ্চ মানের কোর্স ম্যাটেরিয়াল ও সাজেশন পাবে।</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       ফ্রি ভিডিও লেকচার সেকশন
+       প্রতিটা ভিডিও কার্ডে data-yid অ্যাট্রিবিউটে ইউটিউব ভিডিওর ১১-ডিজিটের আইডি বসাতে হয়
+       (যেমন youtube.com/watch?v=এইটুকু অংশ) — ক্লিক করলে অটো প্লে হয়ে যাবে
+       ============================================================ -->
+  <section id="videos">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">ফ্রি ভিডিও লেকচার</span>
+      </div>
+
+      <!-- ভিডিও বিভাগ ট্যাব — Google Sheet-এর "Free Class" tab থেকে automatically তৈরি হবে -->
+      <div class="pill-row" id="videoPillRow">
+        <div class="video-data-loading">ভিডিও বিভাগ লোড হচ্ছে...</div>
+      </div>
+
+      <div class="video-grid" id="videoGrid">
+        <div class="video-data-loading">ফ্রি ক্লাসের ভিডিও লোড হচ্ছে...</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       শিক্ষকবৃন্দ সেকশন — ৪ জন শিক্ষক
+       ============================================================ -->
+  <section id="teachers">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">আমাদের টিম</span>
+        <p>যারা প্রতিদিন ক্লাসে থেকে আপনার প্রস্তুতিকে এগিয়ে নেবেন।</p>
+      </div>
+      <div class="teacher-grid" id="teacherGrid" aria-live="polite">
+        <div class="teacher-data-state">শিক্ষকবৃন্দের তথ্য লোড হচ্ছে...</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       গ্যালারি সেকশন — অটো-স্ক্রলিং ইমেজ মার্কি (Drive link → auto image)
+       ============================================================ -->
+  <section id="gallery">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">গ্যালারি</span>
+      </div>
+    </div>
+    <div class="gallery-marquee-wrap" id="galleryWrap">
+      <div class="gallery-track" id="galleryTrack">
+        <div class="teacher-data-state">গ্যালারি লোড হচ্ছে...</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       শিক্ষার্থীদের মতামত — একই "gallery" টেবিলের feedback_url কলাম থেকে লোড হয়
+       (drive link → auto-format, ঠিক image_url এর মতোই)। ১:১ রেশিও, অটো-স্ক্রল —
+       গ্যালারির উল্টো দিকে, একই স্পিডে। ছবিতে ক্লিক করলে স্ক্রল থেমে মোডাল খুলবে।
+       ============================================================ -->
+  <section id="student-feedback">
+    <div class="container">
+      <div class="section-head">
+        <span class="eyebrow">শিক্ষার্থীদের মতামত</span>
+      </div>
+    </div>
+    <div class="feedback-marquee-wrap" id="feedbackWrap">
+      <div class="feedback-track" id="feedbackTrack">
+        <div class="feedback-data-state">মতামত লোড হচ্ছে...</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ইমেজ প্রিভিউ মোডাল — গ্যালারি ও ফিডব্যাক দুই মার্কির ছবির জন্যই ব্যবহৃত হয় -->
+  <div class="img-modal-overlay" id="imgModalOverlay">
+    <div class="img-modal-close" id="imgModalClose" aria-label="বন্ধ করুন">&times;</div>
+    <img id="imgModalImage" src="" alt="বড় করে দেখুন">
+  </div>
+
+  <!-- ============================================================
+       কোর্স নোটিফিকেশন / হাইলাইট পপআপ মডাল
+       course_name টেবিলে top_this = modal থাকলে ওয়েবসাইটে প্রবেশের পর ৫ সেকেন্ড স্থায়ী থাকবে
+       ============================================================ -->
+  <div class="course-popup-overlay" id="coursePopupModal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="course-popup-card">
+      <button type="button" class="course-popup-close" id="coursePopupClose" aria-label="বন্ধ করুন">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <div class="course-popup-media">
+        <img id="coursePopupImage" src="" alt="কোর্স হাইলাইট">
+      </div>
+
+      <div class="course-popup-timer-bar">
+        <div class="course-popup-timer-fill" id="coursePopupTimerFill"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- "আমাদের মেসেজ পাঠান" ফর্ম সেকশন সম্পূর্ণ সরিয়ে দেওয়া হয়েছে -->
+
+  <!-- ============================================================
+       সরাসরি কল করুন (CTA ব্যান্ড) সেকশন
+       ফোন নম্বর ২ জায়গায় আছে: বাটনে দেখানো নম্বর (ctaPhoneNumber এর জায়গা) ও
+       tel: লিংকের আসল ডায়াল নম্বর (দেশের কোডসহ) — দুটোই বদলাতে ভুলবেন না
+       ============================================================ -->
+  <section>
+    <div class="cta-band">
+      <div class="cta-left">
+        <span class="eyebrow">সরাসরি যোগাযোগ</span>
+        <p>কোর্স, ক্লাস, Special Offer অথবা যেকোনো বিষয়ে জানতে হলে এখনই যোগাযোগ করো।</p>
+      </div>
+      <div class="cta-divider"></div>
+      <div class="cta-right">
+        <a href="tel:+8801764859503" class="cta-phone">
+          <div class="call-badge">
+            <span class="ring"></span>
+            <span class="ring ring2"></span>
+            <span class="pulse"></span>
+            <span class="core">
+              <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </span>
+          </div>
+          <span class="tap-label">কল করতে ট্যাপ করুন</span>
+          <span class="num">01764-859503</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================================================
+     ফুটার / যোগাযোগ (পেজের একদম নিচের অংশ)
+     ============================================================ -->
+<footer id="contact">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <h4 style="font-family:'Baloo Da 2', sans-serif; font-weight:800; font-size:22px; color:#ffffff; margin-bottom:6px;">VISION Plus</h4>
+        <p style="color:#94a3b8;">মানসম্পন্ন শিক্ষা, সবার নাগালে।</p>
+        <!-- সোশ্যাল মিডিয়া আইকন — Facebook, YouTube, Instagram -->
+        <div class="social-row">
+          <a href="https://www.facebook.com/BBAcoaching" title="Facebook" aria-label="Facebook">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <a href="https://www.youtube.com/@bbavisioncoaching" title="YouTube" aria-label="YouTube">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          </a>
+          <a href="https://www.instagram.com" title="Instagram" aria-label="Instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <h4>যোগাযোগ</h4>
+        <p>📞 01764-859503</p>
+        <p>✉️ bbavission@gmail.com</p>
+        <p>📍 ১১২, দায়রা শরীফ আবাসিক এলাকা, (গেট-২) আজিমপুর</p>
+      </div>
+      <div>
+        <h4>শর্টকাট</h4>
+        <a href="#courses">কোর্সসমূহ</a>
+        <a href="teachers.html">শিক্ষকবৃন্দ</a>
+        <a href="#why">কেন আমরা</a>
+      </div>
+    </div>
+    <p class="copyright">© ২০২৬ VISION Plus — সর্বস্বত্ব সংরক্ষিত।</p>
+  </div>
+</footer>
+
+
+
+<!-- ===== ফ্লোটিং WhatsApp বাটন (স্থির কোর + ঘোরা রিং/পালস এনিমেশন + লাল নোটিফিকেশন ডট + হোভারে টেক্সট লেবেল) =====
+     নাম্বার বদলাতে চাইলে নিচের href এর "8801764859503" অংশটুকু বদলান
+     (দেশের কোডসহ, শুরুতে + বা ০ থাকবে না) -->
+<a href="https://wa.me/8801764859503" target="_blank" rel="noopener" class="wa-fab" aria-label="WhatsApp এ চ্যাট করুন">
+  <span class="wa-label">এখনই চ্যাট করুন</span>
+  <span class="core">
+    <span class="ring"></span>
+    <span class="ring ring2"></span>
+    <span class="pulse"></span>
+    <span class="badge"></span>
+    <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M20.52 3.449C12.831-3.984.106 1.407.101 11.892c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652a11.85 11.85 0 0 0 5.683 1.448h.005c9.435 0 14.834-11.023 8.512-18.35a11.86 11.86 0 0 0-.015-.017zM12.023 21.674h-.004a9.85 9.85 0 0 1-5.023-1.376l-.36-.214-3.741.981.999-3.648-.235-.374a9.85 9.85 0 0 1-1.51-5.24c.004-5.45 4.436-9.882 9.887-9.882 2.64 0 5.122 1.03 6.988 2.898a9.82 9.82 0 0 1 2.893 6.994c-.003 5.45-4.436 9.861-9.894 9.861z"/></svg>
+  </span>
+</a>
+
+<script src="assets/js/index.js" defer></script>
+
+</body>
+</html>

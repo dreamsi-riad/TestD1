@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<script>
+(function(){
+  try{
+    var theme = localStorage.getItem('va_theme');
+    if(theme === 'dark'){
+      document.documentElement.setAttribute('data-theme', 'dark');
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+      document.documentElement.classList.remove('dark');
+    }
+  }catch(e){}
+})();
+</script>
+<meta name="theme-color" content="#ffffff" id="metaThemeColor">
+<link rel="preload" as="image" href="assets/logo.png" fetchpriority="high">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shop Study Books & Materials | BBA VISION - VISION Plus</title>
+<meta name="description" content="BBA VISION ও VISION Plus-এর অফিসিয়াল শপ — BBA, HSC, BBS ও MBA-এর সহায়িকা বই, সাজেশন্স, টি-শার্ট ও শিক্ষা উপকরণ সরাসরি অর্ডার করুন।">
+<meta name="keywords" content="BBA VISION, VISION Plus, BBA Best Coaching, BBA best platform, BBA books, BBA study material, HSC books, BBS books, MBA books, BBA Professional books">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://visionplusbd.com/shop">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Shop Study Books & Materials | BBA VISION - VISION Plus">
+<meta property="og:description" content="BBA VISION ও VISION Plus-এর বই ও শিক্ষা উপকরণ সরাসরি ঘরে বসে অর্ডার করুন।">
+<meta property="og:url" content="https://visionplusbd.com/shop">
+<meta property="og:image" content="https://visionplusbd.com/og-image.jpg">
+<meta property="og:locale" content="bn_BD">
+
+<!-- Twitter card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Shop Books & Materials | BBA VISION - VISION Plus">
+<meta name="twitter:description" content="BBA, HSC, BBS ও MBA সহায়ক বই ও শিক্ষা উপকরণ।">
+<meta name="twitter:image" content="https://visionplusbd.com/og-image.jpg">
+
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&family=Baloo+Da+2:wght@500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Anek+Bangla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="assets/css/shop.css">
+</head>
+
+<body>
+
+    <!-- নেভবার -->
+    <header class="nav">
+        <div class="nav-inner">
+            <a href="index.html" class="brand" aria-label="VISION Plus Home">
+                <img src="assets/logo.png" alt="VISION Plus" class="brand-logo" fetchpriority="high" decoding="async">
+            </a>
+            <nav class="nav-links" id="navLinks">
+                <a href="All_Courses.html">কোর্সসমূহ</a>
+                <a href="index.html#videos">ফ্রি ক্লাস</a>
+                <a href="teachers.html">শিক্ষকবৃন্দ</a>
+                <a href="shop.html" class="active">শপ</a>
+                <a href="index.html#why">কেন আমরা</a>
+            </nav>
+            <div class="nav-actions">
+                <button type="button" class="theme-toggle-btn" id="themeToggleBtn" aria-label="নাইট মোড চালু করুন" title="নাইট মোড চালু করুন (Night Mode)">
+                    <svg class="theme-icon theme-icon--moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                    <svg class="theme-icon theme-icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"/>
+                        <line x1="12" y1="1" x2="12" y2="3"/>
+                        <line x1="12" y1="21" x2="12" y2="23"/>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                        <line x1="1" y1="12" x2="3" y2="12"/>
+                        <line x1="21" y1="12" x2="23" y2="12"/>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                    </svg>
+                </button>
+                <a href="student-login.html" class="nav-cta" id="navLoginBtn">
+                    <svg class="nav-login-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/>
+                    </svg>
+                    <span>লগইন</span>
+                </a>
+                <button class="burger" id="burgerBtn" aria-label="মেনু">☰</button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- হিরো সেকশন -->
+        <section class="hero-section">
+            <div class="container">
+                <div class="eyebrow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>
+                    </svg>
+                    VISION অফিসিয়াল মার্চেন্ডাইজ
+                </div>
+                <h1 class="hero-title">টি-শার্ট, বই ও <span>শিক্ষা উপকরণ</span></h1>
+                <p class="hero-subtitle">প্রিমিয়াম কোয়ালিটির অফিসিয়াল টি-শার্ট ও প্রয়োজনীয় একাডেমিক বই ঘরে বসেই অর্ডার করুন। দ্রুততম সময়ে সারা দেশে ডেলিভারি।</p>
+            </div>
+        </section>
+
+        <!-- শপ প্রোডাক্ট গ্রিড -->
+        <section class="shop-section">
+            <div class="container">
+                <div class="section-head-bar">
+                    <h2 class="section-head-title">
+                        উপলব্ধ প্রোডাক্টসমূহ
+                        <span class="product-count-badge" id="productCountBadge">লোড হচ্ছে...</span>
+                    </h2>
+                </div>
+
+                <div class="shop-grid" id="shopGrid">
+                    <div class="shop-status-msg" id="shopLoadingMsg">
+                        <div class="spinner"></div>
+                        প্রোডাক্ট লোড হচ্ছে...
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- অর্ডার মডাল -->
+    <div class="modal-overlay" id="orderModal">
+        <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modalProductName">
+            <button class="modal-close" id="modalCloseBtn" aria-label="বন্ধ করুন">✕</button>
+            
+            <div class="modal-product-summary">
+                <div>
+                    <span style="font-size:12px;font-weight:700;color:var(--ink-muted);text-transform:uppercase;">অর্ডার করছেন</span>
+                    <p class="modal-product-name" id="modalProductName">প্রোডাক্টের নাম</p>
+                </div>
+                <p class="modal-product-price" id="modalProductPrice">৳০</p>
+            </div>
+
+            <form id="orderForm">
+                <div class="form-row">
+                    <label for="orderName">আপনার নাম <span class="req">*</span></label>
+                    <input type="text" id="orderName" name="name" required placeholder="পুরো নাম লিখুন">
+                </div>
+                <div class="form-row">
+                    <label for="orderPhone">মোবাইল নম্বর <span class="req">*</span></label>
+                    <input type="tel" id="orderPhone" name="phone" required placeholder="01XXXXXXXXX">
+                </div>
+                <div class="form-row">
+                    <label for="orderAddress">ডেলিভারি ঠিকানা <span class="req">*</span></label>
+                    <textarea id="orderAddress" name="address" required placeholder="সম্পূর্ণ ডেলিভারি ঠিকানা (গ্রাম/এলাকা, থানা, জেলা)"></textarea>
+                </div>
+                <div class="form-row-split">
+                    <div class="form-row" id="sizeRow">
+                        <label for="orderSize">টি-শার্ট সাইজ <span class="req">*</span></label>
+                        <select id="orderSize" name="size">
+                            <option value="S">S (স্মল)</option>
+                            <option value="M" selected>M (মিডিয়াম)</option>
+                            <option value="L">L (লার্জ)</option>
+                            <option value="XL">XL (এক্সট্রা লার্জ)</option>
+                            <option value="XXL">XXL (ডাবল এক্সেল)</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <label for="orderQty">পরিমাণ <span class="req">*</span></label>
+                        <input type="number" id="orderQty" name="quantity" min="1" value="1" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="modal-submit-btn" id="orderSubmitBtn">
+                    <svg style="width:18px;height:18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                    অর্ডার কনফার্ম করুন
+                </button>
+                <p class="form-status" id="orderStatus"></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- ফুটার -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <div class="footer-brand">
+                        <img src="assets/logo.png" alt="VISION Plus" class="footer-logo">
+                    </div>
+                    <p class="footer-desc">ব্যতিক্রমী শিক্ষা পদ্ধতি, আধুনিক প্রযুক্তি ও অভিজ্ঞ শিক্ষকদের নিয়ে বাংলাদেশের বিশ্বস্ত এডুকেশন প্ল্যাটফর্ম।</p>
+                </div>
+                <div>
+                    <h4 class="footer-heading">কোর্স ক্যাটাগরি</h4>
+                    <ul class="footer-links">
+                        <li><a href="All_Courses.html?level=BBA">BBA প্রফেশনাল</a></li>
+                        <li><a href="All_Courses.html?level=HSC">HSC একাডেমিক</a></li>
+                        <li><a href="All_Courses.html?level=MBA">MBA প্রোগ্রাম</a></li>
+                        <li><a href="per-subject.html">বিষয়ভিত্তিক কোর্স</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="footer-heading">যোগাযোগ ও সাপোর্ট</h4>
+                    <p class="footer-contact-item">📞 01764-859503</p>
+                    <p class="footer-contact-item">✉️ bbavission@gmail.com</p>
+                    <p class="footer-contact-item">📍 ঢাকা, বাংলাদেশ</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p class="copyright">© ২০২৬ VISION Plus — সর্বস্বত্ব সংরক্ষিত।</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/shop.js" defer></script>
+</body>
+</html>

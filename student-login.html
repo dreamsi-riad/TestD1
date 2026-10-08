@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<script>
+(function(){
+  try{
+    var theme = localStorage.getItem('va_theme');
+    if(theme === 'dark'){
+      document.documentElement.setAttribute('data-theme', 'dark');
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'light');
+      document.documentElement.classList.remove('dark');
+    }
+  }catch(e){}
+})();
+</script>
+<meta name="theme-color" content="#ffffff" id="metaThemeColor">
+<link rel="preload" as="image" href="assets/logo.png" fetchpriority="high">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Login & Registration | BBA VISION - VISION Plus</title>
+<meta name="description" content="BBA VISION ও VISION Plus-এর অফিসিয়াল স্টুডেন্ট পোর্টাল। BBA, HSC, BBS ও MBA কোর্সের লাইভ ক্লাস, রুটিন, নোটিশ এবং পেমেন্ট ড্যাশবোর্ড।">
+<meta name="keywords" content="BBA VISION, VISION Plus, BBA Best Coaching, BBA best platform, BBA student login, student portal, HSC, BBS, MBA, BBA Professional">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://visionplusbd.com/student-login">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Student Login & Registration | BBA VISION - VISION Plus">
+<meta property="og:description" content="BBA VISION ও VISION Plus-এর অফিসিয়াল স্টুডেন্ট পোর্টাল।">
+<meta property="og:url" content="https://visionplusbd.com/student-login">
+<meta property="og:image" content="https://visionplusbd.com/og-image.jpg">
+<meta property="og:locale" content="bn_BD">
+
+<link rel="icon" type="image/x-icon" href="/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Bangla:ital@0;1&family=Baloo+Da+2:wght@500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Anek+Bangla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/student-login.css">
+</head>
+<body>
+<div class="loading-overlay" id="loadingOverlay" aria-live="polite" aria-busy="true">
+  <div class="loading-box">
+    <div class="loading-text" id="loadingText">তথ্য লোড হচ্ছে...</div>
+    <div class="loading-track">
+      <div class="loading-progress"></div>
+    </div>
+  </div>
+</div>
+
+<div class="device-modal-overlay" id="deviceModalOverlay" role="dialog" aria-modal="true" aria-labelledby="deviceModalTitle">
+  <div class="device-modal-box">
+    <div class="device-modal-icon">⚠️</div>
+    <div class="device-modal-title" id="deviceModalTitle">গুরুত্বপূর্ণ সতর্কতা</div>
+    <div class="device-modal-text">
+      আপনি শুধুমাত্র ১টি ডিভাইসে লগইন করে ক্লাস করতে পারবেন। একাধিক ডিভাইসে লগইন করলে আপনার কোর্স লক (Locked) হয়ে যাবে। আপনি কি এই ডিভাইসের মাধ্যমে লগইন করতে ইচ্ছুক?
+    </div>
+    <div class="device-modal-actions">
+      <button type="button" class="device-modal-cancel" id="deviceModalCancelBtn">Cancel</button>
+      <button type="button" class="device-modal-agree" id="deviceModalAgreeBtn" disabled>Yes, I Agree (10)</button>
+    </div>
+  </div>
+</div>
+
+<div class="device-modal-overlay" id="otpModalOverlay" role="dialog" aria-modal="true" aria-labelledby="otpModalTitle">
+  <div class="device-modal-box">
+    <div class="device-modal-icon">📩</div>
+    <div class="device-modal-title" id="otpModalTitle">মোবাইল Verify করুন</div>
+    <div class="device-modal-text" id="otpModalText">
+      <span id="otpModalMobile"></span> নম্বরে ৬ সংখ্যার OTP পাঠানো হয়েছে। নিচে কোডটি লিখুন।
+    </div>
+    <input type="text" id="otpInput" inputmode="numeric" pattern="[0-9]*" maxlength="6"
+           autocomplete="one-time-code" placeholder=" ****** " class="otp-input">
+    <p class="form-status" id="otpModalStatus"></p>
+    <div class="device-modal-actions">
+      <button type="button" class="device-modal-cancel" id="otpModalCancelBtn">Cancel</button>
+      <button type="button" class="device-modal-agree" id="otpModalVerifyBtn">Verify করুন</button>
+    </div>
+    <p class="switch-hint" style="margin-top:12px;">
+      OTP পাননি? <button type="button" class="otp-resend-btn" id="otpResendBtn" disabled>আবার পাঠান (60)</button>
+    </p>
+  </div>
+</div>
+
+<div class="device-modal-overlay" id="paymentReminderModalOverlay" role="dialog" aria-modal="true" aria-labelledby="paymentReminderModalTitle">
+  <div class="device-modal-box">
+    <div class="device-modal-icon">🔔</div>
+    <div class="device-modal-title" id="paymentReminderModalTitle">পেমেন্ট রিমাইন্ডার</div>
+    <div class="device-modal-text" id="paymentReminderModalText"></div>
+    <div class="device-modal-actions">
+      <button type="button" class="device-modal-agree" id="paymentReminderModalOkBtn" style="width:100%;">ঠিক আছে, বুঝেছি</button>
+    </div>
+  </div>
+</div>
+
+
+<div id="iabBanner" style="display:none;background:linear-gradient(135deg,#FEF3C7,#FDE68A);color:#92400E;padding:12px 16px;text-align:center;font-size:13.5px;font-weight:600;border-bottom:1.5px solid #F59E0B;line-height:1.6;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+  ⚠️ আপনি Facebook অ্যাপের ভেতরে আছেন!<br>
+  ক্লাস দেখা ও PDF ডাউনলোডের সুবিধার্থে Chrome-এ ওপেন করুন অথবা উপরে ৩-ডট (⋮) চেপে 'Open in browser' বেছে নিন:<br>
+  <a id="iabChromeBtn" href="intent://visionplusbd.com/student-login.html#Intent;scheme=https;package=com.android.chrome;end" style="display:inline-block;margin-top:6px;padding:6px 16px;background:#2563EB;color:#fff;text-decoration:none;border-radius:6px;font-weight:700;font-size:13px;box-shadow:0 2px 6px rgba(37,99,235,0.3);">🌐 Google Chrome-এ ওপেন করুন</a>
+</div>
+
+
+<header class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="brand" aria-label="VISION Plus Home">
+      <img src="assets/logo.png" alt="VISION Plus" class="brand-logo" fetchpriority="high" decoding="async">
+    </a>
+    <div class="nav-actions">
+      <button type="button" class="theme-toggle-btn" id="themeToggleBtn" aria-label="নাইট মোড চালু করুন" title="নাইট মোড চালু করুন (Night Mode)">
+        <svg class="theme-icon theme-icon--moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <svg class="theme-icon theme-icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+      </button>
+      <a href="index.html" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        <span>হোমে ফিরে যান</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section class="page-head" id="authPageHead">
+    <div class="page-badge">স্টুডেন্ট পোর্টাল</div>
+    <h1>স্টুডেন্ট রেজিস্ট্রেশন ও লগইন</h1>
+    <p>নতুন হলে রেজিস্ট্রেশন করুন, আগে থেকে অ্যাকাউন্ট থাকলে মোবাইল নম্বর ও পাসওয়ার্ড দিয়ে লগইন করুন।</p>
+  </section>
+
+  <section class="auth-wrap">
+    <div class="ambient-orb ambient-orb-1" aria-hidden="true"></div>
+    <div class="ambient-orb ambient-orb-2" aria-hidden="true"></div>
+    <div class="container">
+      <div class="auth-box login-mode">
+
+        <div class="tab-switch" id="tabSwitch">
+          <button type="button" class="tab-btn" id="tabLoginBtn">লগইন</button>
+          <button type="button" class="tab-btn" id="tabRegisterBtn">রেজিস্ট্রেশন</button>
+        </div>
+
+        <div class="panel" id="registerPanel">
+          <form id="regForm">
+            <div class="form-grid">
+
+              <div class="form-row full">
+                <label for="reg_name">নাম <span class="req">*</span></label>
+                <input type="text" id="reg_name" name="name" placeholder="যেমনঃ মাহবুবুজ্জামান রিয়াদ" required>
+              </div>
+
+              <div class="form-row">
+                <label for="reg_level">লেভেল <span class="req">*</span></label>
+                <select id="reg_level" name="level" required>
+                  <option value="" disabled selected>নির্বাচন করুন</option>
+                  <option value="HSC">HSC</option>
+                  <option value="BBA">BBA</option>
+                  <option value="MBA">MBA</option>
+                  <option value="BBS">BBS</option>
+                  <option value="BBA Professional">BBA Professional</option>
+                </select>
+              </div>
+
+              <div class="form-row">
+                <label for="reg_department">ডিপার্টমেন্ট <span class="req">*</span></label>
+                <select id="reg_department" name="department" required>
+                  <option value="" disabled selected>নির্বাচন করুন</option>
+                  <option value="Accounting">Accounting</option>
+                  <option value="Management">Management</option>
+                  <option value="Marketing">Marketing</option>
+                  <option value="Finance">Finance</option>
+                </select>
+              </div>
+
+              <div class="form-row">
+                <label for="reg_year">বর্ষ <span class="req">*</span></label>
+                <select id="reg_year" name="year" required>
+                  <option value="" disabled selected>নির্বাচন করুন</option>
+                  <option value="1st Year">1st Year</option>
+                  <option value="2nd Year">2nd Year</option>
+                  <option value="3rd Year">3rd Year</option>
+                  <option value="4th Year">4th Year</option>
+                </select>
+              </div>
+
+              <div class="form-row">
+                <label for="reg_session">সেশন</label>
+                <input type="text" id="reg_session" name="session" placeholder="যেমন: ২০২৫-২৬">
+              </div>
+
+              <div class="form-row full">
+                <label for="reg_institute">প্রতিষ্ঠানের নাম</label>
+                <input type="text" id="reg_institute" name="institute" placeholder="স্কুল/কলেজ/বিশ্ববিদ্যালয়">
+              </div>
+
+              <div class="form-row">
+                <label for="reg_mobile">মোবাইল নম্বর <span class="req">*</span></label>
+                <input type="tel" id="reg_mobile" name="mobile" placeholder="01XXXXXXXXX" required>
+              </div>
+
+              <div class="form-row">
+                <label for="reg_email">ইমেইল</label>
+                <input type="email" id="reg_email" name="email" placeholder="যেমন: example@mail.com">
+              </div>
+
+              <div class="form-row full">
+                <label for="reg_facebook">Facebook ID Link</label>
+                <input type="text" id="reg_facebook" name="facebook" placeholder="যেমন: https://facebook.com/yourprofile">
+              </div>
+
+              <div class="form-row full">
+                <label for="reg_address">ঠিকানা</label>
+                <input type="text" id="reg_address" name="address" placeholder="বর্তমান ঠিকানা লিখুন">
+              </div>
+
+              <div class="form-row full">
+                <label for="reg_password">পাসওয়ার্ড <span class="req">*</span></label>
+                <div class="pwd-input-wrap">
+                  <input type="password" id="reg_password" name="password" placeholder="আপনার পাসওয়ার্ড দিন" required autocomplete="new-password">
+                  <button type="button" class="pwd-toggle-btn" onclick="togglePasswordVisibility('reg_password', this)" title="Show/Hide Password" aria-label="Toggle password visibility">
+                    <svg class="eye-open" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    <svg class="eye-closed" style="display:none;" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="regSubmitBtn">রেজিস্ট্রেশন করুন</button>
+            <p class="form-status" id="regStatus"></p>
+          </form>
+          <p class="switch-hint">আগে থেকে অ্যাকাউন্ট আছে? <button type="button" id="goLoginLink">লগইন করুন</button></p>
+        </div>
+
+        <div class="panel" id="loginPanel">
+          <div class="login-layout-split">
+            <!-- Left Side: Modern Aesthetic Study Art Illustration Showcase -->
+            <div class="study-art-card" id="loginStudyArtCard">
+              <div class="study-art-glow" aria-hidden="true"></div>
+
+              <div class="study-illustration-wrap">
+                <svg class="study-illustration-svg" viewBox="0 0 280 200" aria-label="মডার্ন স্টাডি আর্ট ইলাস্ট্রেশন">
+                  <defs>
+                    <linearGradient id="deskGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#E2E8F0"/>
+                      <stop offset="100%" stop-color="#CBD5E1"/>
+                    </linearGradient>
+                    <linearGradient id="laptopBodyGrad" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stop-color="#475569"/>
+                      <stop offset="100%" stop-color="#1E293B"/>
+                    </linearGradient>
+                    <linearGradient id="laptopScreenGrad" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stop-color="#1E3A8A"/>
+                      <stop offset="50%" stop-color="#2563EB"/>
+                      <stop offset="100%" stop-color="#0284C7"/>
+                    </linearGradient>
+                    <linearGradient id="gradCapGrad" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stop-color="#0F172A"/>
+                      <stop offset="60%" stop-color="#1E3A8A"/>
+                      <stop offset="100%" stop-color="#2563EB"/>
+                    </linearGradient>
+                    <linearGradient id="goldTasselGrad" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stop-color="#F59E0B"/>
+                      <stop offset="100%" stop-color="#FCD34D"/>
+                    </linearGradient>
+                    <linearGradient id="bookCoverGrad" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stop-color="#E11D48"/>
+                      <stop offset="100%" stop-color="#FB7185"/>
+                    </linearGradient>
+                    <linearGradient id="bookPagesGrad" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stop-color="#FFFFFF"/>
+                      <stop offset="100%" stop-color="#F1F5F9"/>
+                    </linearGradient>
+                    <linearGradient id="notesCoverGrad" x1="0" y1="0" x2="1" y2="1">
+                      <stop offset="0%" stop-color="#4F46E5"/>
+                      <stop offset="100%" stop-color="#7C3AED"/>
+                    </linearGradient>
+                  </defs>
+
+                  <!-- Desk Surface & Floor Ambient Shadow -->
+                  <ellipse cx="140" cy="182" rx="122" ry="14" fill="rgba(15,23,42,0.06)"/>
+                  <path d="M 36 172 L 244 172 L 236 182 L 44 182 Z" fill="url(#deskGrad)"/>
+                  <line x1="36" y1="172" x2="244" y2="172" stroke="rgba(255,255,255,0.8)" stroke-width="1.5"/>
+
+                  <!-- Desk Plant (Left) -->
+                  <path d="M 64 163 L 74 163 L 72 172 L 66 172 Z" fill="#F97316"/>
+                  <path d="M 69 163 C 65 154, 59 152, 58 156 C 62 159, 66 161, 69 163 Z" fill="#10B981"/>
+                  <path d="M 69 163 C 73 153, 79 152, 80 156 C 76 159, 72 161, 69 163 Z" fill="#34D399"/>
+
+                  <!-- Modern Laptop on Desk -->
+                  <path d="M 94 170 L 186 170 L 194 174 L 86 174 Z" fill="url(#laptopBodyGrad)"/>
+                  <rect x="132" y="171" width="16" height="2" rx="1" fill="#94A3B8"/>
+
+                  <!-- Laptop Screen Base & Bezel -->
+                  <rect x="103" y="111" width="74" height="50" rx="5" fill="#0F172A" stroke="#334155" stroke-width="2"/>
+                  <!-- Glowing Screen -->
+                  <rect class="laptop-screen-content" id="laptopScreen" x="106" y="114" width="68" height="44" rx="3" fill="url(#laptopScreenGrad)"/>
+
+                  <!-- Screen Content: Analytics Dashboard & Waves -->
+                  <g opacity="0.92">
+                    <line x1="112" y1="148" x2="168" y2="148" stroke="#60A5FA" stroke-width="1" stroke-dasharray="2 2"/>
+                    <path d="M 112 144 Q 124 134, 134 138 T 152 125 T 168 123" fill="none" stroke="#FBBF24" stroke-width="2" stroke-linecap="round"/>
+                    <rect class="screen-bar-1" x="114" y="136" width="5" height="11" rx="1.5" fill="#67E8F9"/>
+                    <rect class="screen-bar-2" x="122" y="130" width="5" height="17" rx="1.5" fill="#38BDF8"/>
+                    <rect class="screen-bar-3" x="130" y="124" width="5" height="23" rx="1.5" fill="#60A5FA"/>
+                    <circle cx="168" cy="123" r="2.5" fill="#FFFFFF"/>
+                  </g>
+
+                  <!-- Coffee Mug with Rising Steam (Right) -->
+                  <rect x="200" y="156" width="13" height="15" rx="3.5" fill="#3B82F6"/>
+                  <path d="M 213 159 C 217 159, 217 166, 213 166" fill="none" stroke="#3B82F6" stroke-width="2"/>
+                  <path class="coffee-steam" d="M 206 151 Q 208 147 205 142" stroke="#93C5FD" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+
+                  <!-- Floating Element 1: Graduation Cap with Gold Tassel (Top Right) -->
+                  <g class="floating-grad-cap" id="sceneGradCap">
+                    <polygon points="190,30 234,43 190,56 146,43" fill="url(#gradCapGrad)" filter="drop-shadow(0 6px 10px rgba(15,23,42,0.28))"/>
+                    <path d="M 170 50 L 170 63 C 170 72, 210 72, 210 63 L 210 50 Z" fill="#1E293B"/>
+                    <circle cx="190" cy="43" r="3" fill="url(#goldTasselGrad)"/>
+                    <path class="cap-tassel" d="M 190 43 Q 214 50 218 68 L 220 78" fill="none" stroke="url(#goldTasselGrad)" stroke-width="2.2" stroke-linecap="round"/>
+                    <circle cx="220" cy="78" r="3" fill="#F59E0B"/>
+                  </g>
+
+                  <!-- Floating Element 2: Open Glowing Knowledge Book (Top Left) -->
+                  <g class="floating-book" id="sceneFloatingBook">
+                    <ellipse class="book-glow-aura" cx="52" cy="56" rx="36" ry="26" fill="rgba(37,99,235,0.15)" filter="blur(6px)"/>
+                    <!-- Book cover -->
+                    <path d="M 26 63 Q 52 67 52 52 Q 52 67 78 63 L 76 46 Q 52 50 52 37 Q 52 50 28 46 Z" fill="url(#bookCoverGrad)" filter="drop-shadow(0 4px 8px rgba(225,29,72,0.2))"/>
+                    <!-- Book pages -->
+                    <path d="M 30 45 Q 52 49 52 37 Q 52 49 74 45 L 72 61 Q 52 65 52 52 Q 52 65 32 61 Z" fill="url(#bookPagesGrad)"/>
+                    <line x1="36" y1="48" x2="48" y2="47" stroke="#94A3B8" stroke-width="1.2" stroke-linecap="round"/>
+                    <line x1="36" y1="53" x2="48" y2="52" stroke="#94A3B8" stroke-width="1.2" stroke-linecap="round"/>
+                    <line x1="36" y1="58" x2="46" y2="57" stroke="#94A3B8" stroke-width="1.2" stroke-linecap="round"/>
+                    <line x1="56" y1="47" x2="68" y2="48" stroke="#94A3B8" stroke-width="1.2" stroke-linecap="round"/>
+                    <line x1="56" y1="52" x2="68" y2="53" stroke="#94A3B8" stroke-width="1.2" stroke-linecap="round"/>
+                    <line x1="58" y1="57" x2="68" y2="58" stroke="#94A3B8" stroke-width="1.2" stroke-linecap="round"/>
+                    <!-- Gold Ribbon -->
+                    <path d="M 52 37 Q 50 48 54 58 L 52 65 L 50 58" fill="#F59E0B"/>
+                  </g>
+
+                  <!-- Floating Element 3: Spiral Study Notebook & Angled Student Pencil (Middle Right) -->
+                  <g class="floating-study-notes" id="sceneStudyNotes">
+                    <!-- Soft Backdrop Glow Aura -->
+                    <ellipse cx="230" cy="116" rx="28" ry="22" fill="rgba(99,102,241,0.14)" filter="blur(5px)"/>
+
+                    <!-- Spiral Notebook (Slightly tilted) -->
+                    <g transform="rotate(5 226 114)">
+                      <!-- Colorful Sticky Bookmark Tabs on Top -->
+                      <rect x="220" y="87" width="7" height="6" rx="1.5" fill="#10B981"/>
+                      <rect x="229" y="87" width="7" height="6" rx="1.5" fill="#F59E0B"/>
+                      <rect x="238" y="88" width="7" height="5" rx="1.5" fill="#EC4899"/>
+
+                      <!-- Notebook Back Cover -->
+                      <rect x="206" y="91" width="44" height="50" rx="5" fill="url(#notesCoverGrad)" filter="drop-shadow(0 5px 12px rgba(79,70,229,0.22))"/>
+
+                      <!-- Notebook Inner Page -->
+                      <rect class="notes-paper" x="211" y="94" width="36" height="44" rx="3.5" fill="#FFFFFF"/>
+
+                      <!-- Accent Header Band -->
+                      <rect class="notes-band" x="214" y="97" width="30" height="3.5" rx="1.5" fill="#E0E7FF"/>
+
+                      <!-- Lined Rules (Abstract vector study lines, NO text) -->
+                      <line class="notes-line" x1="215" y1="105" x2="239" y2="105" stroke="#CBD5E1" stroke-width="1.2" stroke-linecap="round"/>
+                      <line class="notes-line" x1="215" y1="111" x2="239" y2="111" stroke="#CBD5E1" stroke-width="1.2" stroke-linecap="round"/>
+                      <line class="notes-line" x1="215" y1="117" x2="235" y2="117" stroke="#CBD5E1" stroke-width="1.2" stroke-linecap="round"/>
+                      <line class="notes-line" x1="215" y1="123" x2="238" y2="123" stroke="#CBD5E1" stroke-width="1.2" stroke-linecap="round"/>
+                      <line class="notes-line" x1="215" y1="129" x2="232" y2="129" stroke="#CBD5E1" stroke-width="1.2" stroke-linecap="round"/>
+
+                      <!-- Twin Spiral Ring Coils on Left Spine -->
+                      <g class="notes-spiral" fill="#94A3B8" stroke="#64748B" stroke-width="0.5">
+                        <rect x="204" y="97" width="5.5" height="2.2" rx="1.1"/>
+                        <rect x="204" y="103.5" width="5.5" height="2.2" rx="1.1"/>
+                        <rect x="204" y="110" width="5.5" height="2.2" rx="1.1"/>
+                        <rect x="204" y="116.5" width="5.5" height="2.2" rx="1.1"/>
+                        <rect x="204" y="123" width="5.5" height="2.2" rx="1.1"/>
+                        <rect x="204" y="129.5" width="5.5" height="2.2" rx="1.1"/>
+                      </g>
+                    </g>
+
+                    <!-- Angled Student Pencil Floating Beside Notebook -->
+                    <g class="floating-pencil" transform="rotate(-30 252 122)">
+                      <!-- Pencil Body (Golden Yellow Hexagonal Shaft) -->
+                      <rect x="249" y="100" width="6" height="30" rx="1" fill="#F59E0B"/>
+                      <rect x="251" y="100" width="2" height="30" fill="#FBBF24"/>
+                      <!-- Metal Ferrule -->
+                      <rect x="249" y="96" width="6" height="4" fill="#CBD5E1"/>
+                      <line x1="249" y1="98" x2="255" y2="98" stroke="#94A3B8" stroke-width="0.8"/>
+                      <!-- Pink Eraser -->
+                      <rect x="249" y="92" width="6" height="4.5" rx="1.8" fill="#F43F5E"/>
+                      <!-- Sharpened Wood Cone Tip -->
+                      <polygon points="249,130 255,130 252,137" fill="#FDE68A"/>
+                      <!-- Graphite Lead Point -->
+                      <polygon points="250.8,134.5 253.2,134.5 252,138" fill="#1E293B"/>
+                    </g>
+                  </g>
+
+                  <!-- Floating Element 4: Rolled Diploma / Certificate (Middle Left) -->
+                  <g class="floating-diploma" id="sceneDiploma">
+                    <rect x="22" y="118" width="38" height="13" rx="6.5" fill="#FEF3C7" stroke="#F59E0B" stroke-width="1.2" filter="drop-shadow(0 4px 8px rgba(245,158,11,0.2))"/>
+                    <rect x="37" y="117" width="8" height="15" rx="2" fill="#EF4444"/>
+                    <path d="M 41 132 L 38 138 L 41 136 L 44 138 Z" fill="#EF4444"/>
+                  </g>
+
+                  <!-- Sparkles (Golden & Cyan Stars) -->
+                  <path class="sparkle-star sparkle-star-1" d="M 120 40 Q 120 47 127 47 Q 120 47 120 54 Q 120 47 113 47 Q 120 47 120 40 Z" fill="#F59E0B"/>
+                  <path class="sparkle-star sparkle-star-2" d="M 256 68 Q 256 74 262 74 Q 256 74 256 80 Q 256 74 250 74 Q 256 74 256 68 Z" fill="#38BDF8"/>
+                  <path class="sparkle-star sparkle-star-3" d="M 82 86 Q 82 91 87 91 Q 82 91 82 96 Q 82 91 77 91 Q 82 91 82 86 Z" fill="#F59E0B"/>
+                </svg>
+              </div>
+
+              <!-- 4 Feature Badges as requested -->
+              <div class="study-features-row">
+                <div class="study-feat-pill">
+                  <span class="feat-ico">🎥</span>
+                  <span class="feat-txt">ইন্টারেক্টিভ লাইভ ক্লাস</span>
+                </div>
+                <div class="study-feat-pill">
+                  <span class="feat-ico">⚡</span>
+                  <span class="feat-txt">স্পেশাল ওয়ান শট ক্লাস</span>
+                </div>
+                <div class="study-feat-pill">
+                  <span class="feat-ico">📝</span>
+                  <span class="feat-txt">এক্সাম স্পেশাল শর্ট সাজেশন</span>
+                </div>
+                <div class="study-feat-pill">
+                  <span class="feat-ico">💬</span>
+                  <span class="feat-txt">২৪/৭ সাপোর্ট</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Side: Login Form -->
+            <div class="login-form-side">
+              <div class="login-header-mini">
+                <h2 class="login-title">স্টুডেন্ট লগইন</h2>
+                <p class="login-subtitle">আপনার নিবন্ধিত মোবাইল নম্বর ও পাসওয়ার্ড দিন</p>
+              </div>
+
+              <form id="loginForm">
+                <div class="form-row full">
+                  <label for="login_mobile">মোবাইল নম্বর <span class="req">*</span></label>
+                  <div class="input-with-icon">
+                    <span class="input-leading-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                      </svg>
+                    </span>
+                    <input type="tel" id="login_mobile" name="mobile" placeholder="01XXXXXXXXX" required autocomplete="username">
+                  </div>
+                </div>
+
+                <div class="form-row full">
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                    <label for="login_password" style="margin-bottom:0;">পাসওয়ার্ড <span class="req">*</span></label>
+                    <button type="button" class="forgot-pass-link" id="goForgotLink">পাসওয়ার্ড ভুলে গেছেন?</button>
+                  </div>
+                  <div class="pwd-input-wrap input-with-icon">
+                    <span class="input-leading-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                      </svg>
+                    </span>
+                    <input type="password" id="login_password" name="password" placeholder="আপনার পাসওয়ার্ড দিন" required autocomplete="current-password">
+                    <button type="button" class="pwd-toggle-btn" onclick="togglePasswordVisibility('login_password', this)" title="Show/Hide Password" aria-label="Toggle password visibility">
+                      <svg class="eye-open" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                      <svg class="eye-closed" style="display:none;" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                    </button>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary" id="loginSubmitBtn">লগইন করুন</button>
+                <p class="form-status" id="loginStatus"></p>
+              </form>
+
+              <p class="switch-hint">অ্যাকাউন্ট নেই? <button type="button" id="goRegisterLink">রেজিস্ট্রেশন করুন</button></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel" id="forgotPanel">
+          <div class="forgot-header">
+            <button type="button" class="forgot-back-btn" id="forgotBackBtn">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+              <span>লগইনে ফিরে যান</span>
+            </button>
+            <h3 class="forgot-title">পাসওয়ার্ড রিসেট</h3>
+            <p class="forgot-subtitle" id="forgotSubTitle">আপনার নিবন্ধিত মোবাইল নম্বর দিন। আমরা ভেরিফিকেশনের জন্য একটি OTP পাঠাবো।</p>
+          </div>
+
+          <!-- Step Indicator -->
+          <div class="forgot-steps-bar">
+            <div class="forgot-step active" id="fStepIndicator1"><span class="step-num">১</span><span class="step-txt">মোবাইল</span></div>
+            <div class="forgot-step-line" id="fStepLine1"></div>
+            <div class="forgot-step" id="fStepIndicator2"><span class="step-num">২</span><span class="step-txt">OTP যাচাই</span></div>
+            <div class="forgot-step-line" id="fStepLine2"></div>
+            <div class="forgot-step" id="fStepIndicator3"><span class="step-num">৩</span><span class="step-txt">নতুন পাসওয়ার্ড</span></div>
+          </div>
+
+          <!-- Step 1: Enter Mobile -->
+          <form id="forgotStep1Form">
+            <div class="form-row full">
+              <label for="forgot_mobile">মোবাইল নম্বর <span class="req">*</span></label>
+              <input type="tel" id="forgot_mobile" placeholder="01XXXXXXXXX" required autocomplete="tel">
+            </div>
+            <button type="submit" class="btn btn-primary" id="forgotStep1Btn">OTP পাঠান</button>
+          </form>
+
+          <!-- Step 2: Verify OTP -->
+          <form id="forgotStep2Form" style="display:none;">
+            <div class="form-row full">
+              <div class="otp-notice-box">
+                <span class="otp-notice-icon">📱</span>
+                <div><strong id="forgotOtpTargetMobile">01XXXXXXXXX</strong> নম্বরে পাঠানো ৬ সংখ্যার OTP কোডটি লিখুন:</div>
+              </div>
+              <input type="text" id="forgot_otp" inputmode="numeric" pattern="[0-9]*" maxlength="6" autocomplete="one-time-code" placeholder="------" class="otp-input-field" required>
+            </div>
+            <button type="submit" class="btn btn-primary" id="forgotStep2Btn">OTP যাচাই করুন</button>
+            <p class="switch-hint" style="margin-top:14px;">
+              OTP পাননি? <button type="button" class="otp-resend-btn" id="forgotResendBtn" disabled>পুনরায় পাঠান (৬০)</button>
+            </p>
+          </form>
+
+          <!-- Step 3: Set New Password -->
+          <form id="forgotStep3Form" style="display:none;">
+            <div class="form-row full">
+              <label for="forgot_new_password">নতুন পাসওয়ার্ড <span class="req">*</span></label>
+              <div class="pwd-input-wrap">
+                <input type="password" id="forgot_new_password" placeholder="কমপক্ষে ৪ অক্ষরের নতুন পাসওয়ার্ড" required autocomplete="new-password">
+                <button type="button" class="pwd-toggle-btn" onclick="togglePasswordVisibility('forgot_new_password', this)" title="Show/Hide Password" aria-label="Toggle password visibility">
+                  <svg class="eye-open" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg class="eye-closed" style="display:none;" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                </button>
+              </div>
+            </div>
+            <div class="form-row full">
+              <label for="forgot_confirm_password">নতুন পাসওয়ার্ড নিশ্চিত করুন <span class="req">*</span></label>
+              <div class="pwd-input-wrap">
+                <input type="password" id="forgot_confirm_password" placeholder="পাসওয়ার্ডটি পুনরায় লিখুন" required autocomplete="new-password">
+                <button type="button" class="pwd-toggle-btn" onclick="togglePasswordVisibility('forgot_confirm_password', this)" title="Show/Hide Password" aria-label="Toggle password visibility">
+                  <svg class="eye-open" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                  <svg class="eye-closed" style="display:none;" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                </button>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" id="forgotStep3Btn">পাসওয়ার্ড সংরক্ষণ করুন</button>
+          </form>
+
+          <p class="form-status" id="forgotStatus"></p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="auth-wrap" id="dashboardSection" style="display:none;">
+    <div class="container">
+      <div class="auth-box">
+        <div class="dash-head-v2" id="dashHeadV2">
+          <div class="profile-panel">
+            <div class="profile-panel-avatar" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <defs>
+                  <linearGradient id="capDomeGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#eef4ff"/>
+                    <stop offset="100%" stop-color="#9db8f2"/>
+                  </linearGradient>
+                  <linearGradient id="capBoardGrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#ffffff"/>
+                    <stop offset="100%" stop-color="#c3d3fb"/>
+                  </linearGradient>
+                  <linearGradient id="capTasselGrad" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#ffe28f"/>
+                    <stop offset="100%" stop-color="#f2ac2b"/>
+                  </linearGradient>
+                  <filter id="capShadow" x="-60%" y="-60%" width="220%" height="220%">
+                    <feDropShadow dx="0" dy="0.6" stdDeviation="0.5" flood-color="#0b1740" flood-opacity="0.5"/>
+                  </filter>
+                </defs>
+                <g filter="url(#capShadow)">
+                  <path d="M5 10.5V16c0 1.5 3 3.5 7 3.5s7-2 7-3.5v-5.5" fill="url(#capDomeGrad)" stroke="#213b82" stroke-width="0.3"></path>
+                  <path d="M12 3 1 8l11 5 11-5-11-5Z" fill="url(#capBoardGrad)" stroke="#213b82" stroke-width="0.25"></path>
+                  <circle cx="12" cy="8" r="0.9" fill="url(#capTasselGrad)"></circle>
+                  <path d="M20 8v4.3" stroke="url(#capTasselGrad)" stroke-width="0.8" stroke-linecap="round"></path>
+                  <path d="M20 12.3c-.55.6-.55 1.5 0 2.1.55.6 1.4.55 1.7-.1" fill="none" stroke="url(#capTasselGrad)" stroke-width="0.8" stroke-linecap="round"></path>
+                </g>
+              </svg>
+            </div>
+            <span class="profile-panel-label">Profile</span>
+          </div>
+
+          <div class="profile-main">
+            <div class="profile-main-top">
+              <div class="dash-welcome">
+                <h2 id="dashName">—</h2>
+                <p>VISION Plus-এ স্বাগতম</p>
+              </div>
+              <button type="button" class="logout-link-btn" id="logoutBtn">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><path d="M16 17l5-5-5-5"></path><path d="M21 12H9"></path></svg>
+                লগআউট করুন
+              </button>
+            </div>
+
+            <div class="info-pill-row">
+              <!-- 1. Program (BBA) - 3D Icon -->
+              <div class="info-pill" title="আপনার প্রোগ্রাম">
+                <span class="info-pill-icon icon-blue" aria-hidden="true">
+                  <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <linearGradient id="pgCapTop" x1="10" y1="12" x2="54" y2="28" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#3B82F6"/>
+                        <stop offset="50%" stop-color="#2563EB"/>
+                        <stop offset="100%" stop-color="#1D4ED8"/>
+                      </linearGradient>
+                      <linearGradient id="pgCapBase" x1="18" y1="26" x2="46" y2="42" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#1E40AF"/>
+                        <stop offset="100%" stop-color="#0F172A"/>
+                      </linearGradient>
+                      <linearGradient id="pgTassel" x1="32" y1="16" x2="50" y2="38" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#FEF08A"/>
+                        <stop offset="50%" stop-color="#F59E0B"/>
+                        <stop offset="100%" stop-color="#B45309"/>
+                      </linearGradient>
+                      <linearGradient id="pgBook" x1="16" y1="44" x2="48" y2="58" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#60A5FA"/>
+                        <stop offset="100%" stop-color="#2563EB"/>
+                      </linearGradient>
+                      <filter id="pgShadow" x="0" y="0" width="64" height="64" filterUnits="userSpaceOnUse">
+                        <feDropShadow dx="0" dy="3.5" stdDeviation="3.5" flood-color="#1D4ED8" flood-opacity="0.32"/>
+                      </filter>
+                    </defs>
+                    <ellipse cx="32" cy="57" rx="19" ry="3.5" fill="#1E40AF" fill-opacity="0.22"/>
+                    <path d="M14 46 L32 53 L50 46 L50 50 L32 57 L14 50 Z" fill="#1E3A8A"/>
+                    <path d="M15 44 L32 50 L49 44 L49 47 L32 53 L15 47 Z" fill="#FFFFFF" fill-opacity="0.95"/>
+                    <path d="M14 42 L32 48 L50 42 L48 40 L32 45 L16 40 Z" fill="url(#pgBook)"/>
+                    <path d="M21 26 C21 37 43 37 43 26 L43 32 C43 41 21 41 21 32 Z" fill="url(#pgCapBase)"/>
+                    <path d="M32 9 L55 21 L32 33 L9 21 Z" fill="url(#pgCapTop)" filter="url(#pgShadow)"/>
+                    <path d="M32 11 L51 21 L32 31 L13 21 Z" fill="#93C5FD" fill-opacity="0.28"/>
+                    <ellipse cx="32" cy="21" rx="2.8" ry="1.6" fill="#FBBF24"/>
+                    <path d="M32 21 Q46 23 48 33 L48 40" stroke="url(#pgTassel)" stroke-width="2.2" stroke-linecap="round"/>
+                    <circle cx="48" cy="41" r="2.2" fill="#F59E0B"/>
+                  </svg>
+                </span>
+                <span class="info-pill-text"><strong id="dashLevel">—</strong><small>Program</small></span>
+              </div>
+              <span class="info-pill-divider"></span>
+              <!-- 2. Academic Session - 3D Icon -->
+              <div class="info-pill" title="একাডেমিক সেশন">
+                <span class="info-pill-icon icon-green" aria-hidden="true">
+                  <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <linearGradient id="snHeader" x1="12" y1="14" x2="52" y2="28" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#34D399"/>
+                        <stop offset="50%" stop-color="#10B981"/>
+                        <stop offset="100%" stop-color="#059669"/>
+                      </linearGradient>
+                      <linearGradient id="snBody" x1="14" y1="28" x2="50" y2="54" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#FFFFFF"/>
+                        <stop offset="100%" stop-color="#F0FDF4"/>
+                      </linearGradient>
+                      <linearGradient id="snRing" x1="0" y1="8" x2="0" y2="20" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#FCD34D"/>
+                        <stop offset="60%" stop-color="#F59E0B"/>
+                        <stop offset="100%" stop-color="#D97706"/>
+                      </linearGradient>
+                      <linearGradient id="snBack" x1="10" y1="16" x2="54" y2="56" gradientUnits="userSpaceOnUse">
+                        <stop offset="0%" stop-color="#059669"/>
+                        <stop offset="100%" stop-color="#064E3B"/>
+                      </linearGradient>
+                      <filter id="snShadow" x="0" y="0" width="64" height="64" filterUnits="userSpaceOnUse">
+                        <feDropShadow dx="0" dy="3.5" stdDeviation="3.5" flood-color="#059669" flood-opacity="0.3"/>
+                      </filter>
+                    </defs>
+                    <ellipse cx="32" cy="57" rx="19" ry="3.5" fill="#064E3B" fill-opacity="0.22"/>
+                    <rect x="11" y="16" width="42" height="39" rx="8" fill="url(#snBack)"/>
+                    <rect x="13" y="18" width="38" height="35" rx="6" fill="url(#snBody)" filter="url(#snShadow)"/>
+                    <path d="M13 24 C13 20.7 15.7 18 19 18 L45 18 C48.3 18 51 20.7 51 24 L51 29 L13 29 Z" fill="url(#snHeader)"/>
+                    <rect x="15" y="19.5" width="34" height="2" rx="1" fill="#FFFFFF" fill-opacity="0.45"/>
+                    <rect x="20" y="10" width="4" height="11" rx="2" fill="url(#snRing)"/>
+                    <rect x="30" y="10" width="4" height="11" rx="2" fill="url(#snRing)"/>
+                    <rect x="40" y="10" width="4" height="11" rx="2" fill="url(#snRing)"/>
+                    <circle cx="21" cy="36" r="2.2" fill="#A7F3D0"/>
+                    <circle cx="32" cy="36" r="2.2" fill="#34D399"/>
+                    <circle cx="43" cy="36" r="2.2" fill="#10B981"/>
+                    <rect x="18" y="42" width="16" height="5" rx="2.5" fill="#E2E8F0"/>
+                    <circle cx="41" cy="44.5" r="4.5" fill="#10B981"/>
+                    <path d="M39.5 44.5 L40.7 45.7 L43 43" stroke="#FFFFFF" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </span>
+                <span class="info-pill-text"><strong id="dashYear">—</strong><small>Academic Session</small></span>
+              </div>
+              <span class="info-pill-divider"></span>
+              <!-- 3. Department - 3D Icon -->
+              <div class="info-pill" title="বিভাগ / ডিপার্টমেন্ট">
+                <span class="info-pill-icon icon-purple" aria-hidden="true">
+                  <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                      <linearGradient id="dpL1" x1="12" y1="36" x2="22" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#8B5CF6"/><stop offset="100%" stop-color="#6D28D9"/></linearGradient>
+                      <linearGradient id="dpR1" x1="22" y1="41" x2="30" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#7C3AED"/><stop offset="100%" stop-color="#5B21B6"/></linearGradient>
+                      <linearGradient id="dpT1" x1="12" y1="34" x2="30" y2="40" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#C4B5FD"/><stop offset="100%" stop-color="#A78BFA"/></linearGradient>
+                      <linearGradient id="dpL2" x1="24" y1="26" x2="34" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#A855F7"/><stop offset="100%" stop-color="#7E22CE"/></linearGradient>
+                      <linearGradient id="dpR2" x1="34" y1="31" x2="42" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#9333EA"/><stop offset="100%" stop-color="#6B21A8"/></linearGradient>
+                      <linearGradient id="dpT2" x1="24" y1="24" x2="42" y2="30" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#E9D5FF"/><stop offset="100%" stop-color="#C084FC"/></linearGradient>
+                      <linearGradient id="dpL3" x1="36" y1="16" x2="48" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#C084FC"/><stop offset="100%" stop-color="#9333EA"/></linearGradient>
+                      <linearGradient id="dpR3" x1="48" y1="22" x2="56" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#A855F7"/><stop offset="100%" stop-color="#7C3AED"/></linearGradient>
+                      <linearGradient id="dpT3" x1="36" y1="14" x2="56" y2="20" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#F3E8FF"/><stop offset="100%" stop-color="#DDD6FE"/></linearGradient>
+                      <linearGradient id="dpArrow" x1="14" y1="26" x2="52" y2="10" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#FBBF24"/><stop offset="100%" stop-color="#F59E0B"/></linearGradient>
+                      <filter id="dpShadow" x="0" y="0" width="64" height="64" filterUnits="userSpaceOnUse">
+                        <feDropShadow dx="0" dy="3.5" stdDeviation="3.5" flood-color="#7C3AED" flood-opacity="0.32"/>
+                      </filter>
+                    </defs>
+                    <ellipse cx="33" cy="57" rx="20" ry="3.5" fill="#4C1D95" fill-opacity="0.22"/>
+                    <path d="M12 36 L21 41 L21 52 L12 47 Z" fill="url(#dpL1)"/>
+                    <path d="M21 41 L28 37 L28 48 L21 52 Z" fill="url(#dpR1)"/>
+                    <path d="M12 36 L19 32 L28 37 L21 41 Z" fill="url(#dpT1)"/>
+                    <path d="M25 26 L35 31 L35 52 L25 47 Z" fill="url(#dpL2)"/>
+                    <path d="M35 31 L43 27 L43 48 L35 52 Z" fill="url(#dpR2)"/>
+                    <path d="M25 26 L33 21 L43 27 L35 31 Z" fill="url(#dpT2)"/>
+                    <path d="M39 16 L49 22 L49 52 L39 46 Z" fill="url(#dpL3)" filter="url(#dpShadow)"/>
+                    <path d="M49 22 L56 17 L56 47 L49 52 Z" fill="url(#dpR3)"/>
+                    <path d="M39 16 L47 11 L56 17 L49 22 Z" fill="url(#dpT3)"/>
+                    <path d="M15 28 Q31 18 48 8" stroke="url(#dpArrow)" stroke-width="2.6" stroke-linecap="round"/>
+                    <polygon points="45,5 53,7 49,14" fill="#F59E0B"/>
+                  </svg>
+                </span>
+                <span class="info-pill-text"><strong id="dashDepartment">—</strong><small>Department</small></span>
+              </div>
+            </div>
+
+            <div class="contact-row">
+              <span class="contact-item">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                <span id="dashMobile">—</span>
+              </span>
+              <span class="contact-divider"></span>
+              <span class="contact-item contact-item-joined">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <span id="enrollmentDates">—</span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="learning-area" id="learningArea">
+
+          <div class="learning-view learning-view-list" id="courseListView">
+            <div class="learning-head">
+              <h3>আমার কোর্স</h3>
+            </div>
+            <div class="device-blocked-banner" id="deviceBlockedBanner" style="display:none;">
+              ⚠️ <strong>একাধিক ডিভাইসে লগইন সনাক্ত হয়েছে</strong> — আপনার সব কোর্স লক করা হয়েছে। আনলক করতে অ্যাডমিনের সাথে যোগাযোগ করুন।
+            </div>
+            <div class="enrolled-course-list" id="enrolledCourseList"></div>
+            <div class="learning-empty" id="learningEmpty">
+              <p>এখনো কোনো course enrolled নেই।</p>
+              <a href="All_Courses.html" class="btn-soft-courses">সকল কোর্স দেখুন →</a>
+            </div>
+          </div>
+
+          <div class="learning-view learning-view-detail" id="courseDetailView" hidden>
+            <div class="detail-header">
+              <button type="button" class="detail-back-btn" id="detailBackBtn" aria-label="ফিরে যান">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+                <span>ফিরে যান</span>
+              </button>
+              <h3 class="detail-title" id="detailTitle">—</h3>
+            </div>
+            <div id="courseLearningPanel" style="display:none;">
+              <!-- Live Zoom Class Section -->
+              <div class="live-class-card" id="liveClassCard" style="display:none;">
+                <div class="live-class-head">
+                  <div class="live-pulse-badge">
+                    <span class="live-pulse-ring"></span>
+                    <span>LIVE CLASS</span>
+                  </div>
+                  <span class="live-tag-online">জুম লাইভ সেশন</span>
+                </div>
+                <div class="live-class-body">
+                  <h4 class="live-class-title" id="liveClassTitle">আজকের লাইভ ক্লাস শুরু হয়েছে</h4>
+                  <div class="live-class-actions">
+                    <button type="button" class="btn-join-live" id="btnJoinLiveWeb">
+                      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                        <path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11l-4 4z"/>
+                      </svg>
+                      <span>Join Live on Website</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Zoom Web Meeting Embed Area -->
+              <div class="zoom-embed-container" id="zoomEmbedContainer" style="display:none;">
+                <div class="zoom-embed-header">
+                  <div class="zeh-left">
+                    <span class="live-pulse-dot"></span>
+                    <strong id="zoomEmbedHeading">লাইভ ক্লাস চলছে</strong>
+                  </div>
+                  <button type="button" class="btn-leave-zoom" id="btnLeaveZoom">
+                    ✕ মিটিং থেকে বের হন
+                  </button>
+                </div>
+                <div id="zoomMeetingRoot" class="zoom-meeting-mount"></div>
+              </div>
+
+              <div class="filter-row" id="filterRow" style="display:none;">
+                <div class="filter-select-wrap filter-select-wrap--subject">
+                  <select id="subjectSelect" class="filter-select filter-select--subject" aria-label="Subject"></select>
+                </div>
+                <div class="filter-select-wrap filter-select-wrap--chapter">
+                  <select id="chapterSelect" class="filter-select filter-select--chapter" aria-label="Chapter"></select>
+                </div>
+              </div>
+              <div class="class-search-wrap" id="classSearchWrap" style="display:none;">
+                <input type="text" id="classSearchInput" class="class-search-input" placeholder="🔍 টপিক খুঁজুন...">
+              </div>
+              <div class="class-player-wrap" id="classPlayer" style="display:none;">
+                <div class="yt-mount" id="ytMount"></div>
+                <div class="yt-click-catcher" id="ytClickCatcher" title="প্লে/পজ করতে ক্লিক করুন"></div>
+                <div class="custom-controls" id="customControls">
+                  <button type="button" class="cc-btn" id="ccPlayPause" aria-label="Play/Pause"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+                  <span class="cc-time" id="ccTime">0:00 / 0:00</span>
+                  <input type="range" class="cc-seek" id="ccSeek" min="0" max="1000" value="0" aria-label="Seek">
+                  <button type="button" class="cc-btn" id="ccSettings" aria-label="Settings"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.5.5 0 0 0 .12-.61l-1.92-3.32a.5.5 0 0 0-.58-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.5.5 0 0 0-.5-.42h-3.84a.5.5 0 0 0-.5.42l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.5.5 0 0 0-.58.22L2.7 8.87a.5.5 0 0 0 .12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.5.5 0 0 0-.12.61l1.92 3.32c.14.24.44.34.68.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.26.42.5.42h3.84c.24 0 .46-.18.5-.42l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.24.09.54 0 .68-.22l1.92-3.32a.5.5 0 0 0-.12-.61l-2.01-1.58zM12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7z"/></svg></button>
+                  <button type="button" class="cc-btn" id="ccFullscreen" aria-label="Fullscreen"><svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zM5 10h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg></button>
+                </div>
+                <div class="cc-settings-panel" id="ccSettingsPanel" style="display:none;">
+                  <div class="cc-settings-main" id="ccSettingsMain">
+                    <button type="button" class="cc-settings-row" data-menu="quality">
+                      <span>মান</span>
+                      <span class="cc-settings-right"><span class="cc-settings-value" id="ccQualityValue">Auto</span> ›</span>
+                    </button>
+                    <button type="button" class="cc-settings-row" data-menu="speed">
+                      <span>গতি</span>
+                      <span class="cc-settings-right"><span class="cc-settings-value" id="ccSpeedValue">1x</span> ›</span>
+                    </button>
+                  </div>
+                  <div class="cc-settings-sub" id="ccQualityMenu" style="display:none;">
+                    <button type="button" class="cc-settings-back" data-back="quality">‹ মান</button>
+                    <div id="ccQualityOptions"></div>
+                  </div>
+                  <div class="cc-settings-sub" id="ccSpeedMenu" style="display:none;">
+                    <button type="button" class="cc-settings-back" data-back="speed">‹ গতি</button>
+                    <div id="ccSpeedOptions"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="class-list" id="classList"></div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================================================
+     রুটিন ভিউয়ার মোডাল (Zoomable Routine Image)
+     কোর্স কার্ডের Routine বাটনে ক্লিক করলে ওপেন হবে
+     ============================================================ -->
+<div class="routine-modal-overlay" id="routineModalOverlay" aria-hidden="true" role="dialog" aria-modal="true">
+  <button type="button" class="routine-modal-close" id="routineModalClose" aria-label="বন্ধ করুন" title="বন্ধ করুন">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="18" y1="6" x2="6" y2="18"></line>
+      <line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+  </button>
+  <div class="routine-modal-viewport" id="routineModalViewport">
+    <img id="routineModalImage" src="" alt="কোর্স রুটিন" draggable="false">
+    <div class="routine-zoom-hint" id="routineZoomHint">ক্লিক / পিঞ্চ করে জুম করুন</div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+          <img src="assets/logo.png" alt="VISION Plus" style="height:44px;width:auto;filter:brightness(0) invert(1);opacity:0.95;">
+        </div>
+        <p style="color:#cbd5e1;font-size:14.5px;line-height:1.7;max-width:36ch;">ব্যতিক্রমী শিক্ষা পদ্ধতি, আধুনিক প্রযুক্তি ও অভিজ্ঞ শিক্ষকদের নিয়ে বাংলাদেশের বিশ্বস্ত এডুকেশন প্ল্যাটফর্ম।</p>
+      </div>
+      <div>
+        <h4>শর্টকাট</h4>
+        <a href="index.html#courses">কোর্সসমূহ</a>
+        <a href="teachers.html">শিক্ষকবৃন্দ</a>
+        <a href="shop.html">শপ</a>
+        <a href="index.html#why">কেন আমরা</a>
+      </div>
+      <div>
+        <h4>যোগাযোগ ও সাপোর্ট</h4>
+        <p>📞 01764-859503</p>
+        <p>✉️ bbavission@gmail.com</p>
+        <p>📍 ঢাকা, বাংলাদেশ</p>
+      </div>
+    </div>
+    <p class="copyright">© ২০২৬ VISION Plus — সর্বস্বত্ব সংরক্ষিত।</p>
+  </div>
+</footer>
+
+<script src="assets/js/student-login.js" defer></script>
+</body>
+</html>
