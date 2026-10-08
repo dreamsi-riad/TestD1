@@ -1,0 +1,2394 @@
+/* =========================================================
+   COURSE DATA NOTE
+   কোর্সের নাম, badge, image, description, price এবং features এখন Google Sheet
+   থেকে dynamic ভাবে লোড হয়। Sheet-এর ৬টি Tab-ই category হিসেবে ব্যবহৃত হয়।
+   ========================================================= */
+
+:root{
+  --ink:#1E2A47;
+  --ink-soft:#4A5772;
+  --paper:#F8FAFC;
+  --paper-line:#E2E8F0;
+  --card:#FFFFFF;
+  --accent:#E8A33D;
+  --accent-dark:#C97F1F;
+  --margin:#C84B4B;
+  --sky:#5B8FBF;
+  --green:#4C8C6B;
+  --shadow:0 10px 30px rgba(30,42,71,0.08);
+  --radius:14px;
+}
+
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth; overflow-x:hidden;}
+
+/* ===== ফ্লোটিং WhatsApp আইকন (সব পেজের নিচে ডান কর্নারে ফিক্সড থাকবে) =====
+   নাম্বার বদলাতে চাইলে নিচের HTML অংশে "wa.me/" এর পরের নাম্বারটা বদলান।
+   পিছনের এনিমেশন (ঘোরা ড্যাশড রিং + পালস ইফেক্ট) একদম "যোগাযোগ" সেকশনের
+   কল আইকনের (.call-badge) মতোই করা হয়েছে, শুধু রঙ WhatsApp সবুজ (#25D366)।
+   এছাড়া লাল নোটিফিকেশন ডট ও হোভারে টেক্সট লেবেল স্লাইড-আউট যোগ করা হয়েছে। */
+.wa-fab{
+  position:fixed;
+  right:22px;
+  bottom:22px;
+  z-index:9999;
+  display:flex;
+  align-items:center;
+}
+.wa-fab .wa-label{
+  background:#fff;
+  color:var(--ink);
+  font-family:'Baloo Da 2', sans-serif;
+  font-weight:700;
+  font-size:14.5px;
+  white-space:nowrap;
+  border-radius:999px;
+  box-shadow:0 10px 24px rgba(22,34,63,.18);
+  max-width:0;
+  opacity:0;
+  padding:12px 0;
+  margin-right:0;
+  overflow:hidden;
+  transition:max-width .35s ease, opacity .3s ease, margin-right .35s ease, padding-left .35s ease, padding-right .35s ease;
+}
+.wa-fab:hover .wa-label{
+  max-width:220px;
+  opacity:1;
+  margin-right:12px;
+  padding-left:18px;
+  padding-right:18px;
+}
+.wa-fab .core{
+  position:relative;
+  flex:0 0 auto;
+  width:58px; height:58px;
+  border-radius:50%;
+  background:#25D366;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 10px 24px rgba(37,211,102,.42);
+  transition:transform .2s ease;
+}
+.wa-fab:hover .core{ transform:scale(1.06); }
+.wa-fab svg{ width:28px; height:28px; fill:#fff; }
+.wa-fab .ring{
+  position:absolute; inset:-6px;
+  border-radius:50%;
+  border:1.5px dashed rgba(37,211,102,.55);
+  animation:spin-slow 14s linear infinite;
+}
+.wa-fab .ring.ring2{
+  inset:-15px;
+  border-color:rgba(37,211,102,.28);
+  animation-duration:20s;
+  animation-direction:reverse;
+}
+.wa-fab .pulse{
+  position:absolute; inset:0;
+  border-radius:50%;
+  background:#25D366;
+  opacity:.55;
+  animation:pulse-ring 2.2s ease-out infinite;
+}
+.wa-fab .badge{
+  position:absolute;
+  top:-2px; right:-2px;
+  width:16px; height:16px;
+  border-radius:50%;
+  background:#FF3B30;
+  border:2px solid var(--paper);
+  z-index:2;
+}
+.wa-fab .badge::after{
+  content:"";
+  position:absolute; inset:0;
+  border-radius:50%;
+  background:#FF3B30;
+  animation:wa-badge-ping 1.8s ease-out infinite;
+}
+@keyframes wa-badge-ping{
+  0%{ transform:scale(1); opacity:.7; }
+  100%{ transform:scale(2.4); opacity:0; }
+}
+@media (max-width:600px){
+  .wa-fab{ right:16px; bottom:16px; }
+  .wa-fab .core{ width:52px; height:52px; }
+  .wa-fab svg{ width:25px; height:25px; }
+  .wa-fab .wa-label{ display:none; } /* মোবাইলে হোভার নেই বলে লেবেল বাদ, শুধু আইকন */
+}
+
+/* ===== "বিস্তারিত" বাটনে ক্লিক করলে course এখনো available কিনা যাচাই করার
+   সময় দেখানো toast মেসেজ (নিচে মাঝখানে ভেসে ওঠে, কয়েক সেকেন্ড পর মিলিয়ে যায়) ===== */
+.va-toast{
+  position:fixed;
+  left:50%;
+  bottom:26px;
+  transform:translateX(-50%) translateY(16px);
+  background:var(--ink);
+  color:#fff;
+  padding:14px 24px;
+  border-radius:999px;
+  font-family:'Baloo Da 2', sans-serif;
+  font-weight:600;
+  font-size:14.5px;
+  box-shadow:0 14px 30px rgba(30,42,71,.3);
+  z-index:9998;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .3s ease, transform .3s ease;
+  max-width:min(90vw, 420px);
+  text-align:center;
+}
+.va-toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+  pointer-events:auto;
+}
+@media (max-width:600px){
+  .va-toast{ font-size:13px; padding:12px 18px; bottom:80px; }
+}
+
+body{
+  margin:0;
+  color:var(--ink);
+  font-family:'Anek Bangla', sans-serif;
+  font-size:17px;
+  line-height:1.65;
+  background:var(--paper);
+}
+
+h1,h2,h3{
+  font-family:'Anek Bangla', sans-serif;
+  margin:0;
+  color:var(--ink);
+  font-weight:400;
+}
+
+.eyebrow{
+  font-family:'Baloo Da 2', sans-serif;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font-size:18px;
+  color:var(--accent-dark);
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+}
+.eyebrow::before{
+  content:"";
+  width:18px;
+  height:2px;
+  background:var(--accent-dark);
+  display:inline-block;
+}
+
+a{ color:inherit; text-decoration:none; }
+img{ max-width:100%; display:block; }
+button{ font-family:inherit; cursor:pointer; }
+
+.container{
+  max-width:min(1400px, 100%);
+  margin:0 auto;
+  padding:0 clamp(12px, 2.6vw, 48px);
+}
+
+/* ---------- Navbar ---------- */
+header.nav{
+  position:sticky; top:0; z-index:50;
+  background:rgba(255,255,255,0.88);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--paper-line);
+}
+.nav-inner{
+  max-width:min(1400px, 100%);
+  margin:0 auto;
+  height:64px;
+  padding:0 clamp(12px, 2.6vw, 48px);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-family:'Baloo Da 2', sans-serif;
+  font-weight:800;
+  font-size:22px;
+  line-height:1.15;
+  color:var(--ink);
+}
+.brand .dot{
+  width:12px;height:12px;border-radius:3px;
+  background:var(--accent);
+  transform:rotate(45deg);
+  flex:none;
+}
+.brand .brand-logo{
+  height:64px;
+  max-height:100%;
+  width:auto;
+  aspect-ratio:3.84/1;
+  object-fit:contain;
+  flex:none;
+}
+.nav-links{
+  display:flex;
+  gap:30px;
+  font-weight:600;
+  font-size:15.5px;
+}
+.nav-links a{
+  position:relative;
+  color:var(--ink-soft);
+  padding:4px 0;
+}
+.nav-links a:hover{ color:var(--ink); }
+.nav-links a::after{
+  content:"";
+  position:absolute; left:0; right:0; bottom:-3px;
+  height:2px; background:var(--accent);
+  transform:scaleX(0); transform-origin:left;
+  transition:transform .25s ease;
+}
+.nav-links a:hover::after{ transform:scaleX(1); }
+.nav-cta{
+  display:inline-flex;align-items:center;justify-content:center;gap:7px;
+  height:38px;padding:0 18px;border-radius:999px;
+  font-family:inherit;font-weight:600;font-size:14px;
+  color:#fff!important;text-decoration:none;white-space:nowrap;
+  background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);
+  border:1px solid rgba(255,255,255,.14);
+  box-shadow:0 2px 8px rgba(15,23,42,.16),inset 0 1px 0 rgba(255,255,255,.12);
+  transition:all .25s cubic-bezier(.16,1,.3,1);
+  box-sizing:border-box;user-select:none;
+}
+.nav-cta:hover{
+  background:linear-gradient(135deg,#283a63 0%,#131d35 100%);
+  border-color:rgba(255,255,255,.28);
+  box-shadow:0 4px 14px rgba(15,23,42,.24),inset 0 1px 0 rgba(255,255,255,.2);
+  transform:translateY(-1px);
+  color:#fff!important;
+}
+.nav-cta:active{transform:translateY(0) scale(.98);box-shadow:0 1px 4px rgba(15,23,42,.2)}
+.nav-cta svg.nav-login-icon{width:16px;height:16px;flex:none}
+/* Logged-in profile badge button */
+.nav-cta--logged-in{padding:0 13px 0 6px;gap:8px;background:linear-gradient(135deg,#1e293b 0%,#0f172a 100%);border:1px solid rgba(255,255,255,.14)}
+.nav-cta--logged-in:hover{border-color:rgba(56,189,248,.45);box-shadow:0 4px 16px rgba(15,23,42,.28),0 0 12px rgba(56,189,248,.18)}
+.nav-profile-avatar{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;flex:none;box-shadow:0 1px 3px rgba(0,0,0,.3),0 0 0 1px rgba(255,255,255,.25)}
+.nav-profile-initial{color:#fff;font-weight:700;font-size:12.5px;line-height:1;text-transform:uppercase}
+.nav-profile-avatar svg{width:13px;height:13px;fill:currentColor;color:#fff}
+.nav-profile-badge{position:absolute;bottom:-1px;right:-1px;width:8px;height:8px;border-radius:50%;background:#10b981;border:1.5px solid #0f172a;box-shadow:0 0 4px rgba(16,185,129,.6)}
+.nav-profile-name{font-size:13.5px;font-weight:600;color:#f1f5f9;letter-spacing:.2px;max-width:95px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1}
+.nav-profile-chevron{width:10px;height:10px;flex:none;opacity:.6;transition:opacity .2s ease,transform .2s ease}
+.nav-cta--logged-in:hover .nav-profile-chevron{opacity:1;transform:translateY(1px)}
+.burger{ display:none; background:none; border:none; font-size:18px; color:var(--ink); }
+@media(max-width:860px){
+  .nav-links{
+    position:absolute; top:100%; left:0; right:0;
+    background:#ffffff;
+    flex-direction:column;
+    padding:18px 28px 26px;
+    gap:16px;
+    border-bottom:1px solid var(--paper-line);
+    box-shadow:0 12px 30px rgba(15,23,42,.08);
+    display:none;
+  }
+  .nav-links.open{ display:flex; }
+  .burger{ display:block; }
+}
+/* ছোট মোবাইল স্ক্রিনে logo + লগইন বাটন + বার্গার মিলে viewport-এর চেয়ে
+   বেশি জায়গা নিয়ে ফেলছিল (logo height:64px ফিক্সড রেখে shrink হচ্ছিল না),
+   ফলে পুরো পেজ horizontally overflow করে "zoom করা"-র মতো দেখাচ্ছিল। */
+@media(max-width:480px){
+  .nav-inner{ gap:8px; }
+  .brand .brand-logo{ height:42px; }
+  .nav-cta{height:34px;padding:0 12px;font-size:12.5px;gap:5px}
+  .nav-cta svg.nav-login-icon{width:14px;height:14px}
+  .nav-cta--logged-in{padding:0 10px 0 5px;gap:6px}
+  .nav-profile-avatar{width:22px;height:22px}
+  .nav-profile-initial{font-size:11px}
+  .nav-profile-avatar svg{width:11px;height:11px}
+  .nav-profile-badge{width:7px;height:7px}
+  .nav-profile-name{font-size:12px;max-width:70px}
+  .nav-profile-chevron{width:9px;height:9px}
+  .burger{ font-size:22px; }
+}
+
+/* ---------- Hero ---------- */
+.hero{
+  padding:32px 0 24px;
+  overflow:hidden;
+}
+.hero-grid{
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  grid-template-areas:
+    "content photo"
+    "stats   stats";
+  gap:30px 50px;
+  align-items:center;
+}
+.hero-content-area{ grid-area:content; align-self:center; }
+.hero-stats-area{ grid-area:stats; }
+.hero-photo-area{ grid-area:photo; align-self:center; }
+@media(max-width:900px){
+  .hero-grid{
+    grid-template-columns:1fr;
+    grid-template-areas:
+      "photo"
+      "content"
+      "stats";
+    gap:20px;
+  }
+}
+@media(max-width:720px){
+  .hero{ padding:10px 0 24px; }
+}
+/* হিরোর ঠিক পরের সেকশনের উপরের ফাঁকা জায়গা কমানো (শুধু হিরোর সাথে লাগোয়া সেকশনের জন্য) */
+.hero + section{ padding-top:36px; }
+@media(max-width:720px){
+  .hero + section{ padding-top:26px; }
+}
+.hero-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:#ffffff;
+  border:1px solid #e2e8f0;
+  padding:5px 14px;
+  border-radius:999px;
+  box-shadow:0 2px 8px rgba(15,23,42,.04);
+  font-size:13px;
+  font-weight:700;
+  color:#334155;
+  margin-bottom:16px;
+}
+.badge-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:#10b981;
+  box-shadow:0 0 0 3px rgba(16,185,129,.2);
+  animation:badgeDotPulse 2s infinite;
+}
+@keyframes badgeDotPulse{
+  0%,100%{transform:scale(1);opacity:1}
+  50%{transform:scale(1.25);opacity:.7}
+}
+.hero h1{
+  font:800 clamp(36px, 5vw, 56px)/1.15 'Baloo Da 2', sans-serif;
+  letter-spacing:-.5px;
+  margin:0 0 16px;
+  color:#0f172a;
+}
+.gradient-text{
+  background:linear-gradient(135deg, #2563eb 0%, #d97706 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.hero-subtitle{
+  font-size:16.5px;
+  color:#475569;
+  line-height:1.65;
+  margin:0 0 24px;
+  max-width:540px;
+}
+.hero-cta-group{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  flex-wrap:wrap;
+  margin-bottom:24px;
+}
+.hero-ghost-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:#ffffff;
+  color:#1e293b;
+  border:1.5px solid #e2e8f0;
+  text-decoration:none;
+  font-family:'Baloo Da 2', sans-serif;
+  font-weight:700;
+  font-size:16px;
+  padding:11px 22px;
+  border-radius:999px;
+  box-shadow:0 2px 8px rgba(15,23,42,.04);
+  transition:all .2s ease;
+}
+.hero-ghost-btn:hover{
+  background:#f8fafc;
+  border-color:#cbd5e1;
+  transform:translateY(-2px);
+  color:#0f172a;
+}
+.hero-trust-bar{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:13px;
+  color:#64748b;
+}
+.trust-stars{
+  color:#f59e0b;
+  font-size:15px;
+  letter-spacing:2px;
+}
+.trust-text b{
+  color:#0f172a;
+}
+.btn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:14px 26px;
+  border-radius:999px;
+  font-weight:700;
+  font-size:15px;
+  border:none;
+  transition:transform .18s ease, box-shadow .18s ease;
+}
+.btn-primary{
+  background:var(--accent);
+  color:var(--ink);
+  box-shadow:0 8px 20px rgba(232,163,61,.4);
+}
+.btn-primary:hover{ transform:translateY(-2px); box-shadow:0 12px 26px rgba(232,163,61,.5); }
+.course-enrolled-trigger{
+  background:linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  color:#ffffff !important;
+  box-shadow:0 4px 14px rgba(16,185,129,0.35) !important;
+}
+.course-enrolled-trigger:hover{
+  background:linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+  transform:translateY(-2px);
+  box-shadow:0 8px 20px rgba(16,185,129,0.5) !important;
+  color:#ffffff !important;
+}
+.btn-outline{
+  background:transparent;
+  color:var(--ink);
+  border:1.5px solid var(--ink);
+}
+.btn-outline:hover{ background:var(--ink); color:#fff; }
+
+.hero-stats{
+  margin-top:25px;
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+}
+.stat-card{
+  flex:1 1 140px;
+  min-width:0;
+  background:#fff;
+  border:1px solid var(--paper-line);
+  border-radius:14px;
+  box-shadow:var(--shadow);
+  padding:12px 10px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  opacity:0;
+  transform:translateY(22px);
+  transition:opacity .9s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1), box-shadow .3s cubic-bezier(.22,1,.36,1);
+}
+.stat-card.visible{
+  opacity:1;
+  transform:translateY(0);
+}
+.stat-icon-box{
+  flex:0 0 auto;
+  width:44px;
+  height:44px;
+  border-radius:14px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  overflow:hidden;
+  box-shadow:
+    0 8px 16px -4px var(--glow-color, rgba(0,0,0,.3)),
+    inset 0 1px 1px rgba(255,255,255,.55),
+    inset 0 -8px 10px rgba(0,0,0,.18);
+  transition:transform .3s cubic-bezier(.22,1,.36,1), box-shadow .3s cubic-bezier(.22,1,.36,1);
+  animation:statGlowPulse 2.6s ease-in-out infinite;
+}
+.stat-card:hover .stat-icon-box{
+  transform:translateY(-2px) scale(1.05);
+  box-shadow:
+    0 12px 22px -4px var(--glow-color, rgba(0,0,0,.35)),
+    inset 0 1px 1px rgba(255,255,255,.6),
+    inset 0 -8px 10px rgba(0,0,0,.18);
+}
+.stat-icon-box::before{
+  content:"";
+  position:absolute;
+  top:-45%;
+  left:-15%;
+  width:130%;
+  height:75%;
+  background:linear-gradient(180deg, rgba(255,255,255,.6), rgba(255,255,255,0) 75%);
+  border-radius:50%;
+  pointer-events:none;
+}
+/* ঝিলিক (shine) — একটা আলোর রেখা প্রতি কয়েক সেকেন্ডে আইকন বক্সের উপর দিয়ে
+   বয়ে যায়, যাতে ইউজারের চোখে সহজে পড়ে। প্রতিটা কার্ডে আলাদা delay দেওয়া
+   হয়েছে যাতে সবগুলো একসাথে না চমকে, একটার পর একটা চমকায়। */
+.stat-icon-box::after{
+  content:"";
+  position:absolute;
+  top:0;
+  left:-160%;
+  width:55%;
+  height:100%;
+  background:linear-gradient(115deg, rgba(255,255,255,0) 0%, rgba(255,255,255,.9) 50%, rgba(255,255,255,0) 100%);
+  transform:skewX(-22deg);
+  pointer-events:none;
+  animation:statShineSweep 3.4s ease-in-out infinite;
+}
+.stat-card:nth-child(1) .stat-icon-box::after,
+.stat-card:nth-child(1) .stat-icon-box{ animation-delay:0s; }
+.stat-card:nth-child(2) .stat-icon-box::after,
+.stat-card:nth-child(2) .stat-icon-box{ animation-delay:.5s; }
+.stat-card:nth-child(3) .stat-icon-box::after,
+.stat-card:nth-child(3) .stat-icon-box{ animation-delay:1s; }
+.stat-card:nth-child(4) .stat-icon-box::after,
+.stat-card:nth-child(4) .stat-icon-box{ animation-delay:1.5s; }
+@keyframes statShineSweep{
+  0%{ left:-160%; }
+  22%{ left:160%; }
+  100%{ left:160%; }
+}
+@keyframes statGlowPulse{
+  0%,100%{
+    box-shadow:
+      0 8px 16px -4px var(--glow-color, rgba(0,0,0,.3)),
+      inset 0 1px 1px rgba(255,255,255,.55),
+      inset 0 -8px 10px rgba(0,0,0,.18);
+  }
+  50%{
+    box-shadow:
+      0 10px 22px -2px var(--glow-color, rgba(0,0,0,.55)),
+      inset 0 1px 1px rgba(255,255,255,.42),
+      inset 0 -8px 10px rgba(0,0,0,.18);
+  }
+}
+@media (prefers-reduced-motion: reduce){
+  .stat-icon-box, .stat-icon-box::after{ animation:none; }
+}
+.stat-icon{
+  width:22px;
+  height:22px;
+  position:relative;
+  z-index:1;
+  filter:drop-shadow(0 1px 1px rgba(0,0,0,.2));
+}
+.stat-text{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+}
+.stat-text b{
+  font-family:'Baloo Da 2', sans-serif;
+  font-size:20px;
+  line-height:1.15;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.stat-text span{
+  font-size:12px;
+  color:var(--ink-soft);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+@media(max-width:480px){
+  .hero-stats{ gap:6px; }
+  .stat-card{ flex:1 1 calc(50% - 6px); padding:8px 6px; gap:6px; border-radius:12px; }
+  .stat-icon-box{ width:34px; height:34px; border-radius:10px; }
+  .stat-icon{ width:17px; height:17px; }
+  .stat-text b{ font-size:clamp(13px,4vw,17px); }
+  .stat-text span{ font-size:clamp(8.5px,2.4vw,10.5px); }
+}
+
+/* সব কোর্স দেখার বাটন — প্রিমিয়াম রয়্যাল স্যাফায়ার পিল */
+.all-courses-btn{
+  position:relative;
+  overflow:hidden;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding:12px 26px;
+  border:none;
+  border-radius:999px;
+  background:linear-gradient(135deg,#2563eb 0%,#1d4ed8 100%);
+  color:#fff;
+  font-family:'Baloo Da 2', sans-serif;
+  font-weight:800;
+  font-size:17px;
+  letter-spacing:.01em;
+  cursor:pointer;
+  box-shadow:0 10px 24px -4px rgba(37,99,235,.45);
+  transition:all .25s cubic-bezier(.34,1.56,.64,1);
+}
+.all-courses-btn svg{
+  width:18px;height:18px;
+  flex:0 0 auto;
+  transition:transform .2s ease;
+}
+.all-courses-btn::after{
+  content:"";
+  position:absolute;
+  top:0; left:-60%;
+  width:40%; height:100%;
+  background:linear-gradient(115deg, transparent, rgba(255,255,255,.55), transparent);
+  transform:skewX(-20deg);
+  pointer-events:none;
+  animation:allCoursesShine 3s ease-in-out infinite;
+}
+@keyframes allCoursesShine{
+  0%{ left:-60%; }
+  35%{ left:130%; }
+  100%{ left:130%; }
+}
+@media(hover:hover) and (pointer:fine){
+  .all-courses-btn:hover{
+    transform:translateY(-3px) scale(1.02);
+    box-shadow:0 16px 32px -4px rgba(37,99,235,.55);
+  }
+  .all-courses-btn:hover svg{
+    transform:translateX(4px);
+  }
+}
+.all-courses-btn:active{
+  transform:translateY(0) scale(.98);
+  box-shadow:0 4px 12px rgba(37,99,235,.35);
+}
+@media(max-width:480px){
+  .all-courses-btn{ width:225px; padding:10px 16px; font-size:16.5px; gap:8px; }
+  .all-courses-btn svg{ width:18px; height:18px; }
+}
+
+/* teacher photo — horizontal auto-scroll carousel (feature photos, ratio 3840x2160) */
+.pinboard{
+  position:relative;
+  border-radius:var(--radius);
+  overflow:hidden;
+  box-shadow:0 16px 30px rgba(30,42,71,.18);
+  background:#eee;
+}
+.pin-track{
+  display:flex;
+  width:100%;
+}
+.pin-card{
+  position:relative;
+  flex:0 0 100%;
+  width:100%;
+}
+.pin-card img{
+  width:100%;
+  aspect-ratio:3840/2160;
+  object-fit:cover;
+  display:block;
+  background:#eee;
+}
+.pin-card .name{
+  position:absolute;
+  left:0; right:0; bottom:0;
+  padding:16px 18px;
+  background:linear-gradient(to top, rgba(30,42,71,.75), rgba(30,42,71,0));
+  color:#fff;
+  font-family:'Baloo Da 2', sans-serif;
+  font-size:14.5px;
+  font-weight:600;
+}
+@media(max-width:900px){
+  .pinboard{ margin-top:10px; }
+  .pin-card .name{ font-size:13px; padding:12px 14px; }
+}
+
+/* ---------- গ্যালারি: অটো-স্ক্রলিং ইমেজ মার্কি ---------- */
+.gallery-marquee-wrap{
+  overflow:hidden;
+  position:relative;
+  width:100%;
+  -webkit-mask-image:linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+  mask-image:linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+}
+.gallery-track{
+  display:flex;
+  align-items:center;
+  gap:18px;
+  width:max-content;
+  animation:galleryScroll 40s linear infinite;
+}
+.gallery-track:hover{ animation-play-state:paused; }
+.gallery-track img{
+  height:220px;
+  width:auto;
+  max-width:340px;
+  object-fit:cover;
+  border-radius:14px;
+  box-shadow:0 12px 26px rgba(30,42,71,.16);
+  background:#eee;
+  flex:0 0 auto;
+}
+@keyframes galleryScroll{
+  from{ transform:translateX(0); }
+  to{ transform:translateX(-50%); }
+}
+@media(max-width:640px){
+  .gallery-track{ gap:12px; }
+  .gallery-track img{ height:130px; max-width:200px; border-radius:10px; }
+}
+
+/* ---------- শিক্ষার্থীদের মতামত: অটো-স্ক্রলিং ১:১ ইমেজ মার্কি (গ্যালারির উল্টো দিকে) ---------- */
+/* ছবিগুলো "gallery" টেবিলের feedback_url কলাম থেকে আসে (drive link → auto-format) */
+.feedback-marquee-wrap{
+  overflow:hidden;
+  position:relative;
+  width:100%;
+  -webkit-mask-image:linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+  mask-image:linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+}
+.feedback-track{
+  display:flex;
+  align-items:center;
+  gap:18px;
+  width:max-content;
+  /* গ্যালারি বাম দিকে যায় (0 → -50%), এটা উল্টো দিকে যাবে (-50% → 0) — একই স্পিড/স্টাইল */
+  animation:feedbackScroll 40s linear infinite;
+}
+.feedback-track:hover{ animation-play-state:paused; }
+.feedback-track img{
+  height:220px;
+  width:220px;
+  aspect-ratio:1/1;
+  object-fit:cover;
+  border-radius:14px;
+  box-shadow:0 12px 26px rgba(30,42,71,.16);
+  background:#eee;
+  flex:0 0 auto;
+  cursor:zoom-in;
+}
+@keyframes feedbackScroll{
+  from{ transform:translateX(-50%); }
+  to{ transform:translateX(0); }
+}
+.feedback-data-state{
+  width:100%;
+  text-align:center;
+  padding:28px 20px;
+  color:var(--ink-soft);
+}
+@media(max-width:640px){
+  .feedback-track{ gap:12px; }
+  .feedback-track img{ height:130px; width:130px; border-radius:10px; }
+}
+
+/* ---------- ইমেজ প্রিভিউ মোডাল (গ্যালারি/ফিডব্যাক ছবিতে ক্লিক করলে বড় করে দেখা যায়) ---------- */
+.img-modal-overlay{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  background:rgba(15,20,34,.88);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:28px;
+}
+.img-modal-overlay.active{ display:flex; }
+.img-modal-overlay img{
+  max-width:min(92vw, 850px);
+  max-height:85vh;
+  width:auto;
+  height:auto;
+  object-fit:contain;
+  border-radius:14px;
+  box-shadow:0 30px 60px rgba(0,0,0,.45);
+  background:transparent;
+}
+.img-modal-close{
+  position:absolute;
+  top:20px;
+  right:24px;
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  background:rgba(255,255,255,.14);
+  border:1px solid rgba(255,255,255,.32);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:24px;
+  line-height:1;
+  cursor:pointer;
+}
+.img-modal-close:hover{ background:rgba(255,255,255,.24); }
+@media(max-width:640px){
+  .img-modal-close{ top:12px; right:14px; width:38px; height:38px; }
+}
+
+/* ---------- কোর্স হাইলাইট পপআপ মডাল (top_this = modal) ---------- */
+.course-popup-overlay{
+  position:fixed;
+  inset:0;
+  z-index:100000;
+  background:rgba(10,15,29,.78);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  opacity:0;
+  visibility:hidden;
+  transition:opacity .35s ease, visibility .35s ease;
+}
+.course-popup-overlay.show{
+  display:flex;
+  opacity:1;
+  visibility:visible;
+}
+.course-popup-card{
+  position:relative;
+  width:100%;
+  max-width:min(92vw, 560px);
+  background:#090d16;
+  border-radius:20px;
+  overflow:hidden;
+  box-shadow:0 28px 75px -12px rgba(0,0,0,.65), 0 0 0 1px rgba(255,255,255,.1);
+  transform:scale(.92) translateY(14px);
+  transition:transform .38s cubic-bezier(.16,1,.3,1), opacity .38s ease;
+  display:flex;
+  flex-direction:column;
+}
+.course-popup-overlay.show .course-popup-card{
+  transform:scale(1) translateY(0);
+}
+.course-popup-close{
+  position:absolute;
+  top:12px;
+  right:12px;
+  z-index:20;
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  background:rgba(15,23,42,.75);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  border:1.5px solid rgba(255,255,255,.4);
+  color:#ffffff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  transition:all .22s ease;
+  padding:0;
+  box-shadow:0 4px 14px rgba(0,0,0,.45);
+}
+.course-popup-close:hover{
+  background:#dc2626;
+  border-color:#ef4444;
+  transform:scale(1.1) rotate(90deg);
+}
+.course-popup-media{
+  width:100%;
+  max-height:min(82vh, 600px);
+  background:#090d16;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+.course-popup-media img{
+  width:100%;
+  height:auto;
+  max-height:min(82vh, 600px);
+  object-fit:contain;
+  display:block;
+}
+.course-popup-timer-bar{
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  height:5px;
+  background:rgba(0,0,0,.25);
+  overflow:hidden;
+  z-index:15;
+}
+.course-popup-timer-fill{
+  height:100%;
+  width:100%;
+  background:linear-gradient(90deg, #E8A33D, #F59E0B);
+  transform-origin:left center;
+}
+@keyframes coursePopupCountdown{
+  from{ transform:scaleX(1); }
+  to{ transform:scaleX(0); }
+}
+
+[data-theme="dark"] .course-popup-card{
+  background:#090d16;
+  border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 30px 85px rgba(0,0,0,.85);
+}
+[data-theme="dark"] .course-popup-timer-bar{
+  background:rgba(255,255,255,.15);
+}
+
+@media (max-width: 640px){
+  .course-popup-overlay{
+    padding:14px;
+  }
+  .course-popup-card{
+    max-width:min(94vw, 440px);
+    border-radius:16px;
+  }
+  .course-popup-close{
+    top:10px;
+    right:10px;
+    width:32px;
+    height:32px;
+  }
+  .course-popup-media{
+    max-height:min(78vh, 480px);
+  }
+  .course-popup-media img{
+    max-height:min(78vh, 480px);
+  }
+}
+
+
+/* ---------- Section shell ---------- */
+section{ padding:45px 0; }
+.section-head{
+  text-align:center;
+  max-width:680px;
+  margin:0 auto 38px;
+}
+.section-head .eyebrow{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:#eff6ff;
+  color:#2563eb;
+  font-family:'Baloo Da 2', sans-serif;
+  font-weight:800;
+  font-size:13px;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  padding:5px 16px;
+  border-radius:999px;
+  margin-bottom:12px;
+  border:1px solid #dbeafe;
+}
+.section-head .eyebrow::before{
+  display:none;
+}
+.section-head h2{
+  display:block;
+  font:800 clamp(26px, 3.8vw, 38px)/1.2 'Baloo Da 2', sans-serif;
+  color:#0f172a;
+  margin:0 0 10px;
+  letter-spacing:-.3px;
+}
+.section-head p{
+  display:block;
+  font-size:16px;
+  color:#64748b;
+  margin:0;
+  line-height:1.6;
+}
+
+/* ---------- ক্যাটাগরি কুইক-কার্ড (কোর্সসমূহ সেকশনের ফিল্টার হিসেবে ব্যবহৃত) ---------- */
+.cat-grid{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:20px;
+  margin-bottom:36px;
+}
+.cat-card{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  background:#ffffff;
+  border-radius:18px;
+  padding:14px 18px;
+  border:1.5px solid #e2e8f0;
+  box-shadow:0 6px 18px rgba(15,23,42,0.04);
+  transition:all .28s cubic-bezier(.34,1.56,.64,1);
+}
+.cat-card:hover{
+  transform:translateY(-4px);
+  border-color:var(--cat-color, #2563eb);
+  box-shadow:0 14px 28px -6px rgba(15,23,42,0.1), 0 0 0 1px var(--cat-color, #2563eb);
+}
+.cat-card.active{
+  border-color:var(--cat-color, #2563eb);
+  background:linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  box-shadow:0 14px 28px -6px rgba(15,23,42,0.12), 0 0 0 2px var(--cat-color, #2563eb);
+}
+.cat-icon{
+  flex:0 0 auto;
+  width:48px;
+  height:48px;
+  border-radius:14px;
+  display:grid;
+  place-items:center;
+  position:relative;
+  box-shadow:0 6px 14px -3px var(--cat-shadow, rgba(0,0,0,.08)), inset 0 1px 1.5px rgba(255,255,255,0.85);
+  border:1px solid var(--cat-border, rgba(0,0,0,.06));
+  transition:transform .32s cubic-bezier(.34,1.56,.64,1), box-shadow .32s ease;
+  overflow:visible;
+}
+.cat-card:hover .cat-icon{
+  transform:scale(1.1) rotate(-3deg);
+  box-shadow:0 10px 20px -4px var(--cat-shadow, rgba(0,0,0,.16)), inset 0 1px 1.5px rgba(255,255,255,0.95);
+}
+.cat-icon svg{
+  width:32px;
+  height:32px;
+  display:block;
+  transition:transform .32s cubic-bezier(.34,1.56,.64,1);
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,0.06));
+}
+.cat-text{
+  display:flex;
+  flex-direction:column;
+  gap:1px;
+  flex:1 1 auto;
+  min-width:0;
+}
+.cat-text b{
+  font-family:'Baloo Da 2', sans-serif;
+  font-size:22px;
+  font-weight:800;
+  line-height:1.1;
+  color:var(--cat-color, #0f172a);
+}
+.cat-text span{
+  font-size:13px;
+  color:#64748b;
+  line-height:1.2;
+}
+@media (max-width:860px){
+  .cat-grid{ grid-template-columns:repeat(2, 1fr); gap:clamp(8px,2.6vw,16px); }
+  .cat-card{
+    padding:clamp(8px,2vw,14px) clamp(10px,2.5vw,16px);
+    gap:clamp(8px,2.2vw,12px);
+  }
+  .cat-icon{
+    width:clamp(36px,9.5vw,46px);
+    height:clamp(36px,9.5vw,46px);
+    border-radius:12px;
+  }
+  .cat-icon svg{ width:66%; height:66%; }
+  .cat-text b{
+    font-size:clamp(15px,4.2vw,20px);
+    line-height:1.1;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .cat-text span{
+    font-size:clamp(10.5px,2.7vw,13px);
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+}
+
+/* ---------- Program pills ---------- */
+.pill-row{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:32px;
+}
+.pill{
+  padding:8px 26px;
+  border-radius:999px;
+  background:#ffffff;
+  border:1px solid #e2e8f0;
+  font-family:'Baloo Da 2', sans-serif;
+  font-weight:700;
+  font-size:16px;
+  color:#475569;
+  transition:all .2s ease;
+  box-shadow:0 2px 6px rgba(15,23,42,0.03);
+}
+.pill.active, .pill:hover{
+  background:linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+  color:#fff;
+  border-color:transparent;
+  box-shadow:0 6px 18px rgba(15,23,42,0.2);
+  transform:translateY(-1px);
+}
+@media (max-width:480px){
+  .pill{
+    padding:6px 18px;
+    font-size:14.5px;
+  }
+}
+
+/* ---------- Course cards ---------- */
+.course-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(285px,1fr));
+  gap:24px;
+  scroll-margin-top:82px;
+}
+.course-card{
+  background:#ffffff;
+  border-radius:20px;
+  box-shadow:0 8px 24px -4px rgba(15,23,42,0.06);
+  overflow:hidden;
+  border:1px solid #e2e8f0;
+  display:flex;
+  flex-direction:column;
+  transition:transform .32s cubic-bezier(.34,1.56,.64,1), box-shadow .32s ease, border-color .32s ease;
+}
+.course-card:hover{
+  transform:translateY(-8px);
+  border-color:#2563eb;
+  box-shadow:0 22px 42px -8px rgba(15,23,42,0.12), 0 0 0 1px #2563eb;
+}
+.course-card[hidden]{ display:none; }
+.course-image{
+  width:100%;
+  aspect-ratio:16/10;
+  object-fit:cover;
+  background:#f1f5f9;
+  display:block;
+  transition:transform .4s ease;
+}
+.course-card:hover .course-image{
+  transform:scale(1.04);
+}
+.course-top{
+  padding:12px 18px 8px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+  border-bottom:1px dashed #e2e8f0;
+}
+.course-tag{
+  font-family:'Baloo Da 2', sans-serif;
+  font-size:12px;
+  font-weight:700;
+  color:#15803d;
+  background:#ecfdf5;
+  border:1px solid #bbf7d0;
+  padding:3px 10px;
+  border-radius:999px;
+}
+.course-body{ padding:12px 18px 18px; flex:1; display:flex; flex-direction:column; }
+.course-body h3{
+  font:800 20px/1.25 'Baloo Da 2', sans-serif;
+  color:#0f172a;
+  margin:0 0 6px;
+}
+.course-body p{
+  color:#64748b;
+  font-size:14px;
+  margin:0;
+  line-height:1.55;
+}
+.course-foot{
+  margin-top:auto;
+  padding-top:14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  border-top:1px dashed #edf2f7;
+}
+.price{
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+.price-row{
+  display:flex;
+  align-items:baseline;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.price-now{
+  font-family:'Baloo Da 2', sans-serif;
+  font-weight:800;
+  font-size:22px;
+  color:#2563eb;
+}
+.price-old{
+  font-family:'Anek Bangla', sans-serif;
+  font-weight:500;
+  font-size:13.5px;
+  color:#94a3b8;
+  text-decoration:line-through;
+}
+.price small{
+  font-family:'Anek Bangla', sans-serif;
+  font-weight:600;
+  font-size:12px;
+  color:#16a34a;
+}
+.course-foot .btn{
+  padding:9px 18px;
+  font-size:13.5px;
+  font-family:'Baloo Da 2', sans-serif;
+  font-weight:700;
+  border-radius:999px;
+  background:linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  color:#fff;
+  box-shadow:0 4px 12px rgba(37,99,235,0.3);
+  transition:all .2s ease;
+}
+.course-foot .btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 18px rgba(37,99,235,0.4);
+}
+.course-foot .btn.course-enrolled-trigger,
+.course-enrolled-trigger{
+  background:linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  color:#ffffff !important;
+  border:1px solid rgba(255,255,255,0.2) !important;
+  box-shadow:0 4px 14px rgba(16,185,129,0.35) !important;
+}
+.course-foot .btn.course-enrolled-trigger:hover,
+.course-enrolled-trigger:hover{
+  background:linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+  transform:translateY(-2px);
+  box-shadow:0 8px 20px rgba(16,185,129,0.5) !important;
+  color:#ffffff !important;
+}
+
+/* মোবাইলে কোর্স কার্ড গ্রিডের বদলে পাশাপাশি (horizontal) স্ক্রল হবে */
+@media(max-width:760px){
+  .course-grid{
+    display:flex;
+    flex-wrap:nowrap;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    gap:16px;
+    padding-bottom:10px;
+    -webkit-overflow-scrolling:touch;
+  }
+  .course-card{
+    flex:0 0 82%;
+    scroll-snap-align:start;
+  }
+}
+@media(max-width:480px){
+  .course-card{ flex:0 0 88%; }
+  .course-card-skel{ flex:0 0 88%; }
+}
+@media(max-width:760px){
+  .course-card-skel{ flex:0 0 82%; scroll-snap-align:start; }
+}
+
+/* ---------- Dynamic Google Sheet course system ---------- */
+.course-data-loading{grid-column:1/-1;min-height:120px;display:flex;align-items:center;justify-content:center;gap:12px;color:var(--ink-soft);font-weight:600;background:#fff;border:1px dashed var(--paper-line);border-radius:var(--radius)}
+.course-loader{width:22px;height:22px;border-radius:50%;border:3px solid var(--paper-line);border-top-color:var(--accent);animation:course-spin .8s linear infinite}
+@keyframes course-spin{to{transform:rotate(360deg)}}
+.course-data-loading.category-loading{min-height:72px;grid-column:1/-1}
+
+/* ---------- Skeleton loading placeholders (ক্যাটাগরি ও কোর্স কার্ড লোড হওয়ার
+   সময় আসল কার্ডের shape-ই মিমিক করে দেখায়, তাই ডেটা আসার পর layout shift/jump
+   হয় না) ---------- */
+@keyframes skel-sweep{
+  0%{ left:-60%; }
+  100%{ left:120%; }
+}
+.cat-card-skel{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  background:#fff;
+  border-radius:14px;
+  padding:8px 16px;
+  border:2px solid transparent;
+  box-shadow:0 8px 22px rgba(30,42,71,0.06);
+  position:relative;
+  overflow:hidden;
+}
+.cat-card-skel .skel-icon{ width:48px; height:48px; border-radius:12px; background:#EDF2F7; flex-shrink:0; }
+.cat-card-skel .skel-lines{ display:flex; flex-direction:column; gap:7px; flex:1; }
+.cat-card-skel .skel-line{ border-radius:6px; background:#EDF2F7; }
+.cat-card-skel .skel-line.big{ width:55%; height:18px; }
+.cat-card-skel .skel-line.small{ width:70%; height:12px; }
+.course-card-skel{
+  background:var(--card);
+  border-radius:var(--radius);
+  border:1px solid var(--paper-line);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  position:relative;
+}
+.course-card-skel .skel-img{ width:100%; aspect-ratio:16/10; background:#EDF2F7; }
+.course-card-skel .skel-top{ padding:12px 20px 8px; display:flex; justify-content:space-between; border-bottom:1.5px dashed var(--paper-line); }
+.course-card-skel .skel-pill{ height:18px; width:70px; border-radius:999px; background:#EDF2F7; }
+.course-card-skel .skel-body{ padding:12px 20px 16px; flex:1; display:flex; flex-direction:column; gap:9px; }
+.course-card-skel .skel-line{ border-radius:6px; background:#EDF2F7; }
+.course-card-skel .skel-line.title{ width:70%; height:17px; }
+.course-card-skel .skel-line.desc1{ width:95%; height:11px; }
+.course-card-skel .skel-line.desc2{ width:78%; height:11px; }
+.course-card-skel .skel-foot{ margin-top:auto; padding-top:14px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
+.course-card-skel .skel-price{ width:74px; height:22px; border-radius:6px; background:#EDF2F7; }
+.course-card-skel .skel-btn{ width:92px; height:36px; border-radius:8px; background:#EDF2F7; }
+.cat-card-skel::after,
+.course-card-skel::after{
+  content:'';
+  position:absolute;
+  top:0; left:-60%;
+  width:60%; height:100%;
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.75), transparent);
+  animation:skel-sweep 1.6s ease-in-out infinite;
+}
+.course-data-toolbar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:-10px 0 20px}
+.course-result-count{color:var(--ink-soft);font-size:14.5px;font-weight:600}
+.course-data-error{margin-top:20px;padding:28px;text-align:center;background:#fff;border:1px solid #F0C7C7;border-radius:var(--radius);color:var(--ink)}
+.course-data-error p{color:var(--ink-soft);margin:8px 0 18px}
+.course-empty{grid-column:1/-1;text-align:center;padding:55px 20px;background:#fff;border:1px dashed var(--paper-line);border-radius:var(--radius);color:var(--ink-soft)}
+@media(max-width:600px){.course-data-toolbar{align-items:flex-start;margin-top:0}}
+
+/* ---------- Why us ---------- */
+.why-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:22px;
+}
+.why-card{
+  position:relative;
+  display:flex;
+  align-items:center;
+  gap:18px;
+  background:linear-gradient(160deg, var(--why-bg-start), var(--why-bg-end) 70%);
+  border:1px solid var(--paper-line);
+  border-radius:18px;
+  padding:8px 24px;
+  overflow:hidden;
+  box-shadow:0 0 0 0 rgba(79,143,255,0);
+  transition:transform .38s cubic-bezier(.22,1,.36,1), box-shadow .38s cubic-bezier(.22,1,.36,1);
+}
+.why-card:hover{ transform:translateY(-8px); box-shadow:0 22px 38px rgba(30,42,71,.16); }
+.why-card::after{
+  content:"";
+  position:absolute;
+  width:150px;
+  height:150px;
+  border-radius:50%;
+  background:var(--why-tint);
+  right:-50px;
+  bottom:-60px;
+  opacity:.55;
+  pointer-events:none;
+}
+.why-icon-box{
+  position:relative;
+  z-index:1;
+  flex:0 0 auto;
+  width:72px;
+  height:72px;
+  border-radius:18px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  box-shadow:
+    0 10px 18px -4px var(--glow-color, rgba(0,0,0,.3)),
+    inset 0 1px 1px rgba(255,255,255,.55),
+    inset 0 -8px 10px rgba(0,0,0,.18);
+}
+.why-icon-box::before{
+  content:"";
+  position:absolute;
+  top:-45%;
+  left:-15%;
+  width:130%;
+  height:75%;
+  background:linear-gradient(180deg, rgba(255,255,255,.6), rgba(255,255,255,0) 75%);
+  border-radius:50%;
+  pointer-events:none;
+}
+.why-icon{
+  width:34px;
+  height:34px;
+  position:relative;
+  z-index:1;
+  filter:drop-shadow(0 1px 1px rgba(0,0,0,.2));
+}
+.why-text{ position:relative; z-index:1; min-width:0; }
+.why-text h3{
+  font-family:'Anek Bangla', sans-serif;
+  font-weight:800;
+  font-size:20px;
+  line-height:1.15;
+  color:#1E2A47;
+  margin-bottom:2px;
+}
+.why-text p{
+  font-family:'Anek Bangla', sans-serif;
+  font-size:14px;
+  line-height:1.4;
+  color:var(--ink-soft);
+}
+@media(max-width:480px){
+  .why-card{ padding:8px 18px; gap:14px; }
+  .why-icon-box{ width:58px; height:58px; border-radius:14px; }
+  .why-icon{ width:28px; height:28px; }
+  .why-text h3{ font-size:17px; }
+  .why-text p{ font-size:13px; }
+}
+
+/* ---------- Free YouTube videos ---------- */
+/* বেশি ফ্রি ক্লাস যোগ করা হলে পরের লাইনে যাবে না — horizontal scroll হবে (ডেস্কটপ ও মোবাইল সব জায়গায়) */
+.video-grid{
+  display:flex;
+  flex-wrap:nowrap;
+  overflow-x:auto;
+  gap:22px;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  padding-top:4px;
+  padding-bottom:12px;
+  scrollbar-width:thin;
+  scrollbar-color:rgba(30,42,71,0.2) transparent;
+}
+.video-grid::-webkit-scrollbar{
+  height:6px;
+}
+.video-grid::-webkit-scrollbar-track{
+  background:rgba(0,0,0,0.04);
+  border-radius:999px;
+}
+.video-grid::-webkit-scrollbar-thumb{
+  background:rgba(30,42,71,0.2);
+  border-radius:999px;
+}
+.video-grid::-webkit-scrollbar-thumb:hover{
+  background:rgba(30,42,71,0.35);
+}
+.video-card{
+  position:relative;
+  flex:0 0 270px;
+  max-width:270px;
+  scroll-snap-align:start;
+  background:#fff;
+  border:1px solid var(--paper-line);
+  border-radius:var(--radius);
+  overflow:hidden;
+  box-shadow:var(--shadow);
+}
+.video-thumb{
+  position:relative;
+  aspect-ratio:16/9;
+  background:#000;
+  cursor:pointer;
+  overflow:hidden;
+}
+.video-thumb img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+  transition:transform .3s ease;
+}
+.video-thumb:hover img{ transform:scale(1.05); }
+.video-thumb iframe{
+  width:100%;
+  height:100%;
+  border:0;
+  display:block;
+}
+.video-play-btn{
+  position:absolute;
+  top:50%; left:50%;
+  transform:translate(-50%,-50%);
+  width:73px; height:73px;
+  border-radius:50%;
+  background:rgba(30,42,71,.85);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:.2s ease;
+}
+.video-thumb:hover .video-play-btn{
+  background:var(--accent);
+  transform:translate(-50%,-50%) scale(1.08);
+}
+.video-play-btn svg{
+  width:26px; height:26px;
+  fill:#fff;
+  margin-left:4px;
+}
+.video-card .video-title{
+  padding:18px 21px;
+  font-family:'Baloo Da 2', sans-serif;
+  font-weight:600;
+  font-size:19px;
+  color:var(--ink);
+}
+
+.video-data-loading,.video-data-state{width:100%;padding:18px;text-align:center;color:var(--ink-soft);font-family:'Hind Siliguri',sans-serif}.pill-row .video-data-loading,.pill-row .video-data-state{padding:8px 12px}.video-thumb:focus{outline:3px solid rgba(79,143,255,.35);outline-offset:2px}
+.video-grid .video-data-loading,.video-grid .video-data-state{flex:0 0 100%;}
+
+/* মোবাইলে ভিডিও কার্ডের সাইজ রেসপন্সিভ রাখা */
+@media(max-width:760px){
+  .video-grid{
+    gap:16px;
+    padding-bottom:10px;
+  }
+  .video-card{
+    flex:0 0 80%;
+    max-width:80%;
+  }
+}
+@media(max-width:480px){
+  .video-card{ flex:0 0 91%; max-width:91%; }
+}
+
+/* ---------- Teachers ---------- */
+/* width-এ সব কার্ড না ধরলে পরের লাইনে যাবে না — horizontal scroll হবে (ডেস্কটপ/মোবাইল সব জায়গায়) */
+.teacher-grid{
+  display:flex;
+  flex-wrap:nowrap;
+  overflow-x:auto;
+  gap:22px;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  padding-top:14px;
+  padding-bottom:8px;
+}
+.teacher-card{
+  position:relative;
+  flex:0 0 226px;
+  scroll-snap-align:start;
+  border-radius:22px;
+  overflow:hidden;
+  border:2px solid #E4D8FF;
+  background:#fff;
+  box-shadow:var(--shadow), 0 0 0 0 rgba(79,143,255,0);
+  cursor:pointer;
+  transition:transform .38s cubic-bezier(.22,1,.36,1), box-shadow .38s cubic-bezier(.22,1,.36,1), border-color .38s ease;
+}
+.teacher-card:hover{ transform:translateY(-9px) scale(1.015); border-color:#C9B3FF; box-shadow:0 26px 46px rgba(30,42,71,.20), 0 0 34px 6px rgba(79,143,255,.45); }
+.teacher-photo{
+  width:100%;
+  aspect-ratio:0.79;
+  object-fit:cover;
+  object-position:top center;
+  display:block;
+  background:#eee;
+}
+.teacher-info{
+  position:absolute;
+  left:0; right:0; bottom:0;
+  padding:10px 16px 14px;
+  background:linear-gradient(to top, rgba(12,14,26,.88) 0%, rgba(12,14,26,.55) 45%, rgba(12,14,26,0) 100%);
+  color:#fff;
+}
+.teacher-info .name{
+  font-family:'Baloo Da 2', sans-serif;
+  font-weight:700;
+  font-size:16px;
+  padding-right:22px;
+}
+.teacher-info .subject{
+  color:#fff;
+  font-size:12.5px;
+  font-weight:700;
+  margin-top:2px;
+}
+.teacher-arrow{
+  position:absolute;
+  right:14px;
+  bottom:16px;
+  width:16px;
+  height:16px;
+  color:rgba(255,255,255,.9);
+}
+ .teacher-data-state{
+   flex:1 1 100%;
+   text-align:center;
+   padding:28px 20px;
+   color:var(--ink-soft);
+   background:#fff;
+   border:1px solid var(--paper-line);
+   border-radius:var(--radius);
+   box-shadow:var(--shadow);
+ }
+
+/* ছোট width-এ কার্ড আরও ছোট শতাংশ-ভিত্তিক হবে যাতে touch-এ সহজে স্ক্রল করা যায় */
+@media(max-width:760px){
+  .teacher-grid{ gap:13px; }
+  .teacher-card{
+    flex:0 0 49%;
+  }
+  .teacher-info{ padding:8px 13px 11px; }
+  .teacher-info .name{ font-size:13.5px; }
+  .teacher-info .subject{ font-size:11px; margin-top:1px; }
+  .teacher-arrow{ width:13px; height:13px; right:11px; bottom:12px; }
+}
+@media(max-width:480px){
+  .teacher-card{ flex:0 0 55%; }
+}
+
+/* ---------- Message form ---------- */
+.message-box{
+  max-width:640px;
+  margin:0 auto;
+  background:#fff;
+  border:1px solid var(--paper-line);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:34px 30px;
+}
+.message-box .section-head{ margin-bottom:26px; max-width:none; }
+.form-row{ margin-bottom:16px; display:flex; flex-direction:column; gap:6px; }
+.form-row label{ font-weight:600; font-size:14.5px; color:var(--ink); }
+.form-row input,
+.form-row textarea{
+  font-family:inherit;
+  font-size:15px;
+  padding:12px 14px;
+  border-radius:10px;
+  border:1.5px solid var(--paper-line);
+  background:#ffffff;
+  color:var(--ink);
+  outline:none;
+  transition:border-color .15s ease;
+}
+.form-row input:focus,
+.form-row textarea:focus{ border-color:var(--accent); }
+.form-row textarea{ resize:vertical; min-height:100px; }
+.form-status{
+  margin-top:14px;
+  font-size:14.5px;
+  font-weight:600;
+  text-align:center;
+  display:none;
+}
+.form-status.show{ display:block; }
+.form-status.ok{ color:var(--green); }
+.form-status.err{ color:var(--margin); }
+
+/* ---------- CTA band : "admission ticket" style call card ---------- */
+.cta-band{
+  position:relative;
+  background:
+    radial-gradient(circle at 18% 20%, rgba(232,163,61,.16), transparent 55%),
+    radial-gradient(circle at 88% 82%, rgba(91,143,191,.18), transparent 55%),
+    #16223F;
+  color:#fff;
+  border-radius:26px;
+  padding:0;
+  margin:0 28px;
+  overflow:hidden;
+  display:flex;
+  align-items:stretch;
+  box-shadow:0 20px 44px rgba(22,34,63,.28);
+}
+.cta-left{
+  position:relative;
+  flex:1 1 auto;
+  padding:44px 20px 44px 44px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:10px;
+}
+.cta-band .eyebrow{ color:var(--accent); margin:0; }
+.cta-band .eyebrow::before{ background:var(--accent); }
+.cta-band h2{
+  display:none;
+}
+.cta-band p{
+  margin:0;
+  color:#cbd5e1;
+  font-size:16.5px;
+  line-height:1.6;
+  font-weight:400;
+}
+
+
+/* dashed "ticket" divider with punched notches, only between the two halves */
+.cta-divider{
+  position:relative;
+  flex:0 0 auto;
+  width:0;
+  border-left:2px dashed rgba(255,255,255,.25);
+  margin:22px 0;
+}
+.cta-divider::before,
+.cta-divider::after{
+  content:"";
+  position:absolute; left:50%;
+  width:26px; height:26px;
+  background:var(--paper);
+  border-radius:50%;
+  transform:translateX(-50%);
+}
+.cta-divider::before{ top:-13px; }
+.cta-divider::after{ bottom:-13px; }
+
+.cta-right{
+  position:relative;
+  flex:0 0 auto;
+  width:280px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:32px;
+}
+.cta-phone{
+  position:relative;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:10px;
+  text-align:center;
+}
+.call-badge{
+  position:relative;
+  width:64px; height:64px;
+  display:flex; align-items:center; justify-content:center;
+}
+.call-badge .ring{
+  position:absolute; inset:0;
+  border-radius:50%;
+  border:1.5px dashed rgba(232,163,61,.55);
+  animation:spin-slow 14s linear infinite;
+}
+.call-badge .ring.ring2{
+  inset:-9px;
+  border-color:rgba(232,163,61,.28);
+  animation-duration:20s;
+  animation-direction:reverse;
+}
+.call-badge .pulse{
+  position:absolute; inset:0;
+  border-radius:50%;
+  background:var(--accent);
+  opacity:.55;
+  animation:pulse-ring 2.2s ease-out infinite;
+}
+.call-badge .core{
+  position:relative;
+  width:64px; height:64px;
+  border-radius:50%;
+  background:var(--accent);
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 8px 18px rgba(232,163,61,.4);
+}
+.call-badge svg{ width:26px; height:26px; stroke:var(--ink); }
+@keyframes pulse-ring{
+  0%{ transform:scale(1); opacity:.5; }
+  100%{ transform:scale(1.7); opacity:0; }
+}
+@keyframes spin-slow{
+  from{ transform:rotate(0deg); }
+  to{ transform:rotate(360deg); }
+}
+.cta-phone .tap-label{
+  font-size:12.5px;
+  font-weight:700;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  color:#8E9AB8;
+}
+.cta-phone .num{
+  font-family:'Baloo Da 2', sans-serif;
+  font-weight:800;
+  font-size:24px;
+  color:#fff;
+  letter-spacing:.01em;
+}
+.cta-phone:hover .num{ color:var(--accent); }
+.cta-phone:hover .call-badge .core{ transform:scale(1.06); }
+.call-badge .core{ transition:transform .2s ease; }
+
+@media(max-width:760px){
+  .cta-band{ flex-direction:column; }
+  .cta-left{ padding:34px 28px 8px; text-align:center; align-items:center; }
+  .cta-band p{ max-width:44ch; }
+  .cta-divider{
+    width:auto; height:0; align-self:stretch;
+    border-left:none; border-top:2px dashed rgba(255,255,255,.25);
+    margin:22px 28px 0;
+  }
+  .cta-divider::before{ top:auto; left:-13px; transform:translateY(-50%); }
+  .cta-divider::after{ bottom:auto; left:auto; right:-13px; top:0; transform:translateY(-50%); }
+  .cta-right{ width:auto; padding:26px 28px 34px; }
+}
+@media(max-width:480px){
+  .cta-phone .num{ font-size:20px; }
+}
+
+/* ---------- Footer ---------- */
+footer{
+  padding:70px 0 34px;
+  background:linear-gradient(180deg, #0b132b 0%, #080d1f 100%);
+  color:#94a3b8;
+  font-size:15px;
+}
+.footer-grid{
+  display:grid;
+  grid-template-columns:1.4fr 1fr 1fr;
+  gap:44px;
+  padding-bottom:40px;
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
+@media(max-width:760px){
+  .footer-grid{ grid-template-columns:1fr; gap:30px; }
+}
+.footer-grid h4{
+  font:800 18px 'Baloo Da 2', sans-serif;
+  color:#ffffff;
+  margin-bottom:16px;
+  letter-spacing:.2px;
+}
+.footer-grid p, .footer-grid a{
+  display:block;
+  margin-bottom:10px;
+  color:#94a3b8;
+  transition:color .2s ease;
+}
+.footer-grid a:hover{
+  color:#f59e0b;
+}
+.social-row{
+  display:flex;
+  gap:12px;
+  margin-top:18px;
+}
+.social-row a{
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.14);
+  color:#ffffff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:15px;
+  transition:all .25s ease;
+}
+.social-row a:hover{
+  background:#2563eb;
+  border-color:#2563eb;
+  transform:translateY(-3px);
+  box-shadow:0 8px 18px rgba(37,99,235,0.4);
+  color:#ffffff;
+}
+.copyright{
+  text-align:center;
+  margin-top:28px;
+  font-size:13.5px;
+  color:#64748b;
+}
+
+@media(max-width:600px){
+  .cta-band{ margin:0 10px; }
+  section{ padding:25px 0; }
+  .container, .nav-inner{
+    width:100%;
+    max-width:100%;
+    padding-left:12px;
+    padding-right:12px;
+  }
+}
+@media(max-width:380px){
+  .container, .nav-inner{
+    padding-left:10px;
+    padding-right:10px;
+  }
+  .cta-band{ margin-left:8px; margin-right:8px; }
+}
+
+/* ---------- ল্যাপটপ ও তার বড় স্ক্রিন: সবকিছু uniformly ১০% বড় ----------
+   ফোনে (max-width breakpoint গুলোতে) সাইজ ইতিমধ্যে perfect, তাই ওগুলো অপরিবর্তিত রাখা
+   হয়েছে। কিন্তু আগে বড় স্ক্রিনের জন্য শুধু কিছু নির্দিষ্ট টেক্সট (body font-size, hero,
+   button ইত্যাদি) হাতে-কলমে বড় করা ছিল, আর সেটাও শুরু হতো 1440px থেকে — মানে বেশিরভাগ
+   কমন ল্যাপটপ স্ক্রিন (যেমন 1366px, 1280px চওড়া) পুরোপুরি এর বাইরে থেকে যেত এবং ছোট
+   দেখাত। এখন সেটার বদলে `zoom` দিয়ে পুরো body-টাই ১৫% বড় করা হচ্ছে — এটা আসল লে-আউট
+   রি-ফ্লো করে (শুধু ভিজ্যুয়াল zoom না), তাই card, button, গ্যাপ, আইকন, টেক্সট — সবকিছুই
+   একই অনুপাতে বড় হয়, এবং এটা ল্যাপটপ (~900px) থেকে শুরু করে যেকোনো বড় মনিটর/TV পর্যন্ত
+   সমানভাবে প্রযোজ্য হয়। */
+@media(min-width:901px){
+  body{ zoom:1.10; }
+}
+
+/* =========================================================
+   THEME TOGGLE BUTTON & NAVBAR ACTION GROUP
+   ========================================================= */
+.nav-actions{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  flex-shrink:0;
+}
+.theme-toggle-btn{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  background:#F1F5F9;
+  border:1.5px solid #CBD5E1;
+  color:#1E293B;
+  cursor:pointer;
+  position:relative;
+  transition:all .25s cubic-bezier(.16,1,.3,1);
+  box-shadow:0 2px 6px rgba(15,23,42,0.06);
+  flex-shrink:0;
+  outline:none;
+  padding:0;
+}
+.theme-toggle-btn:hover{
+  background:#E2E8F0;
+  border-color:#94A3B8;
+  transform:translateY(-1px) rotate(15deg);
+  box-shadow:0 4px 14px rgba(15,23,42,0.12);
+  color:#0F172A;
+}
+.theme-toggle-btn:active{
+  transform:scale(.92);
+}
+.theme-toggle-btn .theme-icon{
+  width:19px;
+  height:19px;
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1), opacity .25s ease;
+}
+/* Day Mode (default): Moon icon is visible */
+.theme-toggle-btn .theme-icon--sun{ display:none; }
+.theme-toggle-btn .theme-icon--moon{ display:block; }
+
+@media(max-width:480px){
+  .nav-actions{ gap:6px; }
+  .theme-toggle-btn{ width:34px; height:34px; }
+  .theme-toggle-btn .theme-icon{ width:16px; height:16px; }
+}
+
+/* Smooth transition when toggling themes */
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after{
+  transition:background-color .32s ease, border-color .32s ease, color .32s ease, box-shadow .32s ease !important;
+  transition-delay:0s !important;
+}
+
+/* =========================================================
+   NIGHT MODE (Aesthetic Luxury Dark Theme)
+   ========================================================= */
+[data-theme="dark"], html.dark{
+  --ink:#F8FAFC;
+  --ink-soft:#94A3B8;
+  --paper:#090D16;
+  --paper-line:rgba(255,255,255,0.08);
+  --card:#111827;
+  --accent:#F59E0B;
+  --accent-dark:#D97706;
+  --margin:#EF4444;
+  --sky:#38BDF8;
+  --green:#10B981;
+  --shadow:0 14px 36px rgba(0,0,0,0.45);
+}
+
+[data-theme="dark"] body{
+  background-color:#090D16;
+  color:#CBD5E1;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(56,189,248,0.08), transparent 70%),
+    radial-gradient(ellipse 60% 40% at 90% 20%, rgba(129,140,248,0.06), transparent 60%);
+  background-attachment:fixed;
+}
+
+/* Theme Toggle Button in Dark Mode */
+[data-theme="dark"] .theme-toggle-btn{
+  background:rgba(255,255,255,0.08);
+  border-color:rgba(255,255,255,0.16);
+  color:#F59E0B;
+  box-shadow:0 2px 10px rgba(0,0,0,0.35), 0 0 12px rgba(245,158,11,0.15);
+}
+[data-theme="dark"] .theme-toggle-btn:hover{
+  background:rgba(255,255,255,0.14);
+  border-color:rgba(245,158,11,0.5);
+  color:#FBBF24;
+  transform:translateY(-1px) rotate(-15deg);
+  box-shadow:0 4px 16px rgba(0,0,0,0.5), 0 0 18px rgba(245,158,11,0.35);
+}
+[data-theme="dark"] .theme-toggle-btn .theme-icon--moon{ display:none; }
+[data-theme="dark"] .theme-toggle-btn .theme-icon--sun{ display:block; }
+
+/* Navbar in Dark Mode */
+[data-theme="dark"] header.nav{
+  background:rgba(9,13,22,0.88);
+  border-bottom:1px solid rgba(255,255,255,0.08);
+  box-shadow:0 4px 24px rgba(0,0,0,0.45);
+}
+[data-theme="dark"] .brand-logo{
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,0.5)) drop-shadow(0 0 1px rgba(255,255,255,0.4));
+}
+[data-theme="dark"] .nav-links a{
+  color:#94A3B8;
+}
+[data-theme="dark"] .nav-links a:hover{
+  color:#F8FAFC;
+}
+[data-theme="dark"] .burger{
+  color:#F8FAFC;
+}
+@media(max-width:860px){
+  [data-theme="dark"] .nav-links{
+    background:#0D1424;
+    border-bottom:1px solid rgba(255,255,255,0.08);
+    box-shadow:0 16px 36px rgba(0,0,0,0.65);
+  }
+}
+
+/* Nav CTA (Login) button in Dark Mode */
+[data-theme="dark"] .nav-cta{
+  background:linear-gradient(135deg,#2563EB 0%,#1D4ED8 100%);
+  border-color:rgba(255,255,255,0.22);
+  box-shadow:0 4px 16px rgba(37,99,235,0.4), inset 0 1px 0 rgba(255,255,255,0.25);
+  color:#FFFFFF !important;
+}
+[data-theme="dark"] .nav-cta:hover{
+  background:linear-gradient(135deg,#3B82F6 0%,#2563EB 100%);
+  border-color:rgba(255,255,255,0.35);
+  box-shadow:0 6px 20px rgba(37,99,235,0.55), inset 0 1px 0 rgba(255,255,255,0.3);
+  color:#FFFFFF !important;
+}
+[data-theme="dark"] .nav-cta--logged-in{
+  background:linear-gradient(135deg,#1E293B 0%,#0F172A 100%);
+  border-color:rgba(56,189,248,0.35);
+  box-shadow:0 4px 16px rgba(0,0,0,0.4), 0 0 12px rgba(56,189,248,0.18);
+}
+
+/* Hero Section in Dark Mode */
+[data-theme="dark"] .hero h1{
+  color:#F8FAFC;
+}
+[data-theme="dark"] .gradient-text{
+  background:linear-gradient(135deg,#60A5FA 0%,#F59E0B 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+[data-theme="dark"] .hero-subtitle{
+  color:#94A3B8;
+}
+[data-theme="dark"] .hero-badge{
+  background:rgba(255,255,255,0.05);
+  border-color:rgba(255,255,255,0.12);
+  color:#E2E8F0;
+  box-shadow:0 4px 16px rgba(0,0,0,0.25);
+}
+[data-theme="dark"] .hero-ghost-btn{
+  background:rgba(255,255,255,0.05);
+  color:#F1F5F9;
+  border-color:rgba(255,255,255,0.14);
+  box-shadow:0 4px 16px rgba(0,0,0,0.25);
+}
+[data-theme="dark"] .hero-ghost-btn:hover{
+  background:rgba(255,255,255,0.1);
+  border-color:rgba(255,255,255,0.25);
+  color:#FFFFFF;
+}
+[data-theme="dark"] .hero-trust-bar{
+  color:#94A3B8;
+}
+[data-theme="dark"] .trust-text b{
+  color:#F8FAFC;
+}
+[data-theme="dark"] .pinboard{
+  box-shadow:0 16px 40px rgba(0,0,0,0.6);
+  border:1px solid rgba(255,255,255,0.08);
+  background:#111827;
+}
+[data-theme="dark"] .pin-card img{
+  background:#111827;
+}
+
+/* Hero Stats in Dark Mode */
+[data-theme="dark"] .stat-card{
+  background:#111827;
+  border-color:rgba(255,255,255,0.08);
+  box-shadow:0 8px 24px rgba(0,0,0,0.35);
+}
+[data-theme="dark"] .stat-card:hover{
+  border-color:rgba(255,255,255,0.18);
+  box-shadow:0 14px 32px rgba(0,0,0,0.5);
+}
+[data-theme="dark"] .stat-text b{
+  color:#F8FAFC;
+}
+[data-theme="dark"] .stat-text span{
+  color:#94A3B8;
+}
+/* Stat numbers vivid neon glow colors for dark backgrounds */
+[data-theme="dark"] .stat-card:nth-child(1) .stat-number{ color:#60A5FA !important; }
+[data-theme="dark"] .stat-card:nth-child(2) .stat-number{ color:#FBBF24 !important; }
+[data-theme="dark"] .stat-card:nth-child(3) .stat-number{ color:#34D399 !important; }
+[data-theme="dark"] .stat-card:nth-child(4) .stat-number{ color:#F87171 !important; }
+
+/* Section Heads in Dark Mode */
+[data-theme="dark"] .section-head h2{
+  color:#F8FAFC;
+}
+[data-theme="dark"] .section-head p{
+  color:#94A3B8;
+}
+[data-theme="dark"] .section-head .eyebrow{
+  background:rgba(37,99,235,0.15);
+  color:#60A5FA;
+  border:1px solid rgba(96,165,250,0.25);
+  box-shadow:0 0 16px rgba(37,99,235,0.2);
+}
+
+/* Category Quick-Cards in Dark Mode */
+[data-theme="dark"] .cat-card{
+  background:#111827;
+  border-color:rgba(255,255,255,0.08);
+  box-shadow:0 6px 20px rgba(0,0,0,0.3);
+}
+[data-theme="dark"] .cat-card:hover{
+  border-color:var(--cat-color, #38BDF8);
+  box-shadow:0 14px 28px -6px rgba(0,0,0,0.5), 0 0 20px rgba(56,189,248,0.2);
+}
+[data-theme="dark"] .cat-card.active{
+  background:linear-gradient(180deg,#162238 0%,#111827 100%);
+  border-color:var(--cat-color, #38BDF8);
+  box-shadow:0 14px 28px -6px rgba(0,0,0,0.6), 0 0 24px rgba(56,189,248,0.3);
+}
+[data-theme="dark"] .cat-icon{
+  background:rgba(255,255,255,0.07) !important;
+  border-color:rgba(255,255,255,0.12) !important;
+  box-shadow:0 6px 16px rgba(0,0,0,0.5), inset 0 1px 1px rgba(255,255,255,0.15) !important;
+}
+[data-theme="dark"] .cat-text b{
+  color:#F8FAFC;
+}
+[data-theme="dark"] .cat-text span{
+  color:#94A3B8;
+}
+
+/* Program Pills in Dark Mode */
+[data-theme="dark"] .pill{
+  background:#111827;
+  border-color:rgba(255,255,255,0.1);
+  color:#94A3B8;
+  box-shadow:0 2px 8px rgba(0,0,0,0.3);
+}
+[data-theme="dark"] .pill.active,
+[data-theme="dark"] .pill:hover{
+  background:linear-gradient(135deg,#2563EB 0%,#1D4ED8 100%);
+  color:#FFFFFF;
+  border-color:transparent;
+  box-shadow:0 6px 20px rgba(37,99,235,0.45);
+}
+
+/* Course Cards in Dark Mode */
+[data-theme="dark"] .course-card{
+  background:#111827;
+  border-color:rgba(255,255,255,0.08);
+  box-shadow:0 8px 24px rgba(0,0,0,0.35);
+}
+[data-theme="dark"] .course-card:hover{
+  border-color:#38BDF8;
+  box-shadow:0 22px 42px -8px rgba(0,0,0,0.6), 0 0 24px rgba(56,189,248,0.25);
+}
+[data-theme="dark"] .course-top{
+  border-bottom:1px dashed rgba(255,255,255,0.08);
+}
+[data-theme="dark"] .course-top .eyebrow{
+  filter:brightness(1.25);
+}
+[data-theme="dark"] .course-tag{
+  color:#34D399;
+  background:rgba(16,185,129,0.12);
+  border-color:rgba(52,211,153,0.3);
+}
+[data-theme="dark"] .course-body h3{
+  color:#F8FAFC;
+}
+[data-theme="dark"] .course-body p{
+  color:#94A3B8;
+}
+[data-theme="dark"] .course-foot{
+  border-top:1px dashed rgba(255,255,255,0.08);
+}
+[data-theme="dark"] .price-now{
+  color:#60A5FA;
+}
+[data-theme="dark"] .price-old{
+  color:#64748B;
+}
+[data-theme="dark"] .price small{
+  color:#34D399;
+}
+[data-theme="dark"] .course-empty,
+[data-theme="dark"] .course-data-loading,
+[data-theme="dark"] .course-data-error{
+  background:#111827;
+  border-color:rgba(255,255,255,0.1);
+  color:#94A3B8;
+}
+[data-theme="dark"] .course-card-skel,
+[data-theme="dark"] .cat-card-skel{
+  background:#111827;
+  border-color:rgba(255,255,255,0.06);
+}
+[data-theme="dark"] .cat-card-skel .skel-icon,
+[data-theme="dark"] .cat-card-skel .skel-line,
+[data-theme="dark"] .course-card-skel .skel-img,
+[data-theme="dark"] .course-card-skel .skel-pill,
+[data-theme="dark"] .course-card-skel .skel-line,
+[data-theme="dark"] .course-card-skel .skel-price,
+[data-theme="dark"] .course-card-skel .skel-btn{
+  background:#1F293D;
+}
+[data-theme="dark"] .cat-card-skel::after,
+[data-theme="dark"] .course-card-skel::after{
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,0.12), transparent);
+}
+
+/* Why Us Section in Dark Mode */
+[data-theme="dark"] .why-card{
+  background:linear-gradient(160deg,#151E32,#0E1524 75%) !important;
+  border-color:rgba(255,255,255,0.08) !important;
+  box-shadow:0 10px 28px rgba(0,0,0,0.35);
+}
+[data-theme="dark"] .why-card:hover{
+  box-shadow:0 22px 42px rgba(0,0,0,0.55), 0 0 24px rgba(96,165,250,0.2);
+}
+[data-theme="dark"] .why-text h3{
+  color:#F8FAFC !important;
+}
+[data-theme="dark"] .why-text p{
+  color:#94A3B8 !important;
+}
+
+/* Free Videos in Dark Mode */
+[data-theme="dark"] .video-card{
+  background:#111827;
+  border-color:rgba(255,255,255,0.08);
+  box-shadow:0 8px 24px rgba(0,0,0,0.35);
+}
+[data-theme="dark"] .video-card .video-title{
+  color:#F8FAFC;
+}
+[data-theme="dark"] .video-data-loading,
+[data-theme="dark"] .video-data-state{
+  color:#94A3B8;
+}
+[data-theme="dark"] .video-grid{
+  scrollbar-color:rgba(255,255,255,0.2) transparent;
+}
+[data-theme="dark"] .video-grid::-webkit-scrollbar-track{
+  background:rgba(255,255,255,0.05);
+}
+[data-theme="dark"] .video-grid::-webkit-scrollbar-thumb{
+  background:rgba(255,255,255,0.2);
+}
+[data-theme="dark"] .video-grid::-webkit-scrollbar-thumb:hover{
+  background:rgba(255,255,255,0.35);
+}
+
+/* Teachers Section in Dark Mode */
+[data-theme="dark"] .teacher-card{
+  background:#111827;
+  border-color:rgba(167,139,250,0.25);
+  box-shadow:0 10px 28px rgba(0,0,0,0.4);
+}
+[data-theme="dark"] .teacher-card:hover{
+  border-color:#A78BFA;
+  box-shadow:0 26px 46px rgba(0,0,0,0.6), 0 0 34px 6px rgba(167,139,250,0.35);
+}
+[data-theme="dark"] .teacher-data-state{
+  background:#111827;
+  border-color:rgba(255,255,255,0.08);
+  color:#94A3B8;
+  box-shadow:0 8px 24px rgba(0,0,0,0.35);
+}
+
+/* Gallery & Student Feedback in Dark Mode */
+[data-theme="dark"] .gallery-track img,
+[data-theme="dark"] .feedback-track img{
+  box-shadow:0 12px 28px rgba(0,0,0,0.5);
+  border:1px solid rgba(255,255,255,0.08);
+  background:#111827;
+}
+[data-theme="dark"] .feedback-data-state{
+  color:#94A3B8;
+}
+
+/* Direct Call CTA Band in Dark Mode */
+[data-theme="dark"] .cta-band{
+  background:
+    radial-gradient(circle at 18% 20%, rgba(245,158,11,0.18), transparent 55%),
+    radial-gradient(circle at 88% 82%, rgba(56,189,248,0.16), transparent 55%),
+    #0C1324;
+  border:1px solid rgba(255,255,255,0.08);
+  box-shadow:0 20px 50px rgba(0,0,0,0.5);
+}
+[data-theme="dark"] .cta-divider::before,
+[data-theme="dark"] .cta-divider::after{
+  background:#090D16;
+}
+
+/* Footer in Dark Mode */
+[data-theme="dark"] footer{
+  background:linear-gradient(180deg,#070B14 0%,#04060B 100%);
+  border-top:1px solid rgba(255,255,255,0.06);
+}
+
+/* Floating WhatsApp FAB in Dark Mode */
+[data-theme="dark"] .wa-fab .wa-label{
+  background:#111827;
+  color:#F8FAFC;
+  border:1px solid rgba(255,255,255,0.12);
+  box-shadow:0 10px 24px rgba(0,0,0,0.5);
+}
+
+/* Message box in Dark Mode */
+[data-theme="dark"] .message-box{
+  background:#111827;
+  border-color:rgba(255,255,255,0.08);
+  box-shadow:0 14px 36px rgba(0,0,0,0.45);
+}
+[data-theme="dark"] .message-box .form-row label{
+  color:#CBD5E1;
+}
+[data-theme="dark"] .message-box .form-row input,
+[data-theme="dark"] .message-box .form-row textarea{
+  background:#162035;
+  border-color:rgba(255,255,255,0.1);
+  color:#F8FAFC;
+}
+[data-theme="dark"] .message-box .form-row input:focus,
+[data-theme="dark"] .message-box .form-row textarea:focus{
+  border-color:#38BDF8;
+  box-shadow:0 0 0 3px rgba(56,189,248,0.2);
+}
+[data-theme="dark"] .message-box .form-row input::placeholder,
+[data-theme="dark"] .message-box .form-row textarea::placeholder{
+  color:#64748B;
+}
