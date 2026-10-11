@@ -575,13 +575,14 @@
   <section class="dash-app-layout" id="dashboardSection" style="display:none;">
 
     <!-- ============================================================
-         LEFT SIDEBAR (Admin Style: Full-Height, Sticky, Dark Navy)
+         LEFT SIDEBAR (Soft Light Blue Theme, Brand Logo & Nav)
          ============================================================ -->
     <aside class="dash-sidebar" id="dashSidebar">
       <div class="dash-side-top">
         <div class="dash-side-brand">
-          <div class="dash-brand-title">VISION <span>PLUS</span></div>
-          <span class="dash-brand-tag">Student Control Center</span>
+          <a href="index.html" class="dash-side-logo-link" title="VISION Plus Home">
+            <img src="assets/logo.png" alt="VISION Plus" class="dash-side-logo-img">
+          </a>
         </div>
 
         <!-- Student Greeting Card -->
@@ -597,7 +598,7 @@
         </div>
       </div>
 
-      <!-- Navigation Tabs (Admin Button Style) -->
+      <!-- Navigation Tabs -->
       <nav class="dash-side-nav" role="tablist">
         <button type="button" class="dash-side-nav-item active" id="tabMyCoursesBtn" role="tab" aria-selected="true">
           <span class="dash-nav-icon">
@@ -623,15 +624,8 @@
         </button>
       </nav>
 
-      <!-- Sidebar Footer -->
+      <!-- Sidebar Footer (Logout Button Only) -->
       <div class="dash-side-footer">
-        <a href="index.html" class="dash-side-foot-link" title="ওয়েবসাইট হোমপেজে যান">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-            <polyline points="9 22 9 12 15 12 15 22"></polyline>
-          </svg>
-          <span>ওয়েবসাইট</span>
-        </a>
         <button type="button" class="dash-side-logout-btn" id="logoutBtn" title="ড্যাশবোর্ড থেকে লগআউট করুন">
           <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
