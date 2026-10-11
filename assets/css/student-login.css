@@ -2299,11 +2299,13 @@ header.nav{
 .class-list{
   display: grid;
   gap: 6px;
+  touch-action: pan-y;
 }
 .class-item-row{
   display: flex;
   align-items: stretch;
   gap: 6px;
+  touch-action: pan-y;
 }
 .class-item{
   display: flex;
@@ -2320,6 +2322,9 @@ header.nav{
   color: var(--ink);
   cursor: pointer;
   transition: all 0.2s ease;
+  touch-action: pan-y;
+  -webkit-user-select: none;
+  user-select: none;
 }
 .class-item:hover{
   border-color: var(--accent);
@@ -4402,8 +4407,19 @@ body.dash-active {
 /* Sticky / Fixed Player Viewport */
 .video-player-sticky-box{
   position: sticky;
-  top: 56px;
-  z-index: 10;
+  top: 48px;
+  z-index: 15;
+}
+@media(max-width: 991px){
+  .video-player-sticky-box{
+    top: 46px;
+    z-index: 15;
+    background: var(--p, #f5f7fb);
+    padding-bottom: 4px;
+  }
+  [data-theme="dark"] .video-player-sticky-box{
+    background: #090D16;
+  }
 }
 .player-placeholder-box{
   background: linear-gradient(135deg, #0B1120 0%, #1E293B 100%);
@@ -4439,6 +4455,7 @@ body.dash-active {
   gap: 4px;
   min-width: 0;
   position: relative;
+  touch-action: pan-y;
 }
 .class-list-scroll-view{
   height: calc(100vh - 175px);
@@ -4446,16 +4463,29 @@ body.dash-active {
   min-height: 380px;
   overflow-y: auto;
   overflow-x: hidden;
-  overscroll-behavior: contain;
-  overscroll-behavior-y: contain;
+  overscroll-behavior: auto;
+  overscroll-behavior-y: auto;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
   padding-right: 6px;
   scrollbar-width: thin;
   scrollbar-color: var(--accent) var(--paper-line);
 }
 @media(max-width: 991px){
+  .class-list-scrollable-container{
+    gap: 6px;
+  }
   .class-list-scroll-view{
     height: auto;
-    max-height: 60vh;
+    max-height: clamp(280px, 48vh, 420px);
+    min-height: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: auto;
+    overscroll-behavior-y: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    padding-right: 4px;
   }
 }
 .class-list-scroll-view::-webkit-scrollbar{
@@ -4538,19 +4568,13 @@ body.dash-active {
   transition: all 0.22s ease;
   box-sizing: border-box;
 }
-@media(max-width: 360px){
+@media(max-width: 768px){
   .doc-item-row{
     flex-direction: column;
     align-items: stretch;
-    gap: 12px;
-    padding: 14px;
-  }
-  .doc-item-right{
-    width: 100%;
-  }
-  .doc-download-btn{
-    width: 100%;
-    justify-content: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: 13px;
   }
 }
 [data-theme="dark"] .doc-item-row{
@@ -4576,6 +4600,12 @@ body.dash-active {
   min-width: 0;
   flex: 1;
 }
+@media(max-width: 768px){
+  .doc-item-left{
+    width: 100%;
+    gap: 10px;
+  }
+}
 .doc-item-star{
   flex-shrink: 0;
   margin-top: 2px;
@@ -4588,11 +4618,27 @@ body.dash-active {
   height: 24px;
   filter: drop-shadow(0 2px 4px rgba(245, 158, 11, 0.2));
 }
+@media(max-width: 768px){
+  .doc-item-star{
+    margin-top: 1px;
+  }
+  .doc-item-star svg{
+    width: 20px;
+    height: 20px;
+  }
+}
 .doc-item-info{
   min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 2px;
+  flex: 1;
+}
+.doc-item-title-row{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px;
 }
 .doc-item-title{
   font-family: 'Baloo Da 2', sans-serif;
@@ -4607,29 +4653,46 @@ body.dash-active {
 }
 .doc-item-badge-text{
   font-family: 'Baloo Da 2', sans-serif;
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 800;
   color: var(--ink);
   line-height: 1.25;
-  display: block;
+  display: inline-block;
 }
 [data-theme="dark"] .doc-item-badge-text{
   color: #FDE68A;
 }
 .doc-item-chapter{
-  font-size: 12.5px;
+  font-size: 12px;
   color: var(--ink-soft);
   font-weight: 600;
   line-height: 1.3;
   display: block;
-  margin-top: 2px;
+  margin-top: 1px;
 }
 [data-theme="dark"] .doc-item-chapter{
   color: #94A3B8;
 }
 
+@media(max-width: 768px){
+  .doc-item-title{
+    font-size: 15px;
+  }
+  .doc-item-badge-text{
+    font-size: 13px;
+  }
+  .doc-item-chapter{
+    font-size: 11.5px;
+  }
+}
+
 .doc-item-right{
   flex-shrink: 0;
+}
+@media(max-width: 768px){
+  .doc-item-right{
+    width: 100%;
+  }
 }
 .doc-download-btn{
   display: inline-flex;
@@ -4649,6 +4712,15 @@ body.dash-active {
   white-space: nowrap;
   border: 1px solid rgba(255, 255, 255, 0.2);
   cursor: pointer;
+}
+@media(max-width: 768px){
+  .doc-download-btn{
+    width: 100%;
+    justify-content: center;
+    padding: 8.5px 14px;
+    font-size: 12.5px;
+    border-radius: 9px;
+  }
 }
 .doc-download-btn:hover{
   background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
