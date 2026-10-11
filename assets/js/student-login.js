@@ -1687,8 +1687,6 @@
     dashboardData = data || null;
     startDashboardWatchTimeDisplay();
     const courses=getEnrolledCourses(data);
-    const dashCoursesCount = document.getElementById('dashCoursesCount');
-    if(dashCoursesCount) dashCoursesCount.textContent = courses.length;
 
     const hasMultipleDeviceLock = Array.isArray(data?.courses) && data.courses.some(c =>
       c.locked && (
