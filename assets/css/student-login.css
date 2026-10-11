@@ -4448,55 +4448,96 @@ body.dash-active {
   margin: 0;
 }
 
-/* Scrollable Class List on Side */
+/* Scrollable Class List on Side (Bondi Pathshala Style Panel) */
 .class-list-scrollable-container{
+  background: #FFFFFF;
+  border: 1.5px solid var(--paper-line);
+  border-radius: 18px;
+  padding: 16px 18px;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  min-width: 0;
-  position: relative;
-  touch-action: pan-y;
+  height: 560px;
+  max-height: calc(100vh - 170px);
+  min-height: 440px;
+  box-sizing: border-box;
 }
+[data-theme="dark"] .class-list-scrollable-container{
+  background: #111827;
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.class-panel-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--paper-line);
+  flex-shrink: 0;
+}
+[data-theme="dark"] .class-panel-header{
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+.class-panel-title{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Baloo Da 2', sans-serif;
+  font-size: 16.5px;
+  font-weight: 800;
+  color: #0F766E;
+}
+[data-theme="dark"] .class-panel-title{
+  color: #2DD4BF;
+}
+
 .class-list-scroll-view{
-  height: calc(100vh - 175px);
-  max-height: calc(100vh - 175px);
-  min-height: 380px;
+  flex: 1;
+  min-height: 0;
   overflow-y: auto;
   overflow-x: hidden;
-  overscroll-behavior: auto;
-  overscroll-behavior-y: auto;
+  overscroll-behavior: contain;
+  overscroll-behavior-y: contain;
   -webkit-overflow-scrolling: touch;
   touch-action: pan-y;
   padding-right: 6px;
   scrollbar-width: thin;
-  scrollbar-color: var(--accent) var(--paper-line);
+  scrollbar-color: #94A3B8 rgba(0, 0, 0, 0.04);
 }
 @media(max-width: 991px){
   .class-list-scrollable-container{
-    gap: 6px;
+    height: 480px;
+    max-height: 55vh;
+    min-height: 320px;
+    padding: 14px;
+    border-radius: 14px;
   }
   .class-list-scroll-view{
-    height: auto;
-    max-height: clamp(280px, 48vh, 420px);
-    min-height: auto;
-    overflow-y: auto;
-    overflow-x: hidden;
-    overscroll-behavior: auto;
-    overscroll-behavior-y: auto;
-    -webkit-overflow-scrolling: touch;
-    touch-action: pan-y;
+    flex: 1;
+    min-height: 0;
     padding-right: 4px;
   }
 }
 .class-list-scroll-view::-webkit-scrollbar{
-  width: 6px;
+  width: 7px;
 }
-.class-list-scroll-view::-webkit-scrollbar-thumb{
-  background: #CBD5E1;
+.class-list-scroll-view::-webkit-scrollbar-track{
+  background: rgba(0, 0, 0, 0.03);
   border-radius: 999px;
 }
+.class-list-scroll-view::-webkit-scrollbar-thumb{
+  background: #94A3B8;
+  border-radius: 999px;
+}
+.class-list-scroll-view::-webkit-scrollbar-thumb:hover{
+  background: #64748B;
+}
+[data-theme="dark"] .class-list-scroll-view::-webkit-scrollbar-track{
+  background: rgba(255, 255, 255, 0.03);
+}
 [data-theme="dark"] .class-list-scroll-view::-webkit-scrollbar-thumb{
-  background: #334155;
+  background: #475569;
 }
 
 /* ============================================================
@@ -4559,7 +4600,7 @@ body.dash-active {
   align-items: center;
   justify-content: space-between;
   gap: 14px;
-  padding: 16px 18px;
+  padding: 13px 18px;
   border-radius: 14px;
   background: #FFFFFF;
   border: 1.5px solid #FDE68A;
@@ -4568,13 +4609,11 @@ body.dash-active {
   transition: all 0.22s ease;
   box-sizing: border-box;
 }
-@media(max-width: 768px){
+@media(max-width: 640px){
   .doc-item-row{
-    flex-direction: column;
-    align-items: stretch;
+    padding: 11px 13px;
+    border-radius: 12px;
     gap: 10px;
-    padding: 12px 14px;
-    border-radius: 13px;
   }
 }
 [data-theme="dark"] .doc-item-row{
@@ -4595,112 +4634,64 @@ body.dash-active {
 
 .doc-item-left{
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 12px;
   min-width: 0;
   flex: 1;
 }
-@media(max-width: 768px){
+@media(max-width: 640px){
   .doc-item-left{
-    width: 100%;
-    gap: 10px;
+    gap: 9px;
   }
 }
 .doc-item-star{
   flex-shrink: 0;
-  margin-top: 2px;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .doc-item-star svg{
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   filter: drop-shadow(0 2px 4px rgba(245, 158, 11, 0.2));
 }
-@media(max-width: 768px){
-  .doc-item-star{
-    margin-top: 1px;
-  }
+@media(max-width: 640px){
   .doc-item-star svg{
-    width: 20px;
-    height: 20px;
+    width: 19px;
+    height: 19px;
   }
 }
 .doc-item-info{
   min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
   flex: 1;
-}
-.doc-item-title-row{
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 6px;
 }
 .doc-item-title{
   font-family: 'Baloo Da 2', sans-serif;
   font-weight: 800;
-  font-size: 16.5px;
+  font-size: 16px;
   color: var(--ink);
   line-height: 1.25;
   margin: 0;
 }
+@media(max-width: 640px){
+  .doc-item-title{
+    font-size: 14.5px;
+  }
+}
 [data-theme="dark"] .doc-item-title{
   color: #F8FAFC;
-}
-.doc-item-badge-text{
-  font-family: 'Baloo Da 2', sans-serif;
-  font-size: 13.5px;
-  font-weight: 800;
-  color: var(--ink);
-  line-height: 1.25;
-  display: inline-block;
-}
-[data-theme="dark"] .doc-item-badge-text{
-  color: #FDE68A;
-}
-.doc-item-chapter{
-  font-size: 12px;
-  color: var(--ink-soft);
-  font-weight: 600;
-  line-height: 1.3;
-  display: block;
-  margin-top: 1px;
-}
-[data-theme="dark"] .doc-item-chapter{
-  color: #94A3B8;
-}
-
-@media(max-width: 768px){
-  .doc-item-title{
-    font-size: 15px;
-  }
-  .doc-item-badge-text{
-    font-size: 13px;
-  }
-  .doc-item-chapter{
-    font-size: 11.5px;
-  }
 }
 
 .doc-item-right{
   flex-shrink: 0;
-}
-@media(max-width: 768px){
-  .doc-item-right{
-    width: 100%;
-  }
 }
 .doc-download-btn{
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 7px;
-  padding: 9px 16px;
-  border-radius: 10px;
+  padding: 8.5px 16px;
+  border-radius: 9px;
   background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
   color: #FFFFFF !important;
   font-family: 'Anek Bangla', sans-serif;
@@ -4713,13 +4704,16 @@ body.dash-active {
   border: 1px solid rgba(255, 255, 255, 0.2);
   cursor: pointer;
 }
-@media(max-width: 768px){
+@media(max-width: 640px){
   .doc-download-btn{
-    width: 100%;
-    justify-content: center;
-    padding: 8.5px 14px;
-    font-size: 12.5px;
-    border-radius: 9px;
+    padding: 7.5px 12px;
+    font-size: 12px;
+    border-radius: 8px;
+    gap: 5px;
+  }
+  .doc-download-btn svg{
+    width: 14px;
+    height: 14px;
   }
 }
 .doc-download-btn:hover{
