@@ -813,7 +813,6 @@
                       <div class="player-placeholder-box" id="playerPlaceholderBox">
                         <span class="pp-icon">🎬</span>
                         <h4>ক্লাস দেখার জন্য তালিকা থেকে ক্লাস নির্বাচন করুন</h4>
-                        <p>ভিডিও প্লেয়ারে ওয়াটারমার্ক, গতি ও এইচডি কোয়ালিটি অপশন রয়েছে</p>
                       </div>
                     </div>
 
@@ -925,33 +924,64 @@
           <div class="prof-card-wrapper">
             
             <!-- Hero Header with Student Avatar, Name, Badge, Mobile -->
+            <!-- Hero Header with Student Avatar, Name, Mobile (Premium Executive Design) -->
             <div class="prof-hero-card">
               <div class="prof-hero-glow" aria-hidden="true"></div>
+              <div class="prof-hero-glow-secondary" aria-hidden="true"></div>
               <div class="prof-hero-main">
                 <div class="prof-hero-avatar-wrap">
                   <div class="prof-hero-avatar">
-                    <span class="prof-hero-avatar-txt" id="profileAvatarTxt">🎓</span>
+                    <svg class="prof-hero-cap-svg" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                      <!-- Soft drop shadow under mortarboard -->
+                      <ellipse cx="24" cy="27" rx="18" ry="6" fill="rgba(0,0,0,0.25)"/>
+                      <!-- Cap Skull Base -->
+                      <path d="M12 21.5V28C12 32.5 17.5 35 24 35C30.5 35 36 32.5 36 28V21.5C32.8 23.5 28.5 24.5 24 24.5C19.5 24.5 15.2 23.5 12 21.5Z" fill="url(#capBaseGrad)"/>
+                      <!-- Cap Mortarboard (Diamond) -->
+                      <polygon points="24,10 44,18 24,26 4,18" fill="url(#capTopGrad)" stroke="rgba(255,255,255,0.3)" stroke-width="0.8"/>
+                      <polygon points="24,11 42,18 24,25 6,18" fill="url(#capTopInner)"/>
+                      <!-- Central Gold Button -->
+                      <ellipse cx="24" cy="18" rx="2.5" ry="1.5" fill="#FBBF24" stroke="#D97706" stroke-width="0.6"/>
+                      <!-- Golden Tassel Cord & Fringe -->
+                      <path d="M24 18C28 18.5 34 20.5 35 24C35.8 26.8 35.2 30 35.2 33" stroke="#F59E0B" stroke-width="1.8" stroke-linecap="round"/>
+                      <!-- Tassel Ring & Pendant -->
+                      <circle cx="35.2" cy="33.5" r="1.5" fill="#FBBF24"/>
+                      <path d="M34 34.5L33.5 40C33.5 40.5 36.8 40.5 36.8 40L36.3 34.5Z" fill="url(#tasselGrad)"/>
+                      <!-- Gradients -->
+                      <defs>
+                        <linearGradient id="capTopGrad" x1="4" y1="10" x2="44" y2="26" gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stop-color="#334155"/>
+                          <stop offset="50%" stop-color="#1E293B"/>
+                          <stop offset="100%" stop-color="#0F172A"/>
+                        </linearGradient>
+                        <linearGradient id="capTopInner" x1="24" y1="11" x2="24" y2="25" gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stop-color="#475569"/>
+                          <stop offset="100%" stop-color="#1E293B"/>
+                        </linearGradient>
+                        <linearGradient id="capBaseGrad" x1="12" y1="21.5" x2="36" y2="35" gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stop-color="#1E293B"/>
+                          <stop offset="50%" stop-color="#0F172A"/>
+                          <stop offset="100%" stop-color="#020617"/>
+                        </linearGradient>
+                        <linearGradient id="tasselGrad" x1="34" y1="34.5" x2="36.8" y2="40" gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stop-color="#FCD34D"/>
+                          <stop offset="50%" stop-color="#F59E0B"/>
+                          <stop offset="100%" stop-color="#D97706"/>
+                        </linearGradient>
+                      </defs>
+                    </svg>
                   </div>
                   <span class="prof-hero-status-dot" title="অ্যাক্টিভ শিক্ষার্থী"></span>
                 </div>
                 <div class="prof-hero-details">
-                  <div class="prof-hero-badges">
-                    <span class="prof-hero-pill prof-pill-verified">
-                      <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                      অনুমোদিত শিক্ষার্থী
-                    </span>
-                    <span class="prof-hero-pill prof-pill-portal">VISION Plus</span>
-                  </div>
                   <h2 class="prof-hero-title" id="profName">—</h2>
                   <div class="prof-hero-meta">
-                    <span class="prof-meta-item">
-                      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    <span class="prof-meta-pill">
+                      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                       <span id="profItemMobile">—</span>
                     </span>
-                    <span class="prof-meta-dot">•</span>
-                    <span class="prof-meta-item">
-                      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-                      যোগদান: <span id="profItemJoined">—</span>
+                    <span class="prof-meta-pill">
+                      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                      <span>যোগদান: <strong id="profItemJoined">—</strong></span>
                     </span>
                   </div>
                 </div>
