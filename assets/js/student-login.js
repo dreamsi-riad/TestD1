@@ -1114,6 +1114,13 @@
     });
   }
 
+  const classScrollView = document.getElementById('classListScrollView') || document.querySelector('.class-list-scroll-view');
+  if(classScrollView){
+    classScrollView.addEventListener('wheel', (e) => {
+      e.stopPropagation();
+    }, { passive: true });
+  }
+
   function populateChapterSelect(rows, subject){
     if(!subject){
       chapterSelect.innerHTML = '<option value="">সব চ্যাপ্টার</option>';
@@ -1555,11 +1562,7 @@
               </svg>
             </span>
             <div class="doc-item-info">
-              <div class="doc-item-title-row">
-                <h4 class="doc-item-title">${escapeHtml(sSub)}</h4>
-                <span class="doc-item-badge-text">— সুপার শর্ট সাজেশন</span>
-              </div>
-              <span class="doc-item-chapter">${escapeHtml(r.chapter ? `${r.chapter} · ফাইনাল পরীক্ষা স্পেশাল` : 'ফাইনাল পরীক্ষা স্পেশাল')}</span>
+              <h4 class="doc-item-title">${escapeHtml(sSub)}</h4>
             </div>
           </div>
           <div class="doc-item-right">
