@@ -1114,6 +1114,19 @@
     });
   }
 
+  const classScrollView = document.querySelector('.class-list-scroll-view');
+  if(classScrollView){
+    classScrollView.addEventListener('wheel', (e) => {
+      const delta = e.deltaY;
+      const atTop = classScrollView.scrollTop <= 0;
+      const atBottom = Math.ceil(classScrollView.scrollTop + classScrollView.clientHeight) >= classScrollView.scrollHeight;
+      if((delta < 0 && atTop) || (delta > 0 && atBottom)){
+        e.preventDefault();
+      }
+      e.stopPropagation();
+    }, { passive: false });
+  }
+
   function populateChapterSelect(rows, subject){
     if(!subject){
       chapterSelect.innerHTML = '<option value="">সব চ্যাপ্টার</option>';
