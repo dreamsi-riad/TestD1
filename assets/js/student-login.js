@@ -1073,48 +1073,10 @@
 
 
   function renderClassItems(rows){
-    // Detect if active subject has a suggestion URL
-    let suggestionHtml = '';
-    const activeSuggestionItem = (activeSubjectRows || []).find(r => r.suggestionUrl && r.suggestionUrl.trim());
-    if(activeSuggestionItem && activeSuggestionItem.suggestionUrl){
-      const sUrl = activeSuggestionItem.suggestionUrl.trim();
-      const sSubject = activeSuggestionItem.subject || (subjectSelect && subjectSelect.value) || currentWatchCourse || 'বিষয়';
-      const isSubjectLocked = (activeSubjectRows || []).length > 0 && (activeSubjectRows || []).every(r => r.locked);
-
-      const sBtnHtml = isSubjectLocked
-        ? `<span class="suggestion-download-btn is-locked" title="সাজেশন unlock করতে কোর্সটি unlock করুন">
-             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-               <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-             </svg>
-             <span>সাজেশন লক</span>
-           </span>`
-        : `<a class="suggestion-download-btn" href="${escapeHtml(driveDirectLink(sUrl))}" target="_blank" rel="noopener" title="সাজেশন PDF ডাউনলোড করুন" onclick="event.stopPropagation()">
-             <svg viewBox="0 0 20 20" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-               <path d="M10 3v9m0 0l-3.5-3.5M10 12l3.5-3.5"/><path d="M4 14.5v1a1.5 1.5 0 001.5 1.5h9a1.5 1.5 0 001.5-1.5v-1"/>
-             </svg>
-             <span>সাজেশন PDF</span>
-           </a>`;
-
-      suggestionHtml = `
-        <div class="subject-suggestion-card">
-          <div class="suggestion-card-left">
-            <div class="suggestion-card-badge">
-              <span class="suggestion-star-icon">⭐</span>
-              <span>সুপার শর্ট সাজেশন</span>
-            </div>
-            <span class="suggestion-card-subject">${escapeHtml(sSubject)}</span>
-          </div>
-          <div class="suggestion-card-right">
-            ${sBtnHtml}
-          </div>
-        </div>
-      `;
-    }
-
     const classRows = rows.filter(r => r.url || r.className || r.pdfUrl);
 
     if(classRows.length > 0){
-      classList.innerHTML = suggestionHtml + classRows.map((item,index)=>{
+      classList.innerHTML = classRows.map((item,index)=>{
         const locked = !!item.locked;
         const playIcon = locked
           ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>'
@@ -1126,8 +1088,6 @@
         const subTitle = item.chapter ? (item.className || '') : '';
         return `<div class="class-item-row"><button type="button" class="class-item${locked?' is-locked':''}" data-video="${locked?'':escapeHtml(item.url)}" data-locked="${locked?'1':'0'}"><span class="class-play">${playIcon}</span><span class="class-meta"><span class="class-title">${escapeHtml(mainTitle)}</span>${subTitle ? `<span class="class-chapter">${escapeHtml(subTitle)}</span>` : ''}</span></button>${pdfHtml}</div>`;
       }).join('');
-    } else if(suggestionHtml){
-      classList.innerHTML = suggestionHtml + '<div class="learning-empty" style="padding:28px 16px;">এই বিষয়ের কোনো ক্লাস ভিডিও এখনো আপলোড করা হয়নি।</div>';
     } else {
       classList.innerHTML = '<div class="learning-empty">কোনো ক্লাস খুঁজে পাওয়া যায়নি।</div>';
     }
@@ -1396,13 +1356,13 @@
     currentWatchSector = clean(sector);
     currentWatchGetWt = isWatchSyncEnabled(courseName, sector);
 
-    // Update Category Badges & Documents list
+    // Update Category Badges & Suggestions list
     const videoRows = rows.filter(r => r.url || r.className);
-    const docsRows = rows.filter(r => r.pdfUrl || r.suggestionUrl);
+    const docsRows = rows.filter(r => r.suggestionUrl && r.suggestionUrl.trim());
     const cfVideoCount = document.getElementById('cfVideoCount');
     if(cfVideoCount) cfVideoCount.textContent = `${videoRows.length} টি ক্লাস`;
     const cfDocsCount = document.getElementById('cfDocsCount');
-    if(cfDocsCount) cfDocsCount.textContent = `${docsRows.length} টি ডকুমেন্ট`;
+    if(cfDocsCount) cfDocsCount.textContent = docsRows.length ? `${docsRows.length} টি সাজেশন` : 'সুপার শর্ট সাজেশন';
     renderCourseDocuments(rows, courseName);
 
     const currentUserForSync = getCurrentUserMobile();
@@ -1564,50 +1524,32 @@
     return 'assets/og-image.jpg';
   }
 
-  // Render course documents (suggestions + class PDF notes)
+  // Render course suggestions (ONLY suggestions, NO lecture sheet pdfs here!)
   function renderCourseDocuments(rows, courseName){
     const docsItemsList = document.getElementById('docsItemsList');
     if(!docsItemsList) return;
 
     let html = '';
     const suggestionRows = (rows || []).filter(r => r.suggestionUrl && r.suggestionUrl.trim());
+    const seenSugg = new Set();
     suggestionRows.forEach(r => {
-      const isLocked = !!r.locked;
       const sUrl = r.suggestionUrl.trim();
       const sSub = r.subject || courseName || 'সাজেশন';
+      const key = `${sSub}:::${sUrl}`;
+      if(seenSugg.has(key)) return;
+      seenSugg.add(key);
+
+      const isLocked = !!r.locked;
       const btn = isLocked
         ? `<span class="doc-download-btn" style="background:#64748b;cursor:not-allowed;" title="লক করা">🔒 লক</span>`
-        : `<a class="doc-download-btn" href="${escapeHtml(driveDirectLink(sUrl))}" target="_blank" rel="noopener">📥 সাজেশন PDF</a>`;
+        : `<a class="doc-download-btn" href="${escapeHtml(driveDirectLink(sUrl))}" target="_blank" rel="noopener">📥 সাজেশন PDF ডাউনলোড</a>`;
       html += `
         <div class="doc-item-row" style="border-left:4px solid #F59E0B;background:#FFFDF5;">
           <div class="doc-item-left">
             <span class="doc-item-icon">⭐</span>
             <div class="doc-item-info">
-              <span class="doc-item-title">${escapeHtml(sSub)} - সুপার শর্ট সাজেশন</span>
-              <span class="doc-item-chapter">${escapeHtml(r.chapter || 'পরীক্ষা স্পেশাল')}</span>
-            </div>
-          </div>
-          ${btn}
-        </div>
-      `;
-    });
-
-    const pdfRows = (rows || []).filter(r => r.pdfUrl && r.pdfUrl.trim());
-    pdfRows.forEach((r, idx) => {
-      const isLocked = !!r.locked;
-      const pUrl = r.pdfUrl.trim();
-      const title = r.className || r.chapter || `লেকচার শিট ${idx+1}`;
-      const chapter = r.chapter || r.subject || '';
-      const btn = isLocked
-        ? `<span class="doc-download-btn" style="background:#64748b;cursor:not-allowed;" title="লক করা">🔒 লক</span>`
-        : `<a class="doc-download-btn" href="${escapeHtml(driveDirectLink(pUrl))}" target="_blank" rel="noopener">📥 PDF ডাউনলোড</a>`;
-      html += `
-        <div class="doc-item-row">
-          <div class="doc-item-left">
-            <span class="doc-item-icon">📄</span>
-            <div class="doc-item-info">
-              <span class="doc-item-title">${escapeHtml(title)}</span>
-              ${chapter ? `<span class="doc-item-chapter">${escapeHtml(chapter)}</span>` : ''}
+              <span class="doc-item-title">${escapeHtml(sSub)} — সুপার শর্ট সাজেশন</span>
+              <span class="doc-item-chapter">${escapeHtml(r.chapter ? `${r.chapter} · ফাইনাল পরীক্ষা স্পেশাল` : 'ফাইনাল পরীক্ষা স্পেশাল')}</span>
             </div>
           </div>
           ${btn}
@@ -1616,12 +1558,12 @@
     });
 
     if(!html){
-      html = '<div class="learning-empty" style="padding:32px 16px;">এই কোর্সে এখনো কোনো PDF বা ডকুমেন্টস আপলোড করা হয়নি।</div>';
+      html = '<div class="learning-empty" style="padding:32px 16px;">এই কোর্সে এখনো কোনো সাজেশন ফাইল আপলোড করা হয়নি।</div>';
     }
     docsItemsList.innerHTML = html;
   }
 
-  // Switch between 3 Course Category Tabs: Video, Docs, Live
+  // Switch between 3 Course Category Tabs: Video, Suggestions, Live
   function activateCourseCategoryTab(category){
     const cfCardVideo = document.getElementById('cfCardVideo');
     const cfCardDocs = document.getElementById('cfCardDocs');
@@ -1649,17 +1591,20 @@
     const tabProfileBtn = document.getElementById('tabProfileBtn');
     const paneMyCourses = document.getElementById('paneMyCourses');
     const paneProfile = document.getElementById('paneProfile');
+    const dashTopCrumb = document.getElementById('dashTopCrumb');
 
     if(tab === 'myCourses'){
       if(tabMyCoursesBtn){ tabMyCoursesBtn.classList.add('active'); tabMyCoursesBtn.setAttribute('aria-selected', 'true'); }
       if(tabProfileBtn){ tabProfileBtn.classList.remove('active'); tabProfileBtn.setAttribute('aria-selected', 'false'); }
       if(paneMyCourses){ paneMyCourses.style.display = 'block'; paneMyCourses.classList.add('active'); }
       if(paneProfile){ paneProfile.style.display = 'none'; paneProfile.classList.remove('active'); }
+      if(dashTopCrumb) dashTopCrumb.textContent = 'আমার কোর্স';
     } else if(tab === 'profile'){
       if(tabProfileBtn){ tabProfileBtn.classList.add('active'); tabProfileBtn.setAttribute('aria-selected', 'true'); }
       if(tabMyCoursesBtn){ tabMyCoursesBtn.classList.remove('active'); tabMyCoursesBtn.setAttribute('aria-selected', 'false'); }
       if(paneProfile){ paneProfile.style.display = 'block'; paneProfile.classList.add('active'); }
       if(paneMyCourses){ paneMyCourses.style.display = 'none'; paneMyCourses.classList.remove('active'); }
+      if(dashTopCrumb) dashTopCrumb.textContent = 'শিক্ষার্থী প্রোফাইল';
     }
   }
 
@@ -2223,6 +2168,8 @@
     if(profItemName) profItemName.textContent = data.name || '—';
     const profItemMobile = document.getElementById('profItemMobile');
     if(profItemMobile) profItemMobile.textContent = data.mobile || '—';
+    const profItemMobileAlt = document.getElementById('profItemMobileAlt');
+    if(profItemMobileAlt) profItemMobileAlt.textContent = data.mobile || '—';
     const profItemLevel = document.getElementById('profItemLevel');
     if(profItemLevel) profItemLevel.textContent = data.level || '—';
     const profItemYear = document.getElementById('profItemYear');
@@ -2266,9 +2213,10 @@
     const dMobile = document.getElementById('dashMobile');
     if(dMobile) dMobile.textContent = data.mobile || '—';
 
+    document.body.classList.add('dash-active');
     authPageHead.style.display = 'none';
     authWrapSection.style.display = 'none';
-    dashboardSection.style.display = 'block';
+    dashboardSection.style.display = 'grid';
 
     // Default to "আমার কোর্স" tab!
     switchDashboardTab('myCourses');
@@ -2434,6 +2382,7 @@
   }
 
   function showAuthUI(){
+    document.body.classList.remove('dash-active');
     authPageHead.style.display = 'block';
     authWrapSection.style.display = 'block';
     dashboardSection.style.display = 'none';
@@ -3417,9 +3366,9 @@
 // Night Mode / Day Mode (Dark/Light Theme) Toggle Controller
 // ============================================================
 (function(){
-  const toggleBtn = document.getElementById('themeToggleBtn');
+  const toggleButtons = document.querySelectorAll('.theme-toggle-btn');
   const metaTheme = document.getElementById('metaThemeColor');
-  if(!toggleBtn) return;
+  if(!toggleButtons.length) return;
 
   function applyTheme(theme, animate){
     const isDark = theme === 'dark';
@@ -3432,14 +3381,18 @@
     if(isDark){
       document.documentElement.setAttribute('data-theme', 'dark');
       document.documentElement.classList.add('dark');
-      toggleBtn.setAttribute('aria-label', 'ডে মোড চালু করুন (Day Mode)');
-      toggleBtn.setAttribute('title', 'ডে মোড চালু করুন (Day Mode)');
+      toggleButtons.forEach(btn => {
+        btn.setAttribute('aria-label', 'ডে মোড চালু করুন (Day Mode)');
+        btn.setAttribute('title', 'ডে মোড চালু করুন (Day Mode)');
+      });
       if(metaTheme) metaTheme.setAttribute('content', '#090D16');
     } else {
       document.documentElement.setAttribute('data-theme', 'light');
       document.documentElement.classList.remove('dark');
-      toggleBtn.setAttribute('aria-label', 'নাইট মোড চালু করুন (Night Mode)');
-      toggleBtn.setAttribute('title', 'নাইট মোড চালু করুন (Night Mode)');
+      toggleButtons.forEach(btn => {
+        btn.setAttribute('aria-label', 'নাইট মোড চালু করুন (Night Mode)');
+        btn.setAttribute('title', 'নাইট মোড চালু করুন (Night Mode)');
+      });
       if(metaTheme) metaTheme.setAttribute('content', '#ffffff');
     }
   }
@@ -3447,13 +3400,16 @@
   const initialTheme = document.documentElement.getAttribute('data-theme') || 'light';
   applyTheme(initialTheme, false);
 
-  toggleBtn.addEventListener('click', function(){
+  function handleThemeToggle(){
     const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
     const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
     try {
       localStorage.setItem('va_theme', nextTheme);
     } catch(e){}
     applyTheme(nextTheme, true);
-  });
+  }
 
+  toggleButtons.forEach(btn => {
+    btn.addEventListener('click', handleThemeToggle);
+  });
 })();
