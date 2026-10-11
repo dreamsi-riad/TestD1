@@ -192,20 +192,6 @@
     return parsed ? parsed.subject : courseId;
   }
 
-  function extractYearFromCourseName(courseName){
-    const norm = normalizeForMatch(courseName);
-    for(const ord of SW_YEAR_ORDINALS){
-      if(norm.includes(ord)) return `${ord} Year`;
-    }
-    return '';
-  }
-  function extractDepartmentFromCourseName(courseName){
-    const norm = normalizeForMatch(courseName);
-    for(const dept of SW_DEPARTMENTS){
-      if(norm.includes(normalizeForMatch(dept))) return dept;
-    }
-    return '';
-  }
 
   function cleanSubjectMatchText(s) {
     let str = String(s || '')
@@ -844,6 +830,8 @@
 
   function playClassVideo(id){
     if(!id) return;
+    const placeholder = document.getElementById('playerPlaceholderBox');
+    if(placeholder) placeholder.style.display = 'none';
     classPlayer.style.display = 'block';
     classPlayer.scrollIntoView({behavior:'smooth', block:'nearest'});
     if(!(window.YT && window.YT.Player)){
@@ -867,6 +855,8 @@
     }
     closeSettingsPanel();
     classPlayer.style.display = 'none';
+    const placeholder = document.getElementById('playerPlaceholderBox');
+    if(placeholder) placeholder.style.display = 'block';
   }
 
   if(ccPlayPause){
@@ -1258,6 +1248,9 @@
         nuDcu: sector || ''
       });
 
+      const cfLiveStatusText = document.getElementById('cfLiveStatusText');
+      const noLiveCard = document.getElementById('noLiveClassCard');
+
       if (res && res.status === 'ok' && res.meetingNumber) {
         currentZoomConfig = res;
         const liveCard = document.getElementById('liveClassCard');
@@ -1270,11 +1263,21 @@
         if (liveCard) {
           liveCard.style.display = 'block';
         }
-      } else if (res && res.status === 'error') {
-        console.warn('[Live Class Notice]:', res.message || 'লাইভ ক্লাস কনফিগার করা নেই।');
+        if (noLiveCard) noLiveCard.style.display = 'none';
+        if (cfLiveStatusText) cfLiveStatusText.textContent = '🔴 এখন লাইভ চলছে!';
+      } else {
+        if (cfLiveStatusText) cfLiveStatusText.textContent = 'কোনো লাইভ সেশন নেই';
+        if (noLiveCard) noLiveCard.style.display = 'block';
+        if (res && res.status === 'error') {
+          console.warn('[Live Class Notice]:', res.message || 'লাইভ ক্লাস কনফিগার করা নেই।');
+        }
       }
     } catch (err) {
       console.warn('[Live Class Error]:', err);
+      const cfLiveStatusText = document.getElementById('cfLiveStatusText');
+      if (cfLiveStatusText) cfLiveStatusText.textContent = 'কোনো লাইভ সেশন নেই';
+      const noLiveCard = document.getElementById('noLiveClassCard');
+      if (noLiveCard) noLiveCard.style.display = 'block';
     }
   }
 
@@ -1386,11 +1389,21 @@
       courseLearningPanel.style.display='block';
       filterRow.style.display='none';
       classList.innerHTML=`<div class="learning-empty">${escapeHtml(result.message || 'এই course-এর কোনো class এখনো পাওয়া যায়নি।')}</div>`;
+      renderCourseDocuments([], courseName);
       return;
     }
     currentWatchCourse = courseName;
     currentWatchSector = clean(sector);
     currentWatchGetWt = isWatchSyncEnabled(courseName, sector);
+
+    // Update Category Badges & Documents list
+    const videoRows = rows.filter(r => r.url || r.className);
+    const docsRows = rows.filter(r => r.pdfUrl || r.suggestionUrl);
+    const cfVideoCount = document.getElementById('cfVideoCount');
+    if(cfVideoCount) cfVideoCount.textContent = `${videoRows.length} টি ক্লাস`;
+    const cfDocsCount = document.getElementById('cfDocsCount');
+    if(cfDocsCount) cfDocsCount.textContent = `${docsRows.length} টি ডকুমেন্ট`;
+    renderCourseDocuments(rows, courseName);
 
     const currentUserForSync = getCurrentUserMobile();
     if(currentUserForSync && currentWatchGetWt){
@@ -1505,29 +1518,6 @@
     classDataCache.clear();
   }
 
-  function showExpiredNotice(course){
-    classLearningReset();
-    courseLearningPanel.style.display='block';
-    filterRow.style.display='none';
-    stopClassPlayer();
-    const expiresText = course.expiresAt ? escapeHtml(formatDate(course.expiresAt)) : '';
-    classList.innerHTML=`<div class="renew-notice">
-      <strong>⏳ এই কোর্সের মেয়াদ শেষ হয়ে গেছে</strong>
-      <p>${expiresText ? `মেয়াদ শেষ হয়েছে: ${expiresText}` : ''}<br>ক্লাস আবার দেখতে কোর্সটি রিনিউ করতে হবে। রিনিউ করতে আমাদের সাথে যোগাযোগ করুন।</p>
-    </div>`;
-  }
-
-  // Pending notice
-  function showPendingNotice(course){
-    classLearningReset();
-    courseLearningPanel.style.display='block';
-    filterRow.style.display='none';
-    stopClassPlayer();
-    classList.innerHTML=`<div class="renew-notice">
-      <strong>⏳ কোর্সটি এখনো সক্রিয় করা হয়নি</strong>
-      <p>আপনার এনরোলমেন্টটি প্রশাসকের অনুমোদনের অপেক্ষায় রয়েছে।<br>সক্রিয় করা হলে ক্লাস মেটেরিয়াল দেখতে পাবেন।</p>
-    </div>`;
-  }
 
   function showCourseLockedNotice(course){
     classLearningReset();
@@ -1541,20 +1531,142 @@
     </div>`;
   }
 
-  function showDeviceBlockedNotice(){
-    classLearningReset();
-    courseLearningPanel.style.display='block';
-    filterRow.style.display='none';
-    stopClassPlayer();
-    classList.innerHTML=`<div class="renew-notice">
-      <strong>🔒 একাধিক ডিভাইসে লগইন সনাক্ত হয়েছে</strong>
-      <p>নিরাপত্তার কারণে এই কোর্সটি লক করা হয়েছে। আনলক করতে আমাদের সাথে যোগাযোগ করুন।</p>
-    </div>`;
+
+  // Helper to get image URL for enrolled course
+  function getCourseImageUrl(course){
+    const cleanImg = v => {
+      const x = String(v || '').trim();
+      if(!x) return '';
+      const f = x.match(/drive\.google\.com\/file\/d\/([^/]+)/i);
+      const i = x.match(/[?&]id=([^&]+)/i);
+      if(f) return `https://drive.google.com/thumbnail?id=${f[1]}&sz=w1000`;
+      if(x.includes('drive.google.com') && i) return `https://drive.google.com/thumbnail?id=${i[1]}&sz=w1000`;
+      return x;
+    };
+    if(course && course.image){
+      const img = cleanImg(course.image);
+      if(img) return img;
+    }
+    // Check cached courses from va_courses in localStorage
+    try{
+      const raw = localStorage.getItem('va_courses');
+      if(raw){
+        const parsed = JSON.parse(raw);
+        const list = Array.isArray(parsed?.data) ? parsed.data : (Array.isArray(parsed) ? parsed : []);
+        const cNorm = normalizeForMatch(course?.name);
+        const matched = list.find(c => normalizeForMatch(c?.name) === cNorm);
+        if(matched && matched.image){
+          const img = cleanImg(matched.image);
+          if(img) return img;
+        }
+      }
+    }catch(e){}
+    return 'assets/og-image.jpg';
   }
 
+  // Render course documents (suggestions + class PDF notes)
+  function renderCourseDocuments(rows, courseName){
+    const docsItemsList = document.getElementById('docsItemsList');
+    if(!docsItemsList) return;
+
+    let html = '';
+    const suggestionRows = (rows || []).filter(r => r.suggestionUrl && r.suggestionUrl.trim());
+    suggestionRows.forEach(r => {
+      const isLocked = !!r.locked;
+      const sUrl = r.suggestionUrl.trim();
+      const sSub = r.subject || courseName || 'সাজেশন';
+      const btn = isLocked
+        ? `<span class="doc-download-btn" style="background:#64748b;cursor:not-allowed;" title="লক করা">🔒 লক</span>`
+        : `<a class="doc-download-btn" href="${escapeHtml(driveDirectLink(sUrl))}" target="_blank" rel="noopener">📥 সাজেশন PDF</a>`;
+      html += `
+        <div class="doc-item-row" style="border-left:4px solid #F59E0B;background:#FFFDF5;">
+          <div class="doc-item-left">
+            <span class="doc-item-icon">⭐</span>
+            <div class="doc-item-info">
+              <span class="doc-item-title">${escapeHtml(sSub)} - সুপার শর্ট সাজেশন</span>
+              <span class="doc-item-chapter">${escapeHtml(r.chapter || 'পরীক্ষা স্পেশাল')}</span>
+            </div>
+          </div>
+          ${btn}
+        </div>
+      `;
+    });
+
+    const pdfRows = (rows || []).filter(r => r.pdfUrl && r.pdfUrl.trim());
+    pdfRows.forEach((r, idx) => {
+      const isLocked = !!r.locked;
+      const pUrl = r.pdfUrl.trim();
+      const title = r.className || r.chapter || `লেকচার শিট ${idx+1}`;
+      const chapter = r.chapter || r.subject || '';
+      const btn = isLocked
+        ? `<span class="doc-download-btn" style="background:#64748b;cursor:not-allowed;" title="লক করা">🔒 লক</span>`
+        : `<a class="doc-download-btn" href="${escapeHtml(driveDirectLink(pUrl))}" target="_blank" rel="noopener">📥 PDF ডাউনলোড</a>`;
+      html += `
+        <div class="doc-item-row">
+          <div class="doc-item-left">
+            <span class="doc-item-icon">📄</span>
+            <div class="doc-item-info">
+              <span class="doc-item-title">${escapeHtml(title)}</span>
+              ${chapter ? `<span class="doc-item-chapter">${escapeHtml(chapter)}</span>` : ''}
+            </div>
+          </div>
+          ${btn}
+        </div>
+      `;
+    });
+
+    if(!html){
+      html = '<div class="learning-empty" style="padding:32px 16px;">এই কোর্সে এখনো কোনো PDF বা ডকুমেন্টস আপলোড করা হয়নি।</div>';
+    }
+    docsItemsList.innerHTML = html;
+  }
+
+  // Switch between 3 Course Category Tabs: Video, Docs, Live
+  function activateCourseCategoryTab(category){
+    const cfCardVideo = document.getElementById('cfCardVideo');
+    const cfCardDocs = document.getElementById('cfCardDocs');
+    const cfCardLive = document.getElementById('cfCardLive');
+    const subViewVideo = document.getElementById('courseSubViewVideo');
+    const subViewDocs = document.getElementById('courseSubViewDocs');
+    const subViewLive = document.getElementById('courseSubViewLive');
+
+    if(cfCardVideo) cfCardVideo.classList.toggle('active', category === 'video');
+    if(cfCardDocs) cfCardDocs.classList.toggle('active', category === 'docs');
+    if(cfCardLive) cfCardLive.classList.toggle('active', category === 'live');
+
+    if(subViewVideo) subViewVideo.style.display = (category === 'video') ? 'block' : 'none';
+    if(subViewDocs) subViewDocs.style.display = (category === 'docs') ? 'block' : 'none';
+    if(subViewLive) subViewLive.style.display = (category === 'live') ? 'block' : 'none';
+  }
+
+  document.getElementById('cfCardVideo')?.addEventListener('click', () => activateCourseCategoryTab('video'));
+  document.getElementById('cfCardDocs')?.addEventListener('click', () => activateCourseCategoryTab('docs'));
+  document.getElementById('cfCardLive')?.addEventListener('click', () => activateCourseCategoryTab('live'));
+
+  // Switch Dashboard Main Tabs: "আমার কোর্স" vs "প্রোফাইল"
+  function switchDashboardTab(tab){
+    const tabMyCoursesBtn = document.getElementById('tabMyCoursesBtn');
+    const tabProfileBtn = document.getElementById('tabProfileBtn');
+    const paneMyCourses = document.getElementById('paneMyCourses');
+    const paneProfile = document.getElementById('paneProfile');
+
+    if(tab === 'myCourses'){
+      if(tabMyCoursesBtn){ tabMyCoursesBtn.classList.add('active'); tabMyCoursesBtn.setAttribute('aria-selected', 'true'); }
+      if(tabProfileBtn){ tabProfileBtn.classList.remove('active'); tabProfileBtn.setAttribute('aria-selected', 'false'); }
+      if(paneMyCourses){ paneMyCourses.style.display = 'block'; paneMyCourses.classList.add('active'); }
+      if(paneProfile){ paneProfile.style.display = 'none'; paneProfile.classList.remove('active'); }
+    } else if(tab === 'profile'){
+      if(tabProfileBtn){ tabProfileBtn.classList.add('active'); tabProfileBtn.setAttribute('aria-selected', 'true'); }
+      if(tabMyCoursesBtn){ tabMyCoursesBtn.classList.remove('active'); tabMyCoursesBtn.setAttribute('aria-selected', 'false'); }
+      if(paneProfile){ paneProfile.style.display = 'block'; paneProfile.classList.add('active'); }
+      if(paneMyCourses){ paneMyCourses.style.display = 'none'; paneMyCourses.classList.remove('active'); }
+    }
+  }
+
+  document.getElementById('tabMyCoursesBtn')?.addEventListener('click', () => switchDashboardTab('myCourses'));
+  document.getElementById('tabProfileBtn')?.addEventListener('click', () => switchDashboardTab('profile'));
+
   // ===== COURSE LIST <-> COURSE DETAIL "PAGE" TRANSITION =====
-  // Same physical page — just slides the detail view in/out so it feels
-  // like navigating to a separate screen, without a new .html file.
   function showCourseDetailView(){
     if(!courseListView || !courseDetailView) return;
     courseListView.hidden = true;
@@ -1563,9 +1675,7 @@
     courseDetailView.classList.remove('va-anim-in');
     void courseDetailView.offsetWidth; // reflow so the animation restarts every time
     courseDetailView.classList.add('va-anim-in');
-    if(dashHeadV2) dashHeadV2.style.display = 'none';
-    // Push a history entry so the device/browser back button closes this
-    // "page" instead of leaving the site — see popstate handler below.
+    activateCourseCategoryTab('video');
     try{
       if(!history.state || history.state.vaView !== 'courseDetail'){
         history.pushState({vaView:'courseDetail'}, '', location.pathname + location.search + '#course-materials');
@@ -1584,7 +1694,6 @@
     courseListView.classList.remove('va-anim-in');
     void courseListView.offsetWidth;
     courseListView.classList.add('va-anim-in');
-    if(dashHeadV2) dashHeadV2.style.display = '';
   }
 
   // Back to course list
@@ -1612,6 +1721,9 @@
     dashboardData = data || null;
     startDashboardWatchTimeDisplay();
     const courses=getEnrolledCourses(data);
+    const dashCoursesCount = document.getElementById('dashCoursesCount');
+    if(dashCoursesCount) dashCoursesCount.textContent = courses.length;
+
     const hasMultipleDeviceLock = Array.isArray(data?.courses) && data.courses.some(c =>
       c.locked && (
         String(c.lockComment || '').toLowerCase().includes('multiple device') ||
@@ -1622,11 +1734,8 @@
     const deviceBlockedBanner = document.getElementById('deviceBlockedBanner');
     if(deviceBlockedBanner) deviceBlockedBanner.style.display = isDeviceBlocked ? 'flex' : 'none';
     enrolledCourseList.innerHTML=''; classLearningReset();
-    // Full dashboard (re)renders (login / refresh) always start back on the
-    // course-grid "page", not stuck inside whichever course was last opened.
     if(courseDetailView) { courseDetailView.hidden = true; courseDetailView.classList.remove('va-anim-in'); }
     if(courseListView) { courseListView.hidden = false; courseListView.classList.remove('va-anim-in'); }
-    if(dashHeadV2) dashHeadV2.style.display = '';
     if(!courses.length){ learningEmpty.style.display='block'; return; }
     learningEmpty.style.display='none';
     enrolledCourseList.innerHTML=courses.map((course,i)=>{
@@ -1658,11 +1767,10 @@
                            /\bfree\b/i.test(String(course.accessType || '')) ||
                            Boolean(course.isFree) || 
                            (priceNum !== null && priceNum === 0) ||
-                           (!coursePriceVal && !paidVal) ||
                            (typeof freeCourseNamesSet !== 'undefined' && freeCourseNamesSet.has(normalizeForMatch(course.name)));
 
       const isExpired = String(course.status||'').trim().toLowerCase()==='expired';
-      const isPending = !isFreeCourse && String(course.status||'').trim().toLowerCase()==='pending';
+      const isPending = String(course.status||'').trim().toLowerCase()==='pending';
       const isCourseLocked = !!course.locked;
       const lockReason = String(course.lockComment || '').trim();
       
@@ -1681,7 +1789,6 @@
       const isSubjectWise = !!parseSubjectWiseCourseId(course.name);
       const displayName = getSubjectWiseDisplayName(course.name);
       const cornerLabel = isSubjectWise ? 'Subject' : 'Course';
-      const iconEmoji = isSubjectWise ? getSubjectIcon(displayName) : '🎓';
 
       const isFreePrice = isFreeCourse || !coursePriceVal || (priceNum !== null && priceNum === 0) || /free/i.test(coursePriceVal);
       const priceLine = isFreePrice
@@ -1695,46 +1802,56 @@
         : '';
 
       const isLive = Boolean(course.isLive || course.is_live);
+      const thumbSrc = getCourseImageUrl(course);
 
       return `<button type="button" class="enrolled-course-btn${lockedClass}" data-course="${escapeHtml(course.name)}" data-sector="${escapeHtml(course.nuDcu||'')}" data-idx="${i}">
-        <span class="ecb-corner-badge">${cornerLabel}</span>
-        ${course.nuDcu ? `<span class="ecb-sector-badge">${escapeHtml(course.nuDcu)}</span>` : ''}
-        <div class="ecb-corner-actions">
-          ${isLive ? `
-          <span class="ecb-live-btn" role="button" tabindex="0" title="লাইভ ক্লাস চলছে! সরাসরি যোগ দিন" data-idx="${i}">
-            <span class="ecb-live-dot-wrap" aria-hidden="true">
-              <span class="ecb-live-ping"></span>
-              <span class="ecb-live-dot"></span>
+        <div class="ecb-thumb-wrap">
+          <img class="ecb-thumb-img" src="${escapeHtml(thumbSrc)}" alt="${escapeHtml(displayName)}" loading="lazy" onerror="this.onerror=null;this.src='assets/og-image.jpg';">
+          <div class="ecb-thumb-gradient"></div>
+          <span class="ecb-corner-badge">${cornerLabel}</span>
+          ${course.nuDcu ? `<span class="ecb-sector-badge">${escapeHtml(course.nuDcu)}</span>` : ''}
+          <div class="ecb-corner-actions">
+            ${isLive ? `
+            <span class="ecb-live-btn" role="button" tabindex="0" title="লাইভ ক্লাস চলছে! সরাসরি যোগ দিন" data-idx="${i}">
+              <span class="ecb-live-dot-wrap" aria-hidden="true">
+                <span class="ecb-live-ping"></span>
+                <span class="ecb-live-dot"></span>
+              </span>
+              <svg viewBox="0 0 24 24" class="ecb-live-svg" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="2.2" fill="currentColor"/>
+                <path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5" class="ecb-wave-1"/>
+                <path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5" class="ecb-wave-1"/>
+                <path d="M19.1 4.9C23 8.8 23 15.2 19.1 19.1" class="ecb-wave-2"/>
+                <path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9" class="ecb-wave-2"/>
+              </svg>
+              <span>Live</span>
+            </span>` : ''}
+            <span class="ecb-routine-btn" role="button" tabindex="0" title="কোর্সের রুটিন দেখুন" data-routine="${escapeHtml(course.routine || '')}" data-course-name="${escapeHtml(course.name)}">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              <span>Routine</span>
             </span>
-            <svg viewBox="0 0 24 24" class="ecb-live-svg" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="12" cy="12" r="2.2" fill="currentColor"/>
-              <path d="M16.2 7.8c2.3 2.3 2.3 6.1 0 8.5" class="ecb-wave-1"/>
-              <path d="M7.8 16.2c-2.3-2.3-2.3-6.1 0-8.5" class="ecb-wave-1"/>
-              <path d="M19.1 4.9C23 8.8 23 15.2 19.1 19.1" class="ecb-wave-2"/>
-              <path d="M4.9 19.1C1 15.2 1 8.8 4.9 4.9" class="ecb-wave-2"/>
-            </svg>
-            <span>Live</span>
-          </span>` : ''}
-          <span class="ecb-routine-btn" role="button" tabindex="0" title="কোর্সের রুটিন দেখুন" data-routine="${escapeHtml(course.routine || '')}" data-course-name="${escapeHtml(course.name)}">
-            <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-              <line x1="16" y1="2" x2="16" y2="6"></line>
-              <line x1="8" y1="2" x2="8" y2="6"></line>
-              <line x1="3" y1="10" x2="21" y2="10"></line>
-            </svg>
-            <span>Routine</span>
-          </span>
+          </div>
         </div>
-        <span class="ecb-icon">${iconEmoji}</span>
-        <span class="ecb-body">
-          <span class="ecb-name">${escapeHtml(displayName)}</span>
-          <span class="ecb-meta"><span class="ecb-date"><span class="ecb-icon-emoji">📅</span> Enrolled: ${escapeHtml(formatDate(course.enrolledAt))}</span>${badge}</span>
+        <div class="ecb-card-content">
+          <h4 class="ecb-card-title">${escapeHtml(displayName)}</h4>
+          <div class="ecb-card-meta">
+            <span class="ecb-date"><span class="ecb-icon-emoji">📅</span> Enrolled: ${escapeHtml(formatDate(course.enrolledAt))}</span>
+            ${badge}
+          </div>
           ${lockReason ? `<span class="lock-reason">কারণ: ${escapeHtml(lockReason)}</span>` : ''}
           <span class="ecb-watchtime"><span class="ecb-icon-emoji">⏱️</span> <span class="ecb-wt-label">Watch Time:</span> <span class="ecb-wt-value">${escapeHtml(formatWatchTimeValue(getDashboardWatchTimeMinutes(course, String(data?.mobile || getCurrentUserMobile() || '').trim())))}</span></span>
           ${priceLine}
           ${paidLine}
           ${nextDateLine}
-        </span>
+          <div class="ecb-card-footer-actions">
+            <span class="ecb-open-hint">ক্লাসরুমে প্রবেশ করুন →</span>
+          </div>
+        </div>
       </button>`;
     }).join('');
     const selectCourse=idx=>{
@@ -1766,11 +1883,7 @@
       }
 
       // Check pending status
-      const isFreeCourse = /\bfree\b/i.test(String(course.coursePrice || '')) ||
-                           /\bfree\b/i.test(String(course.paid || '')) ||
-                           Boolean(course.isFree) ||
-                           (typeof freeCourseNamesSet !== 'undefined' && freeCourseNamesSet.has(normalizeForMatch(course.name)));
-      if(status === 'pending' && !isFreeCourse){
+      if(status === 'pending'){
         vaShowToast('⏳ আপনার কোর্সটি এখনো অনুমোদনের অপেক্ষায় রয়েছে।');
         return;
       }
@@ -2102,16 +2215,63 @@
     });
   }
 
+  function populateProfileData(data){
+    if(!data) return;
+    const profName = document.getElementById('profName');
+    if(profName) profName.textContent = data.name || 'শিক্ষার্থী';
+    const profItemName = document.getElementById('profItemName');
+    if(profItemName) profItemName.textContent = data.name || '—';
+    const profItemMobile = document.getElementById('profItemMobile');
+    if(profItemMobile) profItemMobile.textContent = data.mobile || '—';
+    const profItemLevel = document.getElementById('profItemLevel');
+    if(profItemLevel) profItemLevel.textContent = data.level || '—';
+    const profItemYear = document.getElementById('profItemYear');
+    if(profItemYear) profItemYear.textContent = data.year || '—';
+    const profItemSession = document.getElementById('profItemSession');
+    if(profItemSession) profItemSession.textContent = data.session || '—';
+    const profItemDepartment = document.getElementById('profItemDepartment');
+    if(profItemDepartment) profItemDepartment.textContent = data.department || '—';
+    const profItemInstitute = document.getElementById('profItemInstitute');
+    if(profItemInstitute) profItemInstitute.textContent = data.institute || '—';
+    const profItemEmail = document.getElementById('profItemEmail');
+    if(profItemEmail) profItemEmail.textContent = data.email || '—';
+    const profItemAddress = document.getElementById('profItemAddress');
+    if(profItemAddress) profItemAddress.textContent = data.address || '—';
+    const profItemJoined = document.getElementById('profItemJoined');
+    if(profItemJoined) profItemJoined.textContent = data.timestamp ? formatDate(data.timestamp) : '—';
+  }
+
   function renderProfileInfo(data){
     hideLoading();
-    document.getElementById('dashName').textContent = data.name || '—';
-    document.getElementById('dashLevel').textContent = data.level || '—';
-    document.getElementById('dashYear').textContent = data.year ? (data.session ? `${data.year} (${data.session})` : data.year) : '—';
-    document.getElementById('dashDepartment').textContent = data.department || '—';
-    document.getElementById('dashMobile').textContent = data.mobile || '—';
+    if(!data) return;
+
+    // Sidebar User Info
+    const dashSidebarName = document.getElementById('dashSidebarName');
+    const dashSidebarMobile = document.getElementById('dashSidebarMobile');
+    if(dashSidebarName) dashSidebarName.textContent = data.name || 'শিক্ষার্থী';
+    if(dashSidebarMobile) dashSidebarMobile.textContent = data.mobile || '—';
+
+    // Populate profile card
+    populateProfileData(data);
+
+    // Fallback backward compatibility elements
+    const dName = document.getElementById('dashName');
+    if(dName) dName.textContent = data.name || '—';
+    const dLevel = document.getElementById('dashLevel');
+    if(dLevel) dLevel.textContent = data.level || '—';
+    const dYear = document.getElementById('dashYear');
+    if(dYear) dYear.textContent = data.year ? (data.session ? `${data.year} (${data.session})` : data.year) : '—';
+    const dDept = document.getElementById('dashDepartment');
+    if(dDept) dDept.textContent = data.department || '—';
+    const dMobile = document.getElementById('dashMobile');
+    if(dMobile) dMobile.textContent = data.mobile || '—';
+
     authPageHead.style.display = 'none';
     authWrapSection.style.display = 'none';
     dashboardSection.style.display = 'block';
+
+    // Default to "আমার কোর্স" tab!
+    switchDashboardTab('myCourses');
   }
 
   function showCourseListSkeleton(){
@@ -2410,9 +2570,10 @@
   let freeCourseNamesSet = new Set();
   async function loadFreeCoursesSet(){
     try {
+      try { sessionStorage.removeItem('va_free_course_names'); } catch(e){}
       let cached = null;
       try {
-        const raw = sessionStorage.getItem('va_free_course_names');
+        const raw = sessionStorage.getItem('va_free_course_names_v2');
         if (raw) cached = JSON.parse(raw);
       } catch(e){}
       if (Array.isArray(cached) && cached.length) {
@@ -2425,7 +2586,7 @@
           .filter(c => /\bfree\b/i.test(String(c.price || '')) || /\bfree\b/i.test(String(c.coursePrice || '')))
           .map(c => normalizeForMatch(c.name));
         freeCourseNamesSet = new Set(freeNames);
-        try { sessionStorage.setItem('va_free_course_names', JSON.stringify(freeNames)); } catch(e){}
+        try { sessionStorage.setItem('va_free_course_names_v2', JSON.stringify(freeNames)); } catch(e){}
       }
     } catch(e){}
   }
@@ -2480,16 +2641,6 @@
     if(result.status !== 'ok') throw new Error(result.message || 'Course enrollment failed.');
     if(result.data){
       result.data.mobile = fullMobile;
-      if(isFree && Array.isArray(result.data.courses)){
-        result.data.courses.forEach(c => {
-          if(normalizeForMatch(c.name) === normalizeForMatch(courseName)){
-            c.status = 'Active';
-            c.coursePrice = 'Free';
-            c.paid = 'Free';
-            c.isFree = true;
-          }
-        });
-      }
       localStorage.setItem(LS_USER_KEY,JSON.stringify(result.data));
       await syncAndRenderDashboard(result.data);
     }
@@ -3150,6 +3301,7 @@
 
   logoutBtn.addEventListener('click', function(){
     if(!confirm('আপনি কি সত্যিই লগআউট করতে চান?')) return;
+    stopDashboardWatchTimeDisplay(); // Fix: clear watch-time interval on logout
     localStorage.removeItem(LS_USER_KEY);
     localStorage.removeItem(LS_STUDENT_SESSION_TOKEN_KEY);
     classLearningReset();
@@ -3168,7 +3320,6 @@
 
     const mobileInput = document.getElementById('login_mobile');
     const passInput = document.getElementById('login_password');
-    const liveText = document.getElementById('studyLiveText');
     const laptopScreen = document.getElementById('laptopScreen');
     const gradCap = document.getElementById('sceneGradCap');
     const book = document.getElementById('sceneFloatingBook');
@@ -3176,7 +3327,6 @@
     const diploma = document.getElementById('sceneDiploma');
 
     function setLiveStatus(text, isAlert){
-      if(liveText) liveText.textContent = text;
       if(isAlert){
         studyCard.classList.add('is-typing-focus');
       } else {
