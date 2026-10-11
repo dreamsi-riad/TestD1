@@ -1557,8 +1557,14 @@
         <div class="doc-item-row">
           <div class="doc-item-left">
             <span class="doc-item-star" aria-hidden="true">
-              <svg viewBox="0 0 24 24" width="24" height="24" fill="#FBBF24" stroke="#F59E0B" stroke-width="1.8" stroke-linejoin="round">
-                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <polygon points="12,2.5 14.8,8.2 21,8.9 16.5,13.2 17.8,19.3 12,16.2 6.2,19.3 7.5,13.2 3,8.9 9.2,8.2" fill="#F59E0B"/>
+                <polygon points="12,2.5 12,12.5 14.8,8.2" fill="#FEF08A"/>
+                <polygon points="12,12.5 21,8.9 16.5,13.2" fill="#FDE68A" opacity="0.9"/>
+                <polygon points="12,12.5 17.8,19.3 12,16.2" fill="#D97706" opacity="0.7"/>
+                <polygon points="12,2.5 12,12.5 9.2,8.2" fill="#FFFFFF" opacity="0.45"/>
+                <polygon points="12,12.5 3,8.9 7.5,13.2" fill="#FBBF24" opacity="0.8"/>
+                <circle cx="12" cy="12.2" r="1.2" fill="#FFFFFF" opacity="0.85"/>
               </svg>
             </span>
             <div class="doc-item-info">
