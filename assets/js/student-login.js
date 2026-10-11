@@ -1554,18 +1554,28 @@
 
       const isLocked = !!r.locked;
       const btn = isLocked
-        ? `<span class="doc-download-btn" style="background:#64748b;cursor:not-allowed;" title="লক করা">🔒 লক</span>`
-        : `<a class="doc-download-btn" href="${escapeHtml(driveDirectLink(sUrl))}" target="_blank" rel="noopener">📥 সাজেশন PDF ডাউনলোড</a>`;
+        ? `<span class="doc-download-btn is-locked" title="লক করা">🔒 লক</span>`
+        : `<a class="doc-download-btn" href="${escapeHtml(driveDirectLink(sUrl))}" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>সাজেশন PDF ডাউনলোড</span>
+          </a>`;
       html += `
-        <div class="doc-item-row" style="border-left:4px solid #F59E0B;background:#FFFDF5;">
+        <div class="doc-item-row">
           <div class="doc-item-left">
-            <span class="doc-item-icon">⭐</span>
+            <span class="doc-item-star" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="24" height="24" fill="#FBBF24" stroke="#F59E0B" stroke-width="1.8" stroke-linejoin="round">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+              </svg>
+            </span>
             <div class="doc-item-info">
-              <span class="doc-item-title">${escapeHtml(sSub)} — সুপার শর্ট সাজেশন</span>
+              <h4 class="doc-item-title">${escapeHtml(sSub)}</h4>
+              <span class="doc-item-badge-text">— সুপার শর্ট সাজেশন</span>
               <span class="doc-item-chapter">${escapeHtml(r.chapter ? `${r.chapter} · ফাইনাল পরীক্ষা স্পেশাল` : 'ফাইনাল পরীক্ষা স্পেশাল')}</span>
             </div>
           </div>
-          ${btn}
+          <div class="doc-item-right">
+            ${btn}
+          </div>
         </div>
       `;
     });
