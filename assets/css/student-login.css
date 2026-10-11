@@ -3948,15 +3948,15 @@ body.dash-active {
   transform: scale(0.98);
 }
 .dash-side-nav-item.active{
-  background: linear-gradient(135deg, #4A8CF6 0%, #3B82F6 100%);
-  border-color: rgba(255, 255, 255, 0.4);
+  background: linear-gradient(135deg, #38BDF8 0%, #0284C7 100%);
+  border-color: rgba(255, 255, 255, 0.5);
   color: #ffffff;
-  box-shadow: 0 3px 12px rgba(59, 130, 246, 0.25), inset 0 1px 1px rgba(255, 255, 255, 0.45);
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.26), inset 0 1px 1px rgba(255, 255, 255, 0.6);
 }
 .dash-side-nav-item.active:hover{
-  background: linear-gradient(135deg, #3E83F2 0%, #2F76EA 100%);
-  border-color: rgba(255, 255, 255, 0.5);
-  box-shadow: 0 5px 16px rgba(59, 130, 246, 0.32), inset 0 1px 1px rgba(255, 255, 255, 0.5);
+  background: linear-gradient(135deg, #0EA5E9 0%, #0369A1 100%);
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 6px 18px rgba(2, 132, 199, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.65);
   transform: translateY(-1px);
 }
 .dash-nav-icon{
@@ -4084,10 +4084,10 @@ body.dash-active {
   color: #ffffff;
 }
 [data-theme="dark"] .dash-side-nav-item.active{
-  background: linear-gradient(135deg, #4A8CF6 0%, #3B82F6 100%);
-  border-color: rgba(255, 255, 255, 0.4);
+  background: linear-gradient(135deg, #38BDF8 0%, #0284C7 100%);
+  border-color: rgba(255, 255, 255, 0.45);
   color: #ffffff;
-  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.32);
+  box-shadow: 0 4px 14px rgba(2, 132, 199, 0.35);
 }
 [data-theme="dark"] .dash-side-nav-item .dash-nav-icon{
   background: rgba(255, 255, 255, 0.06);
