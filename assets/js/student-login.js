@@ -1114,19 +1114,6 @@
     });
   }
 
-  const classScrollView = document.querySelector('.class-list-scroll-view');
-  if(classScrollView){
-    classScrollView.addEventListener('wheel', (e) => {
-      const delta = e.deltaY;
-      const atTop = classScrollView.scrollTop <= 0;
-      const atBottom = Math.ceil(classScrollView.scrollTop + classScrollView.clientHeight) >= classScrollView.scrollHeight;
-      if((delta < 0 && atTop) || (delta > 0 && atBottom)){
-        e.preventDefault();
-      }
-      e.stopPropagation();
-    }, { passive: false });
-  }
-
   function populateChapterSelect(rows, subject){
     if(!subject){
       chapterSelect.innerHTML = '<option value="">সব চ্যাপ্টার</option>';
@@ -1568,8 +1555,10 @@
               </svg>
             </span>
             <div class="doc-item-info">
-              <h4 class="doc-item-title">${escapeHtml(sSub)}</h4>
-              <span class="doc-item-badge-text">— সুপার শর্ট সাজেশন</span>
+              <div class="doc-item-title-row">
+                <h4 class="doc-item-title">${escapeHtml(sSub)}</h4>
+                <span class="doc-item-badge-text">— সুপার শর্ট সাজেশন</span>
+              </div>
               <span class="doc-item-chapter">${escapeHtml(r.chapter ? `${r.chapter} · ফাইনাল পরীক্ষা স্পেশাল` : 'ফাইনাল পরীক্ষা স্পেশাল')}</span>
             </div>
           </div>
