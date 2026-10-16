@@ -459,17 +459,17 @@
         .instructors-box-title {
             display: inline-flex;
             align-items: center;
-            gap: 7px;
+            gap: 8px;
             font-family: 'Baloo Da 2', sans-serif;
-            font-size: 13.5px;
-            font-weight: 700;
+            font-size: 17px;
+            font-weight: 800;
             color: var(--primary);
             text-transform: uppercase;
-            letter-spacing: .04em;
+            letter-spacing: .02em;
         }
         .instructors-box-title svg {
-            width: 17px;
-            height: 17px;
+            width: 20px;
+            height: 20px;
         }
         .instructors-list {
             display: flex;
@@ -787,10 +787,11 @@
         
         .detail-features-title {
             font-family: 'Baloo Da 2', sans-serif;
-            font-size: 14.5px;
-            font-weight: 700;
-            color: var(--ink);
+            font-size: 17px;
+            font-weight: 800;
+            color: var(--primary);
             margin-bottom: 2px;
+            letter-spacing: .02em;
         }
         
         .detail-features {
@@ -846,9 +847,10 @@
 
         .detail-syllabus-title {
             font-family: 'Baloo Da 2', sans-serif;
-            font-size: 14.5px;
-            font-weight: 700;
-            color: var(--ink);
+            font-size: 17px;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: .02em;
         }
 
         .syllabus-list {
@@ -897,18 +899,6 @@
             font-weight: 700;
             color: #1E293B;
             flex: 1;
-        }
-
-        .syllabus-chevron {
-            color: #94A3B8;
-            display: flex;
-            align-items: center;
-            flex-shrink: 0;
-        }
-
-        .syllabus-chevron svg {
-            width: 16px;
-            height: 16px;
         }
 
         /* অ্যাকশন বাটনস (কল টু অ্যাকশন) */
@@ -1041,8 +1031,10 @@
             .price-now {
                 font-size: 26px;
             }
-            .detail-features-title {
-                font-size: 14px;
+            .instructors-box-title,
+            .detail-features-title,
+            .detail-syllabus-title {
+                font-size: 16px;
                 margin-bottom: 1px;
             }
             .course-instructors-box {
@@ -1613,7 +1605,7 @@
             color:#FDE047;
         }
         [data-theme="dark"] .detail-features-title{
-            color:#F8FAFC;
+            color:#38BDF8;
         }
         [data-theme="dark"] .detail-features li{
             background:#162035;
@@ -1626,10 +1618,9 @@
         }
 
         /* ডার্ক মোড: সিলেবাস সেকশন */
-        [data-theme="dark"] .detail-syllabus-title { color: #F8FAFC; }
+        [data-theme="dark"] .detail-syllabus-title { color: #38BDF8; }
         [data-theme="dark"] .syllabus-item { background: #162035; border-color: rgba(255,255,255,0.08); }
         [data-theme="dark"] .syllabus-name { color: #CBD5E1; }
-        [data-theme="dark"] .syllabus-chevron { color: #64748B; }
 
         [data-theme="dark"] .detail-actions{
             border-top-color:rgba(255,255,255,0.08);
