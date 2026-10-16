@@ -26,293 +26,18 @@ function uniqueSlug(name, cat, used) {
 const parseFeatures = v => clean(v).split(/[,،]/).map(clean).filter(Boolean);
 const parseSubjectList = v => clean(v).split(/[,;\n\r、，|]+/).map(clean).filter(Boolean);
 
-// 3D-styled SVG icons generator for syllabus subjects
-function getSubject3DIcon(name, uid = 0) {
-    const n = String(name || '').toLowerCase().trim();
-    const id = 's3d_' + uid + '_' + Math.random().toString(36).slice(2, 7);
-
-    // 1. Taxation / Tax / কর
-    if (/tax|ট্যাক্স|কর/.test(n)) {
-        return `<svg class="syllabus-3d-icon" viewBox="0 0 44 44" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <defs>
-                <linearGradient id="bg_tx_${id}" x1="2" y1="2" x2="42" y2="42" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stop-color="#F59E0B"/>
-                    <stop offset="60%" stop-color="#D97706"/>
-                    <stop offset="100%" stop-color="#9A3412"/>
-                </linearGradient>
-                <linearGradient id="sh_tx_${id}" x1="0" y1="0" x2="0" y2="20" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.35"/>
-                    <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
-                </linearGradient>
-            </defs>
-            <rect x="2" y="2" width="40" height="40" rx="11" fill="url(#bg_tx_${id})"/>
-            <rect x="2" y="2" width="40" height="19" rx="10" fill="url(#sh_tx_${id})"/>
-            <rect x="2.5" y="2.5" width="39" height="39" rx="10.5" stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="1"/>
-            <rect x="11" y="10" width="22" height="24" rx="3" fill="#FFFBEB" stroke="#FDE68A" stroke-width="1.2"/>
-            <line x1="15" y1="15" x2="23" y2="15" stroke="#D97706" stroke-width="1.8" stroke-linecap="round"/>
-            <line x1="15" y1="19" x2="29" y2="19" stroke="#92400E" stroke-width="1.3" stroke-linecap="round"/>
-            <line x1="15" y1="23" x2="29" y2="23" stroke="#92400E" stroke-width="1.3" stroke-linecap="round"/>
-            <circle cx="26" cy="27" r="4.5" fill="#D97706"/>
-            <text x="26" y="30" fill="#FEF3C7" font-family="'Baloo Da 2', 'Anek Bangla', sans-serif" font-size="7.5" font-weight="800" text-anchor="middle">৳</text>
-        </svg>`;
-    }
-
-    // 2. Finance / Banking / Insurance
-    if (/financ|ফিন্যান্স|banking|ব্যাংক|insurance|বিমা/.test(n)) {
-        return `<svg class="syllabus-3d-icon" viewBox="0 0 44 44" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <defs>
-                <linearGradient id="bg_fn_${id}" x1="2" y1="2" x2="42" y2="42" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stop-color="#0284C7"/>
-                    <stop offset="60%" stop-color="#0369A1"/>
-                    <stop offset="100%" stop-color="#075985"/>
-                </linearGradient>
-                <linearGradient id="sh_fn_${id}" x1="0" y1="0" x2="0" y2="19" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.35"/>
-                    <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
-                </linearGradient>
-            </defs>
-            <rect x="2" y="2" width="40" height="40" rx="11" fill="url(#bg_fn_${id})"/>
-            <rect x="2" y="2" width="40" height="19" rx="10" fill="url(#sh_fn_${id})"/>
-            <rect x="2.5" y="2.5" width="39" height="39" rx="10.5" stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="1"/>
-            <rect x="10" y="25" width="5" height="8" rx="1.2" fill="#7DD3FC"/>
-            <rect x="17" y="19" width="5" height="14" rx="1.2" fill="#BAE6FD"/>
-            <rect x="24" y="14" width="5" height="19" rx="1.2" fill="#FFFFFF"/>
-            <path d="M11 22L18 16L25 12L32 9" stroke="#FDE047" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M28 9H32V13" stroke="#FDE047" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>`;
-    }
-
-    // 3. Accounting / Auditing / Cost
-    if (/account|হিসাব|ledger|cost|audit|নিরীক্ষা/.test(n)) {
-        return `<svg class="syllabus-3d-icon" viewBox="0 0 44 44" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <defs>
-                <linearGradient id="bg_ac_${id}" x1="2" y1="2" x2="42" y2="42" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stop-color="#10B981"/>
-                    <stop offset="60%" stop-color="#059669"/>
-                    <stop offset="100%" stop-color="#047857"/>
-                </linearGradient>
-                <linearGradient id="sh_ac_${id}" x1="0" y1="0" x2="0" y2="19" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.35"/>
-                    <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
-                </linearGradient>
-            </defs>
-            <rect x="2" y="2" width="40" height="40" rx="11" fill="url(#bg_ac_${id})"/>
-            <rect x="2" y="2" width="40" height="19" rx="10" fill="url(#sh_ac_${id})"/>
-            <rect x="2.5" y="2.5" width="39" height="39" rx="10.5" stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="1"/>
-            <rect x="11" y="9" width="22" height="26" rx="4" fill="#064E3B" stroke="#A7F3D0" stroke-width="1.2"/>
-            <rect x="14" y="12" width="16" height="6" rx="1.5" fill="#D1FAE5"/>
-            <text x="28" y="16.8" fill="#065F46" font-family="monospace" font-size="6" font-weight="bold" text-anchor="end">12,500</text>
-            <rect x="14" y="21" width="3.5" height="3" rx="0.8" fill="#FFFFFF"/>
-            <rect x="20.2" y="21" width="3.5" height="3" rx="0.8" fill="#FFFFFF"/>
-            <rect x="26.5" y="21" width="3.5" height="3" rx="0.8" fill="#FBBF24"/>
-            <rect x="14" y="26" width="3.5" height="3" rx="0.8" fill="#FFFFFF"/>
-            <rect x="20.2" y="26" width="3.5" height="3" rx="0.8" fill="#FFFFFF"/>
-            <rect x="26.5" y="26" width="3.5" height="3" rx="0.8" fill="#34D399"/>
-        </svg>`;
-    }
-
-    // 4. Bangla
-    if (/বাংলা|bengali|\bbangla\b|সাহিত্য/.test(n)) {
-        return `<svg class="syllabus-3d-icon" viewBox="0 0 44 44" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <defs>
-                <linearGradient id="bg_bn_${id}" x1="2" y1="2" x2="42" y2="42" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stop-color="#EF4444"/>
-                    <stop offset="60%" stop-color="#DC2626"/>
-                    <stop offset="100%" stop-color="#991B1B"/>
-                </linearGradient>
-                <linearGradient id="sh_bn_${id}" x1="0" y1="0" x2="0" y2="19" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.35"/>
-                    <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
-                </linearGradient>
-            </defs>
-            <rect x="2" y="2" width="40" height="40" rx="11" fill="url(#bg_bn_${id})"/>
-            <rect x="2" y="2" width="40" height="19" rx="10" fill="url(#sh_bn_${id})"/>
-            <rect x="2.5" y="2.5" width="39" height="39" rx="10.5" stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="1"/>
-            <text x="14" y="19" fill="#FFFFFF" font-family="'Baloo Da 2', 'Anek Bangla', sans-serif" font-size="13" font-weight="800" text-anchor="middle">অ</text>
-            <text x="30" y="19" fill="#FEF08A" font-family="'Baloo Da 2', 'Anek Bangla', sans-serif" font-size="13" font-weight="800" text-anchor="middle">আ</text>
-            <text x="22" y="34" fill="#FFFFFF" font-family="'Baloo Da 2', 'Anek Bangla', sans-serif" font-size="14.5" font-weight="800" text-anchor="middle">ক</text>
-        </svg>`;
-    }
-
-    // 5. English / Communication
-    if (/ইংরেজি|english|communication/.test(n)) {
-        return `<svg class="syllabus-3d-icon" viewBox="0 0 44 44" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <defs>
-                <linearGradient id="bg_en_${id}" x1="2" y1="2" x2="42" y2="42" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stop-color="#06B6D4"/>
-                    <stop offset="60%" stop-color="#0891B2"/>
-                    <stop offset="100%" stop-color="#0E7490"/>
-                </linearGradient>
-                <linearGradient id="bd_en_${id}" x1="0" y1="0" x2="0" y2="24" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stop-color="#164E63"/>
-                    <stop offset="100%" stop-color="#083344"/>
-                </linearGradient>
-            </defs>
-            <rect x="2" y="2" width="40" height="40" rx="11" fill="url(#bg_en_${id})"/>
-            <rect x="2.5" y="2.5" width="39" height="39" rx="10.5" stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="1"/>
-            <rect x="7" y="9" width="30" height="22" rx="4" fill="url(#bd_en_${id})" stroke="#FDE68A" stroke-width="1.5"/>
-            <path d="M12 31L9 37M32 31L35 37" stroke="#FDE68A" stroke-width="1.8" stroke-linecap="round"/>
-            <text x="22" y="24.5" fill="#FFFFFF" font-family="'Baloo Da 2', sans-serif" font-size="11.5" font-weight="800" letter-spacing="1" text-anchor="middle">ABC</text>
-        </svg>`;
-    }
-
-    // 6. Math / Statistics / Higher Math
-    if (/গণিত|math|statistic|পরিসংখ্যান|stat/.test(n)) {
-        return `<svg class="syllabus-3d-icon" viewBox="0 0 44 44" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <defs>
-                <linearGradient id="bg_ma_${id}" x1="2" y1="2" x2="42" y2="42" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stop-color="#A855F7"/>
-                    <stop offset="60%" stop-color="#9333EA"/>
-                    <stop offset="100%" stop-color="#6B21A8"/>
-                </linearGradient>
-                <linearGradient id="sh_ma_${id}" x1="0" y1="0" x2="0" y2="19" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.35"/>
-                    <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
-                </linearGradient>
-            </defs>
-            <rect x="2" y="2" width="40" height="40" rx="11" fill="url(#bg_ma_${id})"/>
-            <rect x="2" y="2" width="40" height="19" rx="10" fill="url(#sh_ma_${id})"/>
-            <rect x="2.5" y="2.5" width="39" height="39" rx="10.5" stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="1"/>
-            <path d="M10 22H34M22 10V34" stroke="#E9D5FF" stroke-width="1.3" stroke-linecap="round" stroke-opacity="0.7"/>
-            <path d="M22 9L20 11M22 9L24 11M35 22L33 20M35 22L33 24" stroke="#E9D5FF" stroke-width="1.3" stroke-linecap="round"/>
-            <path d="M11 28C14 28 16 14 22 14C28 14 30 28 33 28" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round"/>
-            <circle cx="17" cy="19" r="2.2" fill="#FDE047"/>
-            <circle cx="27" cy="23" r="2.2" fill="#FDE047"/>
-        </svg>`;
-    }
-
-    // 7. Economics
-    if (/econom|অর্থনীতি/.test(n)) {
-        return `<svg class="syllabus-3d-icon" viewBox="0 0 44 44" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <defs>
-                <linearGradient id="bg_ec_${id}" x1="2" y1="2" x2="42" y2="42" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stop-color="#EA580C"/>
-                    <stop offset="60%" stop-color="#C2410C"/>
-                    <stop offset="100%" stop-color="#7C2D12"/>
-                </linearGradient>
-                <linearGradient id="sh_ec_${id}" x1="0" y1="0" x2="0" y2="19" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.35"/>
-                    <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
-                </linearGradient>
-            </defs>
-            <rect x="2" y="2" width="40" height="40" rx="11" fill="url(#bg_ec_${id})"/>
-            <rect x="2" y="2" width="40" height="19" rx="10" fill="url(#sh_ec_${id})"/>
-            <rect x="2.5" y="2.5" width="39" height="39" rx="10.5" stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="1"/>
-            <circle cx="22" cy="22" r="11" fill="#78350F" stroke="#FDE68A" stroke-width="1.8"/>
-            <circle cx="22" cy="22" r="8.5" fill="none" stroke="#FDE68A" stroke-dasharray="1.5 1.5"/>
-            <text x="22" y="26.5" fill="#FFFFFF" font-family="'Baloo Da 2', sans-serif" font-size="14" font-weight="800" text-anchor="middle">৳</text>
-        </svg>`;
-    }
-
-    // 8. Management / Marketing / Law / Business
-    if (/management|ব্যবস্থাপনা|marketing|মার্কেটিং|ব্যবসা|business|organi|আইন|law/.test(n)) {
-        return `<svg class="syllabus-3d-icon" viewBox="0 0 44 44" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <defs>
-                <linearGradient id="bg_mg_${id}" x1="2" y1="2" x2="42" y2="42" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stop-color="#3B82F6"/>
-                    <stop offset="60%" stop-color="#2563EB"/>
-                    <stop offset="100%" stop-color="#1D4ED8"/>
-                </linearGradient>
-                <linearGradient id="sh_mg_${id}" x1="0" y1="0" x2="0" y2="19" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.35"/>
-                    <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
-                </linearGradient>
-            </defs>
-            <rect x="2" y="2" width="40" height="40" rx="11" fill="url(#bg_mg_${id})"/>
-            <rect x="2" y="2" width="40" height="19" rx="10" fill="url(#sh_mg_${id})"/>
-            <rect x="2.5" y="2.5" width="39" height="39" rx="10.5" stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="1"/>
-            <circle cx="22" cy="22" r="11" fill="#1E3A8A" stroke="#BFDBFE" stroke-width="1.5"/>
-            <circle cx="22" cy="22" r="7.5" fill="#3B82F6" stroke="#FFFFFF" stroke-width="1.2"/>
-            <circle cx="22" cy="22" r="3.5" fill="#EF4444"/>
-            <path d="M29 15L23 21" stroke="#FDE047" stroke-width="2" stroke-linecap="round"/>
-        </svg>`;
-    }
-
-    // 9. ICT / Computer
-    if (/ict|তথ্য|computer|কম্পিউটার/.test(n)) {
-        return `<svg class="syllabus-3d-icon" viewBox="0 0 44 44" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <defs>
-                <linearGradient id="bg_it_${id}" x1="2" y1="2" x2="42" y2="42" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stop-color="#6366F1"/>
-                    <stop offset="60%" stop-color="#4F46E5"/>
-                    <stop offset="100%" stop-color="#312E81"/>
-                </linearGradient>
-                <linearGradient id="sh_it_${id}" x1="0" y1="0" x2="0" y2="19" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.35"/>
-                    <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
-                </linearGradient>
-            </defs>
-            <rect x="2" y="2" width="40" height="40" rx="11" fill="url(#bg_it_${id})"/>
-            <rect x="2" y="2" width="40" height="19" rx="10" fill="url(#sh_it_${id})"/>
-            <rect x="2.5" y="2.5" width="39" height="39" rx="10.5" stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="1"/>
-            <rect x="9" y="11" width="26" height="18" rx="3" fill="#0F172A" stroke="#C7D2FE" stroke-width="1.2"/>
-            <path d="M16 17L13 20L16 23M28 17L31 20L28 23M23 15L19 25" stroke="#38BDF8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M19 29H25M22 29V32M17 32H27" stroke="#C7D2FE" stroke-width="1.5" stroke-linecap="round"/>
-        </svg>`;
-    }
-
-    // 10. Science
-    if (/পদার্থ|physics|রসায়ন|chemistry|জীব|biology/.test(n)) {
-        return `<svg class="syllabus-3d-icon" viewBox="0 0 44 44" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <defs>
-                <linearGradient id="bg_sc_${id}" x1="2" y1="2" x2="42" y2="42" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stop-color="#EC4899"/>
-                    <stop offset="60%" stop-color="#DB2777"/>
-                    <stop offset="100%" stop-color="#831843"/>
-                </linearGradient>
-                <linearGradient id="sh_sc_${id}" x1="0" y1="0" x2="0" y2="19" gradientUnits="userSpaceOnUse">
-                    <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.35"/>
-                    <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
-                </linearGradient>
-            </defs>
-            <rect x="2" y="2" width="40" height="40" rx="11" fill="url(#bg_sc_${id})"/>
-            <rect x="2" y="2" width="40" height="19" rx="10" fill="url(#sh_sc_${id})"/>
-            <rect x="2.5" y="2.5" width="39" height="39" rx="10.5" stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="1"/>
-            <path d="M20 12H24V17L28 27C28.7 28.5 27.6 30 26 30H18C16.4 30 15.3 28.5 16 27L20 17V12Z" fill="#FCE7F3" stroke="#FBCFE8" stroke-width="1.2"/>
-            <path d="M17 25C19 24 21 27 24 25C26 24 27 25 27 25" stroke="#F43F5E" stroke-width="1.5" stroke-linecap="round"/>
-            <circle cx="20" cy="22" r="1.2" fill="#F43F5E"/>
-            <circle cx="23" cy="20" r="1" fill="#F43F5E"/>
-        </svg>`;
-    }
-
-    // Default Fallback: Elegant 3D Book & Knowledge
-    const fallbackGradients = [
-        ['#6366F1', '#4F46E5', '#3730A3'],
-        ['#14B8A6', '#0D9488', '#0F766E'],
-        ['#F97316', '#EA580C', '#C2410C'],
-        ['#8B5CF6', '#7C3AED', '#5B21B6']
-    ];
-    const pal = fallbackGradients[uid % fallbackGradients.length];
-
-    return `<svg class="syllabus-3d-icon" viewBox="0 0 44 44" width="44" height="44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <defs>
-            <linearGradient id="bg_df_${id}" x1="2" y1="2" x2="42" y2="42" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="${pal[0]}"/>
-                <stop offset="60%" stop-color="${pal[1]}"/>
-                <stop offset="100%" stop-color="${pal[2]}"/>
-            </linearGradient>
-            <linearGradient id="sh_df_${id}" x1="0" y1="0" x2="0" y2="19" gradientUnits="userSpaceOnUse">
-                <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.35"/>
-                <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
-            </linearGradient>
-        </defs>
-        <rect x="2" y="2" width="40" height="40" rx="11" fill="url(#bg_df_${id})"/>
-        <rect x="2" y="2" width="40" height="19" rx="10" fill="url(#sh_df_${id})"/>
-        <rect x="2.5" y="2.5" width="39" height="39" rx="10.5" stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="1"/>
-        <path d="M22 15C18 12.5 13 13 11 14V28C13 27 18 26.5 22 29C26 26.5 31 27 33 28V14C31 13 26 12.5 22 15Z" fill="#FFFFFF" fill-opacity="0.95"/>
-        <path d="M22 15V29" stroke="${pal[2]}" stroke-width="1.6"/>
-        <path d="M14 18H19M14 22H19M25 18H30M25 22H30" stroke="${pal[2]}" stroke-width="1" stroke-linecap="round"/>
-    </svg>`;
+// Lightweight subject badge helper
+function getSubjectBadge(name) {
+    const n = String(name || '').toLowerCase();
+    if (/বাংলা|bengali|\bbangla\b/.test(n)) return { cls: 'sb-bn', text: 'অ' };
+    if (/ইংরেজি|english|communication/.test(n)) return { cls: 'sb-en', text: 'ABC' };
+    if (/গণিত|math|statistic|পরিসংখ্যান|stat/.test(n)) return { cls: 'sb-ma', text: 'f(x)' };
+    if (/account|হিসাব|ledger|cost|audit|tax|ট্যাক্স|কর/.test(n)) return { cls: 'sb-ac', text: '৳' };
+    if (/financ|ফিন্যান্স|banking|ব্যাংক|insurance|বিমা/.test(n)) return { cls: 'sb-fn', text: '📈' };
+    if (/econom|অর্থনীতি/.test(n)) return { cls: 'sb-ec', text: '৳' };
+    if (/management|ব্যবস্থাপনা|marketing|মার্কেটিং|ব্যবসা|business|organi|আইন|law/.test(n)) return { cls: 'sb-mg', text: '🎯' };
+    return { cls: 'sb-df', text: '📖' };
 }
-
-function toggleSyllabusItem(btn) {
-    if (!btn) return;
-    const item = btn.closest('.syllabus-item');
-    if (!item) return;
-    const isOpen = item.classList.toggle('is-open');
-    btn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
-}
-window.toggleSyllabusItem = toggleSyllabusItem;
 
 const formatPrice = v => {
     const x = clean(v);
@@ -647,43 +372,21 @@ function renderCourse(course, teachers) {
     const subjects = parseSubjectList(course.subjectList);
     const syllabusHtml = subjects.length ? `
                 <div class="detail-syllabus-wrap">
-                    <div class="detail-syllabus-header">
-                        <span class="detail-syllabus-title">কোর্সের সিলেবাস</span>
-                        <span class="syllabus-count-pill">${toBn(subjects.length)}টি বিষয়</span>
-                    </div>
+                    <span class="detail-syllabus-title">কোর্সের সিলেবাস:</span>
                     <div class="syllabus-list">
-                        ${subjects.map((subj, idx) => `
+                        ${subjects.map(subj => {
+                            const b = getSubjectBadge(subj);
+                            return `
                             <div class="syllabus-item">
-                                <button type="button" class="syllabus-item-btn" aria-expanded="false" onclick="toggleSyllabusItem(this)">
-                                    <div class="syllabus-icon-wrap">
-                                        ${getSubject3DIcon(subj, idx)}
-                                    </div>
-                                    <span class="syllabus-name">${escapeHtml(subj)}</span>
-                                    <div class="syllabus-chevron" aria-hidden="true">
-                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                                            <polyline points="6 9 12 15 18 9"></polyline>
-                                        </svg>
-                                    </div>
-                                </button>
-                                <div class="syllabus-dropdown">
-                                    <div class="syllabus-dropdown-inner">
-                                        <div class="syllabus-perks">
-                                            <span class="syllabus-perk-chip">
-                                                <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-                                                অধ্যায়ভিত্তিক সম্পূর্ণ লাইভ ও রেকর্ডেড ক্লাস
-                                            </span>
-                                            <span class="syllabus-perk-chip">
-                                                <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-                                                লেকচার শিট ও প্র্যাকটিস হ্যান্ডনোট
-                                            </span>
-                                            <span class="syllabus-perk-chip">
-                                                <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-                                                অধ্যায়ভিত্তিক কুইজ, মডেল টেস্ট ও সমাধান
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>`).join('')}
+                                <span class="syllabus-badge ${b.cls}" aria-hidden="true">${b.text}</span>
+                                <span class="syllabus-name">${escapeHtml(subj)}</span>
+                                <span class="syllabus-chevron" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                                        <polyline points="6 9 12 15 18 9"></polyline>
+                                    </svg>
+                                </span>
+                            </div>`;
+                        }).join('')}
                     </div>
                 </div>` : '';
 
