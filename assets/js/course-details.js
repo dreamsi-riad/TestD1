@@ -39,6 +39,18 @@ function getSubjectBadge(name) {
     return { cls: 'sb-df', text: '📖' };
 }
 
+// Lightweight feature badge helper (Option 1)
+function getFeatureBadge(text) {
+    const t = String(text || '').toLowerCase();
+    if (/pdf|sheet|শিট|নোট|হ্যান্ডনোট|লেকচার|বই|মেটেরিয়াল/.test(t)) return { cls: 'fb-pdf', icon: '📄' };
+    if (/সমাধান|solution|প্রশ্ন|solve|বোর্ড/.test(t)) return { cls: 'fb-sol', icon: '🎯' };
+    if (/basic|concept|বেসিক|ধারণা|ধারনা|ক্লিয়ার|advance/.test(t)) return { cls: 'fb-con', icon: '⚡' };
+    if (/live|লাইভ|ক্লাস|class|রেকর্ড|record/.test(t)) return { cls: 'fb-live', icon: '🎥' };
+    if (/test|মডেল|exam|পরীক্ষা|কুইজ|quiz/.test(t)) return { cls: 'fb-exam', icon: '🏆' };
+    if (/সাপোর্ট|support|গ্রুপ|guid|গাইড/.test(t)) return { cls: 'fb-sup', icon: '💬' };
+    return { cls: 'fb-gen', icon: '✨' };
+}
+
 const formatPrice = v => {
     const x = clean(v);
     if (!x || x === '-') return '';
@@ -356,15 +368,14 @@ function renderCourse(course, teachers) {
                 <div class="detail-features-wrap">
                     <span class="detail-features-title">কোর্সের বিশেষ সুবিধা:</span>
                     <ul class="detail-features">
-                        ${course.features.map(f => `
+                        ${course.features.map(f => {
+                            const b = getFeatureBadge(f);
+                            return `
                             <li>
-                                <span class="detail-feature-check">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
-                                        <polyline points="20 6 9 17 4 12"></polyline>
-                                    </svg>
-                                </span>
-                                <span>${escapeHtml(f)}</span>
-                            </li>`).join('')}
+                                <span class="feature-badge ${b.cls}" aria-hidden="true">${b.icon}</span>
+                                <span class="feature-text">${escapeHtml(f)}</span>
+                            </li>`;
+                        }).join('')}
                     </ul>
                 </div>` : '';
 
@@ -380,11 +391,6 @@ function renderCourse(course, teachers) {
                             <div class="syllabus-item">
                                 <span class="syllabus-badge ${b.cls}" aria-hidden="true">${b.text}</span>
                                 <span class="syllabus-name">${escapeHtml(subj)}</span>
-                                <span class="syllabus-chevron" aria-hidden="true">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                                        <polyline points="6 9 12 15 18 9"></polyline>
-                                    </svg>
-                                </span>
                             </div>`;
                         }).join('')}
                     </div>
