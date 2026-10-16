@@ -806,35 +806,39 @@
         .detail-features li {
             display: flex;
             align-items: center;
-            gap: 11px;
+            gap: 12px;
             padding: 9px 13px;
-            border-radius: 10px;
-            background: #f8fafc;
-            border: 1px solid #f1f5f9;
-            color: #1e293b;
-            font-size: 14px;
-            font-weight: 700;
-            transition: background-color 0.15s ease;
+            border-radius: 12px;
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
         }
-        
-        .detail-features li:hover {
-            background: #f1f5f9;
-        }
-        
-        .detail-feature-check {
-            width: 18px;
-            height: 18px;
-            color: #10B981;
+
+        .feature-badge {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-size: 13.5px;
             flex-shrink: 0;
+            user-select: none;
         }
-        
-        .detail-feature-check svg {
-            width: 16px;
-            height: 16px;
-            stroke-width: 3.2;
+
+        .fb-sol { background: #FEF2F2; border: 1px solid #FECACA; }
+        .fb-pdf { background: #EFF6FF; border: 1px solid #BFDBFE; }
+        .fb-con { background: #FAF5FF; border: 1px solid #E9D5FF; }
+        .fb-live { background: #F0FDF4; border: 1px solid #BBF7D0; }
+        .fb-exam { background: #FFFBEB; border: 1px solid #FDE68A; }
+        .fb-sup { background: #F0FDFA; border: 1px solid #99F6E4; }
+        .fb-gen { background: #ECFDF5; border: 1px solid #A7F3D0; }
+
+        .feature-text {
+            font-family: 'Anek Bangla', sans-serif;
+            font-size: 14.5px;
+            font-weight: 700;
+            color: #1E293B;
+            flex: 1;
         }
 
         /* ===== কোর্সের সিলেবাস (Course Syllabus) ===== */
@@ -1051,18 +1055,24 @@
             .instructor-card-name {
                 font-size: 15px;
             }
-            .detail-features {
+            .detail-features,
+            .syllabus-list {
                 gap: 6px;
             }
-            .detail-features li {
+            .detail-features li,
+            .syllabus-item {
                 padding: 8px 12px;
-                font-size: 13.5px;
-                border-radius: 8px;
+                border-radius: 10px;
                 gap: 10px;
             }
-            .detail-feature-check {
-                width: 18px;
-                height: 18px;
+            .feature-badge,
+            .syllabus-badge {
+                width: 28px;
+                height: 28px;
+            }
+            .feature-text,
+            .syllabus-name {
+                font-size: 13.5px;
             }
             .detail-actions {
                 display: flex;
@@ -1610,12 +1620,17 @@
         [data-theme="dark"] .detail-features li{
             background:#162035;
             border-color:rgba(255,255,255,0.08);
+        }
+        [data-theme="dark"] .feature-text{
             color:#CBD5E1;
         }
-        [data-theme="dark"] .detail-feature-check{
-            background:rgba(16,185,129,0.2);
-            color:#34D399;
-        }
+        [data-theme="dark"] .fb-sol { background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.3); }
+        [data-theme="dark"] .fb-pdf { background: rgba(37, 99, 235, 0.15); border-color: rgba(59, 130, 246, 0.3); }
+        [data-theme="dark"] .fb-con { background: rgba(168, 85, 247, 0.15); border-color: rgba(168, 85, 247, 0.3); }
+        [data-theme="dark"] .fb-live { background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.3); }
+        [data-theme="dark"] .fb-exam { background: rgba(245, 158, 11, 0.15); border-color: rgba(245, 158, 11, 0.3); }
+        [data-theme="dark"] .fb-sup { background: rgba(20, 184, 166, 0.15); border-color: rgba(20, 184, 166, 0.3); }
+        [data-theme="dark"] .fb-gen { background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.3); }
 
         /* ডার্ক মোড: সিলেবাস সেকশন */
         [data-theme="dark"] .detail-syllabus-title { color: #38BDF8; }
