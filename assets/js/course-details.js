@@ -418,10 +418,10 @@ function renderCourse(course, teachers) {
                 <div class="detail-syllabus-wrap">
                     <span class="detail-syllabus-title">কোর্সের সিলেবাস:</span>
                     <div class="syllabus-list">
-                        ${subjects.map((subj, idx) => {
+                        ${subjects.map(subj => {
                             const b = getSubjectBadge(subj);
                             return `
-                            <div class="syllabus-item syl-card-${idx % 6} item-${b.cls}">
+                            <div class="syllabus-item">
                                 <span class="syllabus-badge ${b.cls}" aria-hidden="true">${b.text}</span>
                                 <span class="syllabus-name">${escapeHtml(subj)}</span>
                             </div>`;
