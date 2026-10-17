@@ -778,20 +778,25 @@
             font-weight: 600;
         }
         
-        /* ফিচার তালিকা (Course Facilities) */
+        /* ফিচার তালিকা (Course Facilities - Sleek Minimalist List Style) */
         .detail-features-wrap {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 12px;
+            margin-top: 8px;
+            margin-bottom: 6px;
         }
         
         .detail-features-title {
             font-family: 'Baloo Da 2', sans-serif;
-            font-size: 17px;
+            font-size: 19px;
             font-weight: 800;
-            color: var(--primary);
+            color: #2563EB;
             margin-bottom: 2px;
-            letter-spacing: .02em;
+            letter-spacing: .01em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
         
         .detail-features {
@@ -800,44 +805,56 @@
             margin: 0;
             display: flex;
             flex-direction: column;
-            gap: 7px;
+            gap: 12px;
         }
         
         .detail-features li {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 9px 13px;
-            border-radius: 12px;
-            background: #FFFFFF;
-            border: 1px solid #E2E8F0;
+            gap: 14px;
+            padding: 3px 0;
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .detail-features li:hover {
+            transform: translateX(4px);
         }
 
         .feature-badge {
-            width: 30px;
-            height: 30px;
-            border-radius: 8px;
-            display: flex;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            font-size: 13.5px;
             flex-shrink: 0;
             user-select: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .detail-features li:hover .feature-badge {
+            transform: scale(1.08);
+        }
+        .feature-badge svg {
+            display: block;
+            flex-shrink: 0;
         }
 
-        .fb-sol { background: #FEF2F2; border: 1px solid #FECACA; }
-        .fb-pdf { background: #EFF6FF; border: 1px solid #BFDBFE; }
-        .fb-con { background: #FAF5FF; border: 1px solid #E9D5FF; }
-        .fb-live { background: #F0FDF4; border: 1px solid #BBF7D0; }
-        .fb-exam { background: #FFFBEB; border: 1px solid #FDE68A; }
-        .fb-sup { background: #F0FDFA; border: 1px solid #99F6E4; }
+        .fb-sol { background: #FFF1F2; border: 1px solid #FFE4E6; }
+        .fb-pdf { background: #EFF6FF; border: 1px solid #DBEAFE; }
+        .fb-con { background: #FAF5FF; border: 1px solid #F3E8FF; }
+        .fb-live { background: #F0FDF4; border: 1px solid #DCFCE7; }
+        .fb-exam { background: #FFFBEB; border: 1px solid #FEF3C7; }
+        .fb-sup { background: #F0FDFA; border: 1px solid #CCFBF1; }
         .fb-gen { background: #ECFDF5; border: 1px solid #A7F3D0; }
 
         .feature-text {
-            font-family: 'Anek Bangla', sans-serif;
-            font-size: 14.5px;
+            font-family: 'Anek Bangla', 'Hind Siliguri', sans-serif;
+            font-size: 15.5px;
             font-weight: 700;
-            color: #1E293B;
+            color: #0F172A;
+            line-height: 1.45;
             flex: 1;
         }
 
@@ -1055,22 +1072,37 @@
             .instructor-card-name {
                 font-size: 15px;
             }
-            .detail-features,
+            .detail-features {
+                gap: 10px;
+            }
+            .detail-features li {
+                padding: 2px 0;
+                gap: 12px;
+            }
+            .feature-badge {
+                width: 32px;
+                height: 32px;
+                border-radius: 8px;
+            }
+            .feature-badge svg {
+                width: 18px;
+                height: 18px;
+            }
+            .feature-text {
+                font-size: 14.5px;
+            }
             .syllabus-list {
                 gap: 6px;
             }
-            .detail-features li,
             .syllabus-item {
                 padding: 8px 12px;
                 border-radius: 10px;
                 gap: 10px;
             }
-            .feature-badge,
             .syllabus-badge {
                 width: 28px;
                 height: 28px;
             }
-            .feature-text,
             .syllabus-name {
                 font-size: 13.5px;
             }
@@ -1618,19 +1650,19 @@
             color:#38BDF8;
         }
         [data-theme="dark"] .detail-features li{
-            background:#162035;
-            border-color:rgba(255,255,255,0.08);
+            background: transparent;
+            border: none;
         }
         [data-theme="dark"] .feature-text{
-            color:#CBD5E1;
+            color: #F1F5F9;
         }
-        [data-theme="dark"] .fb-sol { background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.3); }
-        [data-theme="dark"] .fb-pdf { background: rgba(37, 99, 235, 0.15); border-color: rgba(59, 130, 246, 0.3); }
-        [data-theme="dark"] .fb-con { background: rgba(168, 85, 247, 0.15); border-color: rgba(168, 85, 247, 0.3); }
-        [data-theme="dark"] .fb-live { background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.3); }
-        [data-theme="dark"] .fb-exam { background: rgba(245, 158, 11, 0.15); border-color: rgba(245, 158, 11, 0.3); }
-        [data-theme="dark"] .fb-sup { background: rgba(20, 184, 166, 0.15); border-color: rgba(20, 184, 166, 0.3); }
-        [data-theme="dark"] .fb-gen { background: rgba(16, 185, 129, 0.15); border-color: rgba(16, 185, 129, 0.3); }
+        [data-theme="dark"] .fb-sol { background: rgba(239, 68, 68, 0.16); border-color: rgba(239, 68, 68, 0.35); }
+        [data-theme="dark"] .fb-pdf { background: rgba(37, 99, 235, 0.16); border-color: rgba(59, 130, 246, 0.35); }
+        [data-theme="dark"] .fb-con { background: rgba(168, 85, 247, 0.16); border-color: rgba(168, 85, 247, 0.35); }
+        [data-theme="dark"] .fb-live { background: rgba(16, 185, 129, 0.16); border-color: rgba(16, 185, 129, 0.35); }
+        [data-theme="dark"] .fb-exam { background: rgba(245, 158, 11, 0.16); border-color: rgba(245, 158, 11, 0.35); }
+        [data-theme="dark"] .fb-sup { background: rgba(20, 184, 166, 0.16); border-color: rgba(20, 184, 166, 0.35); }
+        [data-theme="dark"] .fb-gen { background: rgba(16, 185, 129, 0.16); border-color: rgba(16, 185, 129, 0.35); }
 
         /* ডার্ক মোড: সিলেবাস সেকশন */
         [data-theme="dark"] .detail-syllabus-title { color: #38BDF8; }
