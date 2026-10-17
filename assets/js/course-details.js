@@ -39,16 +39,49 @@ function getSubjectBadge(name) {
     return { cls: 'sb-df', text: '📖' };
 }
 
-// Lightweight feature badge helper (Option 1)
+// Lightweight feature badge helper with crisp vector icons
 function getFeatureBadge(text) {
     const t = String(text || '').toLowerCase();
-    if (/pdf|sheet|শিট|নোট|হ্যান্ডনোট|লেকচার|বই|মেটেরিয়াল/.test(t)) return { cls: 'fb-pdf', icon: '📄' };
-    if (/সমাধান|solution|প্রশ্ন|solve|বোর্ড/.test(t)) return { cls: 'fb-sol', icon: '🎯' };
-    if (/basic|concept|বেসিক|ধারণা|ধারনা|ক্লিয়ার|advance/.test(t)) return { cls: 'fb-con', icon: '⚡' };
-    if (/live|লাইভ|ক্লাস|class|রেকর্ড|record/.test(t)) return { cls: 'fb-live', icon: '🎥' };
-    if (/test|মডেল|exam|পরীক্ষা|কুইজ|quiz/.test(t)) return { cls: 'fb-exam', icon: '🏆' };
-    if (/সাপোর্ট|support|গ্রুপ|guid|গাইড/.test(t)) return { cls: 'fb-sup', icon: '💬' };
-    return { cls: 'fb-gen', icon: '✨' };
+    if (/pdf|sheet|শিট|নোট|হ্যান্ডনোট|লেকচার|বই|মেটেরিয়াল/.test(t)) {
+        return {
+            cls: 'fb-pdf',
+            icon: `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#475569" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" fill="#FFFFFF"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>`
+        };
+    }
+    if (/সমাধান|solution|প্রশ্ন|solve|বোর্ড/.test(t)) {
+        return {
+            cls: 'fb-sol',
+            icon: `<svg viewBox="0 0 24 24" width="20" height="20" fill="none"><circle cx="11.5" cy="12.5" r="8.5" stroke="#EF4444" stroke-width="2" fill="#FFFFFF"/><circle cx="11.5" cy="12.5" r="5.5" stroke="#0284C7" stroke-width="1.8" fill="#E0F2FE"/><circle cx="11.5" cy="12.5" r="2.5" fill="#EF4444"/><path d="M16 8L20 4M20 4H16.5M20 4V7.5" stroke="#EF4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+        };
+    }
+    if (/basic|concept|বেসিক|ধারণা|ধারনা|ক্লিয়ার|advance/.test(t)) {
+        return {
+            cls: 'fb-con',
+            icon: `<svg viewBox="0 0 24 24" width="20" height="20" fill="#FACC15" stroke="#1E293B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 4 14 11 14 10 22 20 10 13 10 13 2"/></svg>`
+        };
+    }
+    if (/live|লাইভ|ক্লাস|class|রেকর্ড|record/.test(t)) {
+        return {
+            cls: 'fb-live',
+            icon: `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#10B981" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="14" height="14" rx="3" fill="#ECFDF5"/><polygon points="16 10 22 7 22 17 16 14" fill="#10B981"/><circle cx="9" cy="12" r="2" fill="#10B981"/></svg>`
+        };
+    }
+    if (/test|মডেল|exam|পরীক্ষা|কুইজ|quiz/.test(t)) {
+        return {
+            cls: 'fb-exam',
+            icon: `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#D97706" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.45 1-1 1H8c-.55 0-1 .45-1 1v1h10v-1c0-.55-.45-1-1-1h-1c-.55 0-1-.45-1-1v-2.34"/><path d="M6 4h12v5a6 6 0 0 1-12 0V4z" fill="#FEF3C7"/></svg>`
+        };
+    }
+    if (/সাপোর্ট|support|গ্রুপ|guid|গাইড/.test(t)) {
+        return {
+            cls: 'fb-sup',
+            icon: `<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#0D9488" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" fill="#CCFBF1"/></svg>`
+        };
+    }
+    return {
+        cls: 'fb-gen',
+        icon: `<svg viewBox="0 0 24 24" width="20" height="20" fill="#10B981" stroke="#059669" stroke-width="1.2"><path d="M12 2l2.4 6.8L21 11.5l-5.4 4.8L17 23l-5-3.8-5 3.8 1.4-6.7L3 11.5l6.6-2.7L12 2z"/></svg>`
+    };
 }
 
 const formatPrice = v => {
