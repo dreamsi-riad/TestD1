@@ -488,11 +488,11 @@ function renderCourse(course, teachers) {
                                 </div>` : ''}
                         </div>
 
-                        <!-- কোর্স ইন্সট্রাক্টর তথ্য (কোর্সের সুবিধার উপরে) -->
-                        ${courseInstructorsHtml}
-
-                        <!-- কোর্সের বিশেষ সুবিধা -->
+                        <!-- কোর্সের বিশেষ সুবিধা (উপরে) -->
                         ${featuresHtml}
+
+                        <!-- কোর্স ইন্সট্রাক্টর তথ্য (কোর্সের বিশেষ সুবিধার নিচে) -->
+                        ${courseInstructorsHtml}
 
                         <!-- কোর্সের সিলেবাস -->
                         ${syllabusHtml}
