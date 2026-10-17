@@ -411,7 +411,7 @@
   function writeWatchBaseStore(store){
     try{
       localStorage.setItem(LS_WATCH_BASE_KEY, JSON.stringify(store));
-    }catch(e){ console.error('Watch-time base localStorage write failed:', e); }
+    }catch(e){ console.warn('[Vision Plus]: ডেটা সংরক্ষণে সমস্যা হয়েছে (Ref: VP-WT1)'); }
   }
 
   function getWatchBaseMinutes(course, sector, mobile, fallbackMinutes){
@@ -568,7 +568,7 @@
     try{
       localStorage.setItem(LS_WATCH_PENDING_KEY, JSON.stringify(store));
     }catch(e){
-      console.error('Watch-time localStorage write failed:', e);
+      console.warn('[Vision Plus]: ডেটা সংরক্ষণে সমস্যা হয়েছে (Ref: VP-WT2)');
     }
   }
 
@@ -692,7 +692,7 @@
             syncedAny = true;
           }
         }catch(err){
-          console.error('Watch-time sync failed:', err);
+          console.warn('[Vision Plus]: ওয়াচ-টাইম সিঙ্কে সমস্যা হয়েছে, পুনরায় চেষ্টা করা হবে (Ref: VP-WT3)');
           // Keep the local value. It will retry on the next dashboard/login.
         }
       }
@@ -1062,9 +1062,9 @@
       }));
       result = rows.length ? {status:'ok',data:rows} : notFound;
     }catch(error){
-      console.error('Class data fetch failed:', error);
+      console.warn('[Vision Plus]: ক্লাস ডেটা লোড করতে সমস্যা হয়েছে (Ref: VP-101)');
       result = error.name === 'AbortError'
-        ? {status:'error',message:'Poor internet connection'}
+        ? {status:'error',message:'একটি সমস্যা হয়েছে, ইন্টারনেট সংযোগ চেক করে আবার চেষ্টা করুন। (Ref: VP-101)'}
         : notFound;
     }
     classDataCache.set(cacheKey,result);
@@ -1196,7 +1196,7 @@
       await loadScriptAsync('https://source.zoom.us/zoom-meeting-embedded-3.8.5.min.js');
       return !!window.ZoomMtgEmbedded;
     } catch (err) {
-      console.error('Error loading Zoom Web SDK:', err);
+      console.warn('[Vision Plus]: জুম প্লাগইন লোড হতে সমস্যা হয়েছে (Ref: VP-ZM1)');
       return false;
     } finally {
       zoomSdkLoading = false;
@@ -1236,11 +1236,11 @@
         if (cfLiveStatusText) cfLiveStatusText.textContent = 'কোনো লাইভ সেশন নেই';
         if (noLiveCard) noLiveCard.style.display = 'block';
         if (res && res.status === 'error') {
-          console.warn('[Live Class Notice]:', res.message || 'লাইভ ক্লাস কনফিগার করা নেই।');
+          console.warn('[Vision Plus]: বর্তমানে কোনো লাইভ সেশন সক্রিয় নেই (Ref: VP-ZM2)');
         }
       }
     } catch (err) {
-      console.warn('[Live Class Error]:', err);
+      console.warn('[Vision Plus]: লাইভ ক্লাসের অবস্থা যাচাই করতে সমস্যা হয়েছে (Ref: VP-ZM3)');
       const cfLiveStatusText = document.getElementById('cfLiveStatusText');
       if (cfLiveStatusText) cfLiveStatusText.textContent = 'কোনো লাইভ সেশন নেই';
       const noLiveCard = document.getElementById('noLiveClassCard');
@@ -1302,8 +1302,8 @@
       });
 
     } catch (err) {
-      console.error('Zoom join error:', err);
-      alert('জুমে যুক্ত হতে সমস্যা: ' + (err.message || 'দয়া করে "Open in Zoom App" দিয়ে সরাসরি জুম অ্যাপে যুক্ত হন।'));
+      console.warn('[Vision Plus]: জুমে যুক্ত হতে সমস্যা হয়েছে (Ref: VP-ZM4)');
+      alert('একটি সমস্যা হয়েছে (Ref: VP-ZM4)। অনুগ্রহ করে "Open in Zoom App" দিয়ে সরাসরি জুম অ্যাপে যুক্ত হন।');
     } finally {
       if (joinBtn) {
         joinBtn.disabled = false;
@@ -1390,7 +1390,7 @@
       subjectSelect.disabled = true;
       subjectSelect.innerHTML = `<option value="${escapeHtml(swParsed.subject)}">${escapeHtml(swParsed.subject)}</option>`;
 
-      const applyFilters=()=>{
+      const applySubjectWiseFilters = () => {
         const chapter = chapterSelect.value;
         stopClassPlayer();
         let filtered = rows;
@@ -1401,9 +1401,9 @@
         renderClassItems(filtered);
       };
 
-      chapterSelect.onchange = applyFilters;
+      chapterSelect.onchange = applySubjectWiseFilters;
       populateChapterSelect(rows, swParsed.subject);
-      applyFilters();
+      applySubjectWiseFilters();
       return;
     }
 
@@ -2058,7 +2058,7 @@
           }
         }
       } catch(err){
-        console.error('Failed to fetch course routine fallback:', err);
+        console.warn('[Vision Plus]: কোর্সের রুটিন লোড করতে সমস্যা হয়েছে (Ref: VP-RT1)');
       }
     }
 
@@ -2219,18 +2219,6 @@
 
     // Populate profile card
     populateProfileData(data);
-
-    // Fallback backward compatibility elements
-    const dName = document.getElementById('dashName');
-    if(dName) dName.textContent = data.name || '—';
-    const dLevel = document.getElementById('dashLevel');
-    if(dLevel) dLevel.textContent = data.level || '—';
-    const dYear = document.getElementById('dashYear');
-    if(dYear) dYear.textContent = data.year ? (data.session ? `${data.year} (${data.session})` : data.year) : '—';
-    const dDept = document.getElementById('dashDepartment');
-    if(dDept) dDept.textContent = data.department || '—';
-    const dMobile = document.getElementById('dashMobile');
-    if(dMobile) dMobile.textContent = data.mobile || '—';
 
     document.body.classList.add('dash-active');
     authPageHead.style.display = 'none';
@@ -2499,13 +2487,13 @@
           showLogin();
           return;
         }
-        vaShowToast('📶 নেটওয়ার্ক সমস্যা হচ্ছে, একটু পর আবার চেষ্টা করুন।');
+        vaShowToast('📶 একটি সমস্যা হয়েছে, অনুগ্রহ করে একটু পর আবার চেষ্টা করুন। (Ref: VP-102)');
         showCourseListError(mobile);
       }
     }catch(err){
-      console.error('Background student data refresh failed:', err);
+      console.warn('[Vision Plus]: প্রোফাইল ডেটা রিফ্রেশ করতে সমস্যা হয়েছে (Ref: VP-102)');
       if(isStillCurrentUser()){
-        vaShowToast('📶 নেটওয়ার্ক সমস্যা হচ্ছে, একটু পর আবার চেষ্টা করুন।');
+        vaShowToast('📶 একটি সমস্যা হয়েছে, অনুগ্রহ করে একটু পর আবার চেষ্টা করুন। (Ref: VP-102)');
         showCourseListError(mobile);
       }
     }
@@ -2538,7 +2526,6 @@
   let freeCourseNamesSet = new Set();
   async function loadFreeCoursesSet(){
     try {
-      try { sessionStorage.removeItem('va_free_course_names'); } catch(e){}
       let cached = null;
       try {
         const raw = sessionStorage.getItem('va_free_course_names_v2');
@@ -2578,7 +2565,7 @@
       const json = await response.json();
       return json.status === 'ok' && json.available === true;
     }catch(err){
-      console.error('Course availability check failed:', err);
+      console.warn('[Vision Plus]: কোর্সের প্রাপ্যতা যাচাই ব্যর্থ হয়েছে (Ref: VP-103)');
       return false;
     }
   }
@@ -3280,29 +3267,25 @@
   });
 
   // ============================================================
-  // Modern Aesthetic Study Art Workspace Illustration Controller
+  // Modern Education Feature Slider Controller (High-Performance & 100% Lag-Free)
   // ============================================================
-  function initStudySceneController(){
-    const studyCard = document.getElementById('loginStudyArtCard');
-    if(!studyCard) return;
-
+  function initFeatureSliderController(){
+    const sliderCard = document.getElementById('loginStudyArtCard') || document.getElementById('featureSliderCard');
+    const statusText = document.getElementById('sliderStatusText');
     const mobileInput = document.getElementById('login_mobile');
     const passInput = document.getElementById('login_password');
-    const laptopScreen = document.getElementById('laptopScreen');
-    const gradCap = document.getElementById('sceneGradCap');
-    const book = document.getElementById('sceneFloatingBook');
-    const studyNotes = document.getElementById('sceneStudyNotes');
-    const diploma = document.getElementById('sceneDiploma');
 
     function setLiveStatus(text, isAlert){
+      if(!statusText) return;
+      statusText.textContent = text;
       if(isAlert){
-        studyCard.classList.add('is-typing-focus');
+        statusText.style.color = '#2563EB';
       } else {
-        studyCard.classList.remove('is-typing-focus');
+        statusText.style.color = '';
       }
     }
 
-    // 1. Mobile Input Focus & Typing Interaction
+    // 1. Mobile Input Focus & Typing Feedback
     if(mobileInput){
       mobileInput.addEventListener('focus', function(){
         setLiveStatus('মোবাইল নম্বর যাচাই হচ্ছে... 📱', true);
@@ -3334,7 +3317,7 @@
       });
     }
 
-    // 3. Password Toggle Hook
+    // 3. Password Toggle Hook (Called when user clicks eye icon)
     window.updateMascotPasswordPeek = function(isTextVisible){
       if(document.activeElement === passInput){
         setLiveStatus(isTextVisible ? 'পাসওয়ার্ড দৃশ্যমান 👁️' : 'পাসওয়ার্ড গোপন ও এনক্রিপ্টেড 🔒', true);
@@ -3345,7 +3328,6 @@
     window.setMascotCelebration = function(isSuccess){
       if(isSuccess){
         setLiveStatus('লগইন সফল! ড্যাশবোর্ডে প্রবেশ করছি... 🎉', true);
-        if(laptopScreen) laptopScreen.style.filter = 'drop-shadow(0 0 18px #10B981)';
       } else {
         setLiveStatus('মোবাইল বা পাসওয়ার্ড ভুল হয়েছে! ❌', true);
         setTimeout(function(){
@@ -3354,28 +3336,78 @@
       }
     };
 
-    // 5. Subtle Mouse Parallax Depth Effect on Floating Academic Elements
-    studyCard.addEventListener('mousemove', function(e){
-      const rect = studyCard.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
-      const y = (e.clientY - rect.top) / rect.height - 0.5;
+    // 5. Automatic Feature Slider Logic (Pure GPU Transitions)
+    if(!sliderCard) return;
+    const slides = sliderCard.querySelectorAll('.feature-slide');
+    const dots = sliderCard.querySelectorAll('.slider-dot');
+    if(!slides.length) return;
 
-      if(gradCap) gradCap.style.transform = `translate(${x * 14}px, ${y * 14}px) rotate(${x * 6}deg)`;
-      if(book) book.style.transform = `translate(${x * -12}px, ${y * -12}px) rotate(${y * 4}deg)`;
-      if(studyNotes) studyNotes.style.transform = `translate(${x * 10}px, ${y * -8}px) rotate(${x * -4}deg)`;
-      if(diploma) diploma.style.transform = `translate(${x * -8}px, ${y * 10}px)`;
+    let currentSlide = 0;
+    let autoSlideInterval = null;
+    const totalSlides = slides.length;
+
+    function goToSlide(index){
+      currentSlide = (index + totalSlides) % totalSlides;
+      slides.forEach(function(s, idx){
+        if(idx === currentSlide){
+          s.classList.add('active');
+        } else {
+          s.classList.remove('active');
+        }
+      });
+      dots.forEach(function(d, idx){
+        if(idx === currentSlide){
+          d.classList.add('active');
+          d.setAttribute('aria-selected', 'true');
+        } else {
+          d.classList.remove('active');
+          d.setAttribute('aria-selected', 'false');
+        }
+      });
+    }
+
+    function startAutoSlide(){
+      stopAutoSlide();
+      autoSlideInterval = setInterval(function(){
+        goToSlide(currentSlide + 1);
+      }, 5000);
+    }
+
+    function stopAutoSlide(){
+      if(autoSlideInterval){
+        clearInterval(autoSlideInterval);
+        autoSlideInterval = null;
+      }
+    }
+
+    // Manual Dot Navigation
+    dots.forEach(function(dot, idx){
+      dot.addEventListener('click', function(e){
+        e.stopPropagation();
+        goToSlide(idx);
+        startAutoSlide(); // Reset auto timer on click
+      });
     });
 
-    studyCard.addEventListener('mouseleave', function(){
-      if(gradCap) gradCap.style.transform = '';
-      if(book) book.style.transform = '';
-      if(studyNotes) studyNotes.style.transform = '';
-      if(diploma) diploma.style.transform = '';
+    // Pause on Hover
+    sliderCard.addEventListener('mouseenter', stopAutoSlide);
+    sliderCard.addEventListener('mouseleave', startAutoSlide);
+
+    // Pause when tab is not visible to save 100% CPU/Battery
+    document.addEventListener('visibilitychange', function(){
+      if(document.hidden){
+        stopAutoSlide();
+      } else {
+        startAutoSlide();
+      }
     });
+
+    // Start rotation
+    startAutoSlide();
   }
 
-  // Initialize Study Scene Controller
-  initStudySceneController();
+  // Initialize Feature Slider Controller
+  initFeatureSliderController();
 
 })();
 
