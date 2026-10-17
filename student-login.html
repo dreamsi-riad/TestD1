@@ -124,7 +124,7 @@
   <header class="nav">
     <div class="nav-inner">
       <a href="index.html" class="brand" aria-label="VISION Plus Home">
-        <img src="assets/logo.png" alt="VISION Plus" class="brand-logo" fetchpriority="high" decoding="async">
+        <img src="assets/logo.png" alt="VISION Plus" class="brand-logo" width="246" height="64" fetchpriority="high" decoding="async">
       </a>
       <div class="nav-actions">
         <button type="button" class="theme-toggle-btn" id="themeToggleBtn" aria-label="নাইট মোড চালু করুন"
@@ -165,8 +165,6 @@
     </section>
 
     <section class="auth-wrap">
-      <div class="ambient-orb ambient-orb-1" aria-hidden="true"></div>
-      <div class="ambient-orb ambient-orb-2" aria-hidden="true"></div>
       <div class="container">
         <div class="auth-box login-mode">
 
@@ -284,222 +282,81 @@
 
           <div class="panel" id="loginPanel">
             <div class="login-layout-split">
-              <!-- Left Side: Modern Aesthetic Study Art Illustration Showcase -->
-              <div class="study-art-card" id="loginStudyArtCard">
-                <div class="study-art-glow" aria-hidden="true"></div>
-
-                <div class="study-illustration-wrap">
-                  <svg class="study-illustration-svg" viewBox="0 0 280 200" aria-label="মডার্ন স্টাডি আর্ট ইলাস্ট্রেশন">
-                    <defs>
-                      <linearGradient id="deskGrad" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stop-color="#E2E8F0" />
-                        <stop offset="100%" stop-color="#CBD5E1" />
-                      </linearGradient>
-                      <linearGradient id="laptopBodyGrad" x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0%" stop-color="#475569" />
-                        <stop offset="100%" stop-color="#1E293B" />
-                      </linearGradient>
-                      <linearGradient id="laptopScreenGrad" x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0%" stop-color="#1E3A8A" />
-                        <stop offset="50%" stop-color="#2563EB" />
-                        <stop offset="100%" stop-color="#0284C7" />
-                      </linearGradient>
-                      <linearGradient id="gradCapGrad" x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0%" stop-color="#0F172A" />
-                        <stop offset="60%" stop-color="#1E3A8A" />
-                        <stop offset="100%" stop-color="#2563EB" />
-                      </linearGradient>
-                      <linearGradient id="goldTasselGrad" x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0%" stop-color="#F59E0B" />
-                        <stop offset="100%" stop-color="#FCD34D" />
-                      </linearGradient>
-                      <linearGradient id="bookCoverGrad" x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0%" stop-color="#E11D48" />
-                        <stop offset="100%" stop-color="#FB7185" />
-                      </linearGradient>
-                      <linearGradient id="bookPagesGrad" x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0%" stop-color="#FFFFFF" />
-                        <stop offset="100%" stop-color="#F1F5F9" />
-                      </linearGradient>
-                      <linearGradient id="notesCoverGrad" x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0%" stop-color="#4F46E5" />
-                        <stop offset="100%" stop-color="#7C3AED" />
-                      </linearGradient>
-                    </defs>
-
-                    <!-- Desk Surface & Floor Ambient Shadow -->
-                    <ellipse cx="140" cy="182" rx="122" ry="14" fill="rgba(15,23,42,0.06)" />
-                    <path d="M 36 172 L 244 172 L 236 182 L 44 182 Z" fill="url(#deskGrad)" />
-                    <line x1="36" y1="172" x2="244" y2="172" stroke="rgba(255,255,255,0.8)" stroke-width="1.5" />
-
-                    <!-- Desk Plant (Left) -->
-                    <path d="M 64 163 L 74 163 L 72 172 L 66 172 Z" fill="#F97316" />
-                    <path d="M 69 163 C 65 154, 59 152, 58 156 C 62 159, 66 161, 69 163 Z" fill="#10B981" />
-                    <path d="M 69 163 C 73 153, 79 152, 80 156 C 76 159, 72 161, 69 163 Z" fill="#34D399" />
-
-                    <!-- Modern Laptop on Desk -->
-                    <path d="M 94 170 L 186 170 L 194 174 L 86 174 Z" fill="url(#laptopBodyGrad)" />
-                    <rect x="132" y="171" width="16" height="2" rx="1" fill="#94A3B8" />
-
-                    <!-- Laptop Screen Base & Bezel -->
-                    <rect x="103" y="111" width="74" height="50" rx="5" fill="#0F172A" stroke="#334155"
-                      stroke-width="2" />
-                    <!-- Glowing Screen -->
-                    <rect class="laptop-screen-content" id="laptopScreen" x="106" y="114" width="68" height="44" rx="3"
-                      fill="url(#laptopScreenGrad)" />
-
-                    <!-- Screen Content: Analytics Dashboard & Waves -->
-                    <g opacity="0.92">
-                      <line x1="112" y1="148" x2="168" y2="148" stroke="#60A5FA" stroke-width="1"
-                        stroke-dasharray="2 2" />
-                      <path d="M 112 144 Q 124 134, 134 138 T 152 125 T 168 123" fill="none" stroke="#FBBF24"
-                        stroke-width="2" stroke-linecap="round" />
-                      <rect class="screen-bar-1" x="114" y="136" width="5" height="11" rx="1.5" fill="#67E8F9" />
-                      <rect class="screen-bar-2" x="122" y="130" width="5" height="17" rx="1.5" fill="#38BDF8" />
-                      <rect class="screen-bar-3" x="130" y="124" width="5" height="23" rx="1.5" fill="#60A5FA" />
-                      <circle cx="168" cy="123" r="2.5" fill="#FFFFFF" />
-                    </g>
-
-                    <!-- Coffee Mug with Rising Steam (Right) -->
-                    <rect x="200" y="156" width="13" height="15" rx="3.5" fill="#3B82F6" />
-                    <path d="M 213 159 C 217 159, 217 166, 213 166" fill="none" stroke="#3B82F6" stroke-width="2" />
-                    <path class="coffee-steam" d="M 206 151 Q 208 147 205 142" stroke="#93C5FD" stroke-width="1.5"
-                      stroke-linecap="round" fill="none" />
-
-                    <!-- Floating Element 1: Graduation Cap with Gold Tassel (Top Right) -->
-                    <g class="floating-grad-cap" id="sceneGradCap">
-                      <polygon points="190,30 234,43 190,56 146,43" fill="url(#gradCapGrad)"
-                        filter="drop-shadow(0 6px 10px rgba(15,23,42,0.28))" />
-                      <path d="M 170 50 L 170 63 C 170 72, 210 72, 210 63 L 210 50 Z" fill="#1E293B" />
-                      <circle cx="190" cy="43" r="3" fill="url(#goldTasselGrad)" />
-                      <path class="cap-tassel" d="M 190 43 Q 214 50 218 68 L 220 78" fill="none"
-                        stroke="url(#goldTasselGrad)" stroke-width="2.2" stroke-linecap="round" />
-                      <circle cx="220" cy="78" r="3" fill="#F59E0B" />
-                    </g>
-
-                    <!-- Floating Element 2: Open Glowing Knowledge Book (Top Left) -->
-                    <g class="floating-book" id="sceneFloatingBook">
-                      <ellipse class="book-glow-aura" cx="52" cy="56" rx="36" ry="26" fill="rgba(37,99,235,0.15)"
-                        filter="blur(6px)" />
-                      <!-- Book cover -->
-                      <path d="M 26 63 Q 52 67 52 52 Q 52 67 78 63 L 76 46 Q 52 50 52 37 Q 52 50 28 46 Z"
-                        fill="url(#bookCoverGrad)" filter="drop-shadow(0 4px 8px rgba(225,29,72,0.2))" />
-                      <!-- Book pages -->
-                      <path d="M 30 45 Q 52 49 52 37 Q 52 49 74 45 L 72 61 Q 52 65 52 52 Q 52 65 32 61 Z"
-                        fill="url(#bookPagesGrad)" />
-                      <line x1="36" y1="48" x2="48" y2="47" stroke="#94A3B8" stroke-width="1.2"
-                        stroke-linecap="round" />
-                      <line x1="36" y1="53" x2="48" y2="52" stroke="#94A3B8" stroke-width="1.2"
-                        stroke-linecap="round" />
-                      <line x1="36" y1="58" x2="46" y2="57" stroke="#94A3B8" stroke-width="1.2"
-                        stroke-linecap="round" />
-                      <line x1="56" y1="47" x2="68" y2="48" stroke="#94A3B8" stroke-width="1.2"
-                        stroke-linecap="round" />
-                      <line x1="56" y1="52" x2="68" y2="53" stroke="#94A3B8" stroke-width="1.2"
-                        stroke-linecap="round" />
-                      <line x1="58" y1="57" x2="68" y2="58" stroke="#94A3B8" stroke-width="1.2"
-                        stroke-linecap="round" />
-                      <!-- Gold Ribbon -->
-                      <path d="M 52 37 Q 50 48 54 58 L 52 65 L 50 58" fill="#F59E0B" />
-                    </g>
-
-                    <!-- Floating Element 3: Spiral Study Notebook & Angled Student Pencil (Middle Right) -->
-                    <g class="floating-study-notes" id="sceneStudyNotes">
-                      <!-- Soft Backdrop Glow Aura -->
-                      <ellipse cx="230" cy="116" rx="28" ry="22" fill="rgba(99,102,241,0.14)" filter="blur(5px)" />
-
-                      <!-- Spiral Notebook (Slightly tilted) -->
-                      <g transform="rotate(5 226 114)">
-                        <!-- Colorful Sticky Bookmark Tabs on Top -->
-                        <rect x="220" y="87" width="7" height="6" rx="1.5" fill="#10B981" />
-                        <rect x="229" y="87" width="7" height="6" rx="1.5" fill="#F59E0B" />
-                        <rect x="238" y="88" width="7" height="5" rx="1.5" fill="#EC4899" />
-
-                        <!-- Notebook Back Cover -->
-                        <rect x="206" y="91" width="44" height="50" rx="5" fill="url(#notesCoverGrad)"
-                          filter="drop-shadow(0 5px 12px rgba(79,70,229,0.22))" />
-
-                        <!-- Notebook Inner Page -->
-                        <rect class="notes-paper" x="211" y="94" width="36" height="44" rx="3.5" fill="#FFFFFF" />
-
-                        <!-- Accent Header Band -->
-                        <rect class="notes-band" x="214" y="97" width="30" height="3.5" rx="1.5" fill="#E0E7FF" />
-
-                        <!-- Lined Rules (Abstract vector study lines, NO text) -->
-                        <line class="notes-line" x1="215" y1="105" x2="239" y2="105" stroke="#CBD5E1" stroke-width="1.2"
-                          stroke-linecap="round" />
-                        <line class="notes-line" x1="215" y1="111" x2="239" y2="111" stroke="#CBD5E1" stroke-width="1.2"
-                          stroke-linecap="round" />
-                        <line class="notes-line" x1="215" y1="117" x2="235" y2="117" stroke="#CBD5E1" stroke-width="1.2"
-                          stroke-linecap="round" />
-                        <line class="notes-line" x1="215" y1="123" x2="238" y2="123" stroke="#CBD5E1" stroke-width="1.2"
-                          stroke-linecap="round" />
-                        <line class="notes-line" x1="215" y1="129" x2="232" y2="129" stroke="#CBD5E1" stroke-width="1.2"
-                          stroke-linecap="round" />
-
-                        <!-- Twin Spiral Ring Coils on Left Spine -->
-                        <g class="notes-spiral" fill="#94A3B8" stroke="#64748B" stroke-width="0.5">
-                          <rect x="204" y="97" width="5.5" height="2.2" rx="1.1" />
-                          <rect x="204" y="103.5" width="5.5" height="2.2" rx="1.1" />
-                          <rect x="204" y="110" width="5.5" height="2.2" rx="1.1" />
-                          <rect x="204" y="116.5" width="5.5" height="2.2" rx="1.1" />
-                          <rect x="204" y="123" width="5.5" height="2.2" rx="1.1" />
-                          <rect x="204" y="129.5" width="5.5" height="2.2" rx="1.1" />
-                        </g>
-                      </g>
-
-                      <!-- Angled Student Pencil Floating Beside Notebook -->
-                      <g class="floating-pencil" transform="rotate(-30 252 122)">
-                        <!-- Pencil Body (Golden Yellow Hexagonal Shaft) -->
-                        <rect x="249" y="100" width="6" height="30" rx="1" fill="#F59E0B" />
-                        <rect x="251" y="100" width="2" height="30" fill="#FBBF24" />
-                        <!-- Metal Ferrule -->
-                        <rect x="249" y="96" width="6" height="4" fill="#CBD5E1" />
-                        <line x1="249" y1="98" x2="255" y2="98" stroke="#94A3B8" stroke-width="0.8" />
-                        <!-- Pink Eraser -->
-                        <rect x="249" y="92" width="6" height="4.5" rx="1.8" fill="#F43F5E" />
-                        <!-- Sharpened Wood Cone Tip -->
-                        <polygon points="249,130 255,130 252,137" fill="#FDE68A" />
-                        <!-- Graphite Lead Point -->
-                        <polygon points="250.8,134.5 253.2,134.5 252,138" fill="#1E293B" />
-                      </g>
-                    </g>
-
-                    <!-- Floating Element 4: Rolled Diploma / Certificate (Middle Left) -->
-                    <g class="floating-diploma" id="sceneDiploma">
-                      <rect x="22" y="118" width="38" height="13" rx="6.5" fill="#FEF3C7" stroke="#F59E0B"
-                        stroke-width="1.2" filter="drop-shadow(0 4px 8px rgba(245,158,11,0.2))" />
-                      <rect x="37" y="117" width="8" height="15" rx="2" fill="#EF4444" />
-                      <path d="M 41 132 L 38 138 L 41 136 L 44 138 Z" fill="#EF4444" />
-                    </g>
-
-                    <!-- Sparkles (Golden & Cyan Stars) -->
-                    <path class="sparkle-star sparkle-star-1"
-                      d="M 120 40 Q 120 47 127 47 Q 120 47 120 54 Q 120 47 113 47 Q 120 47 120 40 Z" fill="#F59E0B" />
-                    <path class="sparkle-star sparkle-star-2"
-                      d="M 256 68 Q 256 74 262 74 Q 256 74 256 80 Q 256 74 250 74 Q 256 74 256 68 Z" fill="#38BDF8" />
-                    <path class="sparkle-star sparkle-star-3"
-                      d="M 82 86 Q 82 91 87 91 Q 82 91 82 96 Q 82 91 77 91 Q 82 91 82 86 Z" fill="#F59E0B" />
-                  </svg>
+              <!-- Left Side: Modern Education Feature Slider Showcase -->
+              <div class="feature-slider-card" id="loginStudyArtCard">
+                <div class="slider-header-brand">
+                  <span class="slider-brand-badge">BBA VISION</span>
+                  <span class="slider-portal-tag">● স্টুডেন্ট পোর্টাল</span>
                 </div>
 
-                <!-- 4 Feature Badges as requested -->
-                <div class="study-features-row">
-                  <div class="study-feat-pill">
-                    <span class="feat-ico">🎥</span>
-                    <span class="feat-txt">ইন্টারেক্টিভ লাইভ ক্লাস</span>
+                <div class="feature-slider-wrapper">
+                  <!-- Slide 1: Live Classes -->
+                  <div class="feature-slide active" data-slide="0">
+                    <div class="slide-icon-box">
+                      <svg viewBox="0 0 24 24" class="slide-icon" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                        <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                      </svg>
+                    </div>
+                    <div class="slide-badge">লাইভ লার্নিং</div>
+                    <h3 class="slide-title">ইন্টারেক্টিভ লাইভ ও ব্যাকআপ ক্লাস</h3>
+                    <p class="slide-desc">BBA, BBS, HSC ও MBA কোর্সের নিয়মিত লাইভ লেকচার এবং যেকোনো সময় রিভিশনের ফুল এইচডি রেকর্ডিং।</p>
+                    <div class="slide-tags">
+                      <span class="slide-tag">✓ কনসেপ্ট ক্লিয়ারিং</span>
+                      <span class="slide-tag">✓ আনলিমিটেড এক্সেস</span>
+                    </div>
                   </div>
-                  <div class="study-feat-pill">
-                    <span class="feat-ico">⚡</span>
-                    <span class="feat-txt">স্পেশাল ওয়ান শট ক্লাস</span>
+
+                  <!-- Slide 2: Notes & Suggestions -->
+                  <div class="feature-slide" data-slide="1">
+                    <div class="slide-icon-box icon-variant-amber">
+                      <svg viewBox="0 0 24 24" class="slide-icon" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                      </svg>
+                    </div>
+                    <div class="slide-badge badge-amber">স্টাডি রিসোর্স</div>
+                    <h3 class="slide-title">লেকচার শিট ও শর্ট সাজেশন</h3>
+                    <p class="slide-desc">পরীক্ষায় সর্বোচ্চ প্রস্তুতির জন্য এক্সক্লুসিভ পিডিএফ হ্যান্ডনোট, ফাইনাল সাজেশন ও বিগত বছরের সমাধান।</p>
+                    <div class="slide-tags">
+                      <span class="slide-tag">✓ পিডিএফ শিট</span>
+                      <span class="slide-tag">✓ ফাইনাল সাজেশন</span>
+                    </div>
                   </div>
-                  <div class="study-feat-pill">
-                    <span class="feat-ico">📝</span>
-                    <span class="feat-txt">এক্সাম স্পেশাল শর্ট সাজেশন</span>
+
+                  <!-- Slide 3: Smart Dashboard -->
+                  <div class="feature-slide" data-slide="2">
+                    <div class="slide-icon-box icon-variant-emerald">
+                      <svg viewBox="0 0 24 24" class="slide-icon" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                      </svg>
+                    </div>
+                    <div class="slide-badge badge-emerald">স্মার্ট ট্র্যাকিং</div>
+                    <h3 class="slide-title">রুটিন, নোটিশ ও ওয়াচ-টাইম</h3>
+                    <p class="slide-desc">একটি কেন্দ্রীয় ড্যাশবোর্ড থেকেই লাইভ ক্লাসের লিংক, সাপ্তাহিক রুটিন এবং ওয়াচ-টাইম রিয়েল-টাইমে মনিটর করুন।</p>
+                    <div class="slide-tags">
+                      <span class="slide-tag">✓ ইনস্ট্যান্ট রুটিন</span>
+                      <span class="slide-tag">✓ ২৪/৭ সাপোর্ট</span>
+                    </div>
                   </div>
-                  <div class="study-feat-pill">
-                    <span class="feat-ico">💬</span>
-                    <span class="feat-txt">২৪/৭ সাপোর্ট</span>
+                </div>
+
+                <!-- Slider Controls & Security Note -->
+                <div class="slider-controls">
+                  <div class="slider-dots" id="sliderDots" role="tablist" aria-label="ফিচার স্লাইডার">
+                    <button type="button" class="slider-dot active" data-index="0" aria-label="স্লাইড ১"></button>
+                    <button type="button" class="slider-dot" data-index="1" aria-label="স্লাইড ২"></button>
+                    <button type="button" class="slider-dot" data-index="2" aria-label="স্লাইড ৩"></button>
+                  </div>
+                  <div class="slider-security-note">
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                      <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                    <span id="sliderStatusText">সুরক্ষিত ও এনক্রিপ্টেড সেশন</span>
                   </div>
                 </div>
               </div>
@@ -692,7 +549,7 @@
         <div class="dash-side-top">
           <div class="dash-side-brand">
             <a href="index.html" class="dash-side-logo-link" title="VISION Plus Home">
-              <img src="assets/logo.png" alt="VISION Plus" class="dash-side-logo-img">
+              <img src="assets/logo.png" alt="VISION Plus" class="dash-side-logo-img" width="161" height="42">
             </a>
             <!-- Mobile Quick Actions -->
             <div class="dash-side-quick-actions">
@@ -1560,7 +1417,7 @@
       <div class="footer-grid">
         <div>
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
-            <img src="assets/logo.png" alt="VISION Plus"
+            <img src="assets/logo.png" alt="VISION Plus" width="169" height="44"
               style="height:44px;width:auto;filter:brightness(0) invert(1);opacity:0.95;">
           </div>
           <p style="color:#cbd5e1;font-size:14.5px;line-height:1.7;max-width:36ch;">ব্যতিক্রমী শিক্ষা পদ্ধতি, আধুনিক
