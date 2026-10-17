@@ -241,216 +241,105 @@ header.nav{
   }
 }
 
-/* ===== অপশন ২: এডুকেশন ফিচার স্লাইডার কার্ড (Ultra-Lightweight & 100% Lag-Free) ===== */
+/* ===== অপশন ২: ৩ডি স্টুডেন্ট ভিজ্যুয়াল স্লাইডার (3D Student Visual Showcase - 100% Lag-Free) ===== */
 .feature-slider-card{
-  background: linear-gradient(160deg, #F8FAFD 0%, #EEF4FE 60%, #E3EFFF 100%);
-  border: 1.5px solid rgba(37, 99, 235, 0.16);
-  border-radius: 22px;
-  padding: 22px 20px 18px;
+  background: #FFFFFF;
+  border: 1.5px solid rgba(37, 99, 235, 0.12);
+  border-radius: 24px;
+  padding: 12px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   justify-content: space-between;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 10px 28px -6px rgba(37, 99, 235, 0.08);
-  min-height: 380px;
+  box-shadow: 0 12px 30px -8px rgba(37, 99, 235, 0.08);
+  min-height: 400px;
+  height: 100%;
+  box-sizing: border-box;
 }
 [data-theme="dark"] .feature-slider-card{
-  background: linear-gradient(160deg, #0F172A 0%, #131F38 60%, #172554 100%);
-  border-color: rgba(56, 189, 248, 0.2);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  background: #111827;
+  border-color: rgba(56, 189, 248, 0.16);
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.5);
 }
 
-/* ব্র্যান্ড ও পোর্টাল ট্যাগ রো */
-.slider-header-brand{
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 18px;
-}
-.slider-brand-badge{
-  font-family: 'Baloo Da 2', sans-serif;
-  font-weight: 800;
-  font-size: 11.5px;
-  letter-spacing: 0.5px;
-  color: #2563EB;
-  background: rgba(37, 99, 235, 0.1);
-  padding: 4px 10px;
-  border-radius: 999px;
-  line-height: 1.2;
-}
-[data-theme="dark"] .slider-brand-badge{
-  color: #38BDF8;
-  background: rgba(56, 189, 248, 0.15);
-}
-.slider-portal-tag{
-  font-size: 11.5px;
-  font-weight: 700;
-  color: #10B981;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-
-/* স্লাইডার ট্র‍্যাক ও রেপার */
+/* স্লাইডার ইমেজ রেপার */
 .feature-slider-wrapper{
   position: relative;
+  width: 100%;
   flex: 1;
-  display: flex;
-  min-height: 230px;
+  min-height: 350px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: #F1F5F9;
+}
+[data-theme="dark"] .feature-slider-wrapper{
+  background: #1E293B;
 }
 
-/* প্রতিটি ফিচার স্লাইড */
+/* প্রতিটি ভিজ্যুয়াল স্লাইড */
 .feature-slide{
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  display: flex;
-  flex-direction: column;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transform: translateX(18px);
-  transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s;
+  transform: scale(0.97) translateX(12px);
+  transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.45s;
+  border-radius: 18px;
+  overflow: hidden;
 }
 .feature-slide.active{
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transform: translateX(0);
+  transform: scale(1) translateX(0);
 }
 
-/* স্লাইড আইকন বক্স */
-.slide-icon-box{
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #2563EB 0%, #0284C7 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #FFFFFF;
-  margin-bottom: 12px;
-  box-shadow: 0 6px 14px -2px rgba(37, 99, 235, 0.28);
-  flex-shrink: 0;
+/* স্টুডেন্ট ভেক্টর এসভিজি */
+.student-vector-svg{
+  width: 100%;
+  height: 100%;
+  display: block;
+  user-select: none;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.slide-icon-box.icon-variant-amber{
-  background: linear-gradient(135deg, #D97706 0%, #F59E0B 100%);
-  box-shadow: 0 6px 14px -2px rgba(245, 158, 11, 0.28);
-}
-.slide-icon-box.icon-variant-emerald{
-  background: linear-gradient(135deg, #059669 0%, #10B981 100%);
-  box-shadow: 0 6px 14px -2px rgba(16, 185, 129, 0.28);
-}
-.slide-icon{
-  width: 22px;
-  height: 22px;
+.feature-slider-card:hover .student-vector-svg{
+  transform: scale(1.02);
 }
 
-/* ক্যাটাগরি ব্যাজ */
-.slide-badge{
-  display: inline-block;
-  align-self: flex-start;
-  font-size: 11px;
-  font-weight: 700;
-  color: #2563EB;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-  margin-bottom: 6px;
-}
-.slide-badge.badge-amber{
-  color: #D97706;
-}
-[data-theme="dark"] .slide-badge.badge-amber{
-  color: #FBBF24;
-}
-.slide-badge.badge-emerald{
-  color: #059669;
-}
-[data-theme="dark"] .slide-badge.badge-emerald{
-  color: #34D399;
-}
-
-/* স্লাইড টাইটেল ও বর্ণনা */
-.slide-title{
-  font-family: 'Baloo Da 2', sans-serif;
-  font-size: 18.5px;
-  font-weight: 700;
-  color: var(--ink);
-  line-height: 1.25;
-  margin: 0 0 6px;
-}
-[data-theme="dark"] .slide-title{
-  color: #F8FAFC;
-}
-.slide-desc{
-  font-size: 13.5px;
-  color: var(--ink-soft);
-  line-height: 1.55;
-  margin: 0 0 12px;
-}
-[data-theme="dark"] .slide-desc{
-  color: #94A3B8;
-}
-
-/* চিপ ট্যাগস */
-.slide-tags{
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: auto;
-}
-.slide-tag{
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--ink-soft);
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(226, 232, 240, 0.9);
-  padding: 4px 8px;
-  border-radius: 7px;
-  line-height: 1.2;
-}
-[data-theme="dark"] .slide-tag{
-  background: rgba(30, 41, 59, 0.8);
-  border-color: rgba(255, 255, 255, 0.1);
-  color: #CBD5E1;
-}
-
-/* স্লাইডার কন্ট্রোলস ও সিকিউরিটি বার */
+/* স্লাইডার কন্ট্রোলস (শুধু ডটস) */
 .slider-controls{
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding-top: 14px;
-  border-top: 1px solid rgba(226, 232, 240, 0.8);
-  margin-top: 14px;
-}
-[data-theme="dark"] .slider-controls{
-  border-top-color: rgba(255, 255, 255, 0.08);
+  justify-content: center;
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 2px;
 }
 
 /* ডটস */
 .slider-dots{
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
 }
 .slider-dot{
   width: 8px;
   height: 8px;
   border-radius: 999px;
-  background: rgba(37, 99, 235, 0.25);
+  background: rgba(37, 99, 235, 0.22);
   border: none;
   padding: 0;
   cursor: pointer;
   transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease;
 }
 .slider-dot:hover{
-  background: rgba(37, 99, 235, 0.5);
+  background: rgba(37, 99, 235, 0.45);
 }
 .slider-dot.active{
   width: 24px;
@@ -464,27 +353,6 @@ header.nav{
 }
 [data-theme="dark"] .slider-dot.active{
   background: #38BDF8;
-}
-
-/* সিকিউরিটি নোট */
-.slider-security-note{
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 11.5px;
-  font-weight: 600;
-  color: var(--ink-muted);
-}
-[data-theme="dark"] .slider-security-note{
-  color: #64748B;
-}
-.slider-security-note svg{
-  flex-shrink: 0;
-  color: #10B981;
-}
-#sliderStatusText{
-  transition: color 0.2s ease;
-  white-space: nowrap;
 }
 
 /* ফর্ম হেডার মিনি */
