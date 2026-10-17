@@ -39,8 +39,8 @@ function getSubjectBadge(name) {
     return { cls: 'sb-df', text: '📖' };
 }
 
-// Modern 3D Green Checkmark Icon - Rounded Rectangle / Squircle (Zero Animation, Pure Vector SVG)
-const FEATURE_3D_CHECK_SVG = `<svg class="feature-check-svg" viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gCheck_base" x1="12" y1="2" x2="12" y2="22" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#34D399"/><stop offset="45%" stop-color="#10B981"/><stop offset="100%" stop-color="#059669"/></linearGradient><linearGradient id="gCheck_gloss" x1="12" y1="3" x2="12" y2="11" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.55"/><stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.05"/></linearGradient></defs><rect x="2" y="2" width="20" height="20" rx="5.5" fill="url(#gCheck_base)"/><rect x="3.5" y="3" width="17" height="7.5" rx="3.5" fill="url(#gCheck_gloss)"/><path d="M7.5 12.8L10.3 15.6L16.8 9.1" stroke="#047857" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M7.5 12.2L10.3 15L16.8 8.5" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+// Modern 3D Green Checkmark Icon - Crisp Rounded Rectangle / Squircle (Zero Animation, Pure Vector SVG)
+const FEATURE_3D_CHECK_SVG = `<svg class="feature-check-svg" viewBox="0 0 24 24" width="22" height="22" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="gCheck_base" x1="12" y1="2" x2="12" y2="22" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#34D399"/><stop offset="45%" stop-color="#10B981"/><stop offset="100%" stop-color="#059669"/></linearGradient><linearGradient id="gCheck_gloss" x1="12" y1="2.5" x2="12" y2="10" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.55"/><stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.05"/></linearGradient></defs><rect x="2" y="2" width="20" height="20" rx="3.5" fill="url(#gCheck_base)" stroke="#047857" stroke-width="0.8" stroke-opacity="0.35"/><rect x="3.5" y="3" width="17" height="6.5" rx="2" fill="url(#gCheck_gloss)"/><path d="M7.5 12.8L10.3 15.6L16.8 9.1" stroke="#047857" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity="0.45"/><path d="M7.5 12.2L10.3 15L16.8 8.5" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 
 const formatPrice = v => {
     const x = clean(v);
@@ -414,9 +414,15 @@ function renderCourse(course, teachers) {
                 : `<div class="instructor-card-initials">${initials(t.name)}</div>`
             }
                                     <div class="instructor-card-info">
-                                        <h4 class="instructor-card-name">${escapeHtml(t.name)}</h4>
-                                        <p class="instructor-card-desig">${escapeHtml(t.designation || 'ফ্যাকাল্টি মেম্বার')}</p>
-                                        ${t.subject ? `<span class="instructor-card-subject">${escapeHtml(t.subject)}</span>` : ''}
+                                        <div class="instructor-card-header">
+                                            <h4 class="instructor-card-name">${escapeHtml(t.name)}</h4>
+                                            ${t.designation ? `<span class="instructor-card-desig">${escapeHtml(t.designation)}</span>` : ''}
+                                        </div>
+                                        ${t.subject ? `
+                                        <div class="instructor-card-subject">
+                                            <svg class="instructor-subj-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                                            <span class="instructor-subj-name">${escapeHtml(t.subject)}</span>
+                                        </div>` : ''}
                                     </div>
                                 </div>`).join('')}
                         </div>
@@ -563,9 +569,15 @@ function renderSubjectWiseCourse(row, teachers = []) {
                 : `<div class="instructor-card-initials">${initials(t.name)}</div>`
             }
                                     <div class="instructor-card-info">
-                                        <h4 class="instructor-card-name">${escapeHtml(t.name)}</h4>
-                                        <p class="instructor-card-desig">${escapeHtml(t.designation || 'ফ্যাকাল্টি মেম্বার')}</p>
-                                        ${t.subject ? `<span class="instructor-card-subject">${escapeHtml(t.subject)}</span>` : ''}
+                                        <div class="instructor-card-header">
+                                            <h4 class="instructor-card-name">${escapeHtml(t.name)}</h4>
+                                            ${t.designation ? `<span class="instructor-card-desig">${escapeHtml(t.designation)}</span>` : ''}
+                                        </div>
+                                        ${t.subject ? `
+                                        <div class="instructor-card-subject">
+                                            <svg class="instructor-subj-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                                            <span class="instructor-subj-name">${escapeHtml(t.subject)}</span>
+                                        </div>` : ''}
                                     </div>
                                 </div>`).join('')}
                         </div>
