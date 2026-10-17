@@ -858,36 +858,81 @@
             flex: 1;
         }
 
-        /* ===== কোর্সের সিলেবাস (Course Syllabus) ===== */
+        /* ===== কোর্সের সিলেবাস (Course Syllabus - Soft Tinted Cards) ===== */
         .detail-syllabus-wrap {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
             margin-top: 14px;
         }
 
         .detail-syllabus-title {
             font-family: 'Baloo Da 2', sans-serif;
-            font-size: 17px;
+            font-size: 18px;
             font-weight: 800;
-            color: var(--primary);
-            letter-spacing: .02em;
+            color: #2563EB;
+            letter-spacing: .01em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .syllabus-list {
             display: flex;
             flex-direction: column;
-            gap: 7px;
+            gap: 8px;
         }
 
         .syllabus-item {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 9px 13px;
+            gap: 13px;
+            padding: 10px 14px;
             border-radius: 12px;
-            background: #FFFFFF;
+            background: #F8FAFC;
             border: 1px solid #E2E8F0;
+            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .syllabus-item:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+        }
+
+        /* স্বতন্ত্র সফট কালার প্যালেট (প্রত্যেক কার্ড আলাদা হালকা রঙ) */
+        .syllabus-item.syl-card-0,
+        .syllabus-item.item-sb-en {
+            background: #F0F9FF;
+            border-color: #BAE6FD;
+        }
+        .syllabus-item.syl-card-1,
+        .syllabus-item.item-sb-ma {
+            background: #FAF5FF;
+            border-color: #E9D5FF;
+        }
+        .syllabus-item.syl-card-2,
+        .syllabus-item.item-sb-ac {
+            background: #F0FDF4;
+            border-color: #BBF7D0;
+        }
+        .syllabus-item.syl-card-3,
+        .syllabus-item.item-sb-ec {
+            background: #FFFBEB;
+            border-color: #FDE68A;
+        }
+        .syllabus-item.syl-card-4,
+        .syllabus-item.item-sb-bn {
+            background: #FFF1F2;
+            border-color: #FECDD3;
+        }
+        .syllabus-item.syl-card-5,
+        .syllabus-item.item-sb-fn {
+            background: #F0FDFA;
+            border-color: #99F6E4;
+        }
+        .syllabus-item.item-sb-mg {
+            background: #EEF2FF;
+            border-color: #C7D2FE;
         }
 
         .syllabus-badge {
@@ -903,6 +948,7 @@
             color: #FFFFFF;
             flex-shrink: 0;
             user-select: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         .sb-bn { background: linear-gradient(135deg, #EF4444, #B91C1C); }
@@ -915,10 +961,10 @@
         .sb-df { background: linear-gradient(135deg, #6366F1, #3730A3); font-size: 14px; }
 
         .syllabus-name {
-            font-family: 'Anek Bangla', sans-serif;
-            font-size: 14.5px;
+            font-family: 'Anek Bangla', 'Hind Siliguri', sans-serif;
+            font-size: 15px;
             font-weight: 700;
-            color: #1E293B;
+            color: #0F172A;
             flex: 1;
         }
 
@@ -1666,8 +1712,45 @@
 
         /* ডার্ক মোড: সিলেবাস সেকশন */
         [data-theme="dark"] .detail-syllabus-title { color: #38BDF8; }
-        [data-theme="dark"] .syllabus-item { background: #162035; border-color: rgba(255,255,255,0.08); }
-        [data-theme="dark"] .syllabus-name { color: #CBD5E1; }
+        [data-theme="dark"] .syllabus-item {
+            background: #162035;
+            border-color: rgba(255,255,255,0.08);
+        }
+        [data-theme="dark"] .syllabus-item.syl-card-0,
+        [data-theme="dark"] .syllabus-item.item-sb-en {
+            background: rgba(2, 132, 199, 0.12);
+            border-color: rgba(56, 189, 248, 0.28);
+        }
+        [data-theme="dark"] .syllabus-item.syl-card-1,
+        [data-theme="dark"] .syllabus-item.item-sb-ma {
+            background: rgba(168, 85, 247, 0.12);
+            border-color: rgba(192, 132, 252, 0.28);
+        }
+        [data-theme="dark"] .syllabus-item.syl-card-2,
+        [data-theme="dark"] .syllabus-item.item-sb-ac {
+            background: rgba(16, 185, 129, 0.12);
+            border-color: rgba(52, 211, 153, 0.28);
+        }
+        [data-theme="dark"] .syllabus-item.syl-card-3,
+        [data-theme="dark"] .syllabus-item.item-sb-ec {
+            background: rgba(245, 158, 11, 0.12);
+            border-color: rgba(251, 191, 36, 0.28);
+        }
+        [data-theme="dark"] .syllabus-item.syl-card-4,
+        [data-theme="dark"] .syllabus-item.item-sb-bn {
+            background: rgba(244, 63, 94, 0.12);
+            border-color: rgba(251, 113, 133, 0.28);
+        }
+        [data-theme="dark"] .syllabus-item.syl-card-5,
+        [data-theme="dark"] .syllabus-item.item-sb-fn {
+            background: rgba(20, 184, 166, 0.12);
+            border-color: rgba(45, 212, 191, 0.28);
+        }
+        [data-theme="dark"] .syllabus-item.item-sb-mg {
+            background: rgba(99, 102, 241, 0.12);
+            border-color: rgba(129, 140, 248, 0.28);
+        }
+        [data-theme="dark"] .syllabus-name { color: #F1F5F9; }
 
         [data-theme="dark"] .detail-actions{
             border-top-color:rgba(255,255,255,0.08);
