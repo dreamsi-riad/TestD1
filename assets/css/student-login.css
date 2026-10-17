@@ -189,42 +189,7 @@ header.nav{
   overflow: hidden;
 }
 
-/* অ্যাম্বিয়েন্ট ব্যাকগ্রাউন্ড ওর্বস (Ambient Glowing Mesh) */
-.ambient-orb{
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(75px);
-  pointer-events: none;
-  z-index: 0;
-  will-change: transform;
-}
-.ambient-orb-1{
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, rgba(37, 99, 235, 0.14) 0%, rgba(37, 99, 235, 0) 70%);
-  top: 5%;
-  left: 5%;
-  animation: floatOrb1 18s ease-in-out infinite alternate;
-}
-.ambient-orb-2{
-  width: 360px;
-  height: 360px;
-  background: radial-gradient(circle, rgba(14, 165, 233, 0.13) 0%, rgba(245, 158, 11, 0.07) 50%, rgba(0,0,0,0) 70%);
-  bottom: 8%;
-  right: 6%;
-  animation: floatOrb2 22s ease-in-out infinite alternate;
-}
-@keyframes floatOrb1{
-  0%{ transform: translate(0, 0) scale(1); }
-  50%{ transform: translate(40px, 35px) scale(1.1); }
-  100%{ transform: translate(-30px, 55px) scale(0.95); }
-}
-@keyframes floatOrb2{
-  0%{ transform: translate(0, 0) scale(1); }
-  50%{ transform: translate(-45px, -30px) scale(1.12); }
-  100%{ transform: translate(35px, -20px) scale(0.92); }
-}
-
+/* ===== অথেনটিকেশন কন্টেইনার ===== */
 .auth-box{
   max-width: 600px;
   margin: 0 auto;
@@ -240,10 +205,8 @@ header.nav{
 }
 .auth-box.login-mode{
   max-width: 820px;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 24px 60px -12px rgba(37, 99, 235, 0.14), 0 8px 24px -4px rgba(15, 23, 42, 0.06);
+  background: #ffffff;
+  box-shadow: 0 16px 40px -8px rgba(15, 23, 42, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
 }
 #dashboardSection .auth-box{
   max-width: 960px;
@@ -268,251 +231,260 @@ header.nav{
 @media(max-width: 840px){
   .login-layout-split{
     grid-template-columns: 1fr;
-    gap: 22px;
+    gap: 0;
+  }
+  .feature-slider-card{
+    display: none;
   }
   .auth-box.login-mode{
-    max-width: 520px;
+    max-width: 480px;
   }
 }
 
-/* স্টাডি আর্ট শোকেস কার্ড */
-.study-art-card{
-  background: linear-gradient(155deg, #F8FAFD 0%, #EEF4FE 50%, #E3EFFF 100%);
+/* ===== অপশন ২: এডুকেশন ফিচার স্লাইডার কার্ড (Ultra-Lightweight & 100% Lag-Free) ===== */
+.feature-slider-card{
+  background: linear-gradient(160deg, #F8FAFD 0%, #EEF4FE 60%, #E3EFFF 100%);
   border: 1.5px solid rgba(37, 99, 235, 0.16);
-  border-radius: 24px;
-  padding: 16px 16px 14px;
+  border-radius: 22px;
+  padding: 22px 20px 18px;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: space-between;
   position: relative;
   overflow: hidden;
-  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.9), 0 12px 32px -8px rgba(37, 99, 235, 0.12);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 10px 28px -6px rgba(37, 99, 235, 0.08);
+  min-height: 380px;
 }
-[data-theme="dark"] .study-art-card{
-  background: linear-gradient(155deg, #0F172A 0%, #131F38 60%, #172554 100%);
+[data-theme="dark"] .feature-slider-card{
+  background: linear-gradient(160deg, #0F172A 0%, #131F38 60%, #172554 100%);
   border-color: rgba(56, 189, 248, 0.2);
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.06), 0 14px 36px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
 }
 
-/* অ্যাম্বিয়েন্ট ব্যাকড্রপ গ্লো */
-.study-art-glow{
-  position: absolute;
-  top: 15%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 220px;
-  height: 220px;
-  background: radial-gradient(circle, rgba(37, 99, 235, 0.22) 0%, rgba(6, 182, 212, 0.12) 50%, transparent 70%);
-  border-radius: 50%;
-  pointer-events: none;
-  filter: blur(28px);
-  animation: studyGlowPulse 5s ease-in-out infinite alternate;
+/* ব্র্যান্ড ও পোর্টাল ট্যাগ রো */
+.slider-header-brand{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 18px;
 }
-@keyframes studyGlowPulse{
-  0%{ opacity: 0.6; transform: translateX(-50%) scale(0.9); }
-  100%{ opacity: 1; transform: translateX(-50%) scale(1.2); }
+.slider-brand-badge{
+  font-family: 'Baloo Da 2', sans-serif;
+  font-weight: 800;
+  font-size: 11.5px;
+  letter-spacing: 0.5px;
+  color: #2563EB;
+  background: rgba(37, 99, 235, 0.1);
+  padding: 4px 10px;
+  border-radius: 999px;
+  line-height: 1.2;
+}
+[data-theme="dark"] .slider-brand-badge{
+  color: #38BDF8;
+  background: rgba(56, 189, 248, 0.15);
+}
+.slider-portal-tag{
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #10B981;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
-/* ভেক্টর ইলাস্ট্রেশন কন্টেইনার */
-.study-illustration-wrap{
-  width: 274px;
-  height: 184px;
+/* স্লাইডার ট্র‍্যাক ও রেপার */
+.feature-slider-wrapper{
   position: relative;
-  z-index: 2;
-  margin: 0 auto;
+  flex: 1;
+  display: flex;
+  min-height: 230px;
 }
-.study-illustration-svg{
+
+/* প্রতিটি ফিচার স্লাইড */
+.feature-slide{
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
-  display: block;
-  overflow: visible;
-  filter: drop-shadow(0 10px 20px rgba(15, 23, 42, 0.09));
-}
-
-/* ফ্লোটিং গ্র্যাজুয়েশন ক্যাপ অ্যানিমেশন */
-.floating-grad-cap{
-  transform-origin: 190px 45px;
-  animation: floatGradCap 4.5s ease-in-out infinite alternate;
-  will-change: transform;
-}
-@keyframes floatGradCap{
-  0%{ transform: translateY(0px) rotate(-4deg); }
-  50%{ transform: translateY(-9px) rotate(2deg); }
-  100%{ transform: translateY(-4px) rotate(-2deg); }
-}
-.cap-tassel{
-  transform-origin: 190px 44px;
-  animation: tasselSway 3s ease-in-out infinite alternate;
-}
-@keyframes tasselSway{
-  0%{ transform: rotate(-6deg); }
-  100%{ transform: rotate(10deg); }
-}
-
-/* ফ্লোটিং গ্লোয়িং বুক অ্যানিমেশন */
-.floating-book{
-  transform-origin: 52px 52px;
-  animation: floatBook 5s ease-in-out infinite alternate;
-  will-change: transform;
-}
-@keyframes floatBook{
-  0%{ transform: translateY(0px) rotate(3deg); }
-  50%{ transform: translateY(-8px) rotate(-2deg); }
-  100%{ transform: translateY(-3px) rotate(1deg); }
-}
-.book-glow-aura{
-  animation: bookAuraPulse 3s ease-in-out infinite alternate;
-}
-@keyframes bookAuraPulse{
-  0%{ opacity: 0.3; transform: scale(0.95); }
-  100%{ opacity: 0.8; transform: scale(1.08); }
-}
-
-/* ফ্লোটিং স্টাডি নোটবুক ও পেন্সিল অ্যানিমেশন */
-.floating-study-notes{
-  transform-origin: 230px 114px;
-  animation: floatStudyNotes 4.8s ease-in-out infinite alternate;
-  will-change: transform;
-}
-@keyframes floatStudyNotes{
-  0%{ transform: translateY(0px) rotate(0deg); }
-  50%{ transform: translateY(-7px) rotate(-2deg); }
-  100%{ transform: translateY(-2px) rotate(1.5deg); }
-}
-.floating-pencil{
-  transform-origin: 254px 124px;
-  animation: pencilWiggle 3.2s ease-in-out infinite alternate;
-}
-@keyframes pencilWiggle{
-  0%{ transform: rotate(-30deg) translateY(0px); }
-  100%{ transform: rotate(-36deg) translateY(-3px); }
-}
-
-/* ফ্লোটিং রোলড ডিপ্লোমা */
-.floating-diploma{
-  transform-origin: 40px 125px;
-  animation: floatDiploma 5.2s ease-in-out infinite alternate;
-  will-change: transform;
-}
-@keyframes floatDiploma{
-  0%{ transform: translateY(0px) rotate(-5deg); }
-  100%{ transform: translateY(-7px) rotate(4deg); }
-}
-
-/* ল্যাপটপ স্ক্রিন গ্লো ও ডাটা ওয়েভস */
-.laptop-screen-content{
-  animation: screenBreathe 4s ease-in-out infinite alternate;
-}
-@keyframes screenBreathe{
-  0%{ opacity: 0.85; filter: drop-shadow(0 0 6px rgba(56, 189, 248, 0.4)); }
-  100%{ opacity: 1; filter: drop-shadow(0 0 14px rgba(37, 99, 235, 0.7)); }
-}
-.screen-bar-1{ transform-origin: bottom; animation: barGrow 2.5s ease-in-out infinite alternate; }
-.screen-bar-2{ transform-origin: bottom; animation: barGrow 2.5s ease-in-out infinite alternate 0.4s; }
-.screen-bar-3{ transform-origin: bottom; animation: barGrow 2.5s ease-in-out infinite alternate 0.8s; }
-@keyframes barGrow{
-  0%{ transform: scaleY(0.7); }
-  100%{ transform: scaleY(1.1); }
-}
-
-/* কফি স্টিম অ্যানিমেশন */
-.coffee-steam{
-  animation: steamDrift 2.8s ease-in-out infinite;
+  display: flex;
+  flex-direction: column;
   opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateX(18px);
+  transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s;
 }
-@keyframes steamDrift{
-  0%{ opacity: 0; transform: translateY(0) scaleX(0.8); }
-  50%{ opacity: 0.6; }
-  100%{ opacity: 0; transform: translateY(-8px) scaleX(1.3); }
-}
-
-/* টুইঙ্কলিং স্টার পার্টিক্যালস */
-.sparkle-star{
-  animation: starTwinkle 2.4s ease-in-out infinite alternate;
-}
-.sparkle-star-1{ animation-delay: 0s; }
-.sparkle-star-2{ animation-delay: 0.8s; }
-.sparkle-star-3{ animation-delay: 1.5s; }
-@keyframes starTwinkle{
-  0%{ opacity: 0.2; transform: scale(0.6) rotate(0deg); }
-  100%{ opacity: 1; transform: scale(1.15) rotate(45deg); }
+.feature-slide.active{
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(0);
 }
 
-/* ইনপুট টাইপিং ফোকাসে ইন্টারেক্টিভ সিন গ্লো */
-.is-typing-focus .laptop-screen-content{
-  filter: drop-shadow(0 0 16px rgba(37, 99, 235, 0.95)) drop-shadow(0 0 24px rgba(56, 189, 248, 0.6)) !important;
-}
-.is-typing-focus .study-art-glow{
-  opacity: 1 !important;
-  transform: translateX(-50%) scale(1.3) !important;
-}
-
-/* মাইক্রো ফিচার হাইলাইটস (৪টি ব্যাজ গ্রিড) */
-.study-features-row{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 7px;
-  margin-top: 10px;
-  width: 100%;
-  z-index: 2;
-}
-.study-feat-pill{
-  font-size: 10.5px;
-  font-weight: 700;
-  color: var(--ink-soft);
-  background: rgba(255, 255, 255, 0.88);
-  border: 1px solid rgba(226, 232, 240, 0.95);
-  padding: 6px 5px;
-  border-radius: 9px;
+/* স্লাইড আইকন বক্স */
+.slide-icon-box{
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #2563EB 0%, #0284C7 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  line-height: 1.2;
-  transition: all 0.22s ease;
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
-}
-.study-feat-pill .feat-ico{
-  font-size: 11px;
+  color: #FFFFFF;
+  margin-bottom: 12px;
+  box-shadow: 0 6px 14px -2px rgba(37, 99, 235, 0.28);
   flex-shrink: 0;
-  line-height: 1;
 }
-.study-feat-pill .feat-txt{
-  white-space: nowrap;
-  letter-spacing: -0.15px;
+.slide-icon-box.icon-variant-amber{
+  background: linear-gradient(135deg, #D97706 0%, #F59E0B 100%);
+  box-shadow: 0 6px 14px -2px rgba(245, 158, 11, 0.28);
 }
-.study-feat-pill:hover{
-  border-color: rgba(37, 99, 235, 0.35);
-  background: #FFFFFF;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.09);
+.slide-icon-box.icon-variant-emerald{
+  background: linear-gradient(135deg, #059669 0%, #10B981 100%);
+  box-shadow: 0 6px 14px -2px rgba(16, 185, 129, 0.28);
 }
-[data-theme="dark"] .study-feat-pill{
-  background: rgba(30, 41, 59, 0.75);
+.slide-icon{
+  width: 22px;
+  height: 22px;
+}
+
+/* ক্যাটাগরি ব্যাজ */
+.slide-badge{
+  display: inline-block;
+  align-self: flex-start;
+  font-size: 11px;
+  font-weight: 700;
+  color: #2563EB;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-bottom: 6px;
+}
+.slide-badge.badge-amber{
+  color: #D97706;
+}
+[data-theme="dark"] .slide-badge.badge-amber{
+  color: #FBBF24;
+}
+.slide-badge.badge-emerald{
+  color: #059669;
+}
+[data-theme="dark"] .slide-badge.badge-emerald{
+  color: #34D399;
+}
+
+/* স্লাইড টাইটেল ও বর্ণনা */
+.slide-title{
+  font-family: 'Baloo Da 2', sans-serif;
+  font-size: 18.5px;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.25;
+  margin: 0 0 6px;
+}
+[data-theme="dark"] .slide-title{
+  color: #F8FAFC;
+}
+.slide-desc{
+  font-size: 13.5px;
+  color: var(--ink-soft);
+  line-height: 1.55;
+  margin: 0 0 12px;
+}
+[data-theme="dark"] .slide-desc{
+  color: #94A3B8;
+}
+
+/* চিপ ট্যাগস */
+.slide-tags{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: auto;
+}
+.slide-tag{
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ink-soft);
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  padding: 4px 8px;
+  border-radius: 7px;
+  line-height: 1.2;
+}
+[data-theme="dark"] .slide-tag{
+  background: rgba(30, 41, 59, 0.8);
   border-color: rgba(255, 255, 255, 0.1);
   color: #CBD5E1;
 }
-[data-theme="dark"] .study-feat-pill:hover{
-  background: rgba(30, 41, 59, 0.95);
-  border-color: rgba(56, 189, 248, 0.4);
-  color: #F8FAFC;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+
+/* স্লাইডার কন্ট্রোলস ও সিকিউরিটি বার */
+.slider-controls{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(226, 232, 240, 0.8);
+  margin-top: 14px;
+}
+[data-theme="dark"] .slider-controls{
+  border-top-color: rgba(255, 255, 255, 0.08);
 }
 
-/* ডার্ক মোডে স্টাডি নোটবুক ও পেন্সিল এডাপটেশন */
-[data-theme="dark"] #sceneStudyNotes .notes-paper{
-  fill: #1E293B !important;
+/* ডটস */
+.slider-dots{
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
-[data-theme="dark"] #sceneStudyNotes .notes-band{
-  fill: #334155 !important;
+.slider-dot{
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.25);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease;
 }
-[data-theme="dark"] #sceneStudyNotes .notes-line{
-  stroke: #475569 !important;
+.slider-dot:hover{
+  background: rgba(37, 99, 235, 0.5);
 }
-[data-theme="dark"] #sceneStudyNotes .notes-spiral{
-  fill: #64748B !important;
-  stroke: #475569 !important;
+.slider-dot.active{
+  width: 24px;
+  background: #2563EB;
+}
+[data-theme="dark"] .slider-dot{
+  background: rgba(255, 255, 255, 0.2);
+}
+[data-theme="dark"] .slider-dot:hover{
+  background: rgba(56, 189, 248, 0.5);
+}
+[data-theme="dark"] .slider-dot.active{
+  background: #38BDF8;
+}
+
+/* সিকিউরিটি নোট */
+.slider-security-note{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--ink-muted);
+}
+[data-theme="dark"] .slider-security-note{
+  color: #64748B;
+}
+.slider-security-note svg{
+  flex-shrink: 0;
+  color: #10B981;
+}
+#sliderStatusText{
+  transition: color 0.2s ease;
+  white-space: nowrap;
 }
 
 /* ফর্ম হেডার মিনি */
@@ -3292,12 +3264,6 @@ html.theme-transition *::after{
   border:1px solid rgba(96,165,250,0.25);
 }
 
-[data-theme="dark"] .ambient-orb-1{
-  background: radial-gradient(circle, rgba(56, 189, 248, 0.16) 0%, transparent 70%);
-}
-[data-theme="dark"] .ambient-orb-2{
-  background: radial-gradient(circle, rgba(129, 140, 248, 0.14) 0%, transparent 70%);
-}
 [data-theme="dark"] .auth-box,
 [data-theme="dark"] .auth-card{
   background:#111827;
@@ -3305,9 +3271,9 @@ html.theme-transition *::after{
   box-shadow:0 12px 36px rgba(0,0,0,0.45);
 }
 [data-theme="dark"] .auth-box.login-mode{
-  background: rgba(17, 24, 39, 0.94);
+  background: #111827;
   border-color: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 24px 60px -12px rgba(0, 0, 0, 0.65), 0 0 20px rgba(37, 99, 235, 0.15);
+  box-shadow: 0 20px 48px -8px rgba(0, 0, 0, 0.65);
 }
 [data-theme="dark"] .login-title{ color: #F8FAFC; }
 [data-theme="dark"] .login-subtitle{ color: #94A3B8; }
@@ -3640,8 +3606,7 @@ html.theme-transition *::after{
 
 body.dash-active > .nav,
 body.dash-active > footer,
-body.dash-active > #authPageHead,
-body.dash-active > .ambient-orb {
+body.dash-active > #authPageHead {
   display: none !important;
 }
 body.dash-active {
